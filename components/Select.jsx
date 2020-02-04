@@ -1,6 +1,7 @@
+/* eslint-disable import/prefer-default-export */
 import React from "react";
 import PropTypes from "prop-types";
-import uuid from 'uuid/v4';
+import uuid from "uuid/v4";
 import { getIn } from "formik";
 
 import { InputHelpBlock } from "./InputHelpBlock";
@@ -49,19 +50,20 @@ const SelectOption = ({ value, children, disabled }) => {
   );
 };
 
-const SelectOptgroup = ({label, children }) => (
-    <div className="dropdown__group">
-      <div className="dropdown__group-header">{label}</div>
-      <SelectChildren>{children}</SelectChildren>
-    </div>
-  );
+const SelectOptgroup = ({ label, children }) => (
+  <div className="dropdown__group">
+    <div className="dropdown__group-header">{label}</div>
+    <SelectChildren>{children}</SelectChildren>
+  </div>
+);
 
-const SelectChildren = children => React.Children.map(children, child => {
+const SelectChildren = children =>
+  React.Children.map(children, child => {
     switch (child.type) {
       case "option":
-        return <SelectOption {...child.props}/>;
+        return <SelectOption {...child.props} />;
       case "optgroup":
-        return <SelectOptgroup child={...child.props} />;
+        return <SelectOptgroup {...child.props} />;
       default:
         return child;
     }

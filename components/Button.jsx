@@ -21,7 +21,7 @@ export const Button = ({
       (className ? ` ${className}` : "")
     }
     {...props}
-  ></button>
+  />
 );
 
 Button.Primary = ({ color, ...props }) => <Button color="primary" {...props} />;

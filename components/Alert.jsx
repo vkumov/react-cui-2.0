@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -20,7 +21,8 @@ export const Alert = ({
 
   if (dismissed) return null;
 
-  let alertClass, iconClass;
+  let alertClass;
+  let iconClass;
 
   switch (type) {
     case "warning":
@@ -61,7 +63,7 @@ export const Alert = ({
   }
 
   return (
-    <div className={`alert ${alertClass} ${className ? className : ""}`}>
+    <div className={`alert ${alertClass} ${className || ""}`}>
       {withIcon ? <div className={`alert__icon ${iconClass}`} /> : null}
       <div className="alert__message">
         {title && <h4>{title}</h4>}
@@ -84,7 +86,7 @@ Alert.propTypes = {
     "dark",
     "light",
     "info"
-  ]).isRequired,
+  ]),
   dismissable: PropTypes.bool,
   title: PropTypes.string,
   onDismiss: PropTypes.func,
@@ -96,7 +98,9 @@ Alert.defaultProps = {
   type: "info",
   dismissable: false,
   title: "",
-  withIcon: true
+  withIcon: true,
+  onDismiss: null,
+  icon: null
 };
 
 Alert.Warning = ({ type, ...props }) => <Alert type="warning" {...props} />;

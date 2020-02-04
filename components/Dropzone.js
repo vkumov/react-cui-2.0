@@ -57,12 +57,12 @@ class Dropzone extends React.Component {
     }
   }
 
-  removeFile = toRemove => {
+  removeFile(toRemove) {
     this.props.formik.setFieldValue(
       this.props.name,
       this.props.input.value.filter((_, idx) => toRemove !== idx)
     );
-  };
+  }
 
   // renderFileCard = (file, i) => {
   //   return (
@@ -139,7 +139,7 @@ class Dropzone extends React.Component {
     );
   }
 
-  handleDrop = filesToUpload => {
+  handleDrop(filesToUpload) {
     if (this.maxFileSize) {
       filesToUpload = filesToUpload.filter(
         file => file.size <= this.maxFileSize
@@ -151,7 +151,7 @@ class Dropzone extends React.Component {
     }
 
     this.props.formik.setFieldValue(this.props.name, filesToUpload);
-  };
+  }
 
   render() {
     const { meta, loose, compressed } = this.props;
