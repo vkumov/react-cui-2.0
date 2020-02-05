@@ -2051,7 +2051,7 @@ var ConfirmationModal = function ConfirmationModal(_ref5) {
         }
       }, _callee);
     }))
-  }, confirmText || "Confirm", doing ? React.createElement("span", {
+  }, confirmText, doing ? React.createElement("span", {
     className: "icon-animation spin qtr-margin-left"
   }) : null)));
 };
@@ -2059,14 +2059,16 @@ ConfirmationModal.propTypes = {
   isOpen: PropTypes.bool,
   confirmHandle: PropTypes.func.isRequired,
   closeHandle: PropTypes.func.isRequired,
-  prompt: PropTypes.any.isRequired,
+  prompt: PropTypes.node.isRequired,
   confirmType: PropTypes.string,
   confirmText: PropTypes.string,
   autoClose: PropTypes.bool
 };
 ConfirmationModal.defaultProps = {
+  isOpen: false,
   confirmType: "primary",
-  autoClose: true
+  autoClose: true,
+  confirmText: "Confirm"
 };
 
 export { Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };

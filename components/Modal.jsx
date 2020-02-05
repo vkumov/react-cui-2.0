@@ -147,7 +147,7 @@ export const ConfirmationModal = ({
             if (await confirmHandle()) setDoing(false);
           }}
         >
-          {confirmText || "Confirm"}
+          {confirmText}
           {doing ? (
             <span className="icon-animation spin qtr-margin-left" />
           ) : null}
@@ -161,13 +161,15 @@ ConfirmationModal.propTypes = {
   isOpen: PropTypes.bool,
   confirmHandle: PropTypes.func.isRequired,
   closeHandle: PropTypes.func.isRequired,
-  prompt: PropTypes.any.isRequired,
+  prompt: PropTypes.node.isRequired,
   confirmType: PropTypes.string,
   confirmText: PropTypes.string,
   autoClose: PropTypes.bool
 };
 
 ConfirmationModal.defaultProps = {
+  isOpen: false,
   confirmType: "primary",
-  autoClose: true
+  autoClose: true,
+  confirmText: "Confirm"
 };
