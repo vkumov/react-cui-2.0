@@ -99,7 +99,6 @@ export const ToastContainer = props => (
     transition={Fade}
     {...props}
     closeButton={false}
-    toastClassName="toast"
     style={{
       width: "unset"
     }}
