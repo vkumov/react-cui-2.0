@@ -11,3 +11,4 @@ export { toast, ToastContainer } from "./components/Toast";
 export { Header, HeaderPanel, HeaderTitle } from "./components/Header";
 export { Footer } from "./components/Footer";
 export { GenericTable } from "./components/Table";
+export { Checkbox } from "./components/Checkbox";

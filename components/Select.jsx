@@ -89,7 +89,6 @@ export const Select = ({
   const node = React.useRef();
 
   const { touched, errors } = form;
-  id = id || uuid();
 
   const handleClick = () => {
     if (!isOpen) {
@@ -144,7 +143,7 @@ export const Select = ({
   };
 
   const findTitle = where => {
-    let r = [];
+    const r = [];
     React.Children.forEach(where || props.children, ch => {
       if (ch.type === "optgroup") {
         const temp = findTitle(ch.props.children);
@@ -172,24 +171,21 @@ export const Select = ({
 
     if (multiple) {
       return displayTitle.length ? displayTitle.join(", ") : findTitle();
-    } else {
-      return displayTitle ? displayTitle : findTitle();
     }
+    return displayTitle || findTitle();
   };
 
   return (
     <div
-      className={
-        `form-group dropdown` +
-        (isOpen ? " active" : "") +
-        (inline ? " label--inline" : "") +
-        (up ? " dropdown--up" : "") +
-        (disabled ? " disabled" : "") +
-        (className ? ` ${className}` : "") +
-        (getIn(touched, field.name) && getIn(errors, field.name)
+      className={`form-group dropdown${isOpen ? " active" : ""}${
+        inline ? " label--inline" : ""
+      }${up ? " dropdown--up" : ""}${disabled ? " disabled" : ""}${
+        className ? ` ${className}` : ""
+      }${
+        getIn(touched, field.name) && getIn(errors, field.name)
           ? " form-group--error"
-          : "")
-      }
+          : ""
+      }`}
       ref={node}
       {...(inline === "both" ? { style: { display: "inline-block" } } : {})}
     >
@@ -232,11 +228,18 @@ Select.propTypes = {
   inline: PropTypes.oneOf([false, true, "both"]),
   up: PropTypes.bool,
   disabled: PropTypes.bool,
-  width: PropTypes.number
+  width: PropTypes.number,
+  compressed: PropTypes.bool
 };
 
 Select.defaultProps = {
   prompt: "Select an option",
   multiple: false,
-  inline: false
+  inline: false,
+  id: uuid(),
+  label: null,
+  width: null,
+  up: false,
+  disabled: false,
+  compressed: false
 };

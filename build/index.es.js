@@ -1116,7 +1116,6 @@ var Select = function Select(_ref3) {
   var node = React.useRef();
   var touched = form.touched,
       errors = form.errors;
-  id = id || uuid();
 
   var handleClick = function handleClick() {
     if (!isOpen) {
@@ -1199,13 +1198,13 @@ var Select = function Select(_ref3) {
 
     if (multiple) {
       return displayTitle.length ? displayTitle.join(", ") : findTitle();
-    } else {
-      return displayTitle ? displayTitle : findTitle();
     }
+
+    return displayTitle || findTitle();
   };
 
   return React.createElement("div", _extends({
-    className: "form-group dropdown" + (isOpen ? " active" : "") + (inline ? " label--inline" : "") + (up ? " dropdown--up" : "") + (disabled ? " disabled" : "") + (className ? " ".concat(className) : "") + (getIn(touched, field.name) && getIn(errors, field.name) ? " form-group--error" : ""),
+    className: "form-group dropdown".concat(isOpen ? " active" : "").concat(inline ? " label--inline" : "").concat(up ? " dropdown--up" : "").concat(disabled ? " disabled" : "").concat(className ? " ".concat(className) : "").concat(getIn(touched, field.name) && getIn(errors, field.name) ? " form-group--error" : ""),
     ref: node
   }, inline === "both" ? {
     style: {
@@ -1251,12 +1250,19 @@ Select.propTypes = {
   inline: PropTypes.oneOf([false, true, "both"]),
   up: PropTypes.bool,
   disabled: PropTypes.bool,
-  width: PropTypes.number
+  width: PropTypes.number,
+  compressed: PropTypes.bool
 };
 Select.defaultProps = {
   prompt: "Select an option",
   multiple: false,
-  inline: false
+  inline: false,
+  id: uuid(),
+  label: null,
+  width: null,
+  up: false,
+  disabled: false,
+  compressed: false
 };
 
 var Panel = function Panel(_ref) {
@@ -1635,5 +1641,42 @@ GenericTable.defaultProps = {
   loose: false
 };
 
-export { Alert, Button, ButtonGroup, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, ToastContainer, toast };
+var Checkbox = function Checkbox(_ref) {
+  var field = _ref.field,
+      form = _ref.form,
+      inline = _ref.inline,
+      asFormGroup = _ref.asFormGroup,
+      children = _ref.children;
+  return React.createElement(ConditionalWrapper, {
+    condition: asFormGroup,
+    wrapper: React.createElement("div", {
+      className: "form-group ".concat(inline ? "form-group--inline" : "")
+    })
+  }, React.createElement("label", {
+    className: "checkbox"
+  }, React.createElement("input", _extends({
+    type: "checkbox"
+  }, field, {
+    checked: getIn(form.values, field.name, false)
+  })), React.createElement("span", {
+    className: "checkbox__input"
+  }), children ? React.createElement("span", {
+    className: "checkbox__label"
+  }, children) : null));
+};
+
+Checkbox.propTypes = {
+  inline: PropTypes.bool,
+  asFormGroup: PropTypes.bool,
+  form: PropTypes.objectOf(PropTypes.object).isRequired,
+  field: PropTypes.objectOf(PropTypes.object).isRequired,
+  children: PropTypes.node
+};
+Checkbox.defaultProps = {
+  inline: false,
+  asFormGroup: true,
+  children: null
+};
+
+export { Alert, Button, ButtonGroup, Checkbox, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map
