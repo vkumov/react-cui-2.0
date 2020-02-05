@@ -47,7 +47,8 @@ export default {
       }
     }),
     postcss({
-      plugins: []
+      plugins: [],
+      minimize: true
     })
     // embedCSS()
     // uglify()

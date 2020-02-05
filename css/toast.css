@@ -5,3 +5,11 @@
     font-family: unset;
     box-shadow: unset;
 }
+
+.cui .Toastify__toast-container {
+    color: unset;
+}
+
+.cui .Toastify__toast--default {
+    color: unset;
+}
