@@ -131,8 +131,13 @@ Dropdown.defaultProps = {
   divClassName: null
 };
 
-Dropdown.Element = ({ selected, icon, children, ...props }) => (
-  <a className={selected ? "selected" : ""} {...props}>
+Dropdown.Element = ({ selected, icon, children, className, ...props }) => (
+  <a
+    className={`${selected ? "selected" : ""}${
+      className ? ` ${className}` : ""
+    }`}
+    {...props}
+  >
     {icon ? <span className={`icon-${icon}`} /> : null}
     <ConditionalWrapper
       condition={Boolean(icon)}
@@ -146,12 +151,14 @@ Dropdown.Element = ({ selected, icon, children, ...props }) => (
 Dropdown.Element.propTypes = {
   selected: PropTypes.bool,
   children: PropTypes.node.isRequired,
-  icon: PropTypes.string
+  icon: PropTypes.string,
+  className: PropTypes.string
 };
 
 Dropdown.Element.defaultProps = {
   selected: false,
-  icon: null
+  icon: null,
+  className: null
 };
 
 Dropdown.Divider = () => <div className="divider" />;
