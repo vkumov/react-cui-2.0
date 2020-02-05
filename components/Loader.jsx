@@ -33,7 +33,7 @@ Spinner.defaultProps = {
 
 export const Dots = ({ color }) => (
   <div
-    class={`loading-dots${
+    className={`loading-dots${
       color !== "primary" ? ` loading-dots--${color}` : ""
     }`}
   >

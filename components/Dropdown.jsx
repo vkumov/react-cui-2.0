@@ -45,6 +45,9 @@ export const Dropdown = ({
   onClose,
   ...props
 }) => {
+  let handleOutsideClick;
+  let handleClick;
+
   const [isOpen, setIsOpen] = React.useState(false);
   const nodeRef = React.useRef(null);
   React.useEffect(() => {
@@ -52,7 +55,7 @@ export const Dropdown = ({
       document.removeEventListener("click", handleOutsideClick, false);
   }, []);
 
-  const handleOutsideClick = e => {
+  handleOutsideClick = e => {
     // ignore clicks on the component itself
     if (!alwaysClose && nodeRef.current && nodeRef.current.contains(e.target))
       return;
@@ -60,7 +63,7 @@ export const Dropdown = ({
     handleClick(e);
   };
 
-  const handleClick = e => {
+  handleClick = e => {
     if (stopPropagation) {
       e.stopPropagation();
       e.preventDefault();
@@ -83,12 +86,9 @@ export const Dropdown = ({
 
   return (
     <div
-      className={
-        "dropdown" +
-        (["left", "center"].includes(openTo) ? ` dropdown--${openTo}` : "") +
-        (isOpen ? " active" : "") +
-        (divClassName ? ` ${divClassName}` : "")
-      }
+      className={`dropdown${
+        ["left", "center"].includes(openTo) ? ` dropdown--${openTo}` : ""
+      }${isOpen ? " active" : ""}${divClassName ? ` ${divClassName}` : ""}`}
       ref={nodeRef}
       {...props}
     >
@@ -117,15 +117,20 @@ Dropdown.propTypes = {
 
 Dropdown.defaultProps = {
   type: "button",
-  openTo: false
+  openTo: false,
+  className: null,
+  header: null,
+  alwaysClose: false,
+  onOpen: null,
+  onClose: null,
+  stopPropagation: false,
+  divClassName: null
 };
 
-const Element = ({ selected, ...props }) => (
-  <a className={selected ? "selected" : ""} {...props} />
+export const DropdownElement = ({ selected, children, ...props }) => (
+  <a className={selected ? "selected" : ""} {...props}>
+    {children}
+  </a>
 );
 
-Dropdown.Element = Element;
-
-const Divider = () => <div className="divider"></div>;
-
-Dropdown.Divider = Divider;
+export const DropdownDivider = () => <div className="divider" />;

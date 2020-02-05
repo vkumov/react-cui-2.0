@@ -111,7 +111,7 @@ ToastContainer.propTypes = {
   autoClose: PropTypes.number,
   draggable: PropTypes.bool,
   hideProgressBar: PropTypes.bool,
-  containerId: PropTypes.oneOf(PropTypes.string, PropTypes.number)
+  containerId: PropTypes.oneOf([PropTypes.string, PropTypes.number])
 };
 
 ToastContainer.defaultProps = {

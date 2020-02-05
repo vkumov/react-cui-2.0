@@ -13,13 +13,9 @@ export const Label = ({
   ...props
 }) => (
   <span
-    className={
-      "label" +
-      ` label--${color}` +
-      (size !== "default" ? ` label--${size}` : "") +
-      (bordered ? " label--bordered" : "") +
-      (raised ? " label--raised" : "")
-    }
+    className={`${"label" + ` label--${color}`}${
+      size !== "default" ? ` label--${size}` : ""
+    }${bordered ? " label--bordered" : ""}${raised ? " label--raised" : ""}`}
     {...props}
   >
     {children}
@@ -40,7 +36,7 @@ Label.propTypes = {
     "danger",
     "dark",
     "light"
-  ]).isRequired,
+  ]),
   bordered: PropTypes.bool,
   removable: PropTypes.bool,
   onRemove: PropTypes.func,
@@ -49,5 +45,9 @@ Label.propTypes = {
 
 Label.defaultProps = {
   size: "default",
-  color: "primary"
+  color: "primary",
+  bordered: false,
+  removable: false,
+  raised: false,
+  onRemove: null
 };

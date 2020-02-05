@@ -42,9 +42,8 @@ Panel.propTypes = {
     "danger",
     "dark",
     "light"
-  ]).isRequired,
-  padding: PropTypes.oneOf(["none", "compressed", "default", "loose"])
-    .isRequired,
+  ]),
+  padding: PropTypes.oneOf(["none", "compressed", "default", "loose"]),
   bordered: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.oneOf(["top", "right", "left", "bottom"]),

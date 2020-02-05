@@ -42,7 +42,7 @@ Button.propTypes = {
     "dark",
     "ghost",
     "link"
-  ]).isRequired,
+  ]),
   wide: PropTypes.bool,
   justified: PropTypes.bool,
   circle: PropTypes.bool

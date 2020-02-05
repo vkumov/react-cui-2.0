@@ -8,13 +8,15 @@
   },
   "author": "Vitaly Kumov",
   "license": "ISC",
-  "dependencies": {
+  "peerDependencies": {
     "bytes": "^3.1.0",
     "formik": "^2.1.2",
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
     "react-dropzone": "^10.2.1",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-toastify": "^5.5.0"
   },
   "devDependencies": {
     "eslint": "^6.1.0",

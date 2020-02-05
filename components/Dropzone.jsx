@@ -2,7 +2,7 @@ import React from "react";
 import ReactDropzone from "react-dropzone";
 import PropTypes from "prop-types";
 import bytes from "bytes";
-import { connect, getIn } from "formik";
+import { connect } from "formik";
 
 const FileCard = ({ file, i, removeFile, inline }) => (
   <div
@@ -35,10 +35,10 @@ const FileCard = ({ file, i, removeFile, inline }) => (
             style={{ marginRight: "5px" }}
             onClick={() => removeFile(i)}
           >
-            <span className="icon-close" title="Remove the file."></span>
+            <span className="icon-close" title="Remove the file." />
           </a>
           <div className="text-ellipsis half-margin-bottom">{file.name}</div>
-          <span className="file-icon text-muted icon-file-o qtr-margin-right"></span>
+          <span className="file-icon text-muted icon-file-o qtr-margin-right" />
           <small>{bytes.format(file.size, { unitSeparator: " " })}</small>
         </div>
       )}
