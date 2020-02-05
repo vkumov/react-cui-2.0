@@ -6,135 +6,66 @@ import { getIn } from "formik";
 
 import { InputHelpBlock } from "./InputHelpBlock";
 
-const SelectContext = React.createContext();
+class Select extends React.Component {
+  constructor(props) {
+    super(props);
 
-const SelectOption = ({ value, children, disabled }) => {
-  const { multiple, isSelected, optionClick } = React.useContext(SelectContext);
-
-  if (multiple) {
-    return (
-      <a disabled={disabled}>
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            onClick={e =>
-              optionClick(
-                e,
-                value,
-                Array.isArray(children) ? children.join("") : children
-              )
-            }
-            checked={isSelected(value)}
-          />
-          <span className="checkbox__input" />
-        </label>
-        <span>{children}</span>
-      </a>
-    );
+    this.state = {
+      isOpen: false,
+      title: props.multiple ? [] : ""
+    };
   }
 
-  return (
-    <a
-      disabled={disabled}
-      onClick={e =>
-        optionClick(
-          e,
-          value,
-          Array.isArray(children) ? children.join("") : children
-        )
-      }
-      className={isSelected(value) ? "selected" : ""}
-    >
-      {children}
-    </a>
-  );
-};
-
-const SelectOptgroup = ({ label, children }) => (
-  <div className="dropdown__group">
-    <div className="dropdown__group-header">{label}</div>
-    <SelectChildren>{children}</SelectChildren>
-  </div>
-);
-
-const SelectChildren = children =>
-  React.Children.map(children, child => {
-    switch (child.type) {
-      case "option":
-        return <SelectOption {...child.props} />;
-      case "optgroup":
-        return <SelectOptgroup {...child.props} />;
-      default:
-        return child;
-    }
-  });
-
-export const Select = ({
-  compressed,
-  id,
-  label,
-  prompt,
-  multiple,
-  inline,
-  up,
-  disabled,
-  width,
-  field,
-  form,
-  className,
-  ...props
-}) => {
-  const [isOpen, setOpen] = React.useState(false);
-  const [displayTitle, setDisplayTitle] = React.useState(multiple ? [] : "");
-  const node = React.useRef();
-
-  const { touched, errors } = form;
-
-  const handleClick = () => {
-    if (!isOpen) {
+  handleClick = () => {
+    if (!this.state.isOpen) {
       // attach/remove event handler
-      document.addEventListener("click", handleOutsideClick, false);
+      document.addEventListener("click", this.handleOutsideClick, false);
     } else {
-      document.removeEventListener("click", handleOutsideClick, false);
+      document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    setOpen(prev => !prev);
+    this.setState(prevState => ({
+      isOpen: !prevState.isOpen
+    }));
   };
 
-  const handleOutsideClick = e => {
+  handleOutsideClick = e => {
     // ignore clicks on the component itself
-    const n = node.current;
-    if (n && n.contains(e.target)) return;
+    const n = this.props.innerRef ? this.props.innerRef : this.node;
+    if (n && n.contains(e.target)) {
+      return;
+    }
 
-    handleClick();
+    this.handleClick();
   };
 
-  const handleOptionClick = (e, newValue, title) => {
+  handleOptionClick = (e, newValue, title) => {
+    const { field, multiple, form } = this.props;
+
     if (!multiple) {
       form.setFieldValue(field.name, newValue);
       form.setFieldTouched(field.name, true);
-      setDisplayTitle(title);
+      this.setState({ title });
 
-      handleClick();
+      this.handleClick();
+    } else if (e.target.checked) {
+      form.setFieldValue(field.name, [...field.value, newValue]);
+      form.setFieldTouched(field.name, true);
+      this.setState({ title: [...this.state.title, title] });
     } else {
-      if (e.target.checked) {
-        form.setFieldValue(field.name, [...field.value, newValue]);
-        form.setFieldTouched(field.name, true);
-        setDisplayTitle(prev => [...prev, title]);
-      } else {
-        form.setFieldValue(
-          field.name,
-          field.value.filter(v => v !== newValue)
-        );
-        form.setFieldTouched(field.name, true);
-        setDisplayTitle(prev => prev.filter(t => t !== title));
-      }
+      form.setFieldValue(
+        field.name,
+        field.value.filter(v => v !== newValue)
+      );
+      form.setFieldTouched(field.name, true);
+      this.setState({ title: this.state.title.filter(t => t !== title) });
     }
   };
 
-  const isSelected = checkValue => {
-    const { value } = field;
-    if (multiple) {
+  isSelected = checkValue => {
+    const { value } = this.props.field;
+
+    if (this.props.multiple) {
       return (
         Array.isArray(value) && value.findIndex(v => v === checkValue) >= 0
       );
@@ -142,14 +73,79 @@ export const Select = ({
     return value === checkValue;
   };
 
-  const findTitle = where => {
-    const r = [];
-    React.Children.forEach(where || props.children, ch => {
+  renderOption = child => {
+    const { value, children, disabled } = child.props;
+
+    if (this.props.multiple) {
+      return (
+        <a disabled={disabled}>
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              onClick={e =>
+                this.handleOptionClick(
+                  e,
+                  value,
+                  Array.isArray(children) ? children.join("") : children
+                )
+              }
+              checked={this.isSelected(value) ? true : false}
+            />
+            <span className="checkbox__input" />
+          </label>
+          <span>{children}</span>
+        </a>
+      );
+    }
+
+    return (
+      <a
+        disabled={disabled}
+        onClick={e =>
+          this.handleOptionClick(
+            e,
+            value,
+            Array.isArray(children) ? children.join("") : children
+          )
+        }
+        className={this.isSelected(value) ? "selected" : ""}
+      >
+        {children}
+      </a>
+    );
+  };
+
+  renderOptgroup = child => {
+    const { label, children } = child.props;
+    return (
+      <div className="dropdown__group">
+        <div className="dropdown__group-header">{label}</div>
+        {this.renderChildren(children)}
+      </div>
+    );
+  };
+
+  renderChildren = children => {
+    return React.Children.map(children, child => {
+      switch (child.type) {
+        case "option":
+          return this.renderOption(child);
+        case "optgroup":
+          return this.renderOptgroup(child);
+        default:
+          return child;
+      }
+    });
+  };
+
+  findTitle = where => {
+    let r = [];
+    React.Children.forEach(where || this.props.children, ch => {
       if (ch.type === "optgroup") {
-        const temp = findTitle(ch.props.children);
+        const temp = this.findTitle(ch.props.children);
         if (temp) r.push(temp);
       }
-      if (isSelected(ch.props.value)) {
+      if (this.isSelected(ch.props.value)) {
         r.push(
           Array.isArray(ch.props.children)
             ? ch.props.children.join("")
@@ -160,7 +156,8 @@ export const Select = ({
     return r.join(", ");
   };
 
-  const getShowValue = () => {
+  getShowValue = () => {
+    const { multiple, prompt, field } = this.props;
     if (
       typeof field.value === "undefined" ||
       field.value === null ||
@@ -170,55 +167,80 @@ export const Select = ({
     }
 
     if (multiple) {
-      return displayTitle.length ? displayTitle.join(", ") : findTitle();
+      return this.state.title.length
+        ? this.state.title.join(", ")
+        : this.findTitle();
     }
-    return displayTitle || findTitle();
+    return this.state.title ? this.state.title : this.findTitle();
   };
 
-  return (
-    <div
-      className={`form-group dropdown${isOpen ? " active" : ""}${
-        inline ? " label--inline" : ""
-      }${up ? " dropdown--up" : ""}${disabled ? " disabled" : ""}${
-        className ? ` ${className}` : ""
-      }${
-        getIn(touched, field.name) && getIn(errors, field.name)
-          ? " form-group--error"
-          : ""
-      }`}
-      ref={node}
-      {...(inline === "both" ? { style: { display: "inline-block" } } : {})}
-    >
-      <div className="form-group__text select" onClick={handleClick}>
-        <input
-          id={id}
-          {...field}
-          value={getShowValue()}
-          disabled={disabled}
+  render() {
+    const {
+      compressed,
+      field,
+      id,
+      form,
+      title,
+      children,
+      inline,
+      up,
+      innerRef,
+      className,
+      disabled,
+      width
+    } = this.props;
+    const { touched, errors } = form;
+
+    return (
+      <div
+        className={
+          `form-group dropdown${compressed ? " input--compressed" : ""}${
+            this.state.isOpen ? " active" : ""
+          }${inline ? " label--inline" : ""}${up ? " dropdown--up" : ""}${
+            disabled ? " disabled" : ""
+          }${className ? ` ${className}` : ""}${
+            getIn(touched, field.name) && getIn(errors, field.name)
+              ? " form-group--error"
+              : ""
+          }`
+          // (asyncValidating ? " form-group--loading" : "")
+        }
+        ref={
+          innerRef
+            ? innerRef
+            : node => {
+                this.node = node;
+              }
+        }
+        {...(inline === "both" ? { style: { display: "inline-block" } } : {})}
+      >
+        <div className="form-group__text select" onClick={this.handleClick}>
+          <input
+            id={id}
+            {...field}
+            value={this.getShowValue()}
+            disabled={disabled}
+            {...(width
+              ? { style: { width: `${width}px`, minWidth: `${width}px` } }
+              : {})}
+          />
+          {title ? <label htmlFor={id}>{title}</label> : null}
+        </div>
+        <div
+          className="dropdown__menu"
           {...(width
             ? { style: { width: `${width}px`, minWidth: `${width}px` } }
             : {})}
-        />
-        {label ? <label htmlFor={id}>{label}</label> : null}
-      </div>
-      <div
-        className="dropdown__menu"
-        {...(width
-          ? { style: { width: `${width}px`, minWidth: `${width}px` } }
-          : {})}
-      >
-        <SelectContext.Provider
-          value={{ multiple, optionClick: handleOptionClick, isSelected }}
         >
-          <SelectChildren>{props.children}</SelectChildren>
-        </SelectContext.Provider>
+          {this.renderChildren(children)}
+        </div>
+        {getIn(touched, field.name) && getIn(errors, field.name) ? (
+          <InputHelpBlock text={getIn(errors, field.name)} />
+        ) : null}
       </div>
-      {getIn(touched, field.name) && getIn(errors, field.name) ? (
-        <InputHelpBlock text={getIn(errors, field.name)} />
-      ) : null}
-    </div>
-  );
-};
+    );
+  }
+}
 
 Select.propTypes = {
   id: PropTypes.string,
