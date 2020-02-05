@@ -13,3 +13,4 @@ export { Footer } from "./components/Footer";
 export { GenericTable } from "./components/Table";
 export { Checkbox } from "./components/Checkbox";
 export { Switch } from "./components/Switch";
+export { Input } from "./components/Input";

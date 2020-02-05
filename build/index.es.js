@@ -1723,8 +1723,13 @@ Switch.propTypes = {
   inline: PropTypes.bool,
   spacing: PropTypes.oneOf([false, "compressed", "loose"]),
   asFormGroup: PropTypes.bool,
-  form: PropTypes.objectOf(PropTypes.object).isRequired,
-  field: PropTypes.objectOf(PropTypes.object).isRequired,
+  form: PropTypes.shape({
+    values: PropTypes.object
+  }).isRequired,
+  field: PropTypes.shape({
+    name: PropTypes.string,
+    onChange: PropTypes.func
+  }).isRequired,
   className: PropTypes.string,
   id: PropTypes.string
 };
@@ -1739,5 +1744,79 @@ Switch.defaultProps = {
   id: null
 };
 
-export { Alert, Button, ButtonGroup, Checkbox, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
+var Input = function Input(_ref) {
+  var className = _ref.className,
+      id = _ref.id,
+      field = _ref.field,
+      label = _ref.label,
+      type = _ref.type,
+      _ref$form = _ref.form,
+      touched = _ref$form.touched,
+      errors = _ref$form.errors,
+      inputRef = _ref.inputRef,
+      inline = _ref.inline,
+      icon = _ref.icon,
+      iconClick = _ref.iconClick,
+      helpBlock = _ref.helpBlock,
+      plain = _ref.plain,
+      rest = _objectWithoutProperties(_ref, ["className", "id", "field", "label", "type", "form", "inputRef", "inline", "icon", "iconClick", "helpBlock", "plain"]);
+
+  return React.createElement("div", {
+    className: "form-group".concat(className ? " ".concat(className) : "").concat(getIn(touched, field.name) && getIn(errors, field.name) ? " form-group--error" : "").concat(inline === "form" || inline === "both" ? " form-group--inline" : "").concat(inline === "label" || inline === "both" ? " label--inline" : "").concat(icon ? " input--icon" : "")
+  }, React.createElement("div", {
+    className: "form-group__text"
+  }, React.createElement("input", _extends({}, field, {
+    id: id || field.name,
+    type: type,
+    ref: inputRef
+  }, rest, {
+    className: plain ? "form-group--plaintext" : ""
+  })), label ? React.createElement("label", {
+    htmlFor: id || field.name
+  }, label) : null, icon ? React.createElement("button", {
+    type: "button",
+    className: "link",
+    tabIndex: "-1",
+    onClick: iconClick
+  }, React.createElement("span", {
+    className: "icon-".concat(icon)
+  })) : null), helpBlock && getIn(touched, field.name) && getIn(errors, field.name) ? React.createElement(InputHelpBlock, {
+    text: getIn(errors, field.name)
+  }) : null);
+};
+
+Input.propTypes = {
+  label: PropTypes.node,
+  type: PropTypes.string,
+  inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({
+    current: PropTypes.instanceOf(Element)
+  })]),
+  inline: PropTypes.oneOf([false, "group", "label", "both"]),
+  helpBlock: PropTypes.bool,
+  form: PropTypes.shape({
+    values: PropTypes.object
+  }).isRequired,
+  field: PropTypes.shape({
+    name: PropTypes.string,
+    onChange: PropTypes.func
+  }).isRequired,
+  iconClick: PropTypes.func,
+  icon: PropTypes.string,
+  id: PropTypes.string,
+  className: PropTypes.string,
+  plain: PropTypes.bool
+};
+Input.defaultProps = {
+  type: "text",
+  inline: false,
+  helpBlock: true,
+  label: null,
+  icon: null,
+  iconClick: null,
+  id: null,
+  className: null,
+  plain: false
+};
+
+export { Alert, Button, ButtonGroup, Checkbox, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Input, Label, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map
