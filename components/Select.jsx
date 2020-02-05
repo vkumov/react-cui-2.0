@@ -6,7 +6,7 @@ import { getIn } from "formik";
 
 import { InputHelpBlock } from "./InputHelpBlock";
 
-class Select extends React.Component {
+export class Select extends React.Component {
   constructor(props) {
     super(props);
 
