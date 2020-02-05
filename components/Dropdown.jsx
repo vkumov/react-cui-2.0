@@ -32,75 +32,77 @@ const DropdownHeader = ({ type, handleClick, className, header }) => {
   }
 };
 
-export const Dropdown = ({
-  openTo,
-  children,
-  type,
-  className,
-  header,
-  divClassName,
-  alwaysClose,
-  stopPropagation,
-  onOpen,
-  onClose,
-  ...props
-}) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const nodeRef = React.useRef(null);
+export class Dropdown extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const handleOutsideClick = e => {
-    // ignore clicks on the component itself
-    if (!alwaysClose && nodeRef.current && nodeRef.current.contains(e.target))
-      return;
+    this.state = {
+      isOpen: false
+    };
+  }
 
-    handleClick(e);
-  };
-
-  const handleClick = e => {
-    console.log(nodeRef, isOpen);
+  handleClick = e => {
+    const { stopPropagation, onOpen, onClose } = this.props;
     if (stopPropagation) {
       e.stopPropagation();
       e.preventDefault();
     }
 
+    const { isOpen } = this.state;
     if (!isOpen) {
       // attach/remove event handler
-      document.addEventListener("click", handleOutsideClick, false);
+      document.addEventListener("click", this.handleOutsideClick, false);
     } else {
-      document.removeEventListener("click", handleOutsideClick, false);
+      document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    setIsOpen(prevState => {
-      const newState = !prevState;
-      if (newState && typeof onOpen === "function") onOpen(e);
-      if (!newState && typeof onClose === "function") onClose(e);
-      return newState;
+    this.setState(prevState => {
+      const newIsOpen = !prevState.isOpen;
+      if (newIsOpen && onOpen) onOpen(e);
+      if (!newIsOpen && onClose) onClose(e);
+      return { newIsOpen };
     });
   };
 
-  React.useEffect(() => {
-    return () =>
-      document.removeEventListener("click", handleOutsideClick, false);
-  }, []);
+  handleOutsideClick = e => {
+    // ignore clicks on the component itself
+    if (!this.props.alwaysClose && this.node.contains(e.target)) return;
 
-  return (
-    <div
-      className={`dropdown${
-        ["left", "center"].includes(openTo) ? ` dropdown--${openTo}` : ""
-      }${isOpen ? " active" : ""}${divClassName ? ` ${divClassName}` : ""}`}
-      ref={nodeRef}
-      {...props}
-    >
-      <DropdownHeader
-        type={type}
-        handleClick={handleClick}
-        className={className}
-        header={header}
-      />
-      <div className="dropdown__menu">{children}</div>
-    </div>
-  );
-};
+    this.handleClick(e);
+  };
+
+  render() {
+    const {
+      openTo,
+      children,
+      tail,
+      type,
+      className,
+      header,
+      divClassName
+    } = this.props;
+    const { isOpen } = this.state;
+
+    return (
+      <div
+        className={`dropdown${tail ? " dropdown--tail" : ""}${
+          ["left", "center"].includes(openTo) ? ` dropdown--${openTo}` : ""
+        }${isOpen ? " active" : ""}${divClassName ? ` ${divClassName}` : ""}`}
+        ref={node => {
+          this.node = node;
+        }}
+      >
+        <DropdownHeader
+          type={type}
+          handleClick={this.handleClick}
+          className={className}
+          header={header}
+        />
+        <div className="dropdown__menu">{children}</div>
+      </div>
+    );
+  }
+}
 
 Dropdown.propTypes = {
   type: PropTypes.oneOf(["icon", "link", "div", "button", "custom"]),

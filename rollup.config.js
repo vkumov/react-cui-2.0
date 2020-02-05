@@ -30,7 +30,8 @@ export default {
   plugins: [
     external(),
     babel({
-      exclude: "node_modules/**"
+      exclude: "node_modules/**",
+      plugins: ["@babel/plugin-proposal-class-properties"]
     }),
     resolve({ extensions: [".mjs", ".js", ".jsx", ".json"] }),
     // embedCSS(),
