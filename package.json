@@ -2,9 +2,9 @@
   "name": "react-cui-2.0",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/bundle.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c"
   },
   "author": "Vitaly Kumov",
   "license": "ISC",
@@ -23,7 +23,10 @@
     "@babel/plugin-external-helpers": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
+    "@babel/preset-stage-0": "^7.8.3",
     "@babel/preset-stage-1": "^7.8.3",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.10.0",
@@ -34,6 +37,9 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "rollup": "^1.31.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-uglify": "^6.0.4"
   }
 }
