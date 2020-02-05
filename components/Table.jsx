@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { ConditionalWrapper } from "./ConditionalWrapper";
 
-const Wrapper = <div class="responsive-table"></div>;
+const Wrapper = <div className="responsive-table" />;
 
 export const GenericTable = ({
   outerWrap,
@@ -20,18 +20,13 @@ export const GenericTable = ({
 }) => (
   <ConditionalWrapper condition={outerWrap} wrapper={Wrapper}>
     <table
-      className={
-        "table" +
-        (lined ? " table--lined" : "") +
-        (bordered ? " table--bordered" : "") +
-        (striped ? " table--striped" : "") +
-        (selectable ? " table--selectable" : "") +
-        (fixed ? " table--fixed" : "") +
-        (wrapped ? " table--wrapped" : "") +
-        (compressed ? " table--compressed" : "") +
-        (loose ? " table--loose" : "") +
-        (className ? ` ${className}` : "")
-      }
+      className={`table${lined ? " table--lined" : ""}${
+        bordered ? " table--bordered" : ""
+      }${striped ? " table--striped" : ""}${
+        selectable ? " table--selectable" : ""
+      }${fixed ? " table--fixed" : ""}${wrapped ? " table--wrapped" : ""}${
+        compressed ? " table--compressed" : ""
+      }${loose ? " table--loose" : ""}${className ? ` ${className}` : ""}`}
       {...props}
     />
   </ConditionalWrapper>
@@ -50,5 +45,13 @@ GenericTable.propTypes = {
 };
 
 GenericTable.defaultProps = {
-  outerWrap: true
+  outerWrap: true,
+  lined: false,
+  bordered: false,
+  striped: false,
+  selectable: false,
+  fixed: false,
+  wrapped: false,
+  compressed: false,
+  loose: false
 };

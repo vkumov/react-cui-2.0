@@ -1368,7 +1368,7 @@ ToastContainer.propTypes = {
   autoClose: PropTypes.number,
   draggable: PropTypes.bool,
   hideProgressBar: PropTypes.bool,
-  containerId: PropTypes.oneOf([PropTypes.string, PropTypes.number])
+  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 ToastContainer.defaultProps = {
   position: "bottom-right",
@@ -1494,7 +1494,7 @@ ConditionalWrapper.propTypes = {
 };
 
 var Wrapper = React.createElement("div", {
-  "class": "responsive-table"
+  className: "responsive-table"
 });
 var GenericTable = function GenericTable(_ref) {
   var outerWrap = _ref.outerWrap,
@@ -1513,7 +1513,7 @@ var GenericTable = function GenericTable(_ref) {
     condition: outerWrap,
     wrapper: Wrapper
   }, React.createElement("table", _extends({
-    className: "table" + (lined ? " table--lined" : "") + (bordered ? " table--bordered" : "") + (striped ? " table--striped" : "") + (selectable ? " table--selectable" : "") + (fixed ? " table--fixed" : "") + (wrapped ? " table--wrapped" : "") + (compressed ? " table--compressed" : "") + (loose ? " table--loose" : "") + (className ? " ".concat(className) : "")
+    className: "table".concat(lined ? " table--lined" : "").concat(bordered ? " table--bordered" : "").concat(striped ? " table--striped" : "").concat(selectable ? " table--selectable" : "").concat(fixed ? " table--fixed" : "").concat(wrapped ? " table--wrapped" : "").concat(compressed ? " table--compressed" : "").concat(loose ? " table--loose" : "").concat(className ? " ".concat(className) : "")
   }, props)));
 };
 GenericTable.propTypes = {
@@ -1528,7 +1528,15 @@ GenericTable.propTypes = {
   loose: PropTypes.bool
 };
 GenericTable.defaultProps = {
-  outerWrap: true
+  outerWrap: true,
+  lined: false,
+  bordered: false,
+  striped: false,
+  selectable: false,
+  fixed: false,
+  wrapped: false,
+  compressed: false,
+  loose: false
 };
 
 export { Alert, Button, ButtonGroup, Dots, Dropdown, DropdownDivider, DropdownElement, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, ToastContainer, toast };
