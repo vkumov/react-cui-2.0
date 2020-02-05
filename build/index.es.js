@@ -6,6 +6,60 @@ import { connect, getIn } from 'formik';
 import uuid from 'uuid/v4';
 import { cssTransition, toast as toast$1, ToastContainer as ToastContainer$1 } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import Transition from 'react-transition-group/Transition';
+import ReactModal from 'react-modal';
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -1851,5 +1905,169 @@ Input.defaultProps = {
   plain: false
 };
 
-export { Alert, Button, ButtonGroup, Checkbox, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Input, Label, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
+var ModalHeader = function ModalHeader(_ref) {
+  var className = _ref.className,
+      children = _ref.children,
+      props = _objectWithoutProperties(_ref, ["className", "children"]);
+
+  return React.createElement("div", _extends({
+    className: "modal__header".concat(className ? " ".concat(className) : "")
+  }, props), children);
+};
+var ModalBody = function ModalBody(_ref2) {
+  var className = _ref2.className,
+      children = _ref2.children,
+      props = _objectWithoutProperties(_ref2, ["className", "children"]);
+
+  return React.createElement("div", _extends({
+    className: "modal__body".concat(className ? " ".concat(className) : "")
+  }, props), children);
+};
+var ModalFooter = function ModalFooter(_ref3) {
+  var className = _ref3.className,
+      children = _ref3.children,
+      props = _objectWithoutProperties(_ref3, ["className", "children"]);
+
+  return React.createElement("div", _extends({
+    className: "modal__footer".concat(className ? " ".concat(className) : "")
+  }, props), children);
+};
+var Modal = function Modal(_ref4) {
+  var size = _ref4.size,
+      closeIcon = _ref4.closeIcon,
+      closeHandle = _ref4.closeHandle,
+      title = _ref4.title,
+      left = _ref4.left,
+      children = _ref4.children,
+      autoClose = _ref4.autoClose,
+      isOpen = _ref4.isOpen,
+      animationDuration = _ref4.animationDuration,
+      props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration"]);
+
+  props.autoClose = autoClose;
+  props.onRequestClose = autoClose && closeHandle ? closeHandle : undefined;
+  return React.createElement(Transition, {
+    "in": isOpen,
+    mountOnEnter: true,
+    unmountOnExit: true,
+    timeout: animationDuration
+  }, function (state) {
+    return React.createElement(ReactModal, _extends({}, props, {
+      overlayClassName: "modal-backdrop",
+      isOpen: ["entering", "entered"].includes(state),
+      className: "modal".concat(size ? " modal--".concat(size) : "").concat(left ? " modal--left" : ""),
+      closeTimeoutMS: _typeof(animationDuration) === "object" ? animationDuration.exiting : animationDuration
+    }), React.createElement("div", {
+      className: "modal__dialog",
+      onClick: function onClick(e) {
+        return e.stopPropagation();
+      }
+    }, React.createElement("div", {
+      className: "modal__content"
+    }, closeIcon && closeHandle ? React.createElement("a", {
+      className: "modal__close",
+      onClick: closeHandle
+    }, React.createElement("span", {
+      className: "icon-close"
+    })) : null, title ? React.createElement(ModalHeader, null, React.createElement("h1", {
+      className: "modal__title"
+    }, title)) : null, children)));
+  });
+};
+Modal.propTypes = {
+  size: PropTypes.oneOf([false, "small", "default", "large", "full", "fluid"]),
+  closeIcon: PropTypes.bool,
+  closeHandle: PropTypes.func,
+  title: PropTypes.string,
+  isOpen: PropTypes.bool,
+  autoClose: PropTypes.bool,
+  left: PropTypes.bool,
+  animationDuration: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({
+    entering: PropTypes.number,
+    exiting: PropTypes.number
+  })]),
+  children: PropTypes.node.isRequired
+};
+Modal.defaultProps = {
+  size: false,
+  autoClose: true,
+  animationDuration: 500,
+  closeIcon: false,
+  title: null,
+  isOpen: false,
+  closeHandle: null,
+  left: false
+};
+var ConfirmationModal = function ConfirmationModal(_ref5) {
+  var isOpen = _ref5.isOpen,
+      confirmHandle = _ref5.confirmHandle,
+      closeHandle = _ref5.closeHandle,
+      prompt = _ref5.prompt,
+      confirmType = _ref5.confirmType,
+      confirmText = _ref5.confirmText,
+      autoClose = _ref5.autoClose;
+
+  var _React$useState = React.useState(false),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      doing = _React$useState2[0],
+      setDoing = _React$useState2[1];
+
+  return React.createElement(Modal, {
+    isOpen: isOpen,
+    closeIcon: true,
+    closeHandle: closeHandle,
+    autoClose: autoClose,
+    title: "Confirmation"
+  }, React.createElement(ModalBody, null, React.createElement("p", null, prompt)), React.createElement(ModalFooter, null, React.createElement(Button.White, {
+    onClick: closeHandle
+  }, "Close"), React.createElement(Button, {
+    color: confirmType,
+    disabled: doing,
+    onClick:
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee() {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              setDoing(true);
+              _context.next = 3;
+              return confirmHandle();
+
+            case 3:
+              if (!_context.sent) {
+                _context.next = 5;
+                break;
+              }
+
+              setDoing(false);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))
+  }, confirmText || "Confirm", doing ? React.createElement("span", {
+    className: "icon-animation spin qtr-margin-left"
+  }) : null)));
+};
+ConfirmationModal.propTypes = {
+  isOpen: PropTypes.bool,
+  confirmHandle: PropTypes.func.isRequired,
+  closeHandle: PropTypes.func.isRequired,
+  prompt: PropTypes.any.isRequired,
+  confirmType: PropTypes.string,
+  confirmText: PropTypes.string,
+  autoClose: PropTypes.bool
+};
+ConfirmationModal.defaultProps = {
+  confirmType: "primary",
+  autoClose: true
+};
+
+export { Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map

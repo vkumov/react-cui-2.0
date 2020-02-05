@@ -14,3 +14,10 @@ export { GenericTable } from "./components/Table";
 export { Checkbox } from "./components/Checkbox";
 export { Switch } from "./components/Switch";
 export { Input } from "./components/Input";
+export {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ConfirmationModal
+} from "./components/Modal";
