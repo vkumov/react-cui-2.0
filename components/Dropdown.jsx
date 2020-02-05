@@ -75,7 +75,6 @@ export class Dropdown extends React.Component {
     const {
       openTo,
       children,
-      tail,
       type,
       className,
       header,
@@ -85,7 +84,7 @@ export class Dropdown extends React.Component {
 
     return (
       <div
-        className={`dropdown${tail ? " dropdown--tail" : ""}${
+        className={`dropdown${
           ["left", "center"].includes(openTo) ? ` dropdown--${openTo}` : ""
         }${isOpen ? " active" : ""}${divClassName ? ` ${divClassName}` : ""}`}
         ref={node => {
@@ -113,7 +112,8 @@ Dropdown.propTypes = {
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   stopPropagation: PropTypes.bool,
-  divClassName: PropTypes.string
+  divClassName: PropTypes.string,
+  children: PropTypes.node.isRequired
 };
 
 Dropdown.defaultProps = {
@@ -128,10 +128,27 @@ Dropdown.defaultProps = {
   divClassName: null
 };
 
-export const DropdownElement = ({ selected, children, ...props }) => (
+Dropdown.Element = ({ selected, children, ...props }) => (
   <a className={selected ? "selected" : ""} {...props}>
     {children}
   </a>
 );
 
-export const DropdownDivider = () => <div className="divider" />;
+Dropdown.Element.propTypes = {
+  selected: PropTypes.bool,
+  children: PropTypes.node.isRequired
+};
+
+Dropdown.Element.defaultProps = {
+  selected: false
+};
+
+Dropdown.Divider = () => <div className="divider" />;
+
+Dropdown.GroupHeader = ({ header }) => (
+  <div className="dropdown__group-header">{header}</div>
+);
+
+Dropdown.GroupHeader.propTypes = {
+  header: PropTypes.node.isRequired
+};

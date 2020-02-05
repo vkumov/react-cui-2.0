@@ -471,14 +471,13 @@ function (_React$Component) {
       var _this$props2 = this.props,
           openTo = _this$props2.openTo,
           children = _this$props2.children,
-          tail = _this$props2.tail,
           type = _this$props2.type,
           className = _this$props2.className,
           header = _this$props2.header,
           divClassName = _this$props2.divClassName;
       var isOpen = this.state.isOpen;
       return React.createElement("div", {
-        className: "dropdown".concat(tail ? " dropdown--tail" : "").concat(["left", "center"].includes(openTo) ? " dropdown--".concat(openTo) : "").concat(isOpen ? " active" : "").concat(divClassName ? " ".concat(divClassName) : ""),
+        className: "dropdown".concat(["left", "center"].includes(openTo) ? " dropdown--".concat(openTo) : "").concat(isOpen ? " active" : "").concat(divClassName ? " ".concat(divClassName) : ""),
         ref: function ref(node) {
           _this2.node = node;
         }
@@ -504,7 +503,8 @@ Dropdown.propTypes = {
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   stopPropagation: PropTypes.bool,
-  divClassName: PropTypes.string
+  divClassName: PropTypes.string,
+  children: PropTypes.node.isRequired
 };
 Dropdown.defaultProps = {
   type: "button",
@@ -517,7 +517,8 @@ Dropdown.defaultProps = {
   stopPropagation: false,
   divClassName: null
 };
-var DropdownElement = function DropdownElement(_ref2) {
+
+Dropdown.Element = function (_ref2) {
   var selected = _ref2.selected,
       children = _ref2.children,
       props = _objectWithoutProperties(_ref2, ["selected", "children"]);
@@ -526,10 +527,30 @@ var DropdownElement = function DropdownElement(_ref2) {
     className: selected ? "selected" : ""
   }, props), children);
 };
-var DropdownDivider = function DropdownDivider() {
+
+Dropdown.Element.propTypes = {
+  selected: PropTypes.bool,
+  children: PropTypes.node.isRequired
+};
+Dropdown.Element.defaultProps = {
+  selected: false
+};
+
+Dropdown.Divider = function () {
   return React.createElement("div", {
     className: "divider"
   });
+};
+
+Dropdown.GroupHeader = function (_ref3) {
+  var header = _ref3.header;
+  return React.createElement("div", {
+    className: "dropdown__group-header"
+  }, header);
+};
+
+Dropdown.GroupHeader.propTypes = {
+  header: PropTypes.node.isRequired
 };
 
 var FileCard = function FileCard(_ref) {
@@ -1603,5 +1624,5 @@ GenericTable.defaultProps = {
   loose: false
 };
 
-export { Alert, Button, ButtonGroup, Dots, Dropdown, DropdownDivider, DropdownElement, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, ToastContainer, toast };
+export { Alert, Button, ButtonGroup, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map
