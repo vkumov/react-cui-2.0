@@ -1678,5 +1678,61 @@ Checkbox.defaultProps = {
   children: null
 };
 
-export { Alert, Button, ButtonGroup, Checkbox, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, ToastContainer, toast };
+var Switch = function Switch(_ref) {
+  var field = _ref.field,
+      left = _ref.left,
+      right = _ref.right,
+      disabled = _ref.disabled,
+      inline = _ref.inline,
+      className = _ref.className,
+      asFormGroup = _ref.asFormGroup,
+      form = _ref.form,
+      spacing = _ref.spacing,
+      id = _ref.id;
+  return React.createElement(ConditionalWrapper, {
+    condition: asFormGroup,
+    wrapper: React.createElement("div", {
+      className: "form-group".concat(inline ? " form-group--inline" : "").concat(className ? " ".concat(className) : "").concat(spacing ? " form-group--".concat(spacing) : "")
+    })
+  }, React.createElement("label", {
+    className: "switch".concat(disabled ? " disabled" : ""),
+    htmlFor: getIn(form.values, field.name, id)
+  }, React.createElement("input", _extends({
+    type: "checkbox"
+  }, field, {
+    id: getIn(form.values, field.name, id),
+    checked: getIn(form.values, field.name, false)
+  })), left ? React.createElement("span", {
+    className: "switch__label"
+  }, left) : null, React.createElement("span", {
+    className: "switch__input"
+  }), right ? React.createElement("span", {
+    className: "switch__label"
+  }, right) : null));
+};
+
+Switch.propTypes = {
+  left: PropTypes.string,
+  right: PropTypes.string,
+  disabled: PropTypes.bool,
+  inline: PropTypes.bool,
+  spacing: PropTypes.oneOf([false, "compressed", "loose"]),
+  asFormGroup: PropTypes.bool,
+  form: PropTypes.objectOf(PropTypes.object).isRequired,
+  field: PropTypes.objectOf(PropTypes.object).isRequired,
+  className: PropTypes.string,
+  id: PropTypes.string
+};
+Switch.defaultProps = {
+  left: null,
+  right: null,
+  disabled: false,
+  inline: false,
+  spacing: false,
+  asFormGroup: true,
+  className: null,
+  id: null
+};
+
+export { Alert, Button, ButtonGroup, Checkbox, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map

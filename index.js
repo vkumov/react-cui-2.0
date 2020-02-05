@@ -12,3 +12,4 @@ export { Header, HeaderPanel, HeaderTitle } from "./components/Header";
 export { Footer } from "./components/Footer";
 export { GenericTable } from "./components/Table";
 export { Checkbox } from "./components/Checkbox";
+export { Switch } from "./components/Switch";
