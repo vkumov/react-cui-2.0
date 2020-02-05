@@ -1,9 +1,9 @@
 import babel from "rollup-plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import embedCSS from "rollup-plugin-embed-css";
+// import embedCSS from "rollup-plugin-embed-css";
 import external from "rollup-plugin-peer-deps-external";
-import { uglify } from "rollup-plugin-uglify";
+// import { uglify } from "rollup-plugin-uglify";
 
 import * as react from "react";
 import * as reactDom from "react-dom";
@@ -47,5 +47,5 @@ export default {
     // embedCSS()
     // uglify()
   ],
-  external: ["React", "ReactDOM"]
+  external: ["React", "ReactDOM", "PropTypes"]
 };
