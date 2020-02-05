@@ -1,7 +1,12 @@
 {
     "presets": [
       ["@babel/env", {
-        "modules": false
+        "modules": false,
+        "targets": {
+          "node": "current",
+          "chrome": "58",
+          "firefox": "53"
+      }
       }],
       "@babel/react"
     ]
