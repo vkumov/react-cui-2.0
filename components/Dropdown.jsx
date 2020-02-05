@@ -60,7 +60,7 @@ export class Dropdown extends React.Component {
       const newIsOpen = !prevState.isOpen;
       if (newIsOpen && onOpen) onOpen(e);
       if (!newIsOpen && onClose) onClose(e);
-      return { newIsOpen };
+      return { isOpen: newIsOpen };
     });
   };
 

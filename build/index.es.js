@@ -445,7 +445,7 @@ function (_React$Component) {
         if (newIsOpen && onOpen) onOpen(e);
         if (!newIsOpen && onClose) onClose(e);
         return {
-          newIsOpen: newIsOpen
+          isOpen: newIsOpen
         };
       });
     });
