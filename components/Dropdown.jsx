@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { ConditionalWrapper } from "./ConditionalWrapper";
+
 const DropdownHeader = ({ type, handleClick, className, header }) => {
   switch (type) {
     case "icon":
@@ -66,7 +68,8 @@ export class Dropdown extends React.Component {
 
   handleOutsideClick = e => {
     // ignore clicks on the component itself
-    if (!this.props.alwaysClose && this.node.contains(e.target)) return;
+    const { alwaysClose } = this.props;
+    if (!alwaysClose && this.node.contains(e.target)) return;
 
     this.handleClick(e);
   };
@@ -128,19 +131,27 @@ Dropdown.defaultProps = {
   divClassName: null
 };
 
-Dropdown.Element = ({ selected, children, ...props }) => (
+Dropdown.Element = ({ selected, icon, children, ...props }) => (
   <a className={selected ? "selected" : ""} {...props}>
-    {children}
+    {icon ? <span className={`icon-${icon}`} /> : null}
+    <ConditionalWrapper
+      condition={Boolean(icon)}
+      wrapper={<span className="qtr-margin-left" />}
+    >
+      {children}
+    </ConditionalWrapper>
   </a>
 );
 
 Dropdown.Element.propTypes = {
   selected: PropTypes.bool,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  icon: PropTypes.string
 };
 
 Dropdown.Element.defaultProps = {
-  selected: false
+  selected: false,
+  icon: null
 };
 
 Dropdown.Divider = () => <div className="divider" />;

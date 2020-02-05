@@ -369,6 +369,17 @@ Alert.WarningAlt = function (_ref9) {
   }, props));
 };
 
+var ConditionalWrapper = function ConditionalWrapper(_ref) {
+  var condition = _ref.condition,
+      wrapper = _ref.wrapper,
+      children = _ref.children;
+  return condition ? React.cloneElement(wrapper, null, children) : children;
+};
+ConditionalWrapper.propTypes = {
+  condition: PropTypes.bool.isRequired,
+  wrapper: PropTypes.element.isRequired
+};
+
 var DropdownHeader = function DropdownHeader(_ref) {
   var type = _ref.type,
       handleClick = _ref.handleClick,
@@ -452,7 +463,8 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "handleOutsideClick", function (e) {
       // ignore clicks on the component itself
-      if (!_this.props.alwaysClose && _this.node.contains(e.target)) return;
+      var alwaysClose = _this.props.alwaysClose;
+      if (!alwaysClose && _this.node.contains(e.target)) return;
 
       _this.handleClick(e);
     });
@@ -520,20 +532,30 @@ Dropdown.defaultProps = {
 
 Dropdown.Element = function (_ref2) {
   var selected = _ref2.selected,
+      icon = _ref2.icon,
       children = _ref2.children,
-      props = _objectWithoutProperties(_ref2, ["selected", "children"]);
+      props = _objectWithoutProperties(_ref2, ["selected", "icon", "children"]);
 
   return React.createElement("a", _extends({
     className: selected ? "selected" : ""
-  }, props), children);
+  }, props), icon ? React.createElement("span", {
+    className: "icon-".concat(icon)
+  }) : null, React.createElement(ConditionalWrapper, {
+    condition: Boolean(icon),
+    wrapper: React.createElement("span", {
+      className: "qtr-margin-left"
+    })
+  }, children));
 };
 
 Dropdown.Element.propTypes = {
   selected: PropTypes.bool,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  icon: PropTypes.string
 };
 Dropdown.Element.defaultProps = {
-  selected: false
+  selected: false,
+  icon: null
 };
 
 Dropdown.Divider = function () {
@@ -1565,17 +1587,6 @@ var Footer = function Footer() {
     target: "_blank",
     rel: "noopener noreferrer"
   }, "Trademarks")))));
-};
-
-var ConditionalWrapper = function ConditionalWrapper(_ref) {
-  var condition = _ref.condition,
-      wrapper = _ref.wrapper,
-      children = _ref.children;
-  return condition ? React.cloneElement(wrapper, null, children) : children;
-};
-ConditionalWrapper.propTypes = {
-  condition: PropTypes.bool.isRequired,
-  wrapper: PropTypes.element.isRequired
 };
 
 var Wrapper = React.createElement("div", {
