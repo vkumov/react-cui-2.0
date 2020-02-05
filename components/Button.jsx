@@ -11,15 +11,11 @@ export const Button = ({
   ...props
 }) => (
   <button
-    className={
-      "btn" +
-      (size !== "default" ? ` btn-${size}` : "") +
-      ` btn--${color}` +
-      (wide ? " btn--wide" : "") +
-      (justified ? " btn--justified" : "") +
-      (circle ? " btn--circle" : "") +
-      (className ? ` ${className}` : "")
-    }
+    className={`btn${size !== "default" ? ` btn--${size}` : ""} btn--${color}${
+      wide ? " btn--wide" : ""
+    }${justified ? " btn--justified" : ""}${circle ? " btn--circle" : ""}${
+      className ? ` ${className}` : ""
+    }`}
     {...props}
   />
 );
@@ -50,18 +46,19 @@ Button.propTypes = {
 
 Button.defaultProps = {
   size: "default",
-  color: "primary"
+  color: "primary",
+  wide: false,
+  justified: false,
+  circle: false
 };
 
 export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
   <div
-    className={
-      "btn-group" +
-      (square ? " btn-group--square" : "") +
-      (withDivider ? " btn-group--divider" : "")
-    }
+    className={`btn-group${square ? " btn-group--square" : ""}${
+      withDivider ? " btn-group--divider" : ""
+    }`}
     {...props}
-  ></div>
+  />
 );
 
 ButtonGroup.propTypes = {

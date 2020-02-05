@@ -899,7 +899,7 @@ var Button = function Button(_ref) {
       props = _objectWithoutProperties(_ref, ["size", "color", "wide", "justified", "circle", "className"]);
 
   return React.createElement("button", _extends({
-    className: "btn" + (size !== "default" ? " btn-".concat(size) : "") + " btn--".concat(color) + (wide ? " btn--wide" : "") + (justified ? " btn--justified" : "") + (circle ? " btn--circle" : "") + (className ? " ".concat(className) : "")
+    className: "btn".concat(size !== "default" ? " btn--".concat(size) : "", " btn--").concat(color).concat(wide ? " btn--wide" : "").concat(justified ? " btn--justified" : "").concat(circle ? " btn--circle" : "").concat(className ? " ".concat(className) : "")
   }, props));
 };
 
@@ -966,7 +966,10 @@ Button.propTypes = {
 };
 Button.defaultProps = {
   size: "default",
-  color: "primary"
+  color: "primary",
+  wide: false,
+  justified: false,
+  circle: false
 };
 var ButtonGroup = function ButtonGroup(_ref8) {
   var square = _ref8.square,
@@ -975,7 +978,7 @@ var ButtonGroup = function ButtonGroup(_ref8) {
       props = _objectWithoutProperties(_ref8, ["square", "withDivider", "className"]);
 
   return React.createElement("div", _extends({
-    className: "btn-group" + (square ? " btn-group--square" : "") + (withDivider ? " btn-group--divider" : "")
+    className: "btn-group".concat(square ? " btn-group--square" : "").concat(withDivider ? " btn-group--divider" : "")
   }, props));
 };
 ButtonGroup.propTypes = {
