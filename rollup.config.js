@@ -3,6 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 // import embedCSS from "rollup-plugin-embed-css";
 import external from "rollup-plugin-peer-deps-external";
+import postcss from "rollup-plugin-postcss";
 // import { uglify } from "rollup-plugin-uglify";
 
 import * as react from "react";
@@ -32,6 +33,7 @@ export default {
       exclude: "node_modules/**"
     }),
     resolve({ extensions: [".mjs", ".js", ".jsx", ".json"] }),
+    // embedCSS(),
     commonjs({
       namedExports: {
         react: Object.keys(react),
@@ -43,6 +45,9 @@ export default {
           "LowPriority"
         ]
       }
+    }),
+    postcss({
+      plugins: []
     })
     // embedCSS()
     // uglify()

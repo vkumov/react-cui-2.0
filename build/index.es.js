@@ -1211,6 +1211,36 @@ Panel.defaultProps = {
   well: false
 };
 
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css = ".cui .Toastify__toast {\n    min-height: unset !important;\n    padding: unset;\n    overflow: unset;\n    font-family: unset;\n    box-shadow: unset;\n}";
+styleInject(css);
+
 var copyStringToClipboard = function copyStringToClipboard(str) {
   // Create new element
   var el = document.createElement("textarea"); // Set value (string to be copied)

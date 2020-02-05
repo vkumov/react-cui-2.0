@@ -6,6 +6,7 @@ import {
 } from "react-toastify";
 import PropTypes from "prop-types";
 import "react-toastify/dist/ReactToastify.min.css";
+import "../css/toast.css";
 
 const copyStringToClipboard = str => {
   // Create new element
