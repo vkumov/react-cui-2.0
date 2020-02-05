@@ -1,0 +1,17 @@
+
+.cui .modal-backdrop {
+	background: rgba(196, 199, 204, .65);
+	pointer-events: all;
+	opacity: 1;
+	transition: opacity .15s linear;
+	outline: none;
+}
+
+.cui .ReactModal__Overlay--before-close .modal__dialog {
+    -webkit-animation: blowdown 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards, fade-out 0.25s 1 linear !important;
+            animation: blowdown 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards, fade-out 0.25s 1 linear !important;
+}
+
+.cui .ReactModal__Overlay--before-close {
+    opacity: 0 !important;
+}

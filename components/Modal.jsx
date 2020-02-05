@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import PropTypes from "prop-types";
 
 import { Button } from "./Button";
+import "../css/modal.css";
 
 export const ModalHeader = ({ className, children, ...props }) => (
   <div
@@ -107,7 +108,7 @@ Modal.propTypes = {
 Modal.defaultProps = {
   size: false,
   autoClose: true,
-  animationDuration: 500,
+  animationDuration: 250,
   closeIcon: false,
   title: null,
   isOpen: false,

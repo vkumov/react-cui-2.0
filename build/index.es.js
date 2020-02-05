@@ -1604,6 +1604,9 @@ Input.defaultProps = {
   plain: false
 };
 
+var css$1 = ".cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}";
+styleInject(css$1);
+
 const ModalHeader = (_ref) => {
   let {
     className,
@@ -1694,7 +1697,7 @@ Modal.propTypes = {
 Modal.defaultProps = {
   size: false,
   autoClose: true,
-  animationDuration: 500,
+  animationDuration: 250,
   closeIcon: false,
   title: null,
   isOpen: false,
