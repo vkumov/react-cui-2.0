@@ -406,28 +406,22 @@ var Dropdown = function Dropdown(_ref2) {
       onClose = _ref2.onClose,
       props = _objectWithoutProperties(_ref2, ["openTo", "children", "type", "className", "header", "divClassName", "alwaysClose", "stopPropagation", "onOpen", "onClose"]);
 
-  var handleOutsideClick;
-  var handleClick;
-
   var _React$useState = React.useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       isOpen = _React$useState2[0],
       setIsOpen = _React$useState2[1];
 
   var nodeRef = React.useRef(null);
-  React.useEffect(function () {
-    return function () {
-      return document.removeEventListener("click", handleOutsideClick, false);
-    };
-  }, []);
 
-  handleOutsideClick = function handleOutsideClick(e) {
+  var handleOutsideClick = function handleOutsideClick(e) {
     // ignore clicks on the component itself
     if (!alwaysClose && nodeRef.current && nodeRef.current.contains(e.target)) return;
     handleClick(e);
   };
 
-  handleClick = function handleClick(e) {
+  var handleClick = function handleClick(e) {
+    console.log(nodeRef, isOpen);
+
     if (stopPropagation) {
       e.stopPropagation();
       e.preventDefault();
@@ -448,6 +442,11 @@ var Dropdown = function Dropdown(_ref2) {
     });
   };
 
+  React.useEffect(function () {
+    return function () {
+      return document.removeEventListener("click", handleOutsideClick, false);
+    };
+  }, []);
   return React.createElement("div", _extends({
     className: "dropdown".concat(["left", "center"].includes(openTo) ? " dropdown--".concat(openTo) : "").concat(isOpen ? " active" : "").concat(divClassName ? " ".concat(divClassName) : ""),
     ref: nodeRef

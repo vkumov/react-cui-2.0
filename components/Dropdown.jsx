@@ -45,17 +45,10 @@ export const Dropdown = ({
   onClose,
   ...props
 }) => {
-  let handleOutsideClick;
-  let handleClick;
-
   const [isOpen, setIsOpen] = React.useState(false);
   const nodeRef = React.useRef(null);
-  React.useEffect(() => {
-    return () =>
-      document.removeEventListener("click", handleOutsideClick, false);
-  }, []);
 
-  handleOutsideClick = e => {
+  const handleOutsideClick = e => {
     // ignore clicks on the component itself
     if (!alwaysClose && nodeRef.current && nodeRef.current.contains(e.target))
       return;
@@ -63,7 +56,8 @@ export const Dropdown = ({
     handleClick(e);
   };
 
-  handleClick = e => {
+  const handleClick = e => {
+    console.log(nodeRef, isOpen);
     if (stopPropagation) {
       e.stopPropagation();
       e.preventDefault();
@@ -83,6 +77,11 @@ export const Dropdown = ({
       return newState;
     });
   };
+
+  React.useEffect(() => {
+    return () =>
+      document.removeEventListener("click", handleOutsideClick, false);
+  }, []);
 
   return (
     <div
