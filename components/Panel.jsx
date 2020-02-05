@@ -11,20 +11,17 @@ export const Panel = ({
   ...props
 }) => (
   <div
-    className={
-      "panel" +
-      (color !== "plain" ? ` panel--${color}` : "") +
-      (padding !== "default" ? ` panel--${padding}` : "") +
-      (bordered
+    className={`panel${color !== "plain" ? ` panel--${color}` : ""}${
+      padding !== "default" ? ` panel--${padding}` : ""
+    }${
+      bordered
         ? typeof bordered === "string"
           ? ` panel--bordered-${bordered}`
           : Array.isArray(bordered)
           ? bordered.map(b => ` panel--bordered-${b}`).join("")
           : " panel--bordered"
-        : "") +
-      (raised ? " panel--raised" : "") +
-      (well ? " panel--well" : "")
-    }
+        : ""
+    }${raised ? " panel--raised" : ""}${well ? " panel--well" : ""}`}
     {...props}
   />
 );

@@ -26,8 +26,13 @@ const Checkbox = ({ field, form, inline, asFormGroup, children }) => (
 Checkbox.propTypes = {
   inline: PropTypes.bool,
   asFormGroup: PropTypes.bool,
-  form: PropTypes.objectOf(PropTypes.object).isRequired,
-  field: PropTypes.objectOf(PropTypes.object).isRequired,
+  form: PropTypes.shape({
+    values: PropTypes.object
+  }).isRequired,
+  field: PropTypes.shape({
+    name: PropTypes.string,
+    onChange: PropTypes.func
+  }).isRequired,
   children: PropTypes.node
 };
 
