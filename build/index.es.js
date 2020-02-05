@@ -1,17 +1,11 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var React = _interopDefault(require('react'));
-var PropTypes = _interopDefault(require('prop-types'));
-var ReactDropzone = _interopDefault(require('react-dropzone'));
-var bytes = _interopDefault(require('bytes'));
-var formik = require('formik');
-var uuid = _interopDefault(require('uuid/v4'));
-var reactToastify = require('react-toastify');
-require('react-toastify/dist/ReactToastify.min.css');
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactDropzone from 'react-dropzone';
+import bytes from 'bytes';
+import { connect, getIn } from 'formik';
+import uuid from 'uuid/v4';
+import { cssTransition, toast as toast$1, ToastContainer as ToastContainer$1 } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -746,7 +740,7 @@ Dropzone.propTypes = {
   loose: PropTypes.bool,
   compressed: PropTypes.bool
 };
-var connected = formik.connect(Dropzone);
+var connected = connect(Dropzone);
 
 var Spinner = function Spinner(_ref) {
   var size = _ref.size,
@@ -1133,7 +1127,7 @@ var Select = function Select(_ref3) {
   };
 
   return React.createElement("div", _extends({
-    className: "form-group dropdown" + (isOpen ? " active" : "") + (inline ? " label--inline" : "") + (up ? " dropdown--up" : "") + (disabled ? " disabled" : "") + (className ? " ".concat(className) : "") + (formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? " form-group--error" : ""),
+    className: "form-group dropdown" + (isOpen ? " active" : "") + (inline ? " label--inline" : "") + (up ? " dropdown--up" : "") + (disabled ? " disabled" : "") + (className ? " ".concat(className) : "") + (getIn(touched, field.name) && getIn(errors, field.name) ? " form-group--error" : ""),
     ref: node
   }, inline === "both" ? {
     style: {
@@ -1167,8 +1161,8 @@ var Select = function Select(_ref3) {
       optionClick: handleOptionClick,
       isSelected: isSelected
     }
-  }, React.createElement(SelectChildren, null, props.children))), formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? React.createElement(InputHelpBlock, {
-    text: formik.getIn(errors, field.name)
+  }, React.createElement(SelectChildren, null, props.children))), getIn(touched, field.name) && getIn(errors, field.name) ? React.createElement(InputHelpBlock, {
+    text: getIn(errors, field.name)
   }) : null);
 };
 Select.propTypes = {
@@ -1292,7 +1286,7 @@ var Toast = function Toast(_ref2) {
   }, "Copy to clipboard")) : null) : null));
 };
 
-var Fade = reactToastify.cssTransition({
+var Fade = cssTransition({
   enter: "fadeIn",
   exit: "fadeOut",
   duration: 300
@@ -1300,7 +1294,7 @@ var Fade = reactToastify.cssTransition({
 var toast = function toast(type, title, message) {
   var copyError = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
   var containerId = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "_GLOBAL_";
-  return reactToastify.toast(React.createElement(Toast, {
+  return toast$1(React.createElement(Toast, {
     type: type,
     title: title,
     message: message,
@@ -1351,15 +1345,15 @@ toast.none = function () {
 };
 
 toast.update = function () {
-  return reactToastify.toast.update.apply(reactToastify.toast, arguments);
+  return toast$1.update.apply(toast$1, arguments);
 };
 
 toast.dismiss = function () {
-  return reactToastify.toast.dismiss.apply(reactToastify.toast, arguments);
+  return toast$1.dismiss.apply(toast$1, arguments);
 };
 
 var ToastContainer = function ToastContainer(props) {
-  return React.createElement(reactToastify.ToastContainer, _extends({
+  return React.createElement(ToastContainer$1, _extends({
     transition: Fade
   }, props, {
     closeButton: false,
@@ -1537,24 +1531,5 @@ GenericTable.defaultProps = {
   outerWrap: true
 };
 
-exports.Alert = Alert;
-exports.Button = Button;
-exports.ButtonGroup = ButtonGroup;
-exports.Dots = Dots;
-exports.Dropdown = Dropdown;
-exports.DropdownDivider = DropdownDivider;
-exports.DropdownElement = DropdownElement;
-exports.Dropzone = connected;
-exports.Footer = Footer;
-exports.GenericTable = GenericTable;
-exports.Header = Header;
-exports.HeaderPanel = HeaderPanel;
-exports.HeaderTitle = HeaderTitle;
-exports.Label = Label;
-exports.Panel = Panel;
-exports.Progressbar = Progressbar;
-exports.Select = Select;
-exports.Spinner = Spinner;
-exports.ToastContainer = ToastContainer;
-exports.toast = toast;
-//# sourceMappingURL=bundle.min.js.map
+export { Alert, Button, ButtonGroup, Dots, Dropdown, DropdownDivider, DropdownElement, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Label, Panel, Progressbar, Select, Spinner, ToastContainer, toast };
+//# sourceMappingURL=index.es.js.map
