@@ -116,6 +116,11 @@ Modal.defaultProps = {
   left: false
 };
 
+Modal.Small = props => <Modal {...props} size="small" />;
+Modal.Large = props => <Modal {...props} size="large" />;
+Modal.Full = props => <Modal {...props} size="full" />;
+Modal.Fluid = props => <Modal {...props} size="fluid" />;
+
 export const ConfirmationModal = ({
   isOpen,
   confirmHandle,

@@ -1784,6 +1784,23 @@ Modal.defaultProps = {
   closeHandle: null,
   left: false
 };
+
+Modal.Small = props => React.createElement(Modal, _extends({}, props, {
+  size: "small"
+}));
+
+Modal.Large = props => React.createElement(Modal, _extends({}, props, {
+  size: "large"
+}));
+
+Modal.Full = props => React.createElement(Modal, _extends({}, props, {
+  size: "full"
+}));
+
+Modal.Fluid = props => React.createElement(Modal, _extends({}, props, {
+  size: "fluid"
+}));
+
 const ConfirmationModal = ({
   isOpen,
   confirmHandle,
