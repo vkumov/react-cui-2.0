@@ -19,7 +19,7 @@ export const Label = ({
     {...props}
   >
     {children}
-    {removable ? <span class="icon-close" onClick={onRemove} /> : null}
+    {removable ? <span className="icon-close" onClick={onRemove} /> : null}
   </span>
 );
 
