@@ -21,3 +21,4 @@ export {
   ModalHeader,
   ConfirmationModal
 } from "./components/Modal";
+export { Icon } from "./components/Icon";

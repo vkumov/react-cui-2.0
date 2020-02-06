@@ -1829,5 +1829,28 @@ ConfirmationModal.defaultProps = {
   confirmText: "Confirm"
 };
 
-export { Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
+const Icon = (_ref) => {
+  let {
+    icon,
+    size,
+    className
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["icon", "size", "className"]);
+
+  return React.createElement("span", _extends({
+    className: `icon-${icon}${className ? ` ${className}` : ""}${size ? ` icon-size-${size}` : ""}`
+  }, props));
+};
+
+Icon.propTypes = {
+  icon: PropTypes.string.isRequired,
+  size: PropTypes.oneOf([false, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 48]),
+  className: PropTypes.string
+};
+Icon.defaultProps = {
+  size: false,
+  className: null
+};
+
+export { Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map
