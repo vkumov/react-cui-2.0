@@ -1,4 +1,16 @@
 
+@-webkit-keyframes fade-out {
+    from {
+      opacity: 1; }
+    100% {
+      opacity: 0; } }
+  
+  @keyframes fade-out {
+    from {
+      opacity: 1; }
+    100% {
+	  opacity: 0; } }
+	  
 .cui .modal-backdrop {
 	background: rgba(196, 199, 204, .65);
 	pointer-events: all;

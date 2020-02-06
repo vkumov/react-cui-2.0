@@ -51,3 +51,18 @@ Label.defaultProps = {
   raised: false,
   onRemove: null
 };
+
+Label.Primary = ({ color, ...props }) => <Label color="primary" {...props} />;
+Label.Secondary = ({ color, ...props }) => (
+  <Label color="secondary" {...props} />
+);
+Label.Tertiary = ({ color, ...props }) => <Label color="tertiary" {...props} />;
+Label.Success = ({ color, ...props }) => <Label color="success" {...props} />;
+Label.Info = ({ color, ...props }) => <Label color="info" {...props} />;
+Label.WarningAlt = ({ color, ...props }) => (
+  <Label color="warning-alt" {...props} />
+);
+Label.Warning = ({ color, ...props }) => <Label color="warning" {...props} />;
+Label.Danger = ({ color, ...props }) => <Label color="danger" {...props} />;
+Label.Dark = ({ color, ...props }) => <Label color="dark" {...props} />;
+Label.Light = ({ color, ...props }) => <Label color="light" {...props} />;
