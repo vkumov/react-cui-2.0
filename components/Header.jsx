@@ -1,18 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const Header = ({ children, ...props }) => (
+export const Header = ({ children, fluid, ...props }) => (
   <header className="header" {...props}>
-    <div className="container">
+    <div className={`container${fluid ? "-fluid" : ""}`}>
       <div className="header-panels">{children}</div>
     </div>
   </header>
 );
 
 Header.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  fluid: PropTypes.bool
 };
-Header.defaultProps = {};
+Header.defaultProps = {
+  fluid: false
+};
 
 export const HeaderPanel = ({ children, center, right, ...props }) => (
   <div
