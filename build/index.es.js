@@ -814,7 +814,7 @@ const Label = (_ref) => {
       props = _objectWithoutProperties(_ref, ["size", "color", "bordered", "removable", "onRemove", "raised", "className", "children"]);
 
   return React.createElement("span", _extends({
-    className: `${"label" + ` label--${color}`}${size !== "default" ? ` label--${size}` : ""}${bordered ? " label--bordered" : ""}${raised ? " label--raised" : ""}`
+    className: `${"label" + ` label--${color}`}${size !== "default" ? ` label--${size}` : ""}${bordered ? " label--bordered" : ""}${raised ? " label--raised" : ""}${className ? ` ${className}` : ""}`
   }, props), children, removable ? React.createElement("span", {
     className: "icon-close",
     onClick: onRemove
@@ -826,7 +826,9 @@ Label.propTypes = {
   bordered: PropTypes.bool,
   removable: PropTypes.bool,
   onRemove: PropTypes.func,
-  raised: PropTypes.bool
+  raised: PropTypes.bool,
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired
 };
 Label.defaultProps = {
   size: "default",
@@ -834,7 +836,8 @@ Label.defaultProps = {
   bordered: false,
   removable: false,
   raised: false,
-  onRemove: null
+  onRemove: null,
+  className: null
 };
 
 Label.Primary = (_ref2) => {
