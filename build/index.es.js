@@ -1971,5 +1971,61 @@ const Portal = ({
   return createPortal(children, target);
 };
 
-export { Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+const Element$1 = ({
+  children,
+  defaultOpen,
+  toggles,
+  title
+}) => {
+  const [isOpen, setIsOpen] = React.useState(defaultOpen);
+  return React.createElement("li", {
+    className: isOpen ? "active" : ""
+  }, React.createElement("a", {
+    className: "accordion__title",
+    onClick: () => setIsOpen(prev => !prev)
+  }, React.createElement("span", null, title), toggles ? React.createElement("span", {
+    className: "accordion__toggle icon-chevron-down"
+  }) : null), React.createElement("div", {
+    className: "accordion__content"
+  }, children));
+};
+
+Element$1.propTypes = {
+  children: PropTypes.node.isRequired,
+  defaultOpen: PropTypes.bool,
+  toggles: PropTypes.bool,
+  title: PropTypes.node.isRequired
+};
+Element$1.defaultProps = {
+  defaultOpen: false,
+  toggles: false
+};
+
+const Accordion = ({
+  children,
+  toggles,
+  bordered
+}) => {
+  return React.createElement("ul", {
+    className: `accordion${bordered ? " accordion--bordered" : ""}`
+  }, React.Children.map(children, (child, idx) => React.cloneElement(child, {
+    toggles,
+    key: child.props.key || idx
+  })));
+};
+
+Accordion.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.instanceOf(Element$1)), PropTypes.instanceOf(Element$1)]).isRequired,
+  toggles: PropTypes.bool,
+  bordered: PropTypes.bool
+};
+Accordion.defaultProps = {
+  toggles: false,
+  bordered: false
+};
+Accordion.Element = Element$1;
+
+export { Accordion, Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map

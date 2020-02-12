@@ -23,3 +23,4 @@ export {
 } from "./components/Modal";
 export { Icon } from "./components/Icon";
 export { default as Portal } from "./components/Portal";
+export { default as Accordion } from "./components/Accordion";
