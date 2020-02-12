@@ -121,6 +121,10 @@ Modal.Large = props => <Modal {...props} size="large" />;
 Modal.Full = props => <Modal {...props} size="full" />;
 Modal.Fluid = props => <Modal {...props} size="fluid" />;
 
+Modal.Header = ModalHeader;
+Modal.Body = ModalBody;
+Modal.Footer = ModalFooter;
+
 export const ConfirmationModal = ({
   isOpen,
   confirmHandle,
