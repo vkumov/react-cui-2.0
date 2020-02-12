@@ -79,6 +79,32 @@ function _objectWithoutProperties(source, excluded) {
   return target;
 }
 
+const classes = (type, icon) => {
+  switch (type) {
+    case "warning":
+      return ["alert--warning", icon || "icon-warning-outline"];
+
+    case "warning-alt":
+      return ["alert--warning-alt", icon || "icon-warning-outline"];
+
+    case "danger":
+    case "error":
+      return ["alert--warning-alt", icon || "icon-error-outline"];
+
+    case "success":
+      return ["alert--success", icon || "icon-check-outline"];
+
+    case "dark":
+      return ["alert--dark", icon || "icon-help-outline"];
+
+    case "light":
+      return ["alert--light", icon || "icon-help-outline"];
+
+    default:
+      return ["alert--info", icon || "icon-info-outline"];
+  }
+};
+
 const Alert = ({
   type,
   children,
@@ -97,47 +123,7 @@ const Alert = ({
   };
 
   if (dismissed) return null;
-  let alertClass;
-  let iconClass;
-
-  switch (type) {
-    case "warning":
-      alertClass = "alert--warning";
-      iconClass = icon || "icon-warning-outline";
-      break;
-
-    case "warning-alt":
-      alertClass = "alert--warning-alt";
-      iconClass = icon || "icon-warning-outline";
-      break;
-
-    case "danger":
-    case "error":
-      alertClass = "alert--warning-alt";
-      iconClass = icon || "icon-error-outline";
-      break;
-
-    case "success":
-      alertClass = "alert--success";
-      iconClass = icon || "icon-check-outline";
-      break;
-
-    case "dark":
-      alertClass = "alert--dark";
-      iconClass = icon || "icon-help-outline";
-      break;
-
-    case "light":
-      alertClass = "alert--light";
-      iconClass = icon || "icon-help-outline";
-      break;
-
-    default:
-      alertClass = "alert--info";
-      iconClass = icon || "icon-info-outline";
-      break;
-  }
-
+  const [alertClass, iconClass] = classes(type, icon);
   return React.createElement("div", {
     className: `alert ${alertClass} ${className || ""}`
   }, withIcon ? React.createElement("div", {
@@ -155,15 +141,18 @@ Alert.propTypes = {
   title: PropTypes.string,
   onDismiss: PropTypes.func,
   withIcon: PropTypes.bool,
-  icon: PropTypes.string
+  icon: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
 };
 Alert.defaultProps = {
-  type: "info",
+  className: null,
   dismissable: false,
-  title: "",
-  withIcon: true,
+  icon: null,
   onDismiss: null,
-  icon: null
+  title: "",
+  type: "info",
+  withIcon: true
 };
 
 Alert.Warning = (_ref) => {
@@ -2027,5 +2016,53 @@ Accordion.defaultProps = {
 };
 Accordion.Element = Element$1;
 
-export { Accordion, Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
+const Badge = ({
+  color,
+  size,
+  children,
+  className
+}) => React.createElement("span", {
+  className: `${`badge badge--${color}`}${size !== "default" ? ` badge--${size}` : ""}${className ? ` ${className}` : ""}`
+}, children);
+
+Badge.propTypes = {
+  color: PropTypes.oneOf(["primary", "secondary", "tertiary", "success", "info", "warning", "warning-alt", "danger", "dark", "light"]),
+  size: PropTypes.oneOf(["dot", "tiny", "small", "default", "large"]),
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
+Badge.defaultProps = {
+  color: "primary",
+  size: "default",
+  className: ""
+};
+
+Badge.Dot = props => React.createElement(Badge, _extends({}, props, {
+  size: "dot"
+}));
+
+Badge.Tiny = props => React.createElement(Badge, _extends({}, props, {
+  size: "tiny"
+}));
+
+Badge.Small = props => React.createElement(Badge, _extends({}, props, {
+  size: "small"
+}));
+
+Badge.Default = props => React.createElement(Badge, _extends({}, props, {
+  size: "default"
+}));
+
+Badge.Large = props => React.createElement(Badge, _extends({}, props, {
+  size: "large"
+}));
+
+Badge.Wrapper = ({
+  children,
+  className
+}) => React.createElement("span", {
+  className: `badge-wrapper${className ? ` ${className}` : ""}`
+}, children);
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map

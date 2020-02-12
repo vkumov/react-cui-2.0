@@ -2,6 +2,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+const classes = (type, icon) => {
+  switch (type) {
+    case "warning":
+      return ["alert--warning", icon || "icon-warning-outline"];
+    case "warning-alt":
+      return ["alert--warning-alt", icon || "icon-warning-outline"];
+    case "danger":
+    case "error":
+      return ["alert--warning-alt", icon || "icon-error-outline"];
+    case "success":
+      return ["alert--success", icon || "icon-check-outline"];
+    case "dark":
+      return ["alert--dark", icon || "icon-help-outline"];
+    case "light":
+      return ["alert--light", icon || "icon-help-outline"];
+    default:
+      return ["alert--info", icon || "icon-info-outline"];
+  }
+};
+
 export const Alert = ({
   type,
   children,
@@ -21,46 +41,7 @@ export const Alert = ({
 
   if (dismissed) return null;
 
-  let alertClass;
-  let iconClass;
-
-  switch (type) {
-    case "warning":
-      alertClass = "alert--warning";
-      iconClass = icon || "icon-warning-outline";
-      break;
-
-    case "warning-alt":
-      alertClass = "alert--warning-alt";
-      iconClass = icon || "icon-warning-outline";
-      break;
-
-    case "danger":
-    case "error":
-      alertClass = "alert--warning-alt";
-      iconClass = icon || "icon-error-outline";
-      break;
-
-    case "success":
-      alertClass = "alert--success";
-      iconClass = icon || "icon-check-outline";
-      break;
-
-    case "dark":
-      alertClass = "alert--dark";
-      iconClass = icon || "icon-help-outline";
-      break;
-
-    case "light":
-      alertClass = "alert--light";
-      iconClass = icon || "icon-help-outline";
-      break;
-
-    default:
-      alertClass = "alert--info";
-      iconClass = icon || "icon-info-outline";
-      break;
-  }
+  const [alertClass, iconClass] = classes(type, icon);
 
   return (
     <div className={`alert ${alertClass} ${className || ""}`}>
@@ -91,16 +72,19 @@ Alert.propTypes = {
   title: PropTypes.string,
   onDismiss: PropTypes.func,
   withIcon: PropTypes.bool,
-  icon: PropTypes.string
+  icon: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
 };
 
 Alert.defaultProps = {
-  type: "info",
+  className: null,
   dismissable: false,
-  title: "",
-  withIcon: true,
+  icon: null,
   onDismiss: null,
-  icon: null
+  title: "",
+  type: "info",
+  withIcon: true
 };
 
 Alert.Warning = ({ type, ...props }) => <Alert type="warning" {...props} />;
