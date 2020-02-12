@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
@@ -8,6 +8,7 @@ import { cssTransition, toast as toast$1, ToastContainer as ToastContainer$1 } f
 import 'react-toastify/dist/ReactToastify.min.css';
 import Transition from 'react-transition-group/Transition';
 import ReactModal from 'react-modal';
+import { createPortal } from 'react-dom';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -1879,5 +1880,96 @@ Icon.defaultProps = {
   className: null
 };
 
-export { Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
+/**
+ * Creates DOM element to be used as React root.
+ * @returns {HTMLElement}
+ */
+
+function createRootElement(id) {
+  const rootContainer = document.createElement("div");
+  rootContainer.setAttribute("id", id);
+  return rootContainer;
+}
+/**
+ * Appends element as last child of body.
+ * @param {HTMLElement} rootElem
+ */
+
+
+function addRootElement(rootElem) {
+  document.body.insertBefore(rootElem, document.body.lastElementChild.nextElementSibling);
+}
+/**
+ * Hook to create a React Portal.
+ * Automatically handles creating and tearing-down the root elements (no SRR
+ * makes this trivial), so there is no need to ensure the parent target already
+ * exists.
+ * @example
+ * const target = usePortal(id, [id]);
+ * return createPortal(children, target);
+ * @param {String} id The id of the target container, e.g 'modal' or 'spotlight'
+ * @returns {HTMLElement} The DOM node to use as the Portal target.
+ */
+
+
+function usePortal(id) {
+  const rootElemRef = useRef(null);
+  useEffect(function setupElement() {
+    // Look for existing target dom element to append to
+    const existingParent = document.querySelector(`#${id}`); // Parent is either a new root or the existing dom element
+
+    const parentElem = existingParent || createRootElement(id); // If there is no existing DOM element, add a new one.
+
+    if (!existingParent) {
+      addRootElement(parentElem);
+    } // Add the detached element to the parent
+
+
+    parentElem.appendChild(rootElemRef.current);
+    return function removeElement() {
+      rootElemRef.current.remove();
+
+      if (parentElem.childNodes.length === -1) {
+        parentElem.remove();
+      }
+    };
+  }, []);
+  /**
+   * It's important we evaluate this lazily:
+   * - We need first render to contain the DOM element, so it shouldn't happen
+   *   in useEffect. We would normally put this in the constructor().
+   * - We can't do 'const rootElemRef = useRef(document.createElement('div))',
+   *   since this will run every single render (that's a lot).
+   * - We want the ref to consistently point to the same DOM element and only
+   *   ever run once.
+   * @link https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily
+   */
+
+  function getRootElem() {
+    if (!rootElemRef.current) {
+      rootElemRef.current = document.createElement("div");
+    }
+
+    return rootElemRef.current;
+  }
+
+  return getRootElem();
+}
+
+/**
+ * @example
+ * <Portal>
+ *   <p>Thinking with portals</p>
+ * </Portal>
+ */
+
+const Portal = ({
+  id,
+  children
+}) => {
+  const target = usePortal(id);
+  return createPortal(children, target);
+};
+
+export { Alert, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map
