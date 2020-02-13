@@ -26,8 +26,10 @@ const tabsChildrenProp = PropTypes.oneOfType(
   PropTypes.instanceOf(Tab)
 );
 
-const isOpen = (openTab, id, idx) =>
-  openTab === 0 ? idx === 0 : openTab === firstDefined(id, idx);
+const isActive = (openTab, id, idx) => {
+  console.log("Checking", { openTab, id, idx });
+  return openTab === 0 ? idx === 0 : openTab === firstDefined(id, idx);
+};
 
 export const TabsHeader = ({
   tabsClassName,
@@ -50,7 +52,7 @@ export const TabsHeader = ({
   >
     {React.Children.map(children, ({ props: { id, title } }, idx) => (
       <li
-        className={`tab${isOpen(openTab, id, idx) ? " active" : ""}`}
+        className={`tab${isActive(openTab, id, idx) ? " active" : ""}`}
         key={firstDefined(id, idx)}
       >
         <a onClick={() => onTabChange(firstDefined(id, idx))}>{title}</a>
@@ -127,7 +129,11 @@ export const Tabs = ({
           contentClassName ? ` ${contentClassName}` : ""
         }`}
       >
-        hey
+        {React.Children.map(children, (child, idx) =>
+          React.cloneElement(child, {
+            active: isActive(openTab, child.props.id, idx)
+          })
+        )}
       </div>
     </ConditionalWrapper>
   );
