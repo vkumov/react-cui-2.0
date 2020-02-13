@@ -40,6 +40,7 @@ export const Modal = ({
   autoClose,
   isOpen,
   animationDuration,
+  transitionEvents,
   ...props
 }) => {
   props.autoClose = autoClose;
@@ -51,6 +52,7 @@ export const Modal = ({
       mountOnEnter
       unmountOnExit
       timeout={animationDuration}
+      {...transitionEvents}
     >
       {state => (
         <ReactModal
@@ -102,7 +104,8 @@ Modal.propTypes = {
       exiting: PropTypes.number
     })
   ]),
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  transitionEvents: PropTypes.objectOf(PropTypes.func)
 };
 
 Modal.defaultProps = {
@@ -113,7 +116,8 @@ Modal.defaultProps = {
   title: null,
   isOpen: false,
   closeHandle: null,
-  left: false
+  left: false,
+  transitionEvents: null
 };
 
 Modal.Small = props => <Modal {...props} size="small" />;

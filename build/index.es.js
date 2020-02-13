@@ -1727,18 +1727,19 @@ const Modal = (_ref4) => {
     children,
     autoClose,
     isOpen,
-    animationDuration
+    animationDuration,
+    transitionEvents
   } = _ref4,
-      props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration"]);
+      props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration", "transitionEvents"]);
 
   props.autoClose = autoClose;
   props.onRequestClose = autoClose && closeHandle ? closeHandle : undefined;
-  return React.createElement(Transition, {
+  return React.createElement(Transition, _extends({
     in: isOpen,
     mountOnEnter: true,
     unmountOnExit: true,
     timeout: animationDuration
-  }, state => React.createElement(ReactModal, _extends({}, props, {
+  }, transitionEvents), state => React.createElement(ReactModal, _extends({}, props, {
     overlayClassName: "modal-backdrop",
     isOpen: ["entering", "entered"].includes(state),
     className: `modal${size ? ` modal--${size}` : ""}${left ? " modal--left" : ""}`,
@@ -1769,7 +1770,8 @@ Modal.propTypes = {
     entering: PropTypes.number,
     exiting: PropTypes.number
   })]),
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  transitionEvents: PropTypes.objectOf(PropTypes.func)
 };
 Modal.defaultProps = {
   size: false,
@@ -1779,7 +1781,8 @@ Modal.defaultProps = {
   title: null,
   isOpen: false,
   closeHandle: null,
-  left: false
+  left: false,
+  transitionEvents: null
 };
 
 Modal.Small = props => React.createElement(Modal, _extends({}, props, {
