@@ -49,9 +49,7 @@ Accordion.Element = AccordionElement;
 
 Accordion.propTypes = {
   children: PropTypes.oneOfType([
-    PropTypes.arrayOf(Accordion.Element),
     PropTypes.arrayOf(AccordionElement),
-    Accordion.Element,
     AccordionElement
   ]).isRequired,
   toggles: PropTypes.bool,

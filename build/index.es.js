@@ -738,12 +738,16 @@ const Button = (_ref) => {
     justified,
     circle,
     className,
-    asLink
+    asLink,
+    style
   } = _ref,
-      props = _objectWithoutProperties(_ref, ["size", "color", "wide", "justified", "circle", "className", "asLink"]);
+      props = _objectWithoutProperties(_ref, ["size", "color", "wide", "justified", "circle", "className", "asLink", "style"]);
 
   return React.createElement(asLink ? "a" : "button", _objectSpread2({
-    className: `btn${size !== "default" ? ` btn--${size}` : ""} btn--${color}${wide ? " btn--wide" : ""}${justified ? " btn--justified" : ""}${circle ? " btn--circle" : ""}${className ? ` ${className}` : ""}`
+    className: `btn${size !== "default" ? ` btn--${size}` : ""} btn--${color}${wide ? " btn--wide" : ""}${justified ? " btn--justified" : ""}${circle ? " btn--circle" : ""}${className ? ` ${className}` : ""}${asLink ? " flex-middle flex-center" : ""}`,
+    style: _objectSpread2({}, style || {}, {}, asLink ? {
+      display: "flex"
+    } : {})
   }, props));
 };
 
@@ -2031,7 +2035,7 @@ const Accordion = ({
 
 Accordion.Element = AccordionElement;
 Accordion.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(Accordion.Element), PropTypes.arrayOf(AccordionElement), Accordion.Element, AccordionElement]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(AccordionElement), AccordionElement]).isRequired,
   toggles: PropTypes.bool,
   bordered: PropTypes.bool
 };

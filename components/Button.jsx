@@ -9,6 +9,7 @@ export const Button = ({
   circle,
   className,
   asLink,
+  style,
   ...props
 }) =>
   React.createElement(asLink ? "a" : "button", {
@@ -16,7 +17,8 @@ export const Button = ({
       wide ? " btn--wide" : ""
     }${justified ? " btn--justified" : ""}${circle ? " btn--circle" : ""}${
       className ? ` ${className}` : ""
-    }`,
+    }${asLink ? " flex-middle flex-center" : ""}`,
+    style: { ...(style || {}), ...(asLink ? { display: "flex" } : {}) },
     ...props
   });
 
