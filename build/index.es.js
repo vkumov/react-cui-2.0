@@ -770,17 +770,15 @@ Button.Link = props => React.createElement(Button, _extends({}, props, {
   color: "link"
 }));
 
-const noColorProps = {
+Button.propTypes = {
   size: PropTypes.oneOf(["small", "default", "large"]),
+  color: PropTypes.oneOf(["primary", "secondary", "success", "dark", "ghost", "link"]),
   wide: PropTypes.bool,
   justified: PropTypes.bool,
   circle: PropTypes.bool,
   asLink: PropTypes.bool,
   className: PropTypes.string
 };
-Button.propTypes = _objectSpread2({}, noColorProps, {
-  color: PropTypes.oneOf(["primary", "secondary", "success", "dark", "ghost", "link"])
-});
 Button.defaultProps = {
   size: "default",
   color: "primary",
@@ -790,12 +788,6 @@ Button.defaultProps = {
   asLink: false,
   className: null
 };
-Button.Primary.propTypes = noColorProps;
-Button.Secondary.propTypes = noColorProps;
-Button.Success.propTypes = noColorProps;
-Button.Dark.propTypes = noColorProps;
-Button.Ghost.propTypes = noColorProps;
-Button.Link.propTypes = noColorProps;
 const ButtonGroup = (_ref2) => {
   let {
     square,
