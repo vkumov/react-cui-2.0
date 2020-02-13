@@ -8,17 +8,17 @@ export const Button = ({
   justified,
   circle,
   className,
+  asLink,
   ...props
-}) => (
-  <button
-    className={`btn${size !== "default" ? ` btn--${size}` : ""} btn--${color}${
+}) =>
+  React.createElement(asLink ? "a" : "button", {
+    className: `btn${size !== "default" ? ` btn--${size}` : ""} btn--${color}${
       wide ? " btn--wide" : ""
     }${justified ? " btn--justified" : ""}${circle ? " btn--circle" : ""}${
       className ? ` ${className}` : ""
-    }`}
-    {...props}
-  />
-);
+    }`,
+    ...props
+  });
 
 Button.Primary = ({ color, ...props }) => <Button color="primary" {...props} />;
 Button.Secondary = ({ color, ...props }) => (
@@ -41,7 +41,9 @@ Button.propTypes = {
   ]),
   wide: PropTypes.bool,
   justified: PropTypes.bool,
-  circle: PropTypes.bool
+  circle: PropTypes.bool,
+  asLink: PropTypes.bool,
+  className: PropTypes.string
 };
 
 Button.defaultProps = {
@@ -49,7 +51,9 @@ Button.defaultProps = {
   color: "primary",
   wide: false,
   justified: false,
-  circle: false
+  circle: false,
+  asLink: false,
+  className: null
 };
 
 export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
@@ -63,5 +67,12 @@ export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
 
 ButtonGroup.propTypes = {
   square: PropTypes.bool,
-  withDivider: PropTypes.bool
+  withDivider: PropTypes.bool,
+  className: PropTypes.string
+};
+
+ButtonGroup.defaultProps = {
+  square: false,
+  withDivider: false,
+  className: null
 };

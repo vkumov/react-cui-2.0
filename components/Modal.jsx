@@ -94,7 +94,7 @@ Modal.propTypes = {
   closeIcon: PropTypes.bool,
   closeHandle: PropTypes.func,
   title: PropTypes.string,
-  isOpen: PropTypes.bool,
+  isOpen: PropTypes.bool.isRequired,
   autoClose: PropTypes.bool,
   left: PropTypes.bool,
   animationDuration: PropTypes.oneOfType([
@@ -114,7 +114,6 @@ Modal.defaultProps = {
   animationDuration: 250,
   closeIcon: false,
   title: null,
-  isOpen: false,
   closeHandle: null,
   left: false,
   transitionEvents: null
