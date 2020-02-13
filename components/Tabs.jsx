@@ -26,6 +26,9 @@ const tabsChildrenProp = PropTypes.oneOfType(
   PropTypes.instanceOf(Tab)
 );
 
+const isOpen = (openTab, id, idx) =>
+  openTab === 0 ? idx === 0 : openTab === firstDefined(id, idx);
+
 export const TabsHeader = ({
   tabsClassName,
   center,
@@ -47,8 +50,7 @@ export const TabsHeader = ({
   >
     {React.Children.map(children, ({ props: { id, title } }, idx) => (
       <li
-        id="hleft-1"
-        className={`tab${openTab === firstDefined(id, idx) ? " active" : ""}`}
+        className={`tab${isOpen(openTab, id, idx) ? " active" : ""}`}
         key={firstDefined(id, idx)}
       >
         <a onClick={() => onTabChange(firstDefined(id, idx))}>{title}</a>
@@ -92,7 +94,7 @@ export const Tabs = ({
   bordered,
   vertical
 }) => {
-  const [openTab, setOpenTab] = React.useState(defaultTab);
+  const [openTab, setOpenTab] = React.useState(defaultTab || null);
 
   const header = (
     <ConditionalWrapper

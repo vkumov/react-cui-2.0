@@ -2106,6 +2106,9 @@ Tab.propTypes = {
 };
 Tab.defaultProps = {};
 const tabsChildrenProp = PropTypes.oneOfType(PropTypes.arrayOf(PropTypes.instanceOf(Tab)), PropTypes.instanceOf(Tab));
+
+const isOpen = (openTab, id, idx) => openTab === 0 ? idx === 0 : openTab === firstDefined(id, idx);
+
 const TabsHeader = ({
   tabsClassName,
   center,
@@ -2125,8 +2128,7 @@ const TabsHeader = ({
     title
   }
 }, idx) => React.createElement("li", {
-  id: "hleft-1",
-  className: `tab${openTab === firstDefined(id, idx) ? " active" : ""}`,
+  className: `tab${isOpen(openTab, id, idx) ? " active" : ""}`,
   key: firstDefined(id, idx)
 }, React.createElement("a", {
   onClick: () => onTabChange(firstDefined(id, idx))
@@ -2164,7 +2166,7 @@ const Tabs = ({
   bordered,
   vertical
 }) => {
-  const [openTab, setOpenTab] = React.useState(defaultTab);
+  const [openTab, setOpenTab] = React.useState(defaultTab || null);
   const header = React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
