@@ -13,7 +13,7 @@ export const Spinner = ({ size, text }) => (
           <div className="wheel" />
         </div>
       </div>
-      {text === false ? null : (
+      {!text ? null : (
         <div className="base-margin-top text-center">
           {text || "Loading..."}
         </div>
@@ -23,12 +23,13 @@ export const Spinner = ({ size, text }) => (
 );
 
 Spinner.propTypes = {
-  size: PropTypes.oneOf(["small", "default", "large"]).isRequired,
+  size: PropTypes.oneOf(["small", "default", "large"]),
   text: PropTypes.node
 };
 
 Spinner.defaultProps = {
-  size: "default"
+  size: "default",
+  text: null
 };
 
 export const Dots = ({ color }) => (
@@ -37,13 +38,13 @@ export const Dots = ({ color }) => (
       color !== "primary" ? ` loading-dots--${color}` : ""
     }`}
   >
-    <span></span>
-    <span></span>
-    <span></span>
+    <span />
+    <span />
+    <span />
   </div>
 );
 
-Spinner.propTypes = {
+Dots.propTypes = {
   color: PropTypes.oneOf([
     "primary",
     "secondary",
@@ -55,9 +56,9 @@ Spinner.propTypes = {
     "danger",
     "dark",
     "light"
-  ]).isRequired
+  ])
 };
 
-Spinner.defaultProps = {
+Dots.defaultProps = {
   color: "primary"
 };

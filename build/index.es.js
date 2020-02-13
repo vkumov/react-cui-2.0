@@ -674,25 +674,26 @@ const Spinner = ({
   className: "wrapper flex flex-center"
 }, React.createElement("div", {
   className: "wheel"
-}))), text === false ? null : React.createElement("div", {
+}))), !text ? null : React.createElement("div", {
   className: "base-margin-top text-center"
 }, text || "Loading...")));
 Spinner.propTypes = {
-  size: PropTypes.oneOf(["small", "default", "large"]).isRequired,
+  size: PropTypes.oneOf(["small", "default", "large"]),
   text: PropTypes.node
 };
 Spinner.defaultProps = {
-  size: "default"
+  size: "default",
+  text: null
 };
 const Dots = ({
   color
 }) => React.createElement("div", {
   className: `loading-dots${color !== "primary" ? ` loading-dots--${color}` : ""}`
 }, React.createElement("span", null), React.createElement("span", null), React.createElement("span", null));
-Spinner.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "tertiary", "success", "info", "warning", "warning-alt", "danger", "dark", "light"]).isRequired
+Dots.propTypes = {
+  color: PropTypes.oneOf(["primary", "secondary", "tertiary", "success", "info", "warning", "warning-alt", "danger", "dark", "light"])
 };
-Spinner.defaultProps = {
+Dots.defaultProps = {
   color: "primary"
 };
 
