@@ -14,17 +14,14 @@ export const Tab = ({ children, active }) => (
 
 Tab.propTypes = {
   id: tabIdProp.isRequired,
-  active: PropTypes.bool.isRequired,
+  active: PropTypes.bool,
   title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired
 };
 
-Tab.defaultProps = {};
+Tab.defaultProps = { active: false };
 
-const tabsChildrenProp = PropTypes.oneOfType([
-  PropTypes.arrayOf(PropTypes.instanceOf(Tab)),
-  PropTypes.instanceOf(Tab)
-]);
+const tabsChildrenProp = PropTypes.oneOfType([PropTypes.arrayOf(Tab), Tab]);
 
 const isActive = (openTab, id, idx) =>
   openTab === null ? idx === 0 : openTab === firstDefined(id, idx);
@@ -67,7 +64,7 @@ TabsHeader.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
-  openTab: tabIdProp.isRequired,
+  openTab: tabIdProp,
   onTabChange: PropTypes.func.isRequired,
   children: tabsChildrenProp.isRequired
 };
@@ -79,7 +76,8 @@ TabsHeader.defaultProps = {
   justified: false,
   embossed: false,
   bordered: false,
-  vertical: false
+  vertical: false,
+  openTab: null
 };
 
 export const Tabs = ({
