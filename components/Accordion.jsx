@@ -4,7 +4,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Element = ({ children, defaultOpen, toggles, title }) => {
+const AccordionElement = ({ children, defaultOpen, toggles, title }) => {
   const [isOpen, setIsOpen] = React.useState(defaultOpen);
 
   return (
@@ -20,14 +20,14 @@ const Element = ({ children, defaultOpen, toggles, title }) => {
   );
 };
 
-Element.propTypes = {
+AccordionElement.propTypes = {
   children: PropTypes.node.isRequired,
   defaultOpen: PropTypes.bool,
   toggles: PropTypes.bool,
   title: PropTypes.node.isRequired
 };
 
-Element.defaultProps = {
+AccordionElement.defaultProps = {
   defaultOpen: false,
   toggles: false
 };
@@ -45,12 +45,14 @@ const Accordion = ({ children, toggles, bordered }) => {
   );
 };
 
-Accordion.Element = Element;
+Accordion.Element = AccordionElement;
 
 Accordion.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(Accordion.Element),
-    Accordion.Element
+    PropTypes.arrayOf(AccordionElement),
+    Accordion.Element,
+    AccordionElement
   ]).isRequired,
   toggles: PropTypes.bool,
   bordered: PropTypes.bool
