@@ -25,3 +25,4 @@ export { Icon } from "./components/Icon";
 export { default as Portal } from "./components/Portal";
 export { default as Accordion } from "./components/Accordion";
 export { default as Badge } from "./components/Badge";
+export * from "./components/Tabs";

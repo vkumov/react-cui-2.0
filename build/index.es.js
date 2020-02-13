@@ -2088,5 +2088,137 @@ Badge.Wrapper = ({
   className: `badge-wrapper${className ? ` ${className}` : ""}`
 }, children);
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, ToastContainer, toast };
+const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
+
+const firstDefined = (...args) => args.find(el => typeof el !== "undefined" && el !== null);
+
+const Tab = ({
+  children,
+  active
+}) => React.createElement("div", {
+  className: `tab-pane${active ? " active" : ""}`
+}, children);
+Tab.propTypes = {
+  id: tabIdProp.isRequired,
+  active: PropTypes.bool.isRequired,
+  title: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
+};
+Tab.defaultProps = {};
+const tabsChildrenProp = PropTypes.oneOfType(PropTypes.arrayOf(PropTypes.instanceOf(Tab)), PropTypes.instanceOf(Tab));
+const TabsHeader = ({
+  tabsClassName,
+  center,
+  right,
+  justified,
+  embossed,
+  bordered,
+  vertical,
+  openTab,
+  onTabChange,
+  children
+}) => React.createElement("ul", {
+  className: `tabs${tabsClassName ? ` ${tabsClassName}` : ""}${center ? " tabs--centered" : ""}${right ? " tabs--right" : ""}${justified ? " tabs--justified" : ""}${embossed ? " tabs--embossed" : ""}${bordered ? " tabs--bordered" : ""}${vertical ? " tabs--vertical" : ""}`
+}, React.Children.map(children, ({
+  props: {
+    id,
+    title
+  }
+}, idx) => React.createElement("li", {
+  id: "hleft-1",
+  className: `tab${openTab === firstDefined(id, idx) ? " active" : ""}`,
+  key: firstDefined(id, idx)
+}, React.createElement("a", {
+  onClick: () => onTabChange(firstDefined(id, idx))
+}, title))));
+TabsHeader.propTypes = {
+  tabsClassName: PropTypes.string,
+  center: PropTypes.bool,
+  right: PropTypes.bool,
+  justified: PropTypes.bool,
+  embossed: PropTypes.bool,
+  bordered: PropTypes.bool,
+  vertical: PropTypes.bool,
+  openTab: tabIdProp.isRequired,
+  onTabChange: PropTypes.func.isRequired,
+  children: tabsChildrenProp.isRequired
+};
+TabsHeader.defaultProps = {
+  tabsClassName: PropTypes.string,
+  center: false,
+  right: false,
+  justified: false,
+  embossed: false,
+  bordered: false,
+  vertical: false
+};
+const Tabs = ({
+  children,
+  defaultTab,
+  tabsClassName,
+  contentClassName,
+  center,
+  right,
+  justified,
+  embossed,
+  bordered,
+  vertical
+}) => {
+  const [openTab, setOpenTab] = React.useState(defaultTab);
+  const header = React.createElement(ConditionalWrapper, {
+    condition: vertical,
+    wrapper: React.createElement("div", {
+      className: "col-md-3"
+    })
+  }, React.createElement(TabsHeader, {
+    tabsClassName: tabsClassName,
+    center: center,
+    right: right,
+    justified: justified,
+    embossed: embossed,
+    bordered: bordered,
+    vertical: vertical,
+    openTab: openTab,
+    onTabChange: id => setOpenTab(id)
+  }, children));
+  const body = React.createElement(ConditionalWrapper, {
+    condition: vertical,
+    wrapper: React.createElement("div", {
+      className: "col-md-9"
+    })
+  }, React.createElement("div", {
+    className: `tab-content${contentClassName ? ` ${contentClassName}` : ""}`
+  }, "hey"));
+  return React.createElement(ConditionalWrapper, {
+    condition: vertical,
+    wrapper: React.createElement("div", {
+      className: "row"
+    })
+  }, !right && !vertical ? header : null, body, right && vertical ? header : null);
+};
+Tabs.propTypes = {
+  children: tabsChildrenProp.isRequired,
+  defaultTab: tabIdProp,
+  tabsClassName: PropTypes.string,
+  contentClassName: PropTypes.string,
+  center: PropTypes.bool,
+  right: PropTypes.bool,
+  justified: PropTypes.bool,
+  embossed: PropTypes.bool,
+  bordered: PropTypes.bool,
+  vertical: PropTypes.bool
+};
+Tabs.defaultProps = {
+  defaultTab: null,
+  tabsClassName: null,
+  contentClassName: null,
+  center: false,
+  right: false,
+  justified: false,
+  embossed: false,
+  bordered: false,
+  vertical: false
+};
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, Tab, Tabs, TabsHeader, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map
