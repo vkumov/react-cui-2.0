@@ -46,10 +46,8 @@ const Accordion = ({ children, toggles, bordered }) => {
 };
 
 Accordion.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.instanceOf(Element)),
-    PropTypes.instanceOf(Element)
-  ]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(Element), Element])
+    .isRequired,
   toggles: PropTypes.bool,
   bordered: PropTypes.bool
 };

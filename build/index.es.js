@@ -2030,7 +2030,7 @@ const Accordion = ({
 };
 
 Accordion.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.instanceOf(Element$1)), PropTypes.instanceOf(Element$1)]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(Element$1), Element$1]).isRequired,
   toggles: PropTypes.bool,
   bordered: PropTypes.bool
 };
