@@ -45,9 +45,13 @@ const Accordion = ({ children, toggles, bordered }) => {
   );
 };
 
+Accordion.Element = Element;
+
 Accordion.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(Element), Element])
-    .isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(Accordion.Element),
+    Accordion.Element
+  ]).isRequired,
   toggles: PropTypes.bool,
   bordered: PropTypes.bool
 };
@@ -56,7 +60,5 @@ Accordion.defaultProps = {
   toggles: false,
   bordered: false
 };
-
-Accordion.Element = Element;
 
 export default Accordion;

@@ -2029,8 +2029,9 @@ const Accordion = ({
   })));
 };
 
+Accordion.Element = Element$1;
 Accordion.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(Element$1), Element$1]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(Accordion.Element), Accordion.Element]).isRequired,
   toggles: PropTypes.bool,
   bordered: PropTypes.bool
 };
@@ -2038,7 +2039,6 @@ Accordion.defaultProps = {
   toggles: false,
   bordered: false
 };
-Accordion.Element = Element$1;
 
 const Badge = ({
   color,
