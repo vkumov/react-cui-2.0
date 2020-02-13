@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { appendClass } from "../utils";
 
-const Display = ({ size, as, className, ...props }) =>
+export const Display = ({ size, as, className, ...props }) =>
   React.createElement(as, {
     ...props,
     className: `display-${size}${appendClass(className)}`
@@ -20,4 +20,8 @@ Display.defaultProps = {
   className: null
 };
 
-export { Display };
+export const Display0 = props => <Display {...props} size={0} />;
+export const Display1 = props => <Display {...props} size={1} />;
+export const Display2 = props => <Display {...props} size={2} />;
+export const Display3 = props => <Display {...props} size={3} />;
+export const Display4 = props => <Display {...props} size={4} />;
