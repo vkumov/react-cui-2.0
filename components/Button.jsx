@@ -20,17 +20,24 @@ export const Button = ({
     ...props
   });
 
-Button.Primary = ({ color, ...props }) => <Button color="primary" {...props} />;
-Button.Secondary = ({ color, ...props }) => (
-  <Button color="secondary" {...props} />
-);
-Button.Success = ({ color, ...props }) => <Button color="success" {...props} />;
-Button.Dark = ({ color, ...props }) => <Button color="dark" {...props} />;
-Button.Ghost = ({ color, ...props }) => <Button color="ghost" {...props} />;
-Button.Link = ({ color, ...props }) => <Button color="link" {...props} />;
+Button.Primary = props => <Button {...props} color="primary" />;
+Button.Secondary = props => <Button {...props} color="secondary" />;
+Button.Success = props => <Button {...props} color="success" />;
+Button.Dark = props => <Button {...props} color="dark" />;
+Button.Ghost = props => <Button {...props} color="ghost" />;
+Button.Link = props => <Button {...props} color="link" />;
+
+const noColorProps = {
+  size: PropTypes.oneOf(["small", "default", "large"]),
+  wide: PropTypes.bool,
+  justified: PropTypes.bool,
+  circle: PropTypes.bool,
+  asLink: PropTypes.bool,
+  className: PropTypes.string
+};
 
 Button.propTypes = {
-  size: PropTypes.oneOf(["small", "default", "large"]),
+  ...noColorProps,
   color: PropTypes.oneOf([
     "primary",
     "secondary",
@@ -38,12 +45,7 @@ Button.propTypes = {
     "dark",
     "ghost",
     "link"
-  ]),
-  wide: PropTypes.bool,
-  justified: PropTypes.bool,
-  circle: PropTypes.bool,
-  asLink: PropTypes.bool,
-  className: PropTypes.string
+  ])
 };
 
 Button.defaultProps = {
@@ -55,6 +57,13 @@ Button.defaultProps = {
   asLink: false,
   className: null
 };
+
+Button.Primary.propTypes = noColorProps;
+Button.Secondary.propTypes = noColorProps;
+Button.Success.propTypes = noColorProps;
+Button.Dark.propTypes = noColorProps;
+Button.Ghost.propTypes = noColorProps;
+Button.Link.propTypes = noColorProps;
 
 export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
   <div
