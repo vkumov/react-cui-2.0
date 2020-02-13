@@ -2227,5 +2227,45 @@ Tabs.defaultProps = {
   vertical: false
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Select, Spinner, Switch, Tab, Tabs, TabsHeader, ToastContainer, toast };
+const appendClass = c => c ? ` ${c}` : "";
+
+const Section = ({
+  children,
+  className
+}) => React.createElement("div", {
+  className: `section${appendClass(className)}`
+}, children);
+
+Section.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
+};
+Section.defaultProps = {
+  className: null
+};
+
+const Display = (_ref) => {
+  let {
+    size,
+    as,
+    className
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["size", "as", "className"]);
+
+  return React.createElement(as, _objectSpread2({}, props, {
+    className: `display-${size}${appendClass(className)}`
+  }));
+};
+
+Display.propTypes = {
+  size: PropTypes.oneOf([0, 1, 2, 3, 4]).isRequired,
+  as: PropTypes.node,
+  className: PropTypes.string
+};
+Display.defaultProps = {
+  as: "h1",
+  className: null
+};
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Display, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Tabs, TabsHeader, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map
