@@ -21,15 +21,13 @@ Tab.propTypes = {
 
 Tab.defaultProps = {};
 
-const tabsChildrenProp = PropTypes.oneOfType(
+const tabsChildrenProp = PropTypes.oneOfType([
   PropTypes.arrayOf(PropTypes.instanceOf(Tab)),
   PropTypes.instanceOf(Tab)
-);
+]);
 
-const isActive = (openTab, id, idx) => {
-  console.log("Checking", { openTab, id, idx });
-  return openTab === 0 ? idx === 0 : openTab === firstDefined(id, idx);
-};
+const isActive = (openTab, id, idx) =>
+  openTab === null ? idx === 0 : openTab === firstDefined(id, idx);
 
 export const TabsHeader = ({
   tabsClassName,
