@@ -2231,7 +2231,7 @@ Tabs.defaultProps = {
   vertical: false
 };
 
-const appendClass = c => c ? ` ${c}` : "";
+const appendClass = (c, what) => c ? ` ${what || c}` : "";
 
 const Section = ({
   children,
@@ -2285,5 +2285,49 @@ const Display4 = props => React.createElement(Display, _extends({}, props, {
   size: 4
 }));
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Display, Display0, Display1, Display2, Display3, Display4, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Tabs, TabsHeader, ToastContainer, toast };
+const TimelineItem = ({
+  icon,
+  time,
+  children
+}) => React.createElement("div", {
+  className: "timeline__item"
+}, React.createElement("div", {
+  className: "timeline__icon"
+}, icon), time ? React.createElement("div", {
+  className: "timeline__time"
+}, time) : null, React.createElement("div", {
+  className: "timeline__content"
+}, children));
+TimelineItem.propTypes = {
+  icon: PropTypes.node,
+  time: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
+TimelineItem.defaultProps = {
+  icon: React.createElement(Icon, {
+    icon: "circle"
+  }),
+  time: null
+};
+const Timeline = ({
+  center,
+  right,
+  className,
+  children
+}) => React.createElement("div", {
+  className: `timeline${appendClass(center, "timeline--centered")}${appendClass(right, "timeline--right")}${appendClass(className)}`
+}, children);
+Timeline.propTypes = {
+  center: PropTypes.bool,
+  right: PropTypes.bool,
+  className: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(TimelineItem), TimelineItem]).isRequired
+};
+Timeline.defaultProps = {
+  center: false,
+  right: false,
+  className: null
+};
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Display, Display0, Display1, Display2, Display3, Display4, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, toast };
 //# sourceMappingURL=index.es.js.map

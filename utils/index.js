@@ -1,1 +1,1 @@
-export const appendClass = c => (c ? ` ${c}` : "");
+export const appendClass = (c, what) => (c ? ` ${what || c}` : "");

@@ -28,3 +28,4 @@ export { default as Badge } from "./components/Badge";
 export * from "./components/Tabs";
 export * from "./components/Section";
 export * from "./components/Typo";
+export * from "./components/Timeline";
