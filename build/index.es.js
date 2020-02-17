@@ -1710,6 +1710,57 @@ Input.defaultProps = {
 var css$1 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}";
 styleInject(css$1);
 
+const eventManager = {
+  list: new Map(),
+  emitQueue: new Map(),
+
+  on(event, callback) {
+    if (!this.list.has(event)) this.list.set(event, []);
+    this.list.get(event).push(callback);
+    return this;
+  },
+
+  off(event) {
+    this.list.delete(event);
+    return this;
+  },
+
+  cancelEmit(event) {
+    const timers = this.emitQueue.get(event);
+
+    if (timers) {
+      timers.forEach(timer => clearTimeout(timer));
+      this.emitQueue.delete(event);
+    }
+
+    return this;
+  },
+
+  /**
+   * Enqueue the event at the end of the call stack
+   * Doing so let the user call toast as follow:
+   * toast('1')
+   * toast('2')
+   * toast('3')
+   * Without setTimemout the code above will not work
+   */
+  emit(event, ...args) {
+    if (this.list.has(event)) {
+      this.list.get(event).forEach(callback => {
+        const timer = setTimeout(() => {
+          callback(...args);
+        }, 0);
+        if (!this.emitQueue.has(event)) this.emitQueue.set(event, []);
+        this.emitQueue.get(event).push(timer);
+      });
+    }
+  }
+
+};
+const EVENTS = {
+  SHOW_MODAL: "showModal"
+};
+
 const appendClass = (c, what) => c ? ` ${what || c}` : "";
 
 const ModalHeader = (_ref) => {
@@ -1874,6 +1925,42 @@ ConfirmationModal.defaultProps = {
   confirmType: "primary",
   autoClose: true,
   confirmText: "Confirm"
+};
+const ConfirmationListener = () => {
+  const [modal, setModal] = React.useState(null);
+  const [modalShown, setModalShown] = React.useState(false);
+  React.useEffect(() => {
+    eventManager.on(EVENTS.SHOW_REQ, m => setModal(m));
+  }, []);
+  React.useEffect(() => {
+    if (modal) setModalShown(true);
+  }, [modal]);
+
+  const onClose = () => setModalShown(false);
+
+  if (!modal) return null;
+  return React.createElement(ConfirmationModal, {
+    isOpen: modalShown,
+    prompt: modal.prompt,
+    confirmHandle: async () => {
+      await modal.onConfirm();
+      onClose();
+      return true;
+    },
+    closeHandle: onClose,
+    confirmText: modal.confirmText,
+    confirmType: modal.confirmType
+  });
+};
+const confirmation = (prompt, onConfirm, confirmType = "primary", confirmText = "Confirm") => {
+  if (!prompt) throw new Error("Prompt must be specified");
+  if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
+  eventManager.emit(EVENTS.SHOW_MODAL, {
+    prompt,
+    onConfirm,
+    confirmText,
+    confirmType
+  });
 };
 
 const Icon = (_ref) => {
@@ -2329,5 +2416,5 @@ Timeline.defaultProps = {
   className: null
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationModal, Display, Display0, Display1, Display2, Display3, Display4, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, toast };
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationListener, ConfirmationModal, Display, Display0, Display1, Display2, Display3, Display4, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, confirmation, toast };
 //# sourceMappingURL=index.es.js.map
