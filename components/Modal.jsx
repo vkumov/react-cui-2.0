@@ -230,8 +230,6 @@ export const confirmation = (
   if (!onConfirm || typeof onConfirm !== "function")
     throw new Error("onConfirm must be specified and must be a function");
 
-  console.log("Got request for confirmation");
-
   eventManager.emit(EVENTS.SHOW_MODAL, {
     prompt,
     onConfirm,
