@@ -1710,6 +1710,8 @@ Input.defaultProps = {
 var css$1 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}";
 styleInject(css$1);
 
+const appendClass = (c, what) => c ? ` ${what || c}` : "";
+
 const ModalHeader = (_ref) => {
   let {
     className,
@@ -2230,8 +2232,6 @@ Tabs.defaultProps = {
   bordered: false,
   vertical: false
 };
-
-const appendClass = (c, what) => c ? ` ${what || c}` : "";
 
 const Section = ({
   children,

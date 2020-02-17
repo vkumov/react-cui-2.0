@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import { Button } from "./Button";
 import "../css/modal.css";
 
+import { eventManager, EVENTS } from "../utils";
+
 export const ModalHeader = ({ className, children, ...props }) => (
   <div
     className={`modal__header${className ? ` ${className}` : ""}`}
@@ -185,4 +187,53 @@ ConfirmationModal.defaultProps = {
   confirmType: "primary",
   autoClose: true,
   confirmText: "Confirm"
+};
+
+export const ConfirmationListener = () => {
+  const [modal, setModal] = React.useState(null);
+  const [modalShown, setModalShown] = React.useState(false);
+
+  React.useEffect(() => {
+    eventManager.on(EVENTS.SHOW_REQ, m => setModal(m));
+  }, []);
+  React.useEffect(() => {
+    if (modal) setModalShown(true);
+  }, [modal]);
+
+  const onClose = () => setModalShown(false);
+
+  if (!modal) return null;
+
+  return (
+    <ConfirmationModal
+      isOpen={modalShown}
+      prompt={modal.prompt}
+      confirmHandle={async () => {
+        await modal.onConfirm();
+        onClose();
+        return true;
+      }}
+      closeHandle={onClose}
+      confirmText={modal.confirmText}
+      confirmType={modal.confirmType}
+    />
+  );
+};
+
+export const confirmation = (
+  prompt,
+  onConfirm,
+  confirmType = "primary",
+  confirmText = "Confirm"
+) => {
+  if (!prompt) throw new Error("Prompt must be specified");
+  if (!onConfirm || typeof onConfirm !== "function")
+    throw new Error("onConfirm must be specified and must be a function");
+
+  eventManager.emit(EVENTS.SHOW_MODAL, {
+    prompt,
+    onConfirm,
+    confirmText,
+    confirmType
+  });
 };
