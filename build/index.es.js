@@ -1930,7 +1930,7 @@ const ConfirmationListener = () => {
   const [modal, setModal] = React.useState(null);
   const [modalShown, setModalShown] = React.useState(false);
   React.useEffect(() => {
-    eventManager.on(EVENTS.SHOW_REQ, m => setModal(m));
+    eventManager.on(EVENTS.SHOW_MODAL, m => setModal(m));
   }, []);
   React.useEffect(() => {
     if (modal) setModalShown(true);
@@ -1955,6 +1955,7 @@ const ConfirmationListener = () => {
 const confirmation = (prompt, onConfirm, confirmType = "primary", confirmText = "Confirm") => {
   if (!prompt) throw new Error("Prompt must be specified");
   if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
+  console.log("Got request for confirmation");
   eventManager.emit(EVENTS.SHOW_MODAL, {
     prompt,
     onConfirm,
