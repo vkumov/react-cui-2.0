@@ -6,5 +6,14 @@ export const ConditionalWrapper = ({ condition, wrapper, children }) =>
 
 ConditionalWrapper.propTypes = {
   condition: PropTypes.bool.isRequired,
-  wrapper: PropTypes.element.isRequired
+  wrapper: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired
+};
+
+export const DisplayIf = ({ condition, children }) =>
+  condition ? children : null;
+
+DisplayIf.propTypes = {
+  condition: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired
 };

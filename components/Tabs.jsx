@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { ConditionalWrapper } from "./ConditionalWrapper";
+import { ConditionalWrapper } from "./Conditional";
 
 const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { ConditionalWrapper } from "./ConditionalWrapper";
+import { ConditionalWrapper } from "../Conditional";
 
 const Wrapper = <div className="responsive-table" />;
 
@@ -41,7 +41,8 @@ GenericTable.propTypes = {
   fixed: PropTypes.bool,
   wrapped: PropTypes.bool,
   compressed: PropTypes.bool,
-  loose: PropTypes.bool
+  loose: PropTypes.bool,
+  className: PropTypes.string
 };
 
 GenericTable.defaultProps = {
@@ -53,5 +54,6 @@ GenericTable.defaultProps = {
   fixed: false,
   wrapped: false,
   compressed: false,
-  loose: false
+  loose: false,
+  className: null
 };

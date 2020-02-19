@@ -260,7 +260,16 @@ const ConditionalWrapper = ({
 }) => condition ? React.cloneElement(wrapper, null, children) : children;
 ConditionalWrapper.propTypes = {
   condition: PropTypes.bool.isRequired,
-  wrapper: PropTypes.element.isRequired
+  wrapper: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired
+};
+const DisplayIf = ({
+  condition,
+  children
+}) => condition ? children : null;
+DisplayIf.propTypes = {
+  condition: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 const DropdownHeader = ({
@@ -1515,7 +1524,8 @@ GenericTable.propTypes = {
   fixed: PropTypes.bool,
   wrapped: PropTypes.bool,
   compressed: PropTypes.bool,
-  loose: PropTypes.bool
+  loose: PropTypes.bool,
+  className: PropTypes.string
 };
 GenericTable.defaultProps = {
   outerWrap: true,
@@ -1526,7 +1536,386 @@ GenericTable.defaultProps = {
   fixed: false,
   wrapped: false,
   compressed: false,
-  loose: false
+  loose: false,
+  className: null
+};
+
+const PaginationContext = React.createContext({});
+
+const Button$1 = ({
+  active,
+  content,
+  disabled,
+  position
+}) => React.createElement(PaginationContext.Consumer, null, ({
+  changePage
+}) => React.createElement("li", {
+  className: active ? "active" : ""
+}, React.createElement("a", {
+  className: disabled ? "disabled" : "",
+  onClick: e => changePage(e, position)
+}, content)));
+
+Button$1.propTypes = {
+  active: PropTypes.bool,
+  content: PropTypes.node.isRequired,
+  disabled: PropTypes.bool,
+  position: PropTypes.number.isRequired
+};
+Button$1.defaultProps = {
+  active: false,
+  disabled: false
+};
+
+const FirstPrev = () => {
+  const {
+    perPage,
+    firstAndLast,
+    position,
+    icons,
+    prev,
+    beginAt
+  } = React.useContext(PaginationContext);
+  const disabled = position < perPage + beginAt;
+  const r = [];
+  if (icons && firstAndLast) r.push(React.createElement(Button$1, {
+    content: React.createElement("span", {
+      className: "icon-chevron-left-double"
+    }),
+    disabled: disabled,
+    key: "first-page",
+    position: beginAt
+  }));
+  r.push(React.createElement(Button$1, {
+    content: icons ? React.createElement("span", {
+      className: "icon-chevron-left"
+    }) : prev,
+    disabled: disabled,
+    key: "previous-page",
+    position: position - perPage
+  }));
+  return r;
+};
+
+const NextLast = () => {
+  const {
+    beginAt,
+    perPage,
+    total,
+    firstAndLast,
+    position,
+    icons,
+    next
+  } = React.useContext(PaginationContext);
+  const pages = Math.floor(total / perPage) + 1;
+  const disabled = position > total - perPage + beginAt;
+  const r = [];
+  r.push(React.createElement(Button$1, {
+    content: icons ? React.createElement("span", {
+      className: "icon-chevron-right"
+    }) : next,
+    disabled: disabled,
+    key: "next-page",
+    position: position + perPage
+  }));
+  if (icons && firstAndLast) r.push(React.createElement(Button$1, {
+    content: React.createElement("span", {
+      className: "icon-chevron-right-double"
+    }),
+    disabled: disabled,
+    key: "last-page",
+    position: (pages - 1) * perPage + beginAt
+  }));
+  return r;
+};
+
+const Pages = ({
+  start,
+  finish
+}) => React.createElement(PaginationContext.Consumer, null, ({
+  perPage,
+  active,
+  beginAt
+}) => [...Array(finish - start + 1)].map((v, i) => {
+  const current = start + i;
+  return React.createElement(Button$1, {
+    active: active === current,
+    content: `${current}`,
+    key: `${current}-page`,
+    position: (current - 1) * perPage + beginAt
+  });
+}));
+
+Pages.propTypes = {
+  start: PropTypes.number.isRequired,
+  finish: PropTypes.number.isRequired
+};
+
+const Pagination = (_ref) => {
+  let {
+    size,
+    rounded,
+    icons,
+    next,
+    prev,
+    position,
+    perPage,
+    total,
+    onPageChange,
+    className,
+    firstAndLast,
+    beginAt
+  } = _ref,
+      rest = _objectWithoutProperties(_ref, ["size", "rounded", "icons", "next", "prev", "position", "perPage", "total", "onPageChange", "className", "firstAndLast", "beginAt"]);
+
+  const pages = Math.ceil(total / perPage);
+  const active = Math.floor(position / perPage) + 1;
+
+  const changePage = (e, newPosition) => {
+    if (typeof onPageChange === "function") onPageChange(e, newPosition);
+  };
+
+  return React.createElement(PaginationContext.Provider, {
+    value: {
+      active,
+      beginAt,
+      changePage,
+      firstAndLast,
+      icons,
+      next,
+      perPage,
+      position,
+      prev,
+      total
+    }
+  }, React.createElement("ul", _extends({
+    className: `pagination${size !== "default" ? ` pagination--${size}` : ""}${rounded ? " pagination--rounded" : ""}${className ? ` ${className}` : ""}`
+  }, rest), React.createElement(FirstPrev, null), active < 4 || pages === 4 ? React.createElement(React.Fragment, null, React.createElement(Pages, {
+    start: 1,
+    finish: Math.min(pages, 4)
+  }), pages > 4 ? React.createElement(React.Fragment, null, React.createElement("li", null, React.createElement("span", {
+    className: "icon-more"
+  })), React.createElement(Button$1, {
+    content: pages,
+    key: `${pages}-page`,
+    position: (pages - 1) * perPage + beginAt
+  })) : null) : React.createElement(React.Fragment, null, React.createElement(Button$1, {
+    active: active === beginAt,
+    content: "1",
+    key: "1-page",
+    position: beginAt
+  }), React.createElement("li", null, React.createElement("span", {
+    className: "icon-more"
+  })), active < pages - 2 ? React.createElement(React.Fragment, null, React.createElement(Pages, {
+    start: active - 1,
+    finish: active + 1
+  }), React.createElement("li", null, React.createElement("span", {
+    className: "icon-more"
+  })), React.createElement(Button$1, {
+    active: active === pages,
+    content: pages,
+    key: `${pages}-page`,
+    position: (pages - 1) * perPage + beginAt
+  })) : React.createElement(Pages, {
+    start: pages - 3,
+    finish: pages
+  })), React.createElement(NextLast, null)));
+};
+
+Pagination.propTypes = {
+  size: PropTypes.oneOf(["small", "default", "large"]),
+  rounded: PropTypes.bool,
+  icons: PropTypes.bool,
+  next: PropTypes.node,
+  prev: PropTypes.node,
+  position: PropTypes.number.isRequired,
+  perPage: PropTypes.number,
+  total: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  firstAndLast: PropTypes.bool,
+  beginAt: PropTypes.number,
+  className: PropTypes.string
+};
+Pagination.defaultProps = {
+  beginAt: 1,
+  rounded: false,
+  firstAndLast: true,
+  icons: false,
+  next: "Next",
+  perPage: 1,
+  prev: "Previous",
+  size: "default",
+  className: null
+};
+
+const DefaultTablePagination = ({
+  total,
+  position,
+  onPageChange,
+  onPerPageChange
+}) => {
+  const [perPage, setPerPage] = React.useState(50);
+  React.useEffect(() => {
+    if (typeof onPerPageChange === "function") onPerPageChange(perPage);
+  }, [perPage, onPerPageChange]);
+  return React.createElement("div", {
+    className: "flex-middle"
+  }, React.createElement("span", {
+    className: "qtr-margin-right"
+  }, "Page:"), React.createElement(Pagination, {
+    firstAndLast: true,
+    icons: true,
+    perPage: perPage,
+    total: total,
+    position: position,
+    onPageChange: onPageChange,
+    beginAt: 0
+  }), React.createElement("span", {
+    className: "text-muted qtr-margin-left qtr-margin-right"
+  }, "|"), React.createElement("span", {
+    className: "qtr-margin-right"
+  }, "Per page:"), React.createElement(Dropdown, {
+    type: "link",
+    header: perPage,
+    openTo: "left"
+  }, [10, 25, 50, 100, 250, 500].map(v => React.createElement(Dropdown.Element, {
+    onClick: () => setPerPage(v),
+    key: v,
+    selected: v === perPage
+  }, v))));
+};
+DefaultTablePagination.propTypes = {
+  total: PropTypes.number.isRequired,
+  position: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  onPerPageChange: PropTypes.func.isRequired
+};
+
+const eventManager = {
+  list: new Map(),
+  emitQueue: new Map(),
+
+  on(event, callback) {
+    if (!this.list.has(event)) this.list.set(event, []);
+    this.list.get(event).push(callback);
+    return this;
+  },
+
+  off(event) {
+    this.list.delete(event);
+    return this;
+  },
+
+  cancelEmit(event) {
+    const timers = this.emitQueue.get(event);
+
+    if (timers) {
+      timers.forEach(timer => clearTimeout(timer));
+      this.emitQueue.delete(event);
+    }
+
+    return this;
+  },
+
+  /**
+   * Enqueue the event at the end of the call stack
+   * Doing so let the user call toast as follow:
+   * toast('1')
+   * toast('2')
+   * toast('3')
+   * Without setTimemout the code above will not work
+   */
+  emit(event, ...args) {
+    if (this.list.has(event)) {
+      this.list.get(event).forEach(callback => {
+        const timer = setTimeout(() => {
+          callback(...args);
+        }, 0);
+        if (!this.emitQueue.has(event)) this.emitQueue.set(event, []);
+        this.emitQueue.get(event).push(timer);
+      });
+    }
+  }
+
+};
+const EVENTS = {
+  SHOW_MODAL: "showModal"
+};
+
+const appendClass = (c, what) => c ? ` ${what || c}` : "";
+
+const asArray = v => Array.isArray(v) ? v : [v];
+
+const PAGINATION_LOCATION = ["top-left", "bottom-left", "bottom-right", "top-right"];
+
+const Table = (_ref) => {
+  let {
+    pagination,
+    paginationLocation,
+    data,
+    children,
+    start
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["pagination", "paginationLocation", "data", "children", "start"]);
+
+  const [position, setPosition] = React.useState(typeof start === "number" ? start : 0);
+  const [perPage, setPerPage] = React.useState(50);
+  const tbody = React.useMemo(() => children ? asArray(children).find(child => child.type === "tbody") : null, [children]);
+  const thead = React.useMemo(() => children ? asArray(children).find(child => child.type === "theady") : null, [children]);
+  const total = React.useMemo(() => data ? data.length : tbody.props.children.length, [data, tbody]);
+  return React.createElement(React.Fragment, null, React.createElement(DisplayIf, {
+    condition: paginationLocation.includes("top-")
+  }, React.createElement("div", {
+    className: `flex${appendClass(paginationLocation === "top-right", "flex-right")}`
+  }, React.createElement(pagination, {
+    total,
+    position,
+    onPageChange: (_, p) => setPosition(p),
+    onPerPageChange: p => setPerPage(p)
+  }))), React.createElement(GenericTable, props, thead, data ? data.slice(position, position + perPage).map((row, rid) => React.createElement("tr", {
+    key: rid
+  }, row.map((col, cid) => React.createElement("td", {
+    key: cid
+  }, col)))) : asArray(tbody.props.children).slice(position, position + perPage)), React.createElement(DisplayIf, {
+    condition: paginationLocation.includes("bottom-")
+  }, React.createElement("div", {
+    className: `flex${appendClass(paginationLocation === "bottom-right", "flex-right")}`
+  }, React.createElement(pagination, {
+    total,
+    position,
+    onPageChange: (_, p) => setPosition(p),
+    onPerPageChange: p => setPerPage(p)
+  }))));
+};
+
+const ALLOWED_TABLE_CHILD = ["thead", "tbody"];
+
+const allowedChild = type => ALLOWED_TABLE_CHILD.includes(type);
+
+Table.propTypes = {
+  pagination: PropTypes.elementType,
+  paginationLocation: PropTypes.oneOf(PAGINATION_LOCATION),
+  data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
+  children: (props, propName, componentName) => {
+    const {
+      [propName]: t
+    } = props;
+    const err = new Error(`Invalid prop \`${propName}\` supplied to` + ` \`${componentName}\`. Validation failed, should be one of:` + ` ${ALLOWED_TABLE_CHILD.join(", ")}.`);
+
+    if (Array.isArray(t)) {
+      if (!t.every(ch => allowedChild(ch.type))) return err;
+    } else if (t && !allowedChild(t.type)) return err;
+
+    return null;
+  },
+  start: PropTypes.number
+};
+Table.defaultProps = {
+  pagination: DefaultTablePagination,
+  paginationLocation: "bottom-right",
+  data: null,
+  children: null,
+  start: 1
 };
 
 const Checkbox = ({
@@ -1709,59 +2098,6 @@ Input.defaultProps = {
 
 var css$1 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}";
 styleInject(css$1);
-
-const eventManager = {
-  list: new Map(),
-  emitQueue: new Map(),
-
-  on(event, callback) {
-    if (!this.list.has(event)) this.list.set(event, []);
-    this.list.get(event).push(callback);
-    return this;
-  },
-
-  off(event) {
-    this.list.delete(event);
-    return this;
-  },
-
-  cancelEmit(event) {
-    const timers = this.emitQueue.get(event);
-
-    if (timers) {
-      timers.forEach(timer => clearTimeout(timer));
-      this.emitQueue.delete(event);
-    }
-
-    return this;
-  },
-
-  /**
-   * Enqueue the event at the end of the call stack
-   * Doing so let the user call toast as follow:
-   * toast('1')
-   * toast('2')
-   * toast('3')
-   * Without setTimemout the code above will not work
-   */
-  emit(event, ...args) {
-    if (this.list.has(event)) {
-      this.list.get(event).forEach(callback => {
-        const timer = setTimeout(() => {
-          callback(...args);
-        }, 0);
-        if (!this.emitQueue.has(event)) this.emitQueue.set(event, []);
-        this.emitQueue.get(event).push(timer);
-      });
-    }
-  }
-
-};
-const EVENTS = {
-  SHOW_MODAL: "showModal"
-};
-
-const appendClass = (c, what) => c ? ` ${what || c}` : "";
 
 const ModalHeader = (_ref) => {
   let {
@@ -2416,5 +2752,5 @@ Timeline.defaultProps = {
   className: null
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationListener, ConfirmationModal, Display, Display0, Display1, Display2, Display3, Display4, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, confirmation, toast };
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, confirmation, toast };
 //# sourceMappingURL=index.es.js.map

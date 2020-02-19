@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { getIn } from "formik";
 
-import { ConditionalWrapper } from "./ConditionalWrapper";
+import { ConditionalWrapper } from "./Conditional";
 
 const Checkbox = ({ field, form, inline, asFormGroup, children }) => (
   <ConditionalWrapper
