@@ -1761,7 +1761,7 @@ const DefaultTablePagination = ({
   return React.createElement("div", {
     className: "flex-middle"
   }, React.createElement("span", {
-    className: "qtr-margin-right base-margin-top"
+    className: "qtr-margin-right"
   }, "Page:"), React.createElement(Pagination, {
     firstAndLast: true,
     icons: true,
@@ -1769,11 +1769,12 @@ const DefaultTablePagination = ({
     total: total,
     position: position,
     onPageChange: onPageChange,
-    beginAt: 0
+    beginAt: 0,
+    className: "no-margin-top"
   }), React.createElement("span", {
-    className: "text-muted qtr-margin-left qtr-margin-right base-margin-top"
+    className: "text-muted qtr-margin-left qtr-margin-right"
   }, "|"), React.createElement("span", {
-    className: "qtr-margin-right base-margin-top"
+    className: "qtr-margin-right"
   }, "Per page:"), React.createElement(Dropdown, {
     type: "link",
     header: perPage,
@@ -1861,12 +1862,12 @@ const Table = (_ref) => {
   const [position, setPosition] = React.useState(typeof start === "number" ? start : 0);
   const [perPage, setPerPage] = React.useState(50);
   const tbody = React.useMemo(() => children ? asArray(children).find(child => child.type === "tbody") : null, [children]);
-  const thead = React.useMemo(() => children ? asArray(children).find(child => child.type === "theady") : null, [children]);
+  const thead = React.useMemo(() => children ? asArray(children).find(child => child.type === "thead") : null, [children]);
   const total = React.useMemo(() => data ? data.length : tbody.props.children.length, [data, tbody]);
   return React.createElement(React.Fragment, null, React.createElement(DisplayIf, {
     condition: paginationLocation.includes("top-")
   }, React.createElement("div", {
-    className: `flex${appendClass(paginationLocation === "top-right", "flex-right")}`
+    className: `flex base-margin-bottom${appendClass(paginationLocation === "top-right", "flex-right")}`
   }, React.createElement(pagination, {
     total,
     position,
@@ -1879,7 +1880,7 @@ const Table = (_ref) => {
   }, col)))) : asArray(tbody.props.children).slice(position, position + perPage))), React.createElement(DisplayIf, {
     condition: paginationLocation.includes("bottom-")
   }, React.createElement("div", {
-    className: `flex${appendClass(paginationLocation === "bottom-right", "flex-right")}`
+    className: `flex base-margin-top${appendClass(paginationLocation === "bottom-right", "flex-right")}`
   }, React.createElement(pagination, {
     total,
     position,

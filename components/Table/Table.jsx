@@ -35,9 +35,7 @@ const Table = ({
   );
   const thead = React.useMemo(
     () =>
-      children
-        ? asArray(children).find(child => child.type === "theady")
-        : null,
+      children ? asArray(children).find(child => child.type === "thead") : null,
     [children]
   );
   const total = React.useMemo(
@@ -49,7 +47,7 @@ const Table = ({
     <>
       <DisplayIf condition={paginationLocation.includes("top-")}>
         <div
-          className={`flex${appendClass(
+          className={`flex base-margin-bottom${appendClass(
             paginationLocation === "top-right",
             "flex-right"
           )}`}
@@ -78,7 +76,7 @@ const Table = ({
       </GenericTable>
       <DisplayIf condition={paginationLocation.includes("bottom-")}>
         <div
-          className={`flex${appendClass(
+          className={`flex base-margin-top${appendClass(
             paginationLocation === "bottom-right",
             "flex-right"
           )}`}
