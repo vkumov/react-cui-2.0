@@ -31,7 +31,7 @@ export const DefaultTablePagination = ({
       />
       <span className="text-muted qtr-margin-left qtr-margin-right">|</span>
       <span className="qtr-margin-right">Per page:</span>
-      <Dropdown type="link" header={perPage} openTo="left">
+      <Dropdown type="link" header={perPage} openTo="left" alwaysClose>
         {[10, 25, 50, 100, 250, 500].map(v => (
           <Dropdown.Element
             onClick={() => setPerPage(v)}

@@ -1778,7 +1778,8 @@ const DefaultTablePagination = ({
   }, "Per page:"), React.createElement(Dropdown, {
     type: "link",
     header: perPage,
-    openTo: "left"
+    openTo: "left",
+    alwaysClose: true
   }, [10, 25, 50, 100, 250, 500].map(v => React.createElement(Dropdown.Element, {
     onClick: () => setPerPage(v),
     key: v,
