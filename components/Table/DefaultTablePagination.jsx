@@ -18,7 +18,7 @@ export const DefaultTablePagination = ({
 
   return (
     <div className="flex-middle">
-      <span className="qtr-margin-right">Page:</span>
+      <span className="qtr-margin-right base-margin-top">Page:</span>
       <Pagination
         firstAndLast
         icons
@@ -28,8 +28,10 @@ export const DefaultTablePagination = ({
         onPageChange={onPageChange}
         beginAt={0}
       />
-      <span className="text-muted qtr-margin-left qtr-margin-right">|</span>
-      <span className="qtr-margin-right">Per page:</span>
+      <span className="text-muted qtr-margin-left qtr-margin-right base-margin-top">
+        |
+      </span>
+      <span className="qtr-margin-right base-margin-top">Per page:</span>
       <Dropdown type="link" header={perPage} openTo="left">
         {[10, 25, 50, 100, 250, 500].map(v => (
           <Dropdown.Element

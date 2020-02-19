@@ -64,15 +64,17 @@ const Table = ({
       </DisplayIf>
       <GenericTable {...props}>
         {thead}
-        {data
-          ? data.slice(position, position + perPage).map((row, rid) => (
-              <tr key={rid}>
-                {row.map((col, cid) => (
-                  <td key={cid}>{col}</td>
-                ))}
-              </tr>
-            ))
-          : asArray(tbody.props.children).slice(position, position + perPage)}
+        <tbody>
+          {data
+            ? data.slice(position, position + perPage).map((row, rid) => (
+                <tr key={rid}>
+                  {row.map((col, cid) => (
+                    <td key={cid}>{col}</td>
+                  ))}
+                </tr>
+              ))
+            : asArray(tbody.props.children).slice(position, position + perPage)}
+        </tbody>
       </GenericTable>
       <DisplayIf condition={paginationLocation.includes("bottom-")}>
         <div

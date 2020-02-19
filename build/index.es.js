@@ -1761,7 +1761,7 @@ const DefaultTablePagination = ({
   return React.createElement("div", {
     className: "flex-middle"
   }, React.createElement("span", {
-    className: "qtr-margin-right"
+    className: "qtr-margin-right base-margin-top"
   }, "Page:"), React.createElement(Pagination, {
     firstAndLast: true,
     icons: true,
@@ -1771,9 +1771,9 @@ const DefaultTablePagination = ({
     onPageChange: onPageChange,
     beginAt: 0
   }), React.createElement("span", {
-    className: "text-muted qtr-margin-left qtr-margin-right"
+    className: "text-muted qtr-margin-left qtr-margin-right base-margin-top"
   }, "|"), React.createElement("span", {
-    className: "qtr-margin-right"
+    className: "qtr-margin-right base-margin-top"
   }, "Per page:"), React.createElement(Dropdown, {
     type: "link",
     header: perPage,
@@ -1872,11 +1872,11 @@ const Table = (_ref) => {
     position,
     onPageChange: (_, p) => setPosition(p),
     onPerPageChange: p => setPerPage(p)
-  }))), React.createElement(GenericTable, props, thead, data ? data.slice(position, position + perPage).map((row, rid) => React.createElement("tr", {
+  }))), React.createElement(GenericTable, props, thead, React.createElement("tbody", null, data ? data.slice(position, position + perPage).map((row, rid) => React.createElement("tr", {
     key: rid
   }, row.map((col, cid) => React.createElement("td", {
     key: cid
-  }, col)))) : asArray(tbody.props.children).slice(position, position + perPage)), React.createElement(DisplayIf, {
+  }, col)))) : asArray(tbody.props.children).slice(position, position + perPage))), React.createElement(DisplayIf, {
     condition: paginationLocation.includes("bottom-")
   }, React.createElement("div", {
     className: `flex${appendClass(paginationLocation === "bottom-right", "flex-right")}`
