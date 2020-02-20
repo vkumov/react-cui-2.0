@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { ConditionalWrapper } from "./Conditional";
+import { appendClass } from "../utils";
 
 const DropdownHeader = ({ type, handleClick, className, header }) => {
   switch (type) {
@@ -81,15 +82,20 @@ export class Dropdown extends React.Component {
       type,
       className,
       header,
-      divClassName
+      divClassName,
+      up
     } = this.props;
     const { isOpen } = this.state;
 
     return (
       <div
-        className={`dropdown${
-          ["left", "center"].includes(openTo) ? ` dropdown--${openTo}` : ""
-        }${isOpen ? " active" : ""}${divClassName ? ` ${divClassName}` : ""}`}
+        className={`dropdown${appendClass(
+          ["left", "center"].includes(openTo),
+          `dropdown--${openTo}`
+        )}${appendClass(up, "dropdown--up")}${appendClass(
+          isOpen,
+          "active"
+        )}${appendClass(divClassName)}`}
         ref={node => {
           this.node = node;
         }}
@@ -116,7 +122,8 @@ Dropdown.propTypes = {
   onClose: PropTypes.func,
   stopPropagation: PropTypes.bool,
   divClassName: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  up: PropTypes.bool
 };
 
 Dropdown.defaultProps = {
@@ -128,7 +135,8 @@ Dropdown.defaultProps = {
   onOpen: null,
   onClose: null,
   stopPropagation: false,
-  divClassName: null
+  divClassName: null,
+  up: false
 };
 
 Dropdown.Element = ({ selected, icon, children, className, ...props }) => (
