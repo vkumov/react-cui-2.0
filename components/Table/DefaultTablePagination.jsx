@@ -9,7 +9,8 @@ export const DefaultTablePagination = ({
   position,
   onPageChange,
   onPerPageChange,
-  perPageUp
+  perPageUp,
+  paginationProps
 }) => {
   const [perPage, setPerPage] = React.useState(50);
 
@@ -29,6 +30,7 @@ export const DefaultTablePagination = ({
         onPageChange={onPageChange}
         beginAt={0}
         className="no-margin-top"
+        {...paginationProps}
       />
       <span className="text-muted qtr-margin-left qtr-margin-right">|</span>
       <span className="qtr-margin-right">Per page:</span>
@@ -58,9 +60,18 @@ DefaultTablePagination.propTypes = {
   position: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   onPerPageChange: PropTypes.func.isRequired,
-  perPageUp: PropTypes.bool
+  perPageUp: PropTypes.bool,
+  paginationProps: PropTypes.exact({
+    size: PropTypes.oneOf(["small", "default", "large"]),
+    rounded: PropTypes.bool,
+    icons: PropTypes.bool,
+    next: PropTypes.node,
+    prev: PropTypes.node,
+    firstAndLast: PropTypes.bool
+  })
 };
 
 DefaultTablePagination.defaultProps = {
-  perPageUp: false
+  perPageUp: false,
+  paginationProps: {}
 };

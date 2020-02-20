@@ -19,6 +19,7 @@ const PAGINATION_LOCATION = [
 const Table = ({
   pagination,
   paginationLocation,
+  paginationProps,
   data,
   children,
   start,
@@ -56,7 +57,8 @@ const Table = ({
             total,
             position,
             onPageChange: (_, p) => setPosition(p),
-            onPerPageChange: p => setPerPage(p)
+            onPerPageChange: p => setPerPage(p),
+            paginationProps
           })}
         </div>
       </DisplayIf>
@@ -86,7 +88,8 @@ const Table = ({
             position,
             onPageChange: (_, p) => setPosition(p),
             onPerPageChange: p => setPerPage(p),
-            perPageUp: true
+            perPageUp: true,
+            paginationProps
           })}
         </div>
       </DisplayIf>
@@ -100,6 +103,14 @@ const allowedChild = type => ALLOWED_TABLE_CHILD.includes(type);
 Table.propTypes = {
   pagination: PropTypes.elementType,
   paginationLocation: PropTypes.oneOf(PAGINATION_LOCATION),
+  paginationProps: PropTypes.exact({
+    size: PropTypes.oneOf(["small", "default", "large"]),
+    rounded: PropTypes.bool,
+    icons: PropTypes.bool,
+    next: PropTypes.node,
+    prev: PropTypes.node,
+    firstAndLast: PropTypes.bool
+  }),
   data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
   children: (props, propName, componentName) => {
     const { [propName]: t } = props;
@@ -120,6 +131,10 @@ Table.propTypes = {
 Table.defaultProps = {
   pagination: DefaultTablePagination,
   paginationLocation: "bottom-right",
+  paginationProps: {
+    icons: true,
+    firstAndLast: true
+  },
   data: null,
   children: null,
   start: 1

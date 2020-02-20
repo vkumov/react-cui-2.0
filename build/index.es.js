@@ -1809,7 +1809,8 @@ const DefaultTablePagination = ({
   position,
   onPageChange,
   onPerPageChange,
-  perPageUp
+  perPageUp,
+  paginationProps
 }) => {
   const [perPage, setPerPage] = React.useState(50);
   React.useEffect(() => {
@@ -1819,7 +1820,7 @@ const DefaultTablePagination = ({
     className: "flex-middle"
   }, React.createElement("span", {
     className: "qtr-margin-right"
-  }, "Page:"), React.createElement(Pagination, {
+  }, "Page:"), React.createElement(Pagination, _extends({
     firstAndLast: true,
     icons: true,
     perPage: perPage,
@@ -1828,7 +1829,7 @@ const DefaultTablePagination = ({
     onPageChange: onPageChange,
     beginAt: 0,
     className: "no-margin-top"
-  }), React.createElement("span", {
+  }, paginationProps)), React.createElement("span", {
     className: "text-muted qtr-margin-left qtr-margin-right"
   }, "|"), React.createElement("span", {
     className: "qtr-margin-right"
@@ -1849,10 +1850,19 @@ DefaultTablePagination.propTypes = {
   position: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   onPerPageChange: PropTypes.func.isRequired,
-  perPageUp: PropTypes.bool
+  perPageUp: PropTypes.bool,
+  paginationProps: PropTypes.exact({
+    size: PropTypes.oneOf(["small", "default", "large"]),
+    rounded: PropTypes.bool,
+    icons: PropTypes.bool,
+    next: PropTypes.node,
+    prev: PropTypes.node,
+    firstAndLast: PropTypes.bool
+  })
 };
 DefaultTablePagination.defaultProps = {
-  perPageUp: false
+  perPageUp: false,
+  paginationProps: {}
 };
 
 const asArray = v => Array.isArray(v) ? v : [v];
@@ -1863,11 +1873,12 @@ const Table = (_ref) => {
   let {
     pagination,
     paginationLocation,
+    paginationProps,
     data,
     children,
     start
   } = _ref,
-      props = _objectWithoutProperties(_ref, ["pagination", "paginationLocation", "data", "children", "start"]);
+      props = _objectWithoutProperties(_ref, ["pagination", "paginationLocation", "paginationProps", "data", "children", "start"]);
 
   const [position, setPosition] = React.useState(typeof start === "number" ? start : 0);
   const [perPage, setPerPage] = React.useState(50);
@@ -1882,7 +1893,8 @@ const Table = (_ref) => {
     total,
     position,
     onPageChange: (_, p) => setPosition(p),
-    onPerPageChange: p => setPerPage(p)
+    onPerPageChange: p => setPerPage(p),
+    paginationProps
   }))), React.createElement(GenericTable, props, thead, React.createElement("tbody", null, data ? data.slice(position, position + perPage).map((row, rid) => React.createElement("tr", {
     key: rid
   }, row.map((col, cid) => React.createElement("td", {
@@ -1896,7 +1908,8 @@ const Table = (_ref) => {
     position,
     onPageChange: (_, p) => setPosition(p),
     onPerPageChange: p => setPerPage(p),
-    perPageUp: true
+    perPageUp: true,
+    paginationProps
   }))));
 };
 
@@ -1907,6 +1920,14 @@ const allowedChild = type => ALLOWED_TABLE_CHILD.includes(type);
 Table.propTypes = {
   pagination: PropTypes.elementType,
   paginationLocation: PropTypes.oneOf(PAGINATION_LOCATION),
+  paginationProps: PropTypes.exact({
+    size: PropTypes.oneOf(["small", "default", "large"]),
+    rounded: PropTypes.bool,
+    icons: PropTypes.bool,
+    next: PropTypes.node,
+    prev: PropTypes.node,
+    firstAndLast: PropTypes.bool
+  }),
   data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
   children: (props, propName, componentName) => {
     const {
@@ -1925,6 +1946,10 @@ Table.propTypes = {
 Table.defaultProps = {
   pagination: DefaultTablePagination,
   paginationLocation: "bottom-right",
+  paginationProps: {
+    icons: true,
+    firstAndLast: true
+  },
   data: null,
   children: null,
   start: 1
