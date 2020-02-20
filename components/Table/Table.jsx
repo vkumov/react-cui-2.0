@@ -85,7 +85,8 @@ const Table = ({
             total,
             position,
             onPageChange: (_, p) => setPosition(p),
-            onPerPageChange: p => setPerPage(p)
+            onPerPageChange: p => setPerPage(p),
+            perPageUp: true
           })}
         </div>
       </DisplayIf>

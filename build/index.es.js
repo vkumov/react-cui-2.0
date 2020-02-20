@@ -1808,7 +1808,8 @@ const DefaultTablePagination = ({
   total,
   position,
   onPageChange,
-  onPerPageChange
+  onPerPageChange,
+  perPageUp
 }) => {
   const [perPage, setPerPage] = React.useState(50);
   React.useEffect(() => {
@@ -1835,7 +1836,8 @@ const DefaultTablePagination = ({
     type: "link",
     header: perPage,
     openTo: "left",
-    alwaysClose: true
+    alwaysClose: true,
+    up: perPageUp
   }, [10, 25, 50, 100, 250, 500].map(v => React.createElement(Dropdown.Element, {
     onClick: () => setPerPage(v),
     key: v,
@@ -1846,7 +1848,11 @@ DefaultTablePagination.propTypes = {
   total: PropTypes.number.isRequired,
   position: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
-  onPerPageChange: PropTypes.func.isRequired
+  onPerPageChange: PropTypes.func.isRequired,
+  perPageUp: PropTypes.bool
+};
+DefaultTablePagination.defaultProps = {
+  perPageUp: false
 };
 
 const asArray = v => Array.isArray(v) ? v : [v];
@@ -1889,7 +1895,8 @@ const Table = (_ref) => {
     total,
     position,
     onPageChange: (_, p) => setPosition(p),
-    onPerPageChange: p => setPerPage(p)
+    onPerPageChange: p => setPerPage(p),
+    perPageUp: true
   }))));
 };
 

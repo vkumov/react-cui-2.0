@@ -8,7 +8,8 @@ export const DefaultTablePagination = ({
   total,
   position,
   onPageChange,
-  onPerPageChange
+  onPerPageChange,
+  perPageUp
 }) => {
   const [perPage, setPerPage] = React.useState(50);
 
@@ -31,7 +32,13 @@ export const DefaultTablePagination = ({
       />
       <span className="text-muted qtr-margin-left qtr-margin-right">|</span>
       <span className="qtr-margin-right">Per page:</span>
-      <Dropdown type="link" header={perPage} openTo="left" alwaysClose>
+      <Dropdown
+        type="link"
+        header={perPage}
+        openTo="left"
+        alwaysClose
+        up={perPageUp}
+      >
         {[10, 25, 50, 100, 250, 500].map(v => (
           <Dropdown.Element
             onClick={() => setPerPage(v)}
@@ -50,5 +57,10 @@ DefaultTablePagination.propTypes = {
   total: PropTypes.number.isRequired,
   position: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
-  onPerPageChange: PropTypes.func.isRequired
+  onPerPageChange: PropTypes.func.isRequired,
+  perPageUp: PropTypes.bool
+};
+
+DefaultTablePagination.defaultProps = {
+  perPageUp: false
 };
