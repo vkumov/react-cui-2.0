@@ -1884,7 +1884,7 @@ const Table = (_ref) => {
   const [perPage, setPerPage] = React.useState(50);
   const tbody = React.useMemo(() => children ? asArray(children).find(child => child.type === "tbody") : null, [children]);
   const thead = React.useMemo(() => children ? asArray(children).find(child => child.type === "thead") : null, [children]);
-  const total = React.useMemo(() => data ? data.length : tbody.props.children.length, [data, tbody]);
+  const total = React.useMemo(() => (data ? data.length : tbody.props.children.length) || 0, [data, tbody]);
   return React.createElement(React.Fragment, null, React.createElement(DisplayIf, {
     condition: paginationLocation.includes("top-")
   }, React.createElement("div", {
