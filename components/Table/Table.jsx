@@ -41,7 +41,7 @@ const Table = ({
   );
   const total = React.useMemo(
     () => (data ? data.length : asArray(tbody.props.children).length) || 0,
-    [data, tbody]
+    [data, tbody.props.children]
   );
 
   return (
