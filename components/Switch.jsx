@@ -1,8 +1,10 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React from "react";
 import PropTypes from "prop-types";
 import { getIn } from "formik";
 
 import { ConditionalWrapper } from "./Conditional";
+import { appendClass } from "../utils";
 
 const Switch = ({
   field,
@@ -20,9 +22,13 @@ const Switch = ({
     condition={asFormGroup}
     wrapper={
       <div
-        className={`form-group${inline ? " form-group--inline" : ""}${
-          className ? ` ${className}` : ""
-        }${spacing ? ` form-group--${spacing}` : ""}`}
+        className={`form-group${appendClass(
+          inline,
+          "form-group--inline"
+        )}${appendClass(className)}${appendClass(
+          spacing,
+          ` form-group--${spacing}`
+        )}`}
       />
     }
   >

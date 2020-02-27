@@ -2011,7 +2011,7 @@ const Switch = ({
 }) => React.createElement(ConditionalWrapper, {
   condition: asFormGroup,
   wrapper: React.createElement("div", {
-    className: `form-group${inline ? " form-group--inline" : ""}${className ? ` ${className}` : ""}${spacing ? ` form-group--${spacing}` : ""}`
+    className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}${appendClass(spacing, ` form-group--${spacing}`)}`
   })
 }, React.createElement("label", {
   className: `switch${disabled ? " disabled" : ""}`,
