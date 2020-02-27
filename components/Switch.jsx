@@ -34,12 +34,12 @@ const Switch = ({
   >
     <label
       className={`switch${disabled ? " disabled" : ""}`}
-      htmlFor={getIn(form.values, field.name, id)}
+      htmlFor={id || field.name}
     >
       <input
         type="checkbox"
         {...field}
-        id={getIn(form.values, field.name, id)}
+        id={id || field.name}
         checked={getIn(form.values, field.name, false)}
       />
       {left ? <span className="switch__label">{left}</span> : null}

@@ -2015,11 +2015,11 @@ const Switch = ({
   })
 }, React.createElement("label", {
   className: `switch${disabled ? " disabled" : ""}`,
-  htmlFor: getIn(form.values, field.name, id)
+  htmlFor: id || field.name
 }, React.createElement("input", _extends({
   type: "checkbox"
 }, field, {
-  id: getIn(form.values, field.name, id),
+  id: id || field.name,
   checked: getIn(form.values, field.name, false)
 })), left ? React.createElement("span", {
   className: "switch__label"
