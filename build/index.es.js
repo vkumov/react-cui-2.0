@@ -2790,5 +2790,68 @@ Timeline.defaultProps = {
   className: null
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, confirmation, toast };
+const Step = ({
+  icon,
+  children,
+  visited,
+  active,
+  className
+}) => React.createElement("div", {
+  className: `step${appendClass(visited, "visited")}${appendClass(active, "active")}${appendClass(className)}`
+}, React.createElement("div", {
+  className: "step__icon"
+}, icon), React.createElement("div", {
+  className: "step__label"
+}, children));
+
+Step.propTypes = {
+  icon: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
+  visited: PropTypes.bool,
+  active: PropTypes.bool,
+  className: PropTypes.string
+};
+Step.defaultProps = {
+  visited: false,
+  active: false,
+  className: null
+};
+
+const Steps = ({
+  size,
+  color,
+  vertical,
+  children,
+  className
+}) => React.createElement("div", {
+  className: `steps${appendClass(size !== "default", `steps--${size}`)} steps--${color}${appendClass(vertical, "steps--vertical")}${appendClass(className)}`
+}, children);
+
+Steps.propTypes = {
+  size: PropTypes.oneOf(["dot", "small", "default", "large"]),
+  color: PropTypes.oneOf(["primary", "secondary", "success", "dark"]),
+  vertical: PropTypes.bool,
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
+Steps.defaultProps = {
+  size: "default",
+  color: "primary",
+  vertical: false,
+  className: null
+};
+
+Steps.Dot = props => React.createElement(Steps, _extends({}, props, {
+  size: "dot"
+}));
+
+Steps.Small = props => React.createElement(Steps, _extends({}, props, {
+  size: "small"
+}));
+
+Steps.Large = props => React.createElement(Steps, _extends({}, props, {
+  size: "large"
+}));
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, confirmation, toast };
 //# sourceMappingURL=index.es.js.map
