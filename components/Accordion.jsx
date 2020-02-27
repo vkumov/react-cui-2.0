@@ -48,10 +48,7 @@ const Accordion = ({ children, toggles, bordered }) => {
 Accordion.Element = AccordionElement;
 
 Accordion.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(AccordionElement),
-    AccordionElement
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
   toggles: PropTypes.bool,
   bordered: PropTypes.bool
 };
