@@ -50,8 +50,8 @@ const Switch = ({
 );
 
 Switch.propTypes = {
-  left: PropTypes.string,
-  right: PropTypes.string,
+  left: PropTypes.node,
+  right: PropTypes.node,
   disabled: PropTypes.bool,
   inline: PropTypes.bool,
   spacing: PropTypes.oneOf([false, "compressed", "loose"]),
