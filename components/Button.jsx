@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { appendClass as ac } from "../utils";
+
 export const Button = ({
   size,
   color,
@@ -10,14 +12,17 @@ export const Button = ({
   className,
   asLink,
   style,
+  selected,
   ...props
 }) =>
   React.createElement(asLink ? "a" : "button", {
-    className: `btn${size !== "default" ? ` btn--${size}` : ""} btn--${color}${
-      wide ? " btn--wide" : ""
-    }${justified ? " btn--justified" : ""}${circle ? " btn--circle" : ""}${
-      className ? ` ${className}` : ""
-    }${asLink ? " flex-middle flex-center" : ""}`,
+    className: `btn${ac(size !== "default", `btn--${size}`)} btn--${color}${ac(
+      wide,
+      "btn--wide"
+    )}${ac(justified, " btn--justified")}${ac(circle, "btn--circle")}${ac(
+      selected,
+      "selected"
+    )}${ac(className)}${ac(asLink, " flex-middle flex-center")}`,
     style: { ...(style || {}), ...(asLink ? { display: "flex" } : {}) },
     ...props
   });
@@ -43,6 +48,8 @@ Button.propTypes = {
   justified: PropTypes.bool,
   circle: PropTypes.bool,
   asLink: PropTypes.bool,
+  selected: PropTypes.bool,
+  style: PropTypes.shape({}),
   className: PropTypes.string
 };
 
@@ -53,6 +60,8 @@ Button.defaultProps = {
   justified: false,
   circle: false,
   asLink: false,
+  selected: false,
+  style: null,
   className: null
 };
 
