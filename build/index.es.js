@@ -2318,7 +2318,7 @@ const ConfirmationListener = () => {
     prompt: modal.prompt,
     confirmHandle: async () => {
       const r = await modal.onConfirm();
-      onClose();
+      if (r) onClose();
       return Boolean(r);
     },
     closeHandle: onClose,
