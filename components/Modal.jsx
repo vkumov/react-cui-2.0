@@ -211,7 +211,7 @@ export const ConfirmationListener = () => {
       confirmHandle={async () => {
         const r = await modal.onConfirm();
         if (r) onClose();
-        return Boolean(r);
+        return true;
       }}
       closeHandle={onClose}
       confirmText={modal.confirmText}
