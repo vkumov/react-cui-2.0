@@ -209,9 +209,9 @@ export const ConfirmationListener = () => {
       isOpen={modalShown}
       prompt={modal.prompt}
       confirmHandle={async () => {
-        await modal.onConfirm();
+        const r = await modal.onConfirm();
         onClose();
-        return true;
+        return Boolean(r);
       }}
       closeHandle={onClose}
       confirmText={modal.confirmText}
