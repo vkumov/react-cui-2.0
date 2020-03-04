@@ -16,7 +16,8 @@ const Switch = ({
   asFormGroup,
   form,
   spacing,
-  id
+  id,
+  style
 }) => (
   <ConditionalWrapper
     condition={asFormGroup}
@@ -29,6 +30,7 @@ const Switch = ({
           spacing,
           ` form-group--${spacing}`
         )}`}
+        style={style}
       />
     }
   >
@@ -64,7 +66,8 @@ Switch.propTypes = {
     onChange: PropTypes.func
   }).isRequired,
   className: PropTypes.string,
-  id: PropTypes.string
+  id: PropTypes.string,
+  style: PropTypes.shape({})
 };
 
 Switch.defaultProps = {
@@ -75,7 +78,8 @@ Switch.defaultProps = {
   spacing: false,
   asFormGroup: true,
   className: null,
-  id: null
+  id: null,
+  style: null
 };
 
 export { Switch };

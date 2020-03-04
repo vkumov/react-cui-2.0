@@ -2012,11 +2012,13 @@ const Switch = ({
   asFormGroup,
   form,
   spacing,
-  id
+  id,
+  style
 }) => React.createElement(ConditionalWrapper, {
   condition: asFormGroup,
   wrapper: React.createElement("div", {
-    className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}${appendClass(spacing, ` form-group--${spacing}`)}`
+    className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}${appendClass(spacing, ` form-group--${spacing}`)}`,
+    style: style
   })
 }, React.createElement("label", {
   className: `switch${disabled ? " disabled" : ""}`,
@@ -2049,7 +2051,8 @@ Switch.propTypes = {
     onChange: PropTypes.func
   }).isRequired,
   className: PropTypes.string,
-  id: PropTypes.string
+  id: PropTypes.string,
+  style: PropTypes.shape({})
 };
 Switch.defaultProps = {
   left: null,
@@ -2059,7 +2062,8 @@ Switch.defaultProps = {
   spacing: false,
   asFormGroup: true,
   className: null,
-  id: null
+  id: null,
+  style: null
 };
 
 const Input = (_ref) => {
