@@ -507,6 +507,16 @@ Dropdown.Divider = () => React.createElement("div", {
   className: "divider"
 });
 
+Dropdown.Group = ({
+  children
+}) => React.createElement("div", {
+  className: "dropdown__group"
+}, children);
+
+Dropdown.Group.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
 Dropdown.GroupHeader = ({
   header
 }) => React.createElement("div", {

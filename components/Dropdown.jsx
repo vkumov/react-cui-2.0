@@ -171,6 +171,14 @@ Dropdown.Element.defaultProps = {
 
 Dropdown.Divider = () => <div className="divider" />;
 
+Dropdown.Group = ({ children }) => (
+  <div className="dropdown__group">{children}</div>
+);
+
+Dropdown.Group.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
 Dropdown.GroupHeader = ({ header }) => (
   <div className="dropdown__group-header">{header}</div>
 );
