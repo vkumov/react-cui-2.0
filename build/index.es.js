@@ -2585,8 +2585,10 @@ const Tab = ({
   className: `tab-pane${active ? " active" : ""}`
 }, children);
 Tab.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
   id: tabIdProp.isRequired,
   active: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
   title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired
 };
@@ -2605,18 +2607,19 @@ const TabsHeader = ({
   embossed,
   bordered,
   vertical,
+  inline,
   openTab,
   onTabChange,
   children
 }) => React.createElement("ul", {
-  className: `tabs${tabsClassName ? ` ${tabsClassName}` : ""}${center ? " tabs--centered" : ""}${right ? " tabs--right" : ""}${justified ? " tabs--justified" : ""}${embossed ? " tabs--embossed" : ""}${bordered ? " tabs--bordered" : ""}${vertical ? " tabs--vertical" : ""}`
+  className: `tabs${appendClass(tabsClassName)}${appendClass(center, "tabs--centered")}${appendClass(right, "tabs--right")}${appendClass(justified, "tabs--justified")}${appendClass(embossed, "tabs--embossed")}${appendClass(bordered, "tabs--bordered")}${appendClass(vertical, "tabs--vertical")}${appendClass(inline, "tabs--inline")}`
 }, React.Children.map(children, ({
   props: {
     id,
     title
   }
 }, idx) => React.createElement("li", {
-  className: `tab${isActive(openTab, id, idx) ? " active" : ""}`,
+  className: `tab${appendClass(isActive(openTab, id, idx), "active")}`,
   key: firstDefined(id, idx)
 }, React.createElement("a", {
   onClick: () => onTabChange(firstDefined(id, idx))
@@ -2629,6 +2632,7 @@ TabsHeader.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
+  inline: PropTypes.bool,
   openTab: tabIdProp,
   onTabChange: PropTypes.func.isRequired,
   children: tabsChildrenProp.isRequired
@@ -2641,6 +2645,7 @@ TabsHeader.defaultProps = {
   embossed: false,
   bordered: false,
   vertical: false,
+  inline: false,
   openTab: null
 };
 const Tabs = ({
@@ -2653,7 +2658,8 @@ const Tabs = ({
   justified,
   embossed,
   bordered,
-  vertical
+  vertical,
+  inline
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
   const header = React.createElement(ConditionalWrapper, {
@@ -2669,6 +2675,7 @@ const Tabs = ({
     embossed: embossed,
     bordered: bordered,
     vertical: vertical,
+    inline: inline,
     openTab: openTab,
     onTabChange: id => setOpenTab(id)
   }, children));
@@ -2699,7 +2706,8 @@ Tabs.propTypes = {
   justified: PropTypes.bool,
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
-  vertical: PropTypes.bool
+  vertical: PropTypes.bool,
+  inline: PropTypes.bool
 };
 Tabs.defaultProps = {
   defaultTab: null,
@@ -2710,7 +2718,8 @@ Tabs.defaultProps = {
   justified: false,
   embossed: false,
   bordered: false,
-  vertical: false
+  vertical: false,
+  inline: false
 };
 
 const Section = ({

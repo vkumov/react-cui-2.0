@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { ConditionalWrapper } from "./Conditional";
+import { appendClass as ac } from "../utils";
 
 const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
 
@@ -13,8 +14,10 @@ export const Tab = ({ children, active }) => (
 );
 
 Tab.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
   id: tabIdProp.isRequired,
   active: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
   title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired
 };
@@ -34,20 +37,23 @@ export const TabsHeader = ({
   embossed,
   bordered,
   vertical,
+  inline,
   openTab,
   onTabChange,
   children
 }) => (
   <ul
-    className={`tabs${tabsClassName ? ` ${tabsClassName}` : ""}${
-      center ? " tabs--centered" : ""
-    }${right ? " tabs--right" : ""}${justified ? " tabs--justified" : ""}${
-      embossed ? " tabs--embossed" : ""
-    }${bordered ? " tabs--bordered" : ""}${vertical ? " tabs--vertical" : ""}`}
+    className={`tabs${ac(tabsClassName)}${ac(center, "tabs--centered")}${ac(
+      right,
+      "tabs--right"
+    )}${ac(justified, "tabs--justified")}${ac(embossed, "tabs--embossed")}${ac(
+      bordered,
+      "tabs--bordered"
+    )}${ac(vertical, "tabs--vertical")}${ac(inline, "tabs--inline")}`}
   >
     {React.Children.map(children, ({ props: { id, title } }, idx) => (
       <li
-        className={`tab${isActive(openTab, id, idx) ? " active" : ""}`}
+        className={`tab${ac(isActive(openTab, id, idx), "active")}`}
         key={firstDefined(id, idx)}
       >
         <a onClick={() => onTabChange(firstDefined(id, idx))}>{title}</a>
@@ -64,6 +70,7 @@ TabsHeader.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
+  inline: PropTypes.bool,
   openTab: tabIdProp,
   onTabChange: PropTypes.func.isRequired,
   children: tabsChildrenProp.isRequired
@@ -77,6 +84,7 @@ TabsHeader.defaultProps = {
   embossed: false,
   bordered: false,
   vertical: false,
+  inline: false,
   openTab: null
 };
 
@@ -90,7 +98,8 @@ export const Tabs = ({
   justified,
   embossed,
   bordered,
-  vertical
+  vertical,
+  inline
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
 
@@ -107,6 +116,7 @@ export const Tabs = ({
         embossed={embossed}
         bordered={bordered}
         vertical={vertical}
+        inline={inline}
         openTab={openTab}
         onTabChange={id => setOpenTab(id)}
       >
@@ -153,7 +163,8 @@ Tabs.propTypes = {
   justified: PropTypes.bool,
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
-  vertical: PropTypes.bool
+  vertical: PropTypes.bool,
+  inline: PropTypes.bool
 };
 
 Tabs.defaultProps = {
@@ -165,5 +176,6 @@ Tabs.defaultProps = {
   justified: false,
   embossed: false,
   bordered: false,
-  vertical: false
+  vertical: false,
+  inline: false
 };
