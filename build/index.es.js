@@ -2667,7 +2667,8 @@ const Tabs = ({
   bordered,
   vertical,
   inline,
-  renderHeader
+  renderHeader,
+  bodyRender
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
   const header = renderHeader(React.createElement(ConditionalWrapper, {
@@ -2687,7 +2688,7 @@ const Tabs = ({
     openTab: openTab,
     onTabChange: id => setOpenTab(id)
   }, children)));
-  const body = React.createElement(ConditionalWrapper, {
+  const body = bodyRender(React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
       className: "col-md-9"
@@ -2696,7 +2697,7 @@ const Tabs = ({
     className: `tab-content${contentClassName ? ` ${contentClassName}` : ""}`
   }, React.Children.map(children, (child, idx) => React.cloneElement(child, {
     active: isActive(openTab, child.props.id, idx)
-  }))));
+  })))));
   return React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
@@ -2716,7 +2717,8 @@ Tabs.propTypes = {
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
   inline: PropTypes.bool,
-  renderHeader: PropTypes.func
+  renderHeader: PropTypes.func,
+  bodyRender: PropTypes.func
 };
 Tabs.defaultProps = {
   defaultTab: null,
@@ -2729,7 +2731,8 @@ Tabs.defaultProps = {
   bordered: false,
   vertical: false,
   inline: false,
-  renderHeader: header => header
+  renderHeader: header => header,
+  bodyRender: body => body
 };
 
 const Section = ({
