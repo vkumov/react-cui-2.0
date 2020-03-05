@@ -2671,12 +2671,12 @@ const Tabs = ({
   renderBody
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
-  const header = renderHeader(React.createElement(ConditionalWrapper, {
+  const header = React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
       className: "col-md-3"
     })
-  }, React.createElement(TabsHeader, {
+  }, renderHeader(React.createElement(TabsHeader, {
     tabsClassName: tabsClassName,
     center: center,
     right: right,
@@ -2688,12 +2688,12 @@ const Tabs = ({
     openTab: openTab,
     onTabChange: id => setOpenTab(id)
   }, children)));
-  const body = renderBody(React.createElement(ConditionalWrapper, {
+  const body = React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
       className: "col-md-9"
     })
-  }, React.createElement("div", {
+  }, renderBody(React.createElement("div", {
     className: `tab-content${contentClassName ? ` ${contentClassName}` : ""}`
   }, React.Children.map(children, (child, idx) => React.cloneElement(child, {
     active: isActive(openTab, child.props.id, idx)

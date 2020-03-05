@@ -105,44 +105,48 @@ export const Tabs = ({
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
 
-  const header = renderHeader(
+  const header = (
     <ConditionalWrapper
       condition={vertical}
       wrapper={<div className="col-md-3" />}
     >
-      <TabsHeader
-        tabsClassName={tabsClassName}
-        center={center}
-        right={right}
-        justified={justified}
-        embossed={embossed}
-        bordered={bordered}
-        vertical={vertical}
-        inline={inline}
-        openTab={openTab}
-        onTabChange={id => setOpenTab(id)}
-      >
-        {children}
-      </TabsHeader>
+      {renderHeader(
+        <TabsHeader
+          tabsClassName={tabsClassName}
+          center={center}
+          right={right}
+          justified={justified}
+          embossed={embossed}
+          bordered={bordered}
+          vertical={vertical}
+          inline={inline}
+          openTab={openTab}
+          onTabChange={id => setOpenTab(id)}
+        >
+          {children}
+        </TabsHeader>
+      )}
     </ConditionalWrapper>
   );
 
-  const body = renderBody(
+  const body = (
     <ConditionalWrapper
       condition={vertical}
       wrapper={<div className="col-md-9" />}
     >
-      <div
-        className={`tab-content${
-          contentClassName ? ` ${contentClassName}` : ""
-        }`}
-      >
-        {React.Children.map(children, (child, idx) =>
-          React.cloneElement(child, {
-            active: isActive(openTab, child.props.id, idx)
-          })
-        )}
-      </div>
+      {renderBody(
+        <div
+          className={`tab-content${
+            contentClassName ? ` ${contentClassName}` : ""
+          }`}
+        >
+          {React.Children.map(children, (child, idx) =>
+            React.cloneElement(child, {
+              active: isActive(openTab, child.props.id, idx)
+            })
+          )}
+        </div>
+      )}
     </ConditionalWrapper>
   );
 
