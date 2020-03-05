@@ -99,11 +99,12 @@ export const Tabs = ({
   embossed,
   bordered,
   vertical,
-  inline
+  inline,
+  renderHeader
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
 
-  const header = (
+  const header = renderHeader(
     <ConditionalWrapper
       condition={vertical}
       wrapper={<div className="col-md-3" />}
@@ -164,7 +165,8 @@ Tabs.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
-  inline: PropTypes.bool
+  inline: PropTypes.bool,
+  renderHeader: PropTypes.func
 };
 
 Tabs.defaultProps = {
@@ -177,5 +179,6 @@ Tabs.defaultProps = {
   embossed: false,
   bordered: false,
   vertical: false,
-  inline: false
+  inline: false,
+  renderHeader: header => header
 };
