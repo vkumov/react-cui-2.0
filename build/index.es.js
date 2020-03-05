@@ -2200,9 +2200,11 @@ const Modal = (_ref4) => {
     autoClose,
     isOpen,
     animationDuration,
-    transitionEvents
+    transitionEvents,
+    dialogProps,
+    contentProps
   } = _ref4,
-      props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration", "transitionEvents"]);
+      props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration", "transitionEvents", "dialogProps", "contentProps"]);
 
   props.autoClose = autoClose;
   props.onRequestClose = autoClose && closeHandle ? closeHandle : undefined;
@@ -2216,12 +2218,13 @@ const Modal = (_ref4) => {
     isOpen: ["entering", "entered"].includes(state),
     className: `modal${size ? ` modal--${size}` : ""}${left ? " modal--left" : ""}`,
     closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exiting : animationDuration
-  }), React.createElement("div", {
-    className: "modal__dialog",
+  }), React.createElement("div", _extends({
+    className: "modal__dialog"
+  }, dialogProps, {
     onClick: e => e.stopPropagation()
-  }, React.createElement("div", {
+  }), React.createElement("div", _extends({
     className: "modal__content"
-  }, closeIcon && closeHandle ? React.createElement("a", {
+  }, contentProps), closeIcon && closeHandle ? React.createElement("a", {
     className: "modal__close",
     onClick: closeHandle
   }, React.createElement("span", {
@@ -2243,7 +2246,9 @@ Modal.propTypes = {
     exiting: PropTypes.number
   })]),
   children: PropTypes.node.isRequired,
-  transitionEvents: PropTypes.objectOf(PropTypes.func)
+  transitionEvents: PropTypes.objectOf(PropTypes.func),
+  dialogProps: PropTypes.shape({}),
+  contentProps: PropTypes.shape({})
 };
 Modal.defaultProps = {
   size: false,
@@ -2253,7 +2258,9 @@ Modal.defaultProps = {
   title: null,
   closeHandle: null,
   left: false,
-  transitionEvents: null
+  transitionEvents: null,
+  dialogProps: null,
+  contentProps: null
 };
 
 Modal.Small = props => React.createElement(Modal, _extends({}, props, {

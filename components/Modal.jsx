@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import Transition from "react-transition-group/Transition";
 import ReactModal from "react-modal";
@@ -43,6 +46,8 @@ export const Modal = ({
   isOpen,
   animationDuration,
   transitionEvents,
+  dialogProps,
+  contentProps,
   ...props
 }) => {
   props.autoClose = autoClose;
@@ -70,8 +75,12 @@ export const Modal = ({
               : animationDuration
           }
         >
-          <div className="modal__dialog" onClick={e => e.stopPropagation()}>
-            <div className="modal__content">
+          <div
+            className="modal__dialog"
+            {...dialogProps}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="modal__content" {...contentProps}>
               {closeIcon && closeHandle ? (
                 <a className="modal__close" onClick={closeHandle}>
                   <span className="icon-close" />
@@ -107,7 +116,9 @@ Modal.propTypes = {
     })
   ]),
   children: PropTypes.node.isRequired,
-  transitionEvents: PropTypes.objectOf(PropTypes.func)
+  transitionEvents: PropTypes.objectOf(PropTypes.func),
+  dialogProps: PropTypes.shape({}),
+  contentProps: PropTypes.shape({})
 };
 
 Modal.defaultProps = {
@@ -118,7 +129,9 @@ Modal.defaultProps = {
   title: null,
   closeHandle: null,
   left: false,
-  transitionEvents: null
+  transitionEvents: null,
+  dialogProps: null,
+  contentProps: null
 };
 
 Modal.Small = props => <Modal {...props} size="small" />;
