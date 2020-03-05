@@ -2668,7 +2668,7 @@ const Tabs = ({
   vertical,
   inline,
   renderHeader,
-  bodyRender
+  renderBody
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
   const header = renderHeader(React.createElement(ConditionalWrapper, {
@@ -2688,7 +2688,7 @@ const Tabs = ({
     openTab: openTab,
     onTabChange: id => setOpenTab(id)
   }, children)));
-  const body = bodyRender(React.createElement(ConditionalWrapper, {
+  const body = renderBody(React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
       className: "col-md-9"
@@ -2718,7 +2718,7 @@ Tabs.propTypes = {
   vertical: PropTypes.bool,
   inline: PropTypes.bool,
   renderHeader: PropTypes.func,
-  bodyRender: PropTypes.func
+  renderBody: PropTypes.func
 };
 Tabs.defaultProps = {
   defaultTab: null,
@@ -2732,7 +2732,7 @@ Tabs.defaultProps = {
   vertical: false,
   inline: false,
   renderHeader: header => header,
-  bodyRender: body => body
+  renderBody: body => body
 };
 
 const Section = ({
