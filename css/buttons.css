@@ -1,7 +1,6 @@
 body.cui .btn.btn--light {
     border: var(--cui-pagination-border-inactive);
     background: var(--cui-pagination-background-inactive);
-    border-radius: var(--cui-border-radius);
     color: var(--cui-inactive-color); }
     body.cui .btn.btn--light.hover, body.cui .btn.btn--light:hover {
         color: var(--cui-active-color);
