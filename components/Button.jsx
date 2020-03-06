@@ -33,6 +33,7 @@ Button.Success = props => <Button {...props} color="success" />;
 Button.Dark = props => <Button {...props} color="dark" />;
 Button.Ghost = props => <Button {...props} color="ghost" />;
 Button.Link = props => <Button {...props} color="link" />;
+Button.Light = props => <Button {...props} color="light" />;
 
 Button.propTypes = {
   size: PropTypes.oneOf(["small", "default", "large"]),
