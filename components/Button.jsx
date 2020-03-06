@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { appendClass as ac } from "../utils";
 
+import "../css/buttons.css";
+
 export const Button = ({
   size,
   color,
