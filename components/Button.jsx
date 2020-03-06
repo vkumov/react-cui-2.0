@@ -42,7 +42,8 @@ Button.propTypes = {
     "success",
     "dark",
     "ghost",
-    "link"
+    "link",
+    "light"
   ]),
   wide: PropTypes.bool,
   justified: PropTypes.bool,
