@@ -916,7 +916,7 @@ const ButtonGroup = (_ref2) => {
       props = _objectWithoutProperties(_ref2, ["square", "withDivider", "className"]);
 
   return React.createElement("div", _extends({
-    className: `btn-group${square ? " btn-group--square" : ""}${withDivider ? " btn-group--divider" : ""}`
+    className: `btn-group${appendClass(square, "btn-group--square")}${appendClass(withDivider, " btn-group--divider")}${appendClass(className)}`
   }, props));
 };
 ButtonGroup.propTypes = {

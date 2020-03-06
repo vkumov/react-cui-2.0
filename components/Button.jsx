@@ -71,9 +71,10 @@ Button.defaultProps = {
 
 export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
   <div
-    className={`btn-group${square ? " btn-group--square" : ""}${
-      withDivider ? " btn-group--divider" : ""
-    }`}
+    className={`btn-group${ac(square, "btn-group--square")}${ac(
+      withDivider,
+      " btn-group--divider"
+    )}${ac(className)}`}
     {...props}
   />
 );
