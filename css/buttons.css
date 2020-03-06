@@ -25,3 +25,7 @@ body.cui .btn.btn--light {
         color: var(--cui-pagination-color-active);
         -webkit-transition: all .25s ease;
         transition: all .25s ease }
+
+    body.cui .btn-group > .btn.btn--light:nth-child(n+2) {
+        margin-left: 0;
+    }
