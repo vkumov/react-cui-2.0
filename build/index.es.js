@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
 import { connect, getIn } from 'formik';
-import uuid from 'uuid/v4';
+import { v4 } from 'uuid';
 import { cssTransition, toast as toast$1, ToastContainer as ToastContainer$1 } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Transition from 'react-transition-group/Transition';
@@ -1292,7 +1292,7 @@ Select.defaultProps = {
   prompt: "Select an option",
   multiple: false,
   inline: false,
-  id: uuid(),
+  id: v4(),
   label: null,
   width: null,
   up: false,
