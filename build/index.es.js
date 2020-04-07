@@ -2901,5 +2901,26 @@ Steps.Large = props => React.createElement(Steps, _extends({}, props, {
   size: "large"
 }));
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, confirmation, toast };
+const VerticalCenter = ({
+  children
+}) => React.createElement("div", {
+  className: "content-fluid",
+  style: {
+    display: "flex",
+    minHeight: "100vh",
+    flexDirection: "column"
+  }
+}, React.createElement("main", {
+  style: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1
+  }
+}, children));
+
+VerticalCenter.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, VerticalCenter, confirmation, toast };
 //# sourceMappingURL=index.es.js.map
