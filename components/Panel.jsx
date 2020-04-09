@@ -15,12 +15,12 @@ export const Panel = ({
   <div
     className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
       padding !== "default",
-      ` panel--${padding}`
+      `panel--${padding}`
     )}${ac(bordered, () => {
       if (bordered === "string") return `panel--bordered-${bordered}`;
       if (Array.isArray(bordered))
         return bordered.map(b => `panel--bordered-${b}`).join(" ");
-      return " panel--bordered";
+      return "panel--bordered";
     })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
       className
     )}`}
