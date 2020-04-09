@@ -2359,6 +2359,15 @@ const ConfirmationListener = () => {
   const onClose = () => setModalShown(false);
 
   if (!modal) return null;
+  if (modal.notification) return React.createElement(Modal, {
+    isOpen: modalShown,
+    closeIcon: true,
+    closeHandle: onClose,
+    title: modal.title
+  }, React.createElement(ModalBody, null, modal.body), React.createElement(ModalFooter, null, React.createElement(Button, {
+    color: modal.buttonColor || "ghost",
+    onClick: onClose
+  }, modal.button)));
   return React.createElement(ConfirmationModal, {
     isOpen: modalShown,
     prompt: modal.prompt,
@@ -2380,6 +2389,16 @@ const confirmation = (prompt, onConfirm, confirmType = "primary", confirmText = 
     onConfirm,
     confirmText,
     confirmType
+  });
+};
+const notificationModal = (title, body, buttonColor = "ghost", button = "OK") => {
+  if (!title || !body) throw new Error("Title and body must be specified");
+  eventManager.emit(EVENTS.SHOW_MODAL, {
+    notification: true,
+    title,
+    body,
+    buttonColor,
+    button
   });
 };
 
@@ -2935,5 +2954,5 @@ VerticalCenter.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, VerticalCenter, confirmation, toast };
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, VerticalCenter, confirmation, notificationModal, toast };
 //# sourceMappingURL=index.es.js.map

@@ -61,7 +61,7 @@ export const Modal = ({
       timeout={animationDuration}
       {...transitionEvents}
     >
-      {state => (
+      {(state) => (
         <ReactModal
           {...props}
           overlayClassName="modal-backdrop"
@@ -78,7 +78,7 @@ export const Modal = ({
           <div
             className="modal__dialog"
             {...dialogProps}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="modal__content" {...contentProps}>
               {closeIcon && closeHandle ? (
@@ -112,13 +112,13 @@ Modal.propTypes = {
     PropTypes.number,
     PropTypes.shape({
       entering: PropTypes.number,
-      exiting: PropTypes.number
-    })
+      exiting: PropTypes.number,
+    }),
   ]),
   children: PropTypes.node.isRequired,
   transitionEvents: PropTypes.objectOf(PropTypes.func),
   dialogProps: PropTypes.shape({}),
-  contentProps: PropTypes.shape({})
+  contentProps: PropTypes.shape({}),
 };
 
 Modal.defaultProps = {
@@ -131,13 +131,13 @@ Modal.defaultProps = {
   left: false,
   transitionEvents: null,
   dialogProps: null,
-  contentProps: null
+  contentProps: null,
 };
 
-Modal.Small = props => <Modal {...props} size="small" />;
-Modal.Large = props => <Modal {...props} size="large" />;
-Modal.Full = props => <Modal {...props} size="full" />;
-Modal.Fluid = props => <Modal {...props} size="fluid" />;
+Modal.Small = (props) => <Modal {...props} size="small" />;
+Modal.Large = (props) => <Modal {...props} size="large" />;
+Modal.Full = (props) => <Modal {...props} size="full" />;
+Modal.Fluid = (props) => <Modal {...props} size="fluid" />;
 
 Modal.Header = ModalHeader;
 Modal.Body = ModalBody;
@@ -150,7 +150,7 @@ export const ConfirmationModal = ({
   prompt,
   confirmType,
   confirmText,
-  autoClose
+  autoClose,
 }) => {
   const [doing, setDoing] = React.useState(false);
 
@@ -192,14 +192,14 @@ ConfirmationModal.propTypes = {
   prompt: PropTypes.node.isRequired,
   confirmType: PropTypes.string,
   confirmText: PropTypes.string,
-  autoClose: PropTypes.bool
+  autoClose: PropTypes.bool,
 };
 
 ConfirmationModal.defaultProps = {
   isOpen: false,
   confirmType: "primary",
   autoClose: true,
-  confirmText: "Confirm"
+  confirmText: "Confirm",
 };
 
 export const ConfirmationListener = () => {
@@ -207,7 +207,7 @@ export const ConfirmationListener = () => {
   const [modalShown, setModalShown] = React.useState(false);
 
   React.useEffect(() => {
-    eventManager.on(EVENTS.SHOW_MODAL, m => setModal(m));
+    eventManager.on(EVENTS.SHOW_MODAL, (m) => setModal(m));
   }, []);
   React.useEffect(() => {
     if (modal) setModalShown(true);
@@ -216,6 +216,23 @@ export const ConfirmationListener = () => {
   const onClose = () => setModalShown(false);
 
   if (!modal) return null;
+
+  if (modal.notification)
+    return (
+      <Modal
+        isOpen={modalShown}
+        closeIcon
+        closeHandle={onClose}
+        title={modal.title}
+      >
+        <ModalBody>{modal.body}</ModalBody>
+        <ModalFooter>
+          <Button color={modal.buttonColor || "ghost"} onClick={onClose}>
+            {modal.button}
+          </Button>
+        </ModalFooter>
+      </Modal>
+    );
 
   return (
     <ConfirmationModal
@@ -247,6 +264,23 @@ export const confirmation = (
     prompt,
     onConfirm,
     confirmText,
-    confirmType
+    confirmType,
+  });
+};
+
+export const notificationModal = (
+  title,
+  body,
+  buttonColor = "ghost",
+  button = "OK"
+) => {
+  if (!title || !body) throw new Error("Title and body must be specified");
+
+  eventManager.emit(EVENTS.SHOW_MODAL, {
+    notification: true,
+    title,
+    body,
+    buttonColor,
+    button,
   });
 };
