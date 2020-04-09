@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { appendClass as ac } from "../utils";
+
 export const Panel = ({
   color,
   padding,
@@ -11,17 +13,17 @@ export const Panel = ({
   ...props
 }) => (
   <div
-    className={`panel${color !== "plain" ? ` panel--${color}` : ""}${
-      padding !== "default" ? ` panel--${padding}` : ""
-    }${
-      bordered
-        ? typeof bordered === "string"
-          ? ` panel--bordered-${bordered}`
-          : Array.isArray(bordered)
-          ? bordered.map(b => ` panel--bordered-${b}`).join("")
-          : " panel--bordered"
-        : ""
-    }${raised ? " panel--raised" : ""}${well ? " panel--well" : ""}`}
+    className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
+      padding !== "default",
+      ` panel--${padding}`
+    )}${ac(bordered, () => {
+      if (bordered === "string") return `panel--bordered-${bordered}`;
+      if (Array.isArray(bordered))
+        return bordered.map(b => `panel--bordered-${b}`).join(" ");
+      return " panel--bordered";
+    })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
+      className
+    )}`}
     {...props}
   />
 );
@@ -47,7 +49,8 @@ Panel.propTypes = {
     PropTypes.arrayOf(PropTypes.oneOf(["top", "right", "left", "bottom"]))
   ]),
   raised: PropTypes.bool,
-  well: PropTypes.bool
+  well: PropTypes.bool,
+  className: PropTypes.string
 };
 
 Panel.defaultProps = {
@@ -55,5 +58,6 @@ Panel.defaultProps = {
   padding: "default",
   bordered: false,
   raised: false,
-  well: false
+  well: false,
+  className: null
 };
