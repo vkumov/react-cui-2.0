@@ -6,10 +6,11 @@ import Transition from "react-transition-group/Transition";
 import ReactModal from "react-modal";
 import PropTypes from "prop-types";
 
+import { ConditionalWrapper, DisplayIf as If } from "./Conditional";
 import { Button } from "./Button";
 import "../css/modal.css";
 
-import { eventManager, EVENTS } from "../utils";
+import { eventManager, EVENTS, appendClass as ac } from "../utils";
 
 export const ModalHeader = ({ className, children, ...props }) => (
   <div
@@ -20,11 +21,29 @@ export const ModalHeader = ({ className, children, ...props }) => (
   </div>
 );
 
+ModalHeader.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+ModalHeader.defaultProps = {
+  className: null,
+};
+
 export const ModalBody = ({ className, children, ...props }) => (
   <div className={`modal__body${className ? ` ${className}` : ""}`} {...props}>
     {children}
   </div>
 );
+
+ModalBody.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+ModalBody.defaultProps = {
+  className: null,
+};
 
 export const ModalFooter = ({ className, children, ...props }) => (
   <div
@@ -34,6 +53,15 @@ export const ModalFooter = ({ className, children, ...props }) => (
     {children}
   </div>
 );
+
+ModalFooter.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+ModalFooter.defaultProps = {
+  className: null,
+};
 
 export const Modal = ({
   size,
@@ -48,10 +76,18 @@ export const Modal = ({
   transitionEvents,
   dialogProps,
   contentProps,
+  maximize,
   ...props
 }) => {
-  props.autoClose = autoClose;
-  props.onRequestClose = autoClose && closeHandle ? closeHandle : undefined;
+  const [maximized, setMaximized] = React.useState(false);
+  const realSize = React.useMemo(() => (maximized ? "full" : size), [
+    maximized,
+    size,
+  ]);
+
+  const maximizeCb = React.useCallback(() => {
+    setMaximized((curr) => !curr);
+  }, []);
 
   return (
     <Transition
@@ -64,11 +100,14 @@ export const Modal = ({
       {(state) => (
         <ReactModal
           {...props}
+          autoClose={autoClose}
+          onRequestClose={autoClose && closeHandle ? closeHandle : undefined}
           overlayClassName="modal-backdrop"
           isOpen={["entering", "entered"].includes(state)}
-          className={`modal${size ? ` modal--${size}` : ""}${
-            left ? " modal--left" : ""
-          }`}
+          className={`modal${ac(realSize, `modal--${realSize}`)}${ac(
+            left,
+            "modal--left"
+          )}`}
           closeTimeoutMS={
             typeof animationDuration === "object"
               ? animationDuration.exiting
@@ -81,16 +120,37 @@ export const Modal = ({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal__content" {...contentProps}>
-              {closeIcon && closeHandle ? (
-                <a className="modal__close" onClick={closeHandle}>
-                  <span className="icon-close" />
-                </a>
-              ) : null}
-              {title ? (
+              <If condition={(closeIcon && closeHandle) || maximize}>
+                <ConditionalWrapper
+                  condition={closeIcon && closeHandle && maximize}
+                  wrapper={<div className="modal__close" />}
+                >
+                  <If condition={maximize}>
+                    <a
+                      className={`${ac(
+                        !(closeIcon && closeHandle),
+                        "modal__close"
+                      )}${ac(closeIcon && closeHandle, "qtr-margin-right")}`}
+                      onClick={maximizeCb}
+                    >
+                      <span className="icon-maximize" />
+                    </a>
+                  </If>
+                  <If condition={closeIcon && closeHandle}>
+                    <a
+                      className={!maximize ? "modal__close" : ""}
+                      onClick={closeHandle}
+                    >
+                      <span className="icon-close" />
+                    </a>
+                  </If>
+                </ConditionalWrapper>
+              </If>
+              <If condition={!!title}>
                 <ModalHeader>
                   <h1 className="modal__title">{title}</h1>
                 </ModalHeader>
-              ) : null}
+              </If>
               {children}
             </div>
           </div>
@@ -119,6 +179,7 @@ Modal.propTypes = {
   transitionEvents: PropTypes.objectOf(PropTypes.func),
   dialogProps: PropTypes.shape({}),
   contentProps: PropTypes.shape({}),
+  maximize: PropTypes.bool,
 };
 
 Modal.defaultProps = {
@@ -132,6 +193,7 @@ Modal.defaultProps = {
   transitionEvents: null,
   dialogProps: null,
   contentProps: null,
+  maximize: false,
 };
 
 Modal.Small = (props) => <Modal {...props} size="small" />;

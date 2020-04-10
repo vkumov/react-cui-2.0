@@ -2192,6 +2192,13 @@ const ModalHeader = (_ref) => {
     className: `modal__header${className ? ` ${className}` : ""}`
   }, props), children);
 };
+ModalHeader.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
+ModalHeader.defaultProps = {
+  className: null
+};
 const ModalBody = (_ref2) => {
   let {
     className,
@@ -2203,6 +2210,13 @@ const ModalBody = (_ref2) => {
     className: `modal__body${className ? ` ${className}` : ""}`
   }, props), children);
 };
+ModalBody.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
+ModalBody.defaultProps = {
+  className: null
+};
 const ModalFooter = (_ref3) => {
   let {
     className,
@@ -2213,6 +2227,13 @@ const ModalFooter = (_ref3) => {
   return React.createElement("div", _extends({
     className: `modal__footer${className ? ` ${className}` : ""}`
   }, props), children);
+};
+ModalFooter.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
+ModalFooter.defaultProps = {
+  className: null
 };
 const Modal = (_ref4) => {
   let {
@@ -2227,21 +2248,27 @@ const Modal = (_ref4) => {
     animationDuration,
     transitionEvents,
     dialogProps,
-    contentProps
+    contentProps,
+    maximize
   } = _ref4,
-      props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration", "transitionEvents", "dialogProps", "contentProps"]);
+      props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration", "transitionEvents", "dialogProps", "contentProps", "maximize"]);
 
-  props.autoClose = autoClose;
-  props.onRequestClose = autoClose && closeHandle ? closeHandle : undefined;
+  const [maximized, setMaximized] = React.useState(false);
+  const realSize = React.useMemo(() => maximized ? "full" : size, [maximized, size]);
+  const maximizeCb = React.useCallback(() => {
+    setMaximized(curr => !curr);
+  }, []);
   return React.createElement(Transition, _extends({
     in: isOpen,
     mountOnEnter: true,
     unmountOnExit: true,
     timeout: animationDuration
   }, transitionEvents), state => React.createElement(ReactModal, _extends({}, props, {
+    autoClose: autoClose,
+    onRequestClose: autoClose && closeHandle ? closeHandle : undefined,
     overlayClassName: "modal-backdrop",
     isOpen: ["entering", "entered"].includes(state),
-    className: `modal${size ? ` modal--${size}` : ""}${left ? " modal--left" : ""}`,
+    className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
     closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exiting : animationDuration
   }), React.createElement("div", _extends({
     className: "modal__dialog"
@@ -2249,14 +2276,32 @@ const Modal = (_ref4) => {
     onClick: e => e.stopPropagation()
   }), React.createElement("div", _extends({
     className: "modal__content"
-  }, contentProps), closeIcon && closeHandle ? React.createElement("a", {
-    className: "modal__close",
+  }, contentProps), React.createElement(DisplayIf, {
+    condition: closeIcon && closeHandle || maximize
+  }, React.createElement(ConditionalWrapper, {
+    condition: closeIcon && closeHandle && maximize,
+    wrapper: React.createElement("div", {
+      className: "modal__close"
+    })
+  }, React.createElement(DisplayIf, {
+    condition: maximize
+  }, React.createElement("a", {
+    className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
+    onClick: maximizeCb
+  }, React.createElement("span", {
+    className: "icon-maximize"
+  }))), React.createElement(DisplayIf, {
+    condition: closeIcon && closeHandle
+  }, React.createElement("a", {
+    className: !maximize ? "modal__close" : "",
     onClick: closeHandle
   }, React.createElement("span", {
     className: "icon-close"
-  })) : null, title ? React.createElement(ModalHeader, null, React.createElement("h1", {
+  }))))), React.createElement(DisplayIf, {
+    condition: !!title
+  }, React.createElement(ModalHeader, null, React.createElement("h1", {
     className: "modal__title"
-  }, title)) : null, children))));
+  }, title))), children))));
 };
 Modal.propTypes = {
   size: PropTypes.oneOf([false, "small", "default", "large", "full", "fluid"]),
@@ -2273,7 +2318,8 @@ Modal.propTypes = {
   children: PropTypes.node.isRequired,
   transitionEvents: PropTypes.objectOf(PropTypes.func),
   dialogProps: PropTypes.shape({}),
-  contentProps: PropTypes.shape({})
+  contentProps: PropTypes.shape({}),
+  maximize: PropTypes.bool
 };
 Modal.defaultProps = {
   size: false,
@@ -2285,7 +2331,8 @@ Modal.defaultProps = {
   left: false,
   transitionEvents: null,
   dialogProps: null,
-  contentProps: null
+  contentProps: null,
+  maximize: false
 };
 
 Modal.Small = props => React.createElement(Modal, _extends({}, props, {
