@@ -27,3 +27,12 @@
 .cui .ReactModal__Overlay--before-close {
     opacity: 0 !important;
 }
+
+body.cui .modal .modal__content div.modal__close > a {
+  color: var(--cui-inactive-color);
+}
+
+body.cui .modal .modal__content div.modal__close > a:hover {
+  color: var(--cui-active-color);
+  text-decoration: none;
+}
