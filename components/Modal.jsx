@@ -80,6 +80,7 @@ export const Modal = ({
   ...props
 }) => {
   const [maximized, setMaximized] = React.useState(false);
+  React.useEffect(() => setMaximized(false), [isOpen]);
   const realSize = React.useMemo(() => (maximized ? "full" : size), [
     maximized,
     size,

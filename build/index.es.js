@@ -2254,6 +2254,7 @@ const Modal = (_ref4) => {
       props = _objectWithoutProperties(_ref4, ["size", "closeIcon", "closeHandle", "title", "left", "children", "autoClose", "isOpen", "animationDuration", "transitionEvents", "dialogProps", "contentProps", "maximize"]);
 
   const [maximized, setMaximized] = React.useState(false);
+  React.useEffect(() => setMaximized(false), [isOpen]);
   const realSize = React.useMemo(() => maximized ? "full" : size, [maximized, size]);
   const maximizeCb = React.useCallback(() => {
     setMaximized(curr => !curr);
