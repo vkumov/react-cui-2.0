@@ -10,7 +10,7 @@ export const DefaultTablePagination = ({
   onPageChange,
   onPerPageChange,
   perPageUp,
-  paginationProps
+  paginationProps,
 }) => {
   const [perPage, setPerPage] = React.useState(50);
 
@@ -41,7 +41,7 @@ export const DefaultTablePagination = ({
         alwaysClose
         up={perPageUp}
       >
-        {[10, 25, 50, 100, 250, 500].map(v => (
+        {[10, 25, 50, 100, 250, 500].map((v) => (
           <Dropdown.Element
             onClick={() => setPerPage(v)}
             key={v}
@@ -67,11 +67,11 @@ DefaultTablePagination.propTypes = {
     icons: PropTypes.bool,
     next: PropTypes.node,
     prev: PropTypes.node,
-    firstAndLast: PropTypes.bool
-  })
+    firstAndLast: PropTypes.bool,
+  }),
 };
 
 DefaultTablePagination.defaultProps = {
   perPageUp: false,
-  paginationProps: {}
+  paginationProps: {},
 };

@@ -604,6 +604,18 @@ class Dropzone extends React.Component {
   // };
 
 
+  handleDrop(filesToUpload) {
+    if (this.maxFileSize) {
+      filesToUpload = filesToUpload.filter(file => file.size <= this.maxFileSize);
+    }
+
+    if (this.props.maxFiles && filesToUpload.length > this.props.maxFiles) {
+      filesToUpload = filesToUpload.slice(0, this.props.maxFiles);
+    }
+
+    this.props.formik.setFieldValue(this.props.name, filesToUpload);
+  }
+
   renderFiles() {
     const files = this.props.input.value;
 
@@ -660,18 +672,6 @@ class Dropzone extends React.Component {
     }, "Max file size:", " ", bytes.format(this.maxFileSize, {
       unitSeparator: " "
     })));
-  }
-
-  handleDrop(filesToUpload) {
-    if (this.maxFileSize) {
-      filesToUpload = filesToUpload.filter(file => file.size <= this.maxFileSize);
-    }
-
-    if (this.props.maxFiles && filesToUpload.length > this.props.maxFiles) {
-      filesToUpload = filesToUpload.slice(0, this.props.maxFiles);
-    }
-
-    this.props.formik.setFieldValue(this.props.name, filesToUpload);
   }
 
   render() {
@@ -791,25 +791,32 @@ const Progressbar = (_ref) => {
       props = _objectWithoutProperties(_ref, ["percentage", "withLabel", "label", "size", "color", "className"]);
 
   return React.createElement("div", _extends({
-    className: `progressbar${size !== "default" ? ` progressbar--${size}` : ""}${color ? ` progressbar--${color}` : ""}${className ? ` ${className}` : ""}`,
+    className: `progressbar${appendClass(size !== "default", `progressbar--${size}`)}${appendClass(color, `progressbar--${color}`)}${appendClass(className)}`,
     "data-percentage": percentage
   }, props), React.createElement("div", {
     className: "progressbar__fill"
-  }), withLabel ? label ? React.createElement("div", {
+  }), React.createElement(DisplayIf, {
+    condition: withLabel
+  }, label ? React.createElement("div", {
     className: "progressbar__label"
   }, label) : React.createElement("div", {
     className: "progressbar__label"
-  }, percentage, "%") : null);
+  }, `${percentage}%`)));
 };
 Progressbar.propTypes = {
   percentage: PropTypes.number.isRequired,
   withLabel: PropTypes.bool,
   label: PropTypes.node,
   size: PropTypes.oneOf(["small", "default", "large"]),
-  color: PropTypes.oneOf(["primary", "secondary", "tertiary", "success", "info", "warning-alt", "warning", "danger", "dark"])
+  color: PropTypes.oneOf(["primary", "secondary", "tertiary", "success", "info", "warning-alt", "warning", "danger", "dark"]),
+  className: PropTypes.string
 };
 Progressbar.defaultProps = {
-  size: "default"
+  size: "default",
+  withLabel: false,
+  label: null,
+  color: null,
+  className: null
 };
 
 function styleInject(css, ref) {
@@ -1348,7 +1355,7 @@ styleInject(css$1);
 
 const copyStringToClipboard = str => {
   // Create new element
-  var el = document.createElement("textarea"); // Set value (string to be copied)
+  const el = document.createElement("textarea"); // Set value (string to be copied)
 
   el.value = str; // Set non-editable to avoid focus and move outside of view
 
@@ -1366,36 +1373,33 @@ const copyStringToClipboard = str => {
   document.body.removeChild(el);
 };
 
-const ToastIcon = ({
-  type
-}) => {
+const iconType = type => {
   switch (type) {
     case "success":
-      type = "text-success icon-check-outline";
-      break;
+      return "text-success icon-check-outline";
 
     case "error":
-      type = "text-danger icon-error-outline";
-      break;
+      return "text-danger icon-error-outline";
 
     case "warning":
-      type = "text-warning icon-warning-outline";
-      break;
+      return "text-warning icon-warning-outline";
 
     case "info":
-      type = "text-info icon-info-outline";
-      break;
+      return "text-info icon-info-outline";
 
     case "none":
       return null;
 
     default:
-      type = "text-muted icon-alert";
-      break;
+      return "text-muted icon-alert";
   }
+};
 
+const ToastIcon = ({
+  type
+}) => {
   return React.createElement("div", {
-    className: `toast__icon ${type}`
+    className: `toast__icon ${iconType(type) || ""}`
   });
 };
 
@@ -1603,7 +1607,7 @@ const GenericTable = (_ref) => {
     condition: outerWrap,
     wrapper: Wrapper
   }, React.createElement("table", _extends({
-    className: `table${lined ? " table--lined" : ""}${bordered ? " table--bordered" : ""}${striped ? " table--striped" : ""}${selectable ? " table--selectable" : ""}${fixed ? " table--fixed" : ""}${wrapped ? " table--wrapped" : ""}${compressed ? " table--compressed" : ""}${loose ? " table--loose" : ""}${className ? ` ${className}` : ""}`
+    className: `table${appendClass(lined, "table--lined")}${appendClass(bordered, "table--bordered")}${appendClass(striped, "table--striped")}${appendClass(selectable, "table--selectable")}${appendClass(fixed, "table--fixed")}${appendClass(wrapped, "table--wrapped")}${appendClass(compressed, "table--compressed")}${appendClass(loose, "table--loose")}${appendClass(className)}`
   }, props)));
 };
 GenericTable.propTypes = {
@@ -2170,7 +2174,8 @@ Input.defaultProps = {
   iconClick: null,
   id: null,
   className: null,
-  plain: false
+  plain: false,
+  inputRef: null
 };
 
 var css$2 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}";
@@ -2578,7 +2583,7 @@ const Badge = ({
   children,
   className
 }) => React.createElement("span", {
-  className: `${`badge badge--${color}`}${size !== "default" ? ` badge--${size}` : ""}${className ? ` ${className}` : ""}`
+  className: `${`badge badge--${color}`}${appendClass(size !== "default", `badge--${size}`)}${appendClass(className)}`
 }, children);
 
 Badge.propTypes = {
@@ -2617,8 +2622,16 @@ Badge.Wrapper = ({
   children,
   className
 }) => React.createElement("span", {
-  className: `badge-wrapper${className ? ` ${className}` : ""}`
+  className: `badge-wrapper${appendClass(className)}`
 }, children);
+
+Badge.Wrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
+};
+Badge.Wrapper.defaultProps = {
+  className: null
+};
 
 const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
 

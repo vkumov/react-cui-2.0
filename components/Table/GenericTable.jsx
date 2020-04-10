@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { ConditionalWrapper } from "../Conditional";
+import { appendClass as ac } from "../../utils";
 
 const Wrapper = <div className="responsive-table" />;
 
@@ -20,13 +21,16 @@ export const GenericTable = ({
 }) => (
   <ConditionalWrapper condition={outerWrap} wrapper={Wrapper}>
     <table
-      className={`table${lined ? " table--lined" : ""}${
-        bordered ? " table--bordered" : ""
-      }${striped ? " table--striped" : ""}${
-        selectable ? " table--selectable" : ""
-      }${fixed ? " table--fixed" : ""}${wrapped ? " table--wrapped" : ""}${
-        compressed ? " table--compressed" : ""
-      }${loose ? " table--loose" : ""}${className ? ` ${className}` : ""}`}
+      className={`table${ac(lined, "table--lined")}${ac(
+        bordered,
+        "table--bordered"
+      )}${ac(striped, "table--striped")}${ac(
+        selectable,
+        "table--selectable"
+      )}${ac(fixed, "table--fixed")}${ac(wrapped, "table--wrapped")}${ac(
+        compressed,
+        "table--compressed"
+      )}${ac(loose, "table--loose")}${ac(className)}`}
       {...props}
     />
   </ConditionalWrapper>
@@ -42,7 +46,7 @@ GenericTable.propTypes = {
   wrapped: PropTypes.bool,
   compressed: PropTypes.bool,
   loose: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 GenericTable.defaultProps = {
@@ -55,5 +59,5 @@ GenericTable.defaultProps = {
   wrapped: false,
   compressed: false,
   loose: false,
-  className: null
+  className: null,
 };

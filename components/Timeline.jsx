@@ -16,12 +16,12 @@ export const TimelineItem = ({ icon, time, children }) => (
 TimelineItem.propTypes = {
   icon: PropTypes.node,
   time: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 TimelineItem.defaultProps = {
   icon: <Icon icon="circle" />,
-  time: null
+  time: null,
 };
 
 export const Timeline = ({ center, right, className, children }) => (
@@ -40,11 +40,11 @@ Timeline.propTypes = {
   right: PropTypes.bool,
   className: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.arrayOf(TimelineItem), TimelineItem])
-    .isRequired
+    .isRequired,
 };
 
 Timeline.defaultProps = {
   center: false,
   right: false,
-  className: null
+  className: null,
 };

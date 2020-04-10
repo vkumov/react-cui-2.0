@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { DisplayIf as If } from "./Conditional";
+import { appendClass as ac } from "../utils";
+
 export const Progressbar = ({
   percentage,
   withLabel,
@@ -11,22 +14,21 @@ export const Progressbar = ({
   ...props
 }) => (
   <div
-    className={`progressbar${
-      size !== "default" ? ` progressbar--${size}` : ""
-    }${color ? ` progressbar--${color}` : ""}${
-      className ? ` ${className}` : ""
-    }`}
+    className={`progressbar${ac(
+      size !== "default",
+      `progressbar--${size}`
+    )}${ac(color, `progressbar--${color}`)}${ac(className)}`}
     data-percentage={percentage}
     {...props}
   >
-    <div className="progressbar__fill"></div>
-    {withLabel ? (
-      label ? (
+    <div className="progressbar__fill" />
+    <If condition={withLabel}>
+      {label ? (
         <div className="progressbar__label">{label}</div>
       ) : (
-        <div className="progressbar__label">{percentage}%</div>
-      )
-    ) : null}
+        <div className="progressbar__label">{`${percentage}%`}</div>
+      )}
+    </If>
   </div>
 );
 
@@ -44,10 +46,15 @@ Progressbar.propTypes = {
     "warning-alt",
     "warning",
     "danger",
-    "dark"
-  ])
+    "dark",
+  ]),
+  className: PropTypes.string,
 };
 
 Progressbar.defaultProps = {
-  size: "default"
+  size: "default",
+  withLabel: false,
+  label: null,
+  color: null,
+  className: null,
 };

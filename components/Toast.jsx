@@ -2,15 +2,15 @@ import React from "react";
 import {
   toast as _toast,
   cssTransition,
-  ToastContainer as ToastifyContainer
+  ToastContainer as ToastifyContainer,
 } from "react-toastify";
 import PropTypes from "prop-types";
 import "react-toastify/dist/ReactToastify.min.css";
 import "../css/toast.css";
 
-const copyStringToClipboard = str => {
+const copyStringToClipboard = (str) => {
   // Create new element
-  var el = document.createElement("textarea");
+  const el = document.createElement("textarea");
   // Set value (string to be copied)
   el.value = str;
   // Set non-editable to avoid focus and move outside of view
@@ -25,28 +25,25 @@ const copyStringToClipboard = str => {
   document.body.removeChild(el);
 };
 
-const ToastIcon = ({ type }) => {
+const iconType = (type) => {
   switch (type) {
     case "success":
-      type = "text-success icon-check-outline";
-      break;
+      return "text-success icon-check-outline";
     case "error":
-      type = "text-danger icon-error-outline";
-      break;
+      return "text-danger icon-error-outline";
     case "warning":
-      type = "text-warning icon-warning-outline";
-      break;
+      return "text-warning icon-warning-outline";
     case "info":
-      type = "text-info icon-info-outline";
-      break;
+      return "text-info icon-info-outline";
     case "none":
       return null;
     default:
-      type = "text-muted icon-alert";
-      break;
+      return "text-muted icon-alert";
   }
+};
 
-  return <div className={`toast__icon ${type}`} />;
+const ToastIcon = ({ type }) => {
+  return <div className={`toast__icon ${iconType(type) || ""}`} />;
 };
 
 const Toast = ({ title, message, type, copyError }) => (
@@ -75,7 +72,7 @@ const Toast = ({ title, message, type, copyError }) => (
 const Fade = cssTransition({
   enter: "fadeIn",
   exit: "fadeOut",
-  duration: 300
+  duration: 300,
 });
 
 export const toast = (
@@ -95,13 +92,13 @@ toast.none = (...args) => toast("none", ...args);
 toast.update = (...args) => _toast.update(...args);
 toast.dismiss = (...args) => _toast.dismiss(...args);
 
-export const ToastContainer = props => (
+export const ToastContainer = (props) => (
   <ToastifyContainer
     transition={Fade}
     {...props}
     closeButton={false}
     style={{
-      width: "unset"
+      width: "unset",
     }}
   />
 );
@@ -111,7 +108,7 @@ ToastContainer.propTypes = {
   autoClose: PropTypes.number,
   draggable: PropTypes.bool,
   hideProgressBar: PropTypes.bool,
-  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 ToastContainer.defaultProps = {
@@ -119,5 +116,5 @@ ToastContainer.defaultProps = {
   autoClose: 5000,
   draggable: false,
   hideProgressBar: true,
-  containerId: "_GLOBAL_"
+  containerId: "_GLOBAL_",
 };

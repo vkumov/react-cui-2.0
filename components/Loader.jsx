@@ -24,12 +24,12 @@ export const Spinner = ({ size, text }) => (
 
 Spinner.propTypes = {
   size: PropTypes.oneOf(["small", "default", "large"]),
-  text: PropTypes.node
+  text: PropTypes.node,
 };
 
 Spinner.defaultProps = {
   size: "default",
-  text: null
+  text: null,
 };
 
 export const Dots = ({ color }) => (
@@ -55,10 +55,10 @@ Dots.propTypes = {
     "warning-alt",
     "danger",
     "dark",
-    "light"
-  ])
+    "light",
+  ]),
 };
 
 Dots.defaultProps = {
-  color: "primary"
+  color: "primary",
 };

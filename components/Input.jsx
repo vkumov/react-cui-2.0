@@ -60,22 +60,22 @@ Input.propTypes = {
   type: PropTypes.string,
   inputRef: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]),
   inline: PropTypes.oneOf([false, "group", "label", "both"]),
   helpBlock: PropTypes.bool,
   form: PropTypes.shape({
-    values: PropTypes.object
+    values: PropTypes.object,
   }).isRequired,
   field: PropTypes.shape({
     name: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }).isRequired,
   iconClick: PropTypes.func,
   icon: PropTypes.string,
   id: PropTypes.string,
   className: PropTypes.string,
-  plain: PropTypes.bool
+  plain: PropTypes.bool,
 };
 
 Input.defaultProps = {
@@ -87,7 +87,8 @@ Input.defaultProps = {
   iconClick: null,
   id: null,
   className: null,
-  plain: false
+  plain: false,
+  inputRef: null,
 };
 
 export { Input };

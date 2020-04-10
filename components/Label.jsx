@@ -37,14 +37,14 @@ Label.propTypes = {
     "warning",
     "danger",
     "dark",
-    "light"
+    "light",
   ]),
   bordered: PropTypes.bool,
   removable: PropTypes.bool,
   onRemove: PropTypes.func,
   raised: PropTypes.bool,
   className: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 Label.defaultProps = {
@@ -54,7 +54,7 @@ Label.defaultProps = {
   removable: false,
   raised: false,
   onRemove: null,
-  className: null
+  className: null,
 };
 
 Label.Primary = ({ color, ...props }) => <Label color="primary" {...props} />;

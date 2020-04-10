@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { getIn } from "formik";
 
 import { ConditionalWrapper } from "./Conditional";
-import { appendClass } from "../utils";
+import { appendClass as ac } from "../utils";
 
 const Switch = ({
   field,
@@ -17,19 +17,15 @@ const Switch = ({
   form,
   spacing,
   id,
-  style
+  style,
 }) => (
   <ConditionalWrapper
     condition={asFormGroup}
     wrapper={
       <div
-        className={`form-group${appendClass(
-          inline,
-          "form-group--inline"
-        )}${appendClass(className)}${appendClass(
-          spacing,
-          ` form-group--${spacing}`
-        )}`}
+        className={`form-group${ac(inline, "form-group--inline")}${ac(
+          className
+        )}${ac(spacing, ` form-group--${spacing}`)}`}
         style={style}
       />
     }
@@ -59,15 +55,15 @@ Switch.propTypes = {
   spacing: PropTypes.oneOf([false, "compressed", "loose"]),
   asFormGroup: PropTypes.bool,
   form: PropTypes.shape({
-    values: PropTypes.object
+    values: PropTypes.object,
   }).isRequired,
   field: PropTypes.shape({
     name: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }).isRequired,
   className: PropTypes.string,
   id: PropTypes.string,
-  style: PropTypes.shape({})
+  style: PropTypes.shape({}),
 };
 
 Switch.defaultProps = {
@@ -79,7 +75,7 @@ Switch.defaultProps = {
   asFormGroup: true,
   className: null,
   id: null,
-  style: null
+  style: null,
 };
 
 export { Switch };

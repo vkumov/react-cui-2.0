@@ -11,7 +11,7 @@ const FileCard = ({ file, i, removeFile, inline }) => (
   >
     <div
       className="panel panel--bordered hover-emboss--small"
-      onClick={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       {inline ? (
         <div className="panel__body flex flex-row">
@@ -69,6 +69,20 @@ class Dropzone extends React.Component {
 
   //   );
   // };
+
+  handleDrop(filesToUpload) {
+    if (this.maxFileSize) {
+      filesToUpload = filesToUpload.filter(
+        (file) => file.size <= this.maxFileSize
+      );
+    }
+
+    if (this.props.maxFiles && filesToUpload.length > this.props.maxFiles) {
+      filesToUpload = filesToUpload.slice(0, this.props.maxFiles);
+    }
+
+    this.props.formik.setFieldValue(this.props.name, filesToUpload);
+  }
 
   renderFiles() {
     const files = this.props.input.value;
@@ -137,20 +151,6 @@ class Dropzone extends React.Component {
         )}
       </div>
     );
-  }
-
-  handleDrop(filesToUpload) {
-    if (this.maxFileSize) {
-      filesToUpload = filesToUpload.filter(
-        file => file.size <= this.maxFileSize
-      );
-    }
-
-    if (this.props.maxFiles && filesToUpload.length > this.props.maxFiles) {
-      filesToUpload = filesToUpload.slice(0, this.props.maxFiles);
-    }
-
-    this.props.formik.setFieldValue(this.props.name, filesToUpload);
   }
 
   render() {
@@ -225,7 +225,7 @@ Dropzone.propTypes = {
   maxFiles: PropTypes.number,
   inline: PropTypes.bool,
   loose: PropTypes.bool,
-  compressed: PropTypes.bool
+  compressed: PropTypes.bool,
 };
 
 const connected = connect(Dropzone);

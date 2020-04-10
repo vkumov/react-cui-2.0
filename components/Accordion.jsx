@@ -9,7 +9,10 @@ const AccordionElement = ({ children, defaultOpen, toggles, title }) => {
 
   return (
     <li className={isOpen ? "active" : ""}>
-      <a className="accordion__title" onClick={() => setIsOpen(prev => !prev)}>
+      <a
+        className="accordion__title"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
         <span>{title}</span>
         {toggles ? (
           <span className="accordion__toggle icon-chevron-down" />
@@ -24,12 +27,12 @@ AccordionElement.propTypes = {
   children: PropTypes.node.isRequired,
   defaultOpen: PropTypes.bool,
   toggles: PropTypes.bool,
-  title: PropTypes.node.isRequired
+  title: PropTypes.node.isRequired,
 };
 
 AccordionElement.defaultProps = {
   defaultOpen: false,
-  toggles: false
+  toggles: false,
 };
 
 const Accordion = ({ children, toggles, bordered }) => {
@@ -38,7 +41,7 @@ const Accordion = ({ children, toggles, bordered }) => {
       {React.Children.map(children, (child, idx) =>
         React.cloneElement(child, {
           toggles,
-          key: child.props.key || idx
+          key: child.props.key || idx,
         })
       )}
     </ul>
@@ -50,12 +53,12 @@ Accordion.Element = AccordionElement;
 Accordion.propTypes = {
   children: PropTypes.node.isRequired,
   toggles: PropTypes.bool,
-  bordered: PropTypes.bool
+  bordered: PropTypes.bool,
 };
 
 Accordion.defaultProps = {
   toggles: false,
-  bordered: false
+  bordered: false,
 };
 
 export default Accordion;

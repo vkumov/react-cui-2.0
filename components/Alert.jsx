@@ -30,11 +30,11 @@ export const Alert = ({
   className,
   onDismiss,
   withIcon,
-  icon
+  icon,
 }) => {
   const [dismissed, setDismissed] = React.useState(false);
 
-  const handleDismiss = e => {
+  const handleDismiss = (e) => {
     setDismissed(true);
     if (onDismiss) onDismiss(e);
   };
@@ -66,7 +66,7 @@ Alert.propTypes = {
     "success",
     "dark",
     "light",
-    "info"
+    "info",
   ]),
   dismissable: PropTypes.bool,
   title: PropTypes.string,
@@ -74,7 +74,7 @@ Alert.propTypes = {
   withIcon: PropTypes.bool,
   icon: PropTypes.string,
   children: PropTypes.node.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Alert.defaultProps = {
@@ -84,7 +84,7 @@ Alert.defaultProps = {
   onDismiss: null,
   title: "",
   type: "info",
-  withIcon: true
+  withIcon: true,
 };
 
 Alert.Warning = ({ type, ...props }) => <Alert type="warning" {...props} />;

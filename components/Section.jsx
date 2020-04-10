@@ -9,11 +9,11 @@ const Section = ({ children, className }) => (
 
 Section.propTypes = {
   children: PropTypes.node.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Section.defaultProps = {
-  className: null
+  className: null,
 };
 
 export { Section };

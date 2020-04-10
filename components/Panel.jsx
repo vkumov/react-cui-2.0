@@ -19,7 +19,7 @@ export const Panel = ({
     )}${ac(bordered, () => {
       if (bordered === "string") return `panel--bordered-${bordered}`;
       if (Array.isArray(bordered))
-        return bordered.map(b => `panel--bordered-${b}`).join(" ");
+        return bordered.map((b) => `panel--bordered-${b}`).join(" ");
       return "panel--bordered";
     })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
       className
@@ -40,17 +40,17 @@ Panel.propTypes = {
     "warning",
     "danger",
     "dark",
-    "light"
+    "light",
   ]),
   padding: PropTypes.oneOf(["none", "compressed", "default", "loose"]),
   bordered: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.oneOf(["top", "right", "left", "bottom"]),
-    PropTypes.arrayOf(PropTypes.oneOf(["top", "right", "left", "bottom"]))
+    PropTypes.arrayOf(PropTypes.oneOf(["top", "right", "left", "bottom"])),
   ]),
   raised: PropTypes.bool,
   well: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Panel.defaultProps = {
@@ -59,5 +59,5 @@ Panel.defaultProps = {
   bordered: false,
   raised: false,
   well: false,
-  className: null
+  className: null,
 };

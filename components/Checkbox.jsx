@@ -27,19 +27,19 @@ Checkbox.propTypes = {
   inline: PropTypes.bool,
   asFormGroup: PropTypes.bool,
   form: PropTypes.shape({
-    values: PropTypes.object
+    values: PropTypes.object,
   }).isRequired,
   field: PropTypes.shape({
     name: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }).isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 Checkbox.defaultProps = {
   inline: false,
   asFormGroup: true,
-  children: null
+  children: null,
 };
 
 export { Checkbox };

@@ -9,7 +9,7 @@ const Button = ({ active, content, disabled, position }) => (
       <li className={active ? "active" : ""}>
         <a
           className={disabled ? "disabled" : ""}
-          onClick={e => changePage(e, position)}
+          onClick={(e) => changePage(e, position)}
         >
           {content}
         </a>
@@ -22,12 +22,12 @@ Button.propTypes = {
   active: PropTypes.bool,
   content: PropTypes.node.isRequired,
   disabled: PropTypes.bool,
-  position: PropTypes.number.isRequired
+  position: PropTypes.number.isRequired,
 };
 
 Button.defaultProps = {
   active: false,
-  disabled: false
+  disabled: false,
 };
 
 const FirstPrev = () => {
@@ -37,7 +37,7 @@ const FirstPrev = () => {
     position,
     icons,
     prev,
-    beginAt
+    beginAt,
   } = React.useContext(PaginationContext);
   const disabled = position < perPage + beginAt;
 
@@ -72,7 +72,7 @@ const NextLast = () => {
     firstAndLast,
     position,
     icons,
-    next
+    next,
   } = React.useContext(PaginationContext);
   const pages = Math.floor(total / perPage) + 1;
   const disabled = position > total - perPage + beginAt;
@@ -120,7 +120,7 @@ const Pages = ({ start, finish }) => (
 
 Pages.propTypes = {
   start: PropTypes.number.isRequired,
-  finish: PropTypes.number.isRequired
+  finish: PropTypes.number.isRequired,
 };
 
 const Pagination = ({
@@ -157,7 +157,7 @@ const Pagination = ({
         perPage,
         position,
         prev,
-        total
+        total,
       }}
     >
       <ul
@@ -232,7 +232,7 @@ Pagination.propTypes = {
   onPageChange: PropTypes.func.isRequired,
   firstAndLast: PropTypes.bool,
   beginAt: PropTypes.number,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Pagination.defaultProps = {
@@ -244,7 +244,7 @@ Pagination.defaultProps = {
   perPage: 1,
   prev: "Previous",
   size: "default",
-  className: null
+  className: null,
 };
 
 export { Pagination };

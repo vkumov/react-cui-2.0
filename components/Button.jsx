@@ -26,16 +26,16 @@ export const Button = ({
       "selected"
     )}${ac(className)}${ac(asLink, " flex-middle flex-center")}`,
     style: { ...(style || {}), ...(asLink ? { display: "flex" } : {}) },
-    ...props
+    ...props,
   });
 
-Button.Primary = props => <Button {...props} color="primary" />;
-Button.Secondary = props => <Button {...props} color="secondary" />;
-Button.Success = props => <Button {...props} color="success" />;
-Button.Dark = props => <Button {...props} color="dark" />;
-Button.Ghost = props => <Button {...props} color="ghost" />;
-Button.Link = props => <Button {...props} color="link" />;
-Button.Light = props => <Button {...props} color="light" />;
+Button.Primary = (props) => <Button {...props} color="primary" />;
+Button.Secondary = (props) => <Button {...props} color="secondary" />;
+Button.Success = (props) => <Button {...props} color="success" />;
+Button.Dark = (props) => <Button {...props} color="dark" />;
+Button.Ghost = (props) => <Button {...props} color="ghost" />;
+Button.Link = (props) => <Button {...props} color="link" />;
+Button.Light = (props) => <Button {...props} color="light" />;
 
 Button.propTypes = {
   size: PropTypes.oneOf(["small", "default", "large"]),
@@ -46,7 +46,7 @@ Button.propTypes = {
     "dark",
     "ghost",
     "link",
-    "light"
+    "light",
   ]),
   wide: PropTypes.bool,
   justified: PropTypes.bool,
@@ -54,7 +54,7 @@ Button.propTypes = {
   asLink: PropTypes.bool,
   selected: PropTypes.bool,
   style: PropTypes.shape({}),
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Button.defaultProps = {
@@ -66,7 +66,7 @@ Button.defaultProps = {
   asLink: false,
   selected: false,
   style: null,
-  className: null
+  className: null,
 };
 
 export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
@@ -82,11 +82,11 @@ export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
 ButtonGroup.propTypes = {
   square: PropTypes.bool,
   withDivider: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 ButtonGroup.defaultProps = {
   square: false,
   withDivider: false,
-  className: null
+  className: null,
 };

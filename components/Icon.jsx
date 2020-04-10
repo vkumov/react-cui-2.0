@@ -13,12 +13,12 @@ const Icon = ({ icon, size, className, ...props }) => (
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
   size: PropTypes.oneOf([false, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 48]),
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Icon.defaultProps = {
   size: false,
-  className: null
+  className: null,
 };
 
 export { Icon };

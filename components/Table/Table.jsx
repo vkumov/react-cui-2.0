@@ -7,13 +7,13 @@ import { DisplayIf } from "../Conditional";
 
 import { appendClass } from "../../utils";
 
-const asArray = v => (Array.isArray(v) ? v : [v]);
+const asArray = (v) => (Array.isArray(v) ? v : [v]);
 
 const PAGINATION_LOCATION = [
   "top-left",
   "bottom-left",
   "bottom-right",
-  "top-right"
+  "top-right",
 ];
 
 const Table = ({
@@ -31,12 +31,16 @@ const Table = ({
   const [perPage, setPerPage] = React.useState(50);
   const tbody = React.useMemo(
     () =>
-      children ? asArray(children).find(child => child.type === "tbody") : null,
+      children
+        ? asArray(children).find((child) => child.type === "tbody")
+        : null,
     [children]
   );
   const thead = React.useMemo(
     () =>
-      children ? asArray(children).find(child => child.type === "thead") : null,
+      children
+        ? asArray(children).find((child) => child.type === "thead")
+        : null,
     [children]
   );
   const total = React.useMemo(
@@ -58,8 +62,8 @@ const Table = ({
             total,
             position,
             onPageChange: (_, p) => setPosition(p),
-            onPerPageChange: p => setPerPage(p),
-            paginationProps
+            onPerPageChange: (p) => setPerPage(p),
+            paginationProps,
           })}
         </div>
       </DisplayIf>
@@ -88,9 +92,9 @@ const Table = ({
             total,
             position,
             onPageChange: (_, p) => setPosition(p),
-            onPerPageChange: p => setPerPage(p),
+            onPerPageChange: (p) => setPerPage(p),
             perPageUp: true,
-            paginationProps
+            paginationProps,
           })}
         </div>
       </DisplayIf>
@@ -99,7 +103,7 @@ const Table = ({
 };
 
 const ALLOWED_TABLE_CHILD = ["thead", "tbody"];
-const allowedChild = type => ALLOWED_TABLE_CHILD.includes(type);
+const allowedChild = (type) => ALLOWED_TABLE_CHILD.includes(type);
 
 Table.propTypes = {
   pagination: PropTypes.elementType,
@@ -110,7 +114,7 @@ Table.propTypes = {
     icons: PropTypes.bool,
     next: PropTypes.node,
     prev: PropTypes.node,
-    firstAndLast: PropTypes.bool
+    firstAndLast: PropTypes.bool,
   }),
   data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
   children: (props, propName, componentName) => {
@@ -122,11 +126,11 @@ Table.propTypes = {
         ` ${ALLOWED_TABLE_CHILD.join(", ")}.`
     );
     if (Array.isArray(t)) {
-      if (!t.every(ch => allowedChild(ch.type))) return err;
+      if (!t.every((ch) => allowedChild(ch.type))) return err;
     } else if (t && !allowedChild(t.type)) return err;
     return null;
   },
-  start: PropTypes.number
+  start: PropTypes.number,
 };
 
 Table.defaultProps = {
@@ -134,11 +138,11 @@ Table.defaultProps = {
   paginationLocation: "bottom-right",
   paginationProps: {
     icons: true,
-    firstAndLast: true
+    firstAndLast: true,
   },
   data: null,
   children: null,
-  start: 1
+  start: 1,
 };
 
 export default Table;

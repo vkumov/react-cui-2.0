@@ -11,10 +11,10 @@ export const Header = ({ children, fluid, ...props }) => (
 
 Header.propTypes = {
   children: PropTypes.node.isRequired,
-  fluid: PropTypes.bool
+  fluid: PropTypes.bool,
 };
 Header.defaultProps = {
-  fluid: false
+  fluid: false,
 };
 
 export const HeaderPanel = ({ children, center, right, ...props }) => (
@@ -31,11 +31,11 @@ export const HeaderPanel = ({ children, center, right, ...props }) => (
 HeaderPanel.propTypes = {
   children: PropTypes.node.isRequired,
   center: PropTypes.bool,
-  right: PropTypes.bool
+  right: PropTypes.bool,
 };
 HeaderPanel.defaultProps = {
   center: false,
-  right: false
+  right: false,
 };
 
 export const HeaderTitle = ({ icon, link, title, ...props }) => (
@@ -59,9 +59,9 @@ export const HeaderTitle = ({ icon, link, title, ...props }) => (
 HeaderTitle.propTypes = {
   icon: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   link: PropTypes.string,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };
 HeaderTitle.defaultProps = {
   icon: true,
-  link: null
+  link: null,
 };

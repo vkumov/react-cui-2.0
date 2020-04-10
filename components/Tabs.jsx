@@ -7,7 +7,7 @@ import { appendClass as ac } from "../utils";
 const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
 
 const firstDefined = (...args) =>
-  args.find(el => typeof el !== "undefined" && el !== null);
+  args.find((el) => typeof el !== "undefined" && el !== null);
 
 export const Tab = ({ children, active }) => (
   <div className={`tab-pane${active ? " active" : ""}`}>{children}</div>
@@ -19,7 +19,7 @@ Tab.propTypes = {
   active: PropTypes.bool,
   // eslint-disable-next-line react/no-unused-prop-types
   title: PropTypes.node.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 Tab.defaultProps = { active: false };
@@ -40,7 +40,7 @@ export const TabsHeader = ({
   inline,
   openTab,
   onTabChange,
-  children
+  children,
 }) => (
   <ul
     className={`tabs${ac(tabsClassName)}${ac(center, "tabs--centered")}${ac(
@@ -73,7 +73,7 @@ TabsHeader.propTypes = {
   inline: PropTypes.bool,
   openTab: tabIdProp,
   onTabChange: PropTypes.func.isRequired,
-  children: tabsChildrenProp.isRequired
+  children: tabsChildrenProp.isRequired,
 };
 
 TabsHeader.defaultProps = {
@@ -85,7 +85,7 @@ TabsHeader.defaultProps = {
   bordered: false,
   vertical: false,
   inline: false,
-  openTab: null
+  openTab: null,
 };
 
 export const Tabs = ({
@@ -101,7 +101,7 @@ export const Tabs = ({
   vertical,
   inline,
   renderHeader,
-  renderBody
+  renderBody,
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
 
@@ -121,7 +121,7 @@ export const Tabs = ({
           vertical={vertical}
           inline={inline}
           openTab={openTab}
-          onTabChange={id => setOpenTab(id)}
+          onTabChange={(id) => setOpenTab(id)}
         >
           {children}
         </TabsHeader>
@@ -142,7 +142,7 @@ export const Tabs = ({
         >
           {React.Children.map(children, (child, idx) =>
             React.cloneElement(child, {
-              active: isActive(openTab, child.props.id, idx)
+              active: isActive(openTab, child.props.id, idx),
             })
           )}
         </div>
@@ -172,7 +172,7 @@ Tabs.propTypes = {
   vertical: PropTypes.bool,
   inline: PropTypes.bool,
   renderHeader: PropTypes.func,
-  renderBody: PropTypes.func
+  renderBody: PropTypes.func,
 };
 
 Tabs.defaultProps = {
@@ -186,6 +186,6 @@ Tabs.defaultProps = {
   bordered: false,
   vertical: false,
   inline: false,
-  renderHeader: header => header,
-  renderBody: body => body
+  renderHeader: (header) => header,
+  renderBody: (body) => body,
 };

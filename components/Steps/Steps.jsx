@@ -1,16 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { appendClass } from "../../utils";
+import { appendClass as ac } from "../../utils";
 
 const Steps = ({ size, color, vertical, children, className }) => (
   <div
-    className={`steps${appendClass(
+    className={`steps${ac(
       size !== "default",
       `steps--${size}`
-    )} steps--${color}${appendClass(vertical, "steps--vertical")}${appendClass(
-      className
-    )}`}
+    )} steps--${color}${ac(vertical, "steps--vertical")}${ac(className)}`}
   >
     {children}
   </div>
@@ -21,18 +19,18 @@ Steps.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "success", "dark"]),
   vertical: PropTypes.bool,
   className: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 Steps.defaultProps = {
   size: "default",
   color: "primary",
   vertical: false,
-  className: null
+  className: null,
 };
 
-Steps.Dot = props => <Steps {...props} size="dot" />;
-Steps.Small = props => <Steps {...props} size="small" />;
-Steps.Large = props => <Steps {...props} size="large" />;
+Steps.Dot = (props) => <Steps {...props} size="dot" />;
+Steps.Small = (props) => <Steps {...props} size="small" />;
+Steps.Large = (props) => <Steps {...props} size="large" />;
 
 export default Steps;

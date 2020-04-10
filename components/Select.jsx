@@ -12,7 +12,7 @@ export class Select extends React.Component {
 
     this.state = {
       isOpen: false,
-      title: props.multiple ? [] : ""
+      title: props.multiple ? [] : "",
     };
   }
 
@@ -24,12 +24,12 @@ export class Select extends React.Component {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen
+    this.setState((prevState) => ({
+      isOpen: !prevState.isOpen,
     }));
   };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     // ignore clicks on the component itself
     const n = this.props.innerRef ? this.props.innerRef : this.node;
     if (n && n.contains(e.target)) {
@@ -55,25 +55,25 @@ export class Select extends React.Component {
     } else {
       form.setFieldValue(
         field.name,
-        field.value.filter(v => v !== newValue)
+        field.value.filter((v) => v !== newValue)
       );
       form.setFieldTouched(field.name, true);
-      this.setState({ title: this.state.title.filter(t => t !== title) });
+      this.setState({ title: this.state.title.filter((t) => t !== title) });
     }
   };
 
-  isSelected = checkValue => {
+  isSelected = (checkValue) => {
     const { value } = this.props.field;
 
     if (this.props.multiple) {
       return (
-        Array.isArray(value) && value.findIndex(v => v === checkValue) >= 0
+        Array.isArray(value) && value.findIndex((v) => v === checkValue) >= 0
       );
     }
     return value === checkValue;
   };
 
-  renderOption = child => {
+  renderOption = (child) => {
     const { value, children, disabled } = child.props;
 
     if (this.props.multiple) {
@@ -82,7 +82,7 @@ export class Select extends React.Component {
           <label className="checkbox">
             <input
               type="checkbox"
-              onClick={e =>
+              onClick={(e) =>
                 this.handleOptionClick(
                   e,
                   value,
@@ -101,7 +101,7 @@ export class Select extends React.Component {
     return (
       <a
         disabled={disabled}
-        onClick={e =>
+        onClick={(e) =>
           this.handleOptionClick(
             e,
             value,
@@ -115,7 +115,7 @@ export class Select extends React.Component {
     );
   };
 
-  renderOptgroup = child => {
+  renderOptgroup = (child) => {
     const { label, children } = child.props;
     return (
       <div className="dropdown__group">
@@ -125,8 +125,8 @@ export class Select extends React.Component {
     );
   };
 
-  renderChildren = children => {
-    return React.Children.map(children, child => {
+  renderChildren = (children) => {
+    return React.Children.map(children, (child) => {
       switch (child.type) {
         case "option":
           return this.renderOption(child);
@@ -138,9 +138,9 @@ export class Select extends React.Component {
     });
   };
 
-  findTitle = where => {
+  findTitle = (where) => {
     let r = [];
-    React.Children.forEach(where || this.props.children, ch => {
+    React.Children.forEach(where || this.props.children, (ch) => {
       if (ch.type === "optgroup") {
         const temp = this.findTitle(ch.props.children);
         if (temp) r.push(temp);
@@ -187,7 +187,7 @@ export class Select extends React.Component {
       innerRef,
       className,
       disabled,
-      width
+      width,
     } = this.props;
     const { touched, errors } = form;
 
@@ -208,7 +208,7 @@ export class Select extends React.Component {
         ref={
           innerRef
             ? innerRef
-            : node => {
+            : (node) => {
                 this.node = node;
               }
         }
@@ -251,7 +251,7 @@ Select.propTypes = {
   up: PropTypes.bool,
   disabled: PropTypes.bool,
   width: PropTypes.number,
-  compressed: PropTypes.bool
+  compressed: PropTypes.bool,
 };
 
 Select.defaultProps = {
@@ -263,5 +263,5 @@ Select.defaultProps = {
   width: null,
   up: false,
   disabled: false,
-  compressed: false
+  compressed: false,
 };

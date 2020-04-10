@@ -40,11 +40,11 @@ export class Dropdown extends React.Component {
     super(props);
 
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
 
-  handleClick = e => {
+  handleClick = (e) => {
     const { stopPropagation, onOpen, onClose } = this.props;
     if (stopPropagation) {
       e.stopPropagation();
@@ -59,7 +59,7 @@ export class Dropdown extends React.Component {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const newIsOpen = !prevState.isOpen;
       if (newIsOpen && onOpen) onOpen(e);
       if (!newIsOpen && onClose) onClose(e);
@@ -67,7 +67,7 @@ export class Dropdown extends React.Component {
     });
   };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     // ignore clicks on the component itself
     const { alwaysClose } = this.props;
     if (!alwaysClose && this.node.contains(e.target)) return;
@@ -83,7 +83,7 @@ export class Dropdown extends React.Component {
       className,
       header,
       divClassName,
-      up
+      up,
     } = this.props;
     const { isOpen } = this.state;
 
@@ -96,7 +96,7 @@ export class Dropdown extends React.Component {
           isOpen,
           "active"
         )}${appendClass(divClassName)}`}
-        ref={node => {
+        ref={(node) => {
           this.node = node;
         }}
       >
@@ -123,7 +123,7 @@ Dropdown.propTypes = {
   stopPropagation: PropTypes.bool,
   divClassName: PropTypes.string,
   children: PropTypes.node.isRequired,
-  up: PropTypes.bool
+  up: PropTypes.bool,
 };
 
 Dropdown.defaultProps = {
@@ -136,7 +136,7 @@ Dropdown.defaultProps = {
   onClose: null,
   stopPropagation: false,
   divClassName: null,
-  up: false
+  up: false,
 };
 
 Dropdown.Element = ({ selected, icon, children, className, ...props }) => (
@@ -160,13 +160,13 @@ Dropdown.Element.propTypes = {
   selected: PropTypes.bool,
   children: PropTypes.node.isRequired,
   icon: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Dropdown.Element.defaultProps = {
   selected: false,
   icon: null,
-  className: null
+  className: null,
 };
 
 Dropdown.Divider = () => <div className="divider" />;
@@ -176,7 +176,7 @@ Dropdown.Group = ({ children }) => (
 );
 
 Dropdown.Group.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 Dropdown.GroupHeader = ({ header }) => (
@@ -184,5 +184,5 @@ Dropdown.GroupHeader = ({ header }) => (
 );
 
 Dropdown.GroupHeader.propTypes = {
-  header: PropTypes.node.isRequired
+  header: PropTypes.node.isRequired,
 };

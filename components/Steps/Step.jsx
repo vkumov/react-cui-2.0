@@ -1,14 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { appendClass } from "../../utils";
+import { appendClass as ac } from "../../utils";
 
 const Step = ({ icon, children, visited, active, className }) => (
   <div
-    className={`step${appendClass(visited, "visited")}${appendClass(
-      active,
-      "active"
-    )}${appendClass(className)}`}
+    className={`step${ac(visited, "visited")}${ac(active, "active")}${ac(
+      className
+    )}`}
   >
     <div className="step__icon">{icon}</div>
     <div className="step__label">{children}</div>
@@ -20,13 +19,13 @@ Step.propTypes = {
   children: PropTypes.node.isRequired,
   visited: PropTypes.bool,
   active: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 Step.defaultProps = {
   visited: false,
   active: false,
-  className: null
+  className: null,
 };
 
 export default Step;
