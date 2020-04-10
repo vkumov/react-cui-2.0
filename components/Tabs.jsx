@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { ConditionalWrapper } from "./Conditional";
+import { ConditionalWrapper, DisplayIf } from "./Conditional";
 import { appendClass as ac } from "../utils";
 
 const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
@@ -152,9 +152,9 @@ export const Tabs = ({
 
   return (
     <ConditionalWrapper condition={vertical} wrapper={<div className="row" />}>
-      {!right && !vertical ? header : null}
+      <DisplayIf condition={vertical && !right}>{header}</DisplayIf>
       {body}
-      {right && vertical ? header : null}
+      <DisplayIf condition={vertical && right}>{header}</DisplayIf>
     </ConditionalWrapper>
   );
 };

@@ -2755,7 +2755,11 @@ const Tabs = ({
     wrapper: React.createElement("div", {
       className: "row"
     })
-  }, !right && !vertical ? header : null, body, right && vertical ? header : null);
+  }, React.createElement(DisplayIf, {
+    condition: vertical && !right
+  }, header), body, React.createElement(DisplayIf, {
+    condition: vertical && right
+  }, header));
 };
 Tabs.propTypes = {
   children: tabsChildrenProp.isRequired,
