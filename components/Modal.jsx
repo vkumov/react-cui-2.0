@@ -133,7 +133,11 @@ export const Modal = ({
                       )}${ac(closeIcon && closeHandle, "qtr-margin-right")}`}
                       onClick={maximizeCb}
                     >
-                      <span className="icon-maximize" />
+                      <span
+                        className={
+                          maximized ? "icon-minimize" : "icon-maximize"
+                        }
+                      />
                     </a>
                   </If>
                   <If condition={!!(closeIcon && closeHandle)}>

@@ -2289,7 +2289,7 @@ const Modal = (_ref4) => {
     className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
     onClick: maximizeCb
   }, React.createElement("span", {
-    className: "icon-maximize"
+    className: maximized ? "icon-minimize" : "icon-maximize"
   }))), React.createElement(DisplayIf, {
     condition: !!(closeIcon && closeHandle)
   }, React.createElement("a", {
