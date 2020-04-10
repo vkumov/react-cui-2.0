@@ -37,6 +37,7 @@ export const TabsHeader = ({
   embossed,
   bordered,
   vertical,
+  sticky,
   inline,
   openTab,
   onTabChange,
@@ -50,6 +51,7 @@ export const TabsHeader = ({
       bordered,
       "tabs--bordered"
     )}${ac(vertical, "tabs--vertical")}${ac(inline, "tabs--inline")}`}
+    style={sticky ? { position: "sticky", top: "0" } : {}}
   >
     {React.Children.map(children, ({ props: { id, title } }, idx) => (
       <li
@@ -70,6 +72,7 @@ TabsHeader.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
+  sticky: PropTypes.bool,
   inline: PropTypes.bool,
   openTab: tabIdProp,
   onTabChange: PropTypes.func.isRequired,
@@ -86,6 +89,7 @@ TabsHeader.defaultProps = {
   vertical: false,
   inline: false,
   openTab: null,
+  sticky: false,
 };
 
 export const Tabs = ({
@@ -99,6 +103,7 @@ export const Tabs = ({
   embossed,
   bordered,
   vertical,
+  sticky,
   inline,
   renderHeader,
   renderBody,
@@ -119,6 +124,7 @@ export const Tabs = ({
           embossed={embossed}
           bordered={bordered}
           vertical={vertical}
+          sticky={sticky}
           inline={inline}
           openTab={openTab}
           onTabChange={(id) => setOpenTab(id)}
@@ -151,7 +157,12 @@ export const Tabs = ({
   );
 
   return (
-    <ConditionalWrapper condition={vertical} wrapper={<div className="row" />}>
+    <ConditionalWrapper
+      condition={vertical}
+      wrapper={
+        <div className="row" style={sticky ? { position: "relative" } : {}} />
+      }
+    >
       <DisplayIf condition={vertical && !right}>{header}</DisplayIf>
       {body}
       <DisplayIf condition={vertical && right}>{header}</DisplayIf>
@@ -170,6 +181,7 @@ Tabs.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
+  sticky: PropTypes.bool,
   inline: PropTypes.bool,
   renderHeader: PropTypes.func,
   renderBody: PropTypes.func,
@@ -185,6 +197,7 @@ Tabs.defaultProps = {
   embossed: false,
   bordered: false,
   vertical: false,
+  sticky: false,
   inline: false,
   renderHeader: (header) => header,
   renderBody: (body) => body,

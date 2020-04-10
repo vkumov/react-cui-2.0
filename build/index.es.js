@@ -2666,12 +2666,17 @@ const TabsHeader = ({
   embossed,
   bordered,
   vertical,
+  sticky,
   inline,
   openTab,
   onTabChange,
   children
 }) => React.createElement("ul", {
-  className: `tabs${appendClass(tabsClassName)}${appendClass(center, "tabs--centered")}${appendClass(right, "tabs--right")}${appendClass(justified, "tabs--justified")}${appendClass(embossed, "tabs--embossed")}${appendClass(bordered, "tabs--bordered")}${appendClass(vertical, "tabs--vertical")}${appendClass(inline, "tabs--inline")}`
+  className: `tabs${appendClass(tabsClassName)}${appendClass(center, "tabs--centered")}${appendClass(right, "tabs--right")}${appendClass(justified, "tabs--justified")}${appendClass(embossed, "tabs--embossed")}${appendClass(bordered, "tabs--bordered")}${appendClass(vertical, "tabs--vertical")}${appendClass(inline, "tabs--inline")}`,
+  style: sticky ? {
+    position: "sticky",
+    top: "0"
+  } : {}
 }, React.Children.map(children, ({
   props: {
     id,
@@ -2691,6 +2696,7 @@ TabsHeader.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
+  sticky: PropTypes.bool,
   inline: PropTypes.bool,
   openTab: tabIdProp,
   onTabChange: PropTypes.func.isRequired,
@@ -2705,7 +2711,8 @@ TabsHeader.defaultProps = {
   bordered: false,
   vertical: false,
   inline: false,
-  openTab: null
+  openTab: null,
+  sticky: false
 };
 const Tabs = ({
   children,
@@ -2718,6 +2725,7 @@ const Tabs = ({
   embossed,
   bordered,
   vertical,
+  sticky,
   inline,
   renderHeader,
   renderBody
@@ -2736,6 +2744,7 @@ const Tabs = ({
     embossed: embossed,
     bordered: bordered,
     vertical: vertical,
+    sticky: sticky,
     inline: inline,
     openTab: openTab,
     onTabChange: id => setOpenTab(id)
@@ -2753,7 +2762,10 @@ const Tabs = ({
   return React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
-      className: "row"
+      className: "row",
+      style: sticky ? {
+        position: "relative"
+      } : {}
     })
   }, React.createElement(DisplayIf, {
     condition: vertical && !right
@@ -2772,6 +2784,7 @@ Tabs.propTypes = {
   embossed: PropTypes.bool,
   bordered: PropTypes.bool,
   vertical: PropTypes.bool,
+  sticky: PropTypes.bool,
   inline: PropTypes.bool,
   renderHeader: PropTypes.func,
   renderBody: PropTypes.func
@@ -2786,6 +2799,7 @@ Tabs.defaultProps = {
   embossed: false,
   bordered: false,
   vertical: false,
+  sticky: false,
   inline: false,
   renderHeader: header => header,
   renderBody: body => body
