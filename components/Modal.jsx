@@ -120,9 +120,9 @@ export const Modal = ({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal__content" {...contentProps}>
-              <If condition={(closeIcon && closeHandle) || maximize}>
+              <If condition={!!(closeIcon && closeHandle) || maximize}>
                 <ConditionalWrapper
-                  condition={closeIcon && closeHandle && maximize}
+                  condition={!!(closeIcon && closeHandle) && maximize}
                   wrapper={<div className="modal__close" />}
                 >
                   <If condition={maximize}>
@@ -136,7 +136,7 @@ export const Modal = ({
                       <span className="icon-maximize" />
                     </a>
                   </If>
-                  <If condition={closeIcon && closeHandle}>
+                  <If condition={!!(closeIcon && closeHandle)}>
                     <a
                       className={!maximize ? "modal__close" : ""}
                       onClick={closeHandle}

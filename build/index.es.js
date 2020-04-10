@@ -2277,9 +2277,9 @@ const Modal = (_ref4) => {
   }), React.createElement("div", _extends({
     className: "modal__content"
   }, contentProps), React.createElement(DisplayIf, {
-    condition: closeIcon && closeHandle || maximize
+    condition: !!(closeIcon && closeHandle) || maximize
   }, React.createElement(ConditionalWrapper, {
-    condition: closeIcon && closeHandle && maximize,
+    condition: !!(closeIcon && closeHandle) && maximize,
     wrapper: React.createElement("div", {
       className: "modal__close"
     })
@@ -2291,7 +2291,7 @@ const Modal = (_ref4) => {
   }, React.createElement("span", {
     className: "icon-maximize"
   }))), React.createElement(DisplayIf, {
-    condition: closeIcon && closeHandle
+    condition: !!(closeIcon && closeHandle)
   }, React.createElement("a", {
     className: !maximize ? "modal__close" : "",
     onClick: closeHandle
