@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable import/prefer-default-export */
 import React from "react";
 import PropTypes from "prop-types";
@@ -7,6 +10,7 @@ import { getIn } from "formik";
 import "../css/select.css";
 
 import { InputHelpBlock } from "./InputHelpBlock";
+import { appendClass as ac } from "../utils";
 
 export class Select extends React.Component {
   constructor(props) {
@@ -196,23 +200,23 @@ export class Select extends React.Component {
     return (
       <div
         className={
-          `form-group dropdown${compressed ? " input--compressed" : ""}${
-            this.state.isOpen ? " active" : ""
-          }${inline ? " label--inline" : ""}${up ? " dropdown--up" : ""}${
-            disabled ? " disabled" : ""
-          }${className ? ` ${className}` : ""}${
-            getIn(touched, field.name) && getIn(errors, field.name)
-              ? " form-group--error"
-              : ""
-          }`
+          `form-group dropdown${ac(compressed, "input--compressed")}${ac(
+            this.state.isOpen,
+            "active"
+          )}${ac(inline, "label--inline")}${ac(up, "dropdown--up")}${ac(
+            disabled,
+            "disabled"
+          )}${ac(className)}${ac(
+            getIn(touched, field.name) && getIn(errors, field.name),
+            "form-group--error"
+          )}`
           // (asyncValidating ? " form-group--loading" : "")
         }
         ref={
-          innerRef
-            ? innerRef
-            : (node) => {
-                this.node = node;
-              }
+          innerRef ||
+          ((node) => {
+            this.node = node;
+          })
         }
         {...(inline === "both" ? { style: { display: "inline-block" } } : {})}
       >
@@ -247,6 +251,7 @@ export class Select extends React.Component {
 Select.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
+  title: PropTypes.string,
   prompt: PropTypes.string,
   multiple: PropTypes.bool,
   inline: PropTypes.oneOf([false, true, "both"]),
@@ -262,6 +267,7 @@ Select.defaultProps = {
   inline: false,
   id: uuid(),
   label: null,
+  title: null,
   width: null,
   up: false,
   disabled: false,
