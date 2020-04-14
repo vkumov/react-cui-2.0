@@ -42,12 +42,13 @@ const ListHeader = ({ variants, selectedIdx, setIdx }) => (
   <ul className="list list--inline divider--vertical">
     {variants.map((v, idx) => (
       <li key={v.variant}>
-        <ConditionalWrapper
-          condition={variants[selectedIdx].variant !== v.variant}
-          wrapper={<a key={v.variant} onClick={() => setIdx(idx)} />}
+        <a
+          key={v.variant}
+          onClick={() => setIdx(idx)}
+          disabled={variants[selectedIdx].variant === v.variant}
         >
           {v.display}
-        </ConditionalWrapper>
+        </a>
       </li>
     ))}
   </ul>

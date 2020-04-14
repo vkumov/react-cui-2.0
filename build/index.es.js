@@ -3136,12 +3136,10 @@ const ListHeader = ({
   className: "list list--inline divider--vertical"
 }, variants.map((v, idx) => React.createElement("li", {
   key: v.variant
-}, React.createElement(ConditionalWrapper, {
-  condition: variants[selectedIdx].variant !== v.variant,
-  wrapper: React.createElement("a", {
-    key: v.variant,
-    onClick: () => setIdx(idx)
-  })
+}, React.createElement("a", {
+  key: v.variant,
+  onClick: () => setIdx(idx),
+  disabled: variants[selectedIdx].variant === v.variant
 }, v.display))));
 
 ListHeader.propTypes = {
