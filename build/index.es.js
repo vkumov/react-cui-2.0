@@ -3136,10 +3136,12 @@ const ListHeader = ({
   className: "list list--inline divider--vertical"
 }, variants.map((v, idx) => React.createElement("li", {
   key: v.variant
-}, React.createElement("a", {
-  key: v.variant,
-  onClick: () => setIdx(idx),
-  disabled: variants[selectedIdx].variant === v.variant
+}, React.createElement(ConditionalWrapper, {
+  condition: variants[selectedIdx].variant !== v.variant,
+  wrapper: React.createElement("a", {
+    key: v.variant,
+    onClick: () => setIdx(idx)
+  })
 }, v.display))));
 
 ListHeader.propTypes = {
@@ -3214,7 +3216,7 @@ const VariantSelector = ({
   }), React.createElement("span", {
     className: "switch__label"
   }, title)), variantIdx >= 0 ? dd("span", enableTitleAppend) : null) : dd("div", title), disableable && variantIdx < 0 ? null : React.createElement("div", {
-    className: "tabs-wrap panel"
+    className: "tabs-wrap panel base-padding-top"
   }, variants[variantIdx].component));
 };
 

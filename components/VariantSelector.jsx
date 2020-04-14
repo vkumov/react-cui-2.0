@@ -42,13 +42,12 @@ const ListHeader = ({ variants, selectedIdx, setIdx }) => (
   <ul className="list list--inline divider--vertical">
     {variants.map((v, idx) => (
       <li key={v.variant}>
-        <a
-          key={v.variant}
-          onClick={() => setIdx(idx)}
-          disabled={variants[selectedIdx].variant === v.variant}
+        <ConditionalWrapper
+          condition={variants[selectedIdx].variant !== v.variant}
+          wrapper={<a key={v.variant} onClick={() => setIdx(idx)} />}
         >
           {v.display}
-        </a>
+        </ConditionalWrapper>
       </li>
     ))}
   </ul>
@@ -138,7 +137,9 @@ const VariantSelector = ({
         dd("div", title)
       )}
       {disableable && variantIdx < 0 ? null : (
-        <div className="tabs-wrap panel">{variants[variantIdx].component}</div>
+        <div className="tabs-wrap panel base-padding-top">
+          {variants[variantIdx].component}
+        </div>
       )}
     </div>
   );
