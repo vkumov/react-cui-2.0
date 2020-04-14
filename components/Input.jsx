@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { getIn } from "formik";
 
+import { DisplayIf as If } from "./Conditional";
 import { InputHelpBlock } from "./InputHelpBlock";
+import { appendClass as ac } from "../utils";
 
 const Input = ({
   className,
@@ -20,13 +22,13 @@ const Input = ({
   ...rest
 }) => (
   <div
-    className={`form-group${className ? ` ${className}` : ""}${
-      getIn(touched, field.name) && getIn(errors, field.name)
-        ? " form-group--error"
-        : ""
-    }${inline === "form" || inline === "both" ? " form-group--inline" : ""}${
-      inline === "label" || inline === "both" ? " label--inline" : ""
-    }${icon ? " input--icon" : ""}`}
+    className={`form-group${ac(className)}${ac(
+      getIn(touched, field.name) && getIn(errors, field.name),
+      "form-group--error"
+    )}${ac(inline === "form" || inline === "both", "form-group--inline")}${ac(
+      inline === "label" || inline === "both",
+      "label--inline"
+    )}${ac(icon, "input--icon")}`}
   >
     <div className="form-group__text">
       <input
@@ -35,7 +37,7 @@ const Input = ({
         type={type}
         ref={inputRef}
         {...rest}
-        className={plain ? "form-group--plaintext" : ""}
+        className={ac(plain, "form-group--plaintext")}
       />
       {label ? <label htmlFor={id || field.name}>{label}</label> : null}
       {icon ? (
@@ -49,9 +51,16 @@ const Input = ({
         </button>
       ) : null}
     </div>
-    {helpBlock && getIn(touched, field.name) && getIn(errors, field.name) ? (
+    <If
+      condition={
+        !inline &&
+        helpBlock &&
+        !!getIn(touched, field.name) &&
+        !!getIn(errors, field.name)
+      }
+    >
       <InputHelpBlock text={getIn(errors, field.name)} />
-    ) : null}
+    </If>
   </div>
 );
 
@@ -66,6 +75,8 @@ Input.propTypes = {
   helpBlock: PropTypes.bool,
   form: PropTypes.shape({
     values: PropTypes.object,
+    touched: PropTypes.shape({}),
+    errors: PropTypes.shape({}),
   }).isRequired,
   field: PropTypes.shape({
     name: PropTypes.string,

@@ -1070,7 +1070,7 @@ styleInject(css$1);
 const InputHelpBlock = ({
   text
 }) => React.createElement("div", {
-  className: "help-block text-danger",
+  className: "form-group__help",
   role: "alert"
 }, React.createElement("span", null, text));
 
@@ -2126,7 +2126,7 @@ const Input = (_ref) => {
       rest = _objectWithoutProperties(_ref, ["className", "id", "field", "label", "type", "form", "inputRef", "inline", "icon", "iconClick", "helpBlock", "plain"]);
 
   return React.createElement("div", {
-    className: `form-group${className ? ` ${className}` : ""}${getIn(touched, field.name) && getIn(errors, field.name) ? " form-group--error" : ""}${inline === "form" || inline === "both" ? " form-group--inline" : ""}${inline === "label" || inline === "both" ? " label--inline" : ""}${icon ? " input--icon" : ""}`
+    className: `form-group${appendClass(className)}${appendClass(getIn(touched, field.name) && getIn(errors, field.name), "form-group--error")}${appendClass(inline === "form" || inline === "both", "form-group--inline")}${appendClass(inline === "label" || inline === "both", "label--inline")}${appendClass(icon, "input--icon")}`
   }, React.createElement("div", {
     className: "form-group__text"
   }, React.createElement("input", _extends({}, field, {
@@ -2134,7 +2134,7 @@ const Input = (_ref) => {
     type: type,
     ref: inputRef
   }, rest, {
-    className: plain ? "form-group--plaintext" : ""
+    className: appendClass(plain, "form-group--plaintext")
   })), label ? React.createElement("label", {
     htmlFor: id || field.name
   }, label) : null, icon ? React.createElement("button", {
@@ -2144,9 +2144,11 @@ const Input = (_ref) => {
     onClick: iconClick
   }, React.createElement("span", {
     className: `icon-${icon}`
-  })) : null), helpBlock && getIn(touched, field.name) && getIn(errors, field.name) ? React.createElement(InputHelpBlock, {
+  })) : null), React.createElement(DisplayIf, {
+    condition: !inline && helpBlock && !!getIn(touched, field.name) && !!getIn(errors, field.name)
+  }, React.createElement(InputHelpBlock, {
     text: getIn(errors, field.name)
-  }) : null);
+  })));
 };
 
 Input.propTypes = {
@@ -2158,7 +2160,9 @@ Input.propTypes = {
   inline: PropTypes.oneOf([false, "group", "label", "both"]),
   helpBlock: PropTypes.bool,
   form: PropTypes.shape({
-    values: PropTypes.object
+    values: PropTypes.object,
+    touched: PropTypes.shape({}),
+    errors: PropTypes.shape({})
   }).isRequired,
   field: PropTypes.shape({
     name: PropTypes.string,
