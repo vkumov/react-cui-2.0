@@ -3033,5 +3033,66 @@ VerticalCenter.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Timeline, TimelineItem, ToastContainer, VerticalCenter, confirmation, notificationModal, toast };
+const Textarea = (_ref) => {
+  let {
+    className,
+    id,
+    field,
+    label,
+    labelInline,
+    form: {
+      touched,
+      errors
+    },
+    inputRef,
+    textareaClass,
+    resize
+  } = _ref,
+      rest = _objectWithoutProperties(_ref, ["className", "id", "field", "label", "labelInline", "form", "inputRef", "textareaClass", "resize"]);
+
+  return React.createElement("div", {
+    className: `form-group${appendClass(labelInline, "label--inline")}${appendClass(className)}${getIn(touched, field.name) && getIn(errors, field.name) ? " form-group--error" : ""}`
+  }, React.createElement("div", {
+    className: "form-group__text"
+  }, React.createElement("textarea", _extends({}, field, {
+    className: textareaClass,
+    id: id,
+    ref: inputRef
+  }, rest), field.value), label ? React.createElement("label", {
+    htmlFor: id
+  }, label) : null), getIn(touched, field.name) && getIn(errors, field.name) ? React.createElement(InputHelpBlock, {
+    text: getIn(errors, field.name)
+  }) : null);
+};
+
+Textarea.propTypes = {
+  label: PropTypes.node,
+  labelInline: PropTypes.bool,
+  textareaClass: PropTypes.string,
+  inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({
+    current: PropTypes.instanceOf(Element)
+  })]),
+  className: PropTypes.string,
+  id: PropTypes.string,
+  field: PropTypes.shape({
+    name: PropTypes.string,
+    value: PropTypes.string
+  }).isRequired,
+  form: PropTypes.shape({
+    touched: PropTypes.shape({}),
+    errors: PropTypes.shape({})
+  }).isRequired,
+  resize: PropTypes.bool
+};
+Textarea.defaultProps = {
+  label: null,
+  labelInline: false,
+  textareaClass: null,
+  className: null,
+  id: null,
+  inputRef: null,
+  resize: false
+};
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, ToastContainer, VerticalCenter, confirmation, notificationModal, toast };
 //# sourceMappingURL=index.es.js.map

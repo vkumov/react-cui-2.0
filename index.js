@@ -27,3 +27,4 @@ export * from "./components/Pagination";
 export * from "./components/Conditional";
 export * from "./components/Steps";
 export { default as VerticalCenter } from "./components/VerticalCenter";
+export * from "./components/Textarea";
