@@ -6,7 +6,58 @@ import PropTypes from "prop-types";
 
 import { useFormikContext, getIn } from "formik";
 import { Dropdown } from "./Dropdown";
+import { ConditionalWrapper } from "./Conditional";
 import { appendClass as ac } from "../utils";
+
+const DropdownHeader = ({ variants, selectedIdx, setIdx }) => (
+  <Dropdown
+    type="link"
+    tail
+    header={variants[selectedIdx].display}
+    alwaysClose
+    className="flex-center-vertical"
+    stopPropagation
+  >
+    {variants.map((v, idx) => (
+      <a
+        key={v.variant}
+        onClick={() => setIdx(idx)}
+        className={
+          variants[selectedIdx].variant === v.variant ? "selected" : ""
+        }
+      >
+        {v.display}
+      </a>
+    ))}
+  </Dropdown>
+);
+
+DropdownHeader.propTypes = {
+  variants: PropTypes.arrayOf(PropTypes.any).isRequired,
+  selectedIdx: PropTypes.number.isRequired,
+  setIdx: PropTypes.func.isRequired,
+};
+
+const ListHeader = ({ variants, selectedIdx, setIdx }) => (
+  <ul className="list list--inline divider--vertical">
+    {variants.map((v, idx) => (
+      <li key={v.variant}>
+        <ConditionalWrapper
+          condition={variants[selectedIdx].variant !== v.variant}
+          wrapper={<a key={v.variant} onClick={() => setIdx(idx)} />}
+        >
+          {v.display}
+        </ConditionalWrapper>
+      </li>
+    ))}
+  </ul>
+);
+
+ListHeader.propTypes = {
+  variants: PropTypes.arrayOf(PropTypes.any).isRequired,
+  selectedIdx: PropTypes.number.isRequired,
+  setIdx: PropTypes.func.isRequired,
+};
 
 const VariantSelector = ({
   variants,
@@ -17,6 +68,7 @@ const VariantSelector = ({
   disableable,
   enableTitleAppend,
   className,
+  list,
 }) => {
   const { values, setFieldValue, unregisterField } = useFormikContext();
   const variant = React.useMemo(
@@ -48,26 +100,19 @@ const VariantSelector = ({
       el,
       { className: "secondary-tabs" },
       t ? <span className="half-margin-right">{t}</span> : null,
-      <Dropdown
-        type="link"
-        tail
-        header={variants[variantIdx].display}
-        alwaysClose
-        className="flex-center-vertical"
-        stopPropagation
-      >
-        {variants.map((v, idx) => (
-          <a
-            key={v.variant}
-            onClick={() => setIdx(idx)}
-            className={
-              variants[variantIdx].variant === v.variant ? "selected" : ""
-            }
-          >
-            {v.display}
-          </a>
-        ))}
-      </Dropdown>
+      list ? (
+        <ListHeader
+          variants={variants}
+          selectedIdx={variantIdx}
+          setIdx={setIdx}
+        />
+      ) : (
+        <DropdownHeader
+          variants={variants}
+          selectedIdx={variantIdx}
+          setIdx={setIdx}
+        />
+      )
     );
 
   return (
@@ -113,6 +158,7 @@ VariantSelector.propTypes = {
   disableable: PropTypes.bool,
   enableTitleAppend: PropTypes.string,
   className: PropTypes.string,
+  list: PropTypes.bool,
 };
 
 VariantSelector.defaultProps = {
@@ -122,6 +168,7 @@ VariantSelector.defaultProps = {
   onChange: null,
   enableTitleAppend: null,
   className: null,
+  list: false,
 };
 
 export { VariantSelector };

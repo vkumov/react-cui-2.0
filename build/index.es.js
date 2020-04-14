@@ -3105,6 +3105,51 @@ Textarea.defaultProps = {
 
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
+const DropdownHeader$1 = ({
+  variants,
+  selectedIdx,
+  setIdx
+}) => React.createElement(Dropdown, {
+  type: "link",
+  tail: true,
+  header: variants[selectedIdx].display,
+  alwaysClose: true,
+  className: "flex-center-vertical",
+  stopPropagation: true
+}, variants.map((v, idx) => React.createElement("a", {
+  key: v.variant,
+  onClick: () => setIdx(idx),
+  className: variants[selectedIdx].variant === v.variant ? "selected" : ""
+}, v.display)));
+
+DropdownHeader$1.propTypes = {
+  variants: PropTypes.arrayOf(PropTypes.any).isRequired,
+  selectedIdx: PropTypes.number.isRequired,
+  setIdx: PropTypes.func.isRequired
+};
+
+const ListHeader = ({
+  variants,
+  selectedIdx,
+  setIdx
+}) => React.createElement("ul", {
+  className: "list list--inline divider--vertical"
+}, variants.map((v, idx) => React.createElement("li", {
+  key: v.variant
+}, React.createElement(ConditionalWrapper, {
+  condition: variants[selectedIdx].variant !== v.variant,
+  wrapper: React.createElement("a", {
+    key: v.variant,
+    onClick: () => setIdx(idx)
+  })
+}, v.display))));
+
+ListHeader.propTypes = {
+  variants: PropTypes.arrayOf(PropTypes.any).isRequired,
+  selectedIdx: PropTypes.number.isRequired,
+  setIdx: PropTypes.func.isRequired
+};
+
 const VariantSelector = ({
   variants,
   varPrefix,
@@ -3113,7 +3158,8 @@ const VariantSelector = ({
   onChange,
   disableable,
   enableTitleAppend,
-  className
+  className,
+  list
 }) => {
   const {
     values,
@@ -3143,18 +3189,15 @@ const VariantSelector = ({
     className: "secondary-tabs"
   }, t ? React.createElement("span", {
     className: "half-margin-right"
-  }, t) : null, React.createElement(Dropdown, {
-    type: "link",
-    tail: true,
-    header: variants[variantIdx].display,
-    alwaysClose: true,
-    className: "flex-center-vertical",
-    stopPropagation: true
-  }, variants.map((v, idx) => React.createElement("a", {
-    key: v.variant,
-    onClick: () => setIdx(idx),
-    className: variants[variantIdx].variant === v.variant ? "selected" : ""
-  }, v.display))));
+  }, t) : null, list ? React.createElement(ListHeader, {
+    variants: variants,
+    selectedIdx: variantIdx,
+    setIdx: setIdx
+  }) : React.createElement(DropdownHeader$1, {
+    variants: variants,
+    selectedIdx: variantIdx,
+    setIdx: setIdx
+  }));
 
   return React.createElement("div", {
     className: `form-group${appendClass(inline, " inline-variants")}${appendClass(className)}`
@@ -3189,7 +3232,8 @@ VariantSelector.propTypes = {
   onChange: PropTypes.func,
   disableable: PropTypes.bool,
   enableTitleAppend: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  list: PropTypes.bool
 };
 VariantSelector.defaultProps = {
   disableable: false,
@@ -3197,7 +3241,8 @@ VariantSelector.defaultProps = {
   inline: false,
   onChange: null,
   enableTitleAppend: null,
-  className: null
+  className: null,
+  list: false
 };
 
 const Radio = (_ref) => {
