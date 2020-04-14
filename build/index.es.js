@@ -3117,24 +3117,23 @@ const VariantSelector = ({
     unregisterField
   } = useFormikContext();
   const variant = React.useMemo(() => getIn(values, `${varPrefix}.variant`, undefined), [values, varPrefix]);
-  const [curIdx, setIdx] = React.useState(() => {
+  const [variantIdx, setIdx] = React.useState(() => {
     const idx = variants.findIndex(v => v.selected || v.variant === variant);
     return !disableable && idx < 0 ? 0 : idx;
   });
   React.useEffect(() => {
     const idx = variants.findIndex(v => v.variant === variant);
-    if (idx < 0 || idx === curIdx) return;
-    setIdx(idx);
-  }, [variant, variants, curIdx]);
+    setIdx(curr => idx < 0 || idx === curr ? curr : idx);
+  }, [variant, variants]);
   React.useEffect(() => {
-    if (curIdx >= 0) {
-      setFieldValue(`${varPrefix}.variant`, variants[curIdx].variant);
-      if (onChange) onChange(variants[curIdx]);
+    if (variantIdx >= 0) {
+      setFieldValue(`${varPrefix}.variant`, variants[variantIdx].variant);
+      if (onChange) onChange(variants[variantIdx]);
     } else {
       setFieldValue(varPrefix, undefined);
       unregisterField(varPrefix);
     }
-  }, [curIdx]);
+  }, [variantIdx]);
 
   const dd = (el, t) => React.createElement(el, {
     className: "secondary-tabs"
@@ -3143,14 +3142,14 @@ const VariantSelector = ({
   }, t) : null, React.createElement(Dropdown, {
     type: "link",
     tail: true,
-    header: variants[curIdx].display,
+    header: variants[variantIdx].display,
     alwaysClose: true,
     className: "flex-center-vertical",
     stopPropagation: true
   }, variants.map((v, idx) => React.createElement("a", {
     key: v.variant,
     onClick: () => setIdx(idx),
-    className: variants[curIdx].variant === v.variant ? "selected" : ""
+    className: variants[variantIdx].variant === v.variant ? "selected" : ""
   }, v.display))));
 
   return React.createElement("div", {
@@ -3163,15 +3162,15 @@ const VariantSelector = ({
   }, React.createElement("input", {
     type: "checkbox",
     onChange: () => setIdx(p => p >= 0 ? -1 : 0),
-    checked: curIdx >= 0,
+    checked: variantIdx >= 0,
     id: `${varPrefix}.disableable`
   }), React.createElement("span", {
     className: "switch__input"
   }), React.createElement("span", {
     className: "switch__label"
-  }, title)), curIdx >= 0 ? dd("span", enableTitleAppend) : null) : dd("div", title), disableable && curIdx < 0 ? null : React.createElement("div", {
+  }, title)), variantIdx >= 0 ? dd("span", enableTitleAppend) : null) : dd("div", title), disableable && variantIdx < 0 ? null : React.createElement("div", {
     className: "tabs-wrap panel"
-  }, variants[curIdx].component));
+  }, variants[variantIdx].component));
 };
 
 VariantSelector.propTypes = {
