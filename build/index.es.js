@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
-import { connect, getIn } from 'formik';
+import { connect, getIn, useFormikContext } from 'formik';
 import { v4 } from 'uuid';
 import { cssTransition, toast as toast$1, ToastContainer as ToastContainer$1 } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -1257,11 +1257,11 @@ class Select extends React.Component {
       errors
     } = form;
     return React.createElement("div", _extends({
-      className: `form-group dropdown${compressed ? " input--compressed" : ""}${this.state.isOpen ? " active" : ""}${inline ? " label--inline" : ""}${up ? " dropdown--up" : ""}${disabled ? " disabled" : ""}${className ? ` ${className}` : ""}${getIn(touched, field.name) && getIn(errors, field.name) ? " form-group--error" : ""}` // (asyncValidating ? " form-group--loading" : "")
+      className: `form-group dropdown${appendClass(compressed, "input--compressed")}${appendClass(this.state.isOpen, "active")}${appendClass(inline, "label--inline")}${appendClass(up, "dropdown--up")}${appendClass(disabled, "disabled")}${appendClass(className)}${appendClass(getIn(touched, field.name) && getIn(errors, field.name), "form-group--error")}` // (asyncValidating ? " form-group--loading" : "")
       ,
-      ref: innerRef ? innerRef : node => {
+      ref: innerRef || (node => {
         this.node = node;
-      }
+      })
     }, inline === "both" ? {
       style: {
         display: "inline-block"
@@ -1297,6 +1297,7 @@ class Select extends React.Component {
 Select.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
+  title: PropTypes.string,
   prompt: PropTypes.string,
   multiple: PropTypes.bool,
   inline: PropTypes.oneOf([false, true, "both"]),
@@ -1311,6 +1312,7 @@ Select.defaultProps = {
   inline: false,
   id: v4(),
   label: null,
+  title: null,
   width: null,
   up: false,
   disabled: false,
@@ -3097,5 +3099,103 @@ Textarea.defaultProps = {
   resize: false
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, ToastContainer, VerticalCenter, confirmation, notificationModal, toast };
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
+const VariantSelector = ({
+  variants,
+  varPrefix,
+  title,
+  inline,
+  onChange,
+  disableable,
+  enableTitleAppend,
+  className
+}) => {
+  const {
+    values,
+    setFieldValue,
+    unregisterField
+  } = useFormikContext();
+  const variant = React.useMemo(() => getIn(values, `${varPrefix}.variant`, undefined), [values, varPrefix]);
+  const [curIdx, setIdx] = React.useState(() => {
+    const idx = variants.findIndex(v => v.selected || v.variant === variant);
+    return !disableable && idx < 0 ? 0 : idx;
+  });
+  React.useEffect(() => {
+    const idx = variants.findIndex(v => v.variant === variant);
+    if (idx < 0 || idx === curIdx) return;
+    setIdx(idx);
+  }, [variant, variants, curIdx]);
+  React.useEffect(() => {
+    if (curIdx >= 0) {
+      setFieldValue(`${varPrefix}.variant`, variants[curIdx].variant);
+      if (onChange) onChange(variants[curIdx]);
+    } else {
+      setFieldValue(varPrefix, undefined);
+      unregisterField(varPrefix);
+    }
+  }, [curIdx]);
+
+  const dd = (el, t) => React.createElement(el, {
+    className: "secondary-tabs"
+  }, t ? React.createElement("span", {
+    className: "half-margin-right"
+  }, t) : null, React.createElement(Dropdown, {
+    type: "link",
+    tail: true,
+    header: variants[curIdx].display,
+    alwaysClose: true,
+    className: "flex-center-vertical",
+    stopPropagation: true
+  }, variants.map((v, idx) => React.createElement("a", {
+    key: v.variant,
+    onClick: () => setIdx(idx),
+    className: variants[curIdx].variant === v.variant ? "selected" : ""
+  }, v.display))));
+
+  return React.createElement("div", {
+    className: `form-group${appendClass(inline, " inline-variants")}${appendClass(className)}`
+  }, disableable ? React.createElement("span", {
+    className: "flex-center-vertical"
+  }, React.createElement("label", {
+    className: "switch",
+    htmlFor: `${varPrefix}.disableable`
+  }, React.createElement("input", {
+    type: "checkbox",
+    onChange: () => setIdx(p => p >= 0 ? -1 : 0),
+    checked: curIdx >= 0,
+    id: `${varPrefix}.disableable`
+  }), React.createElement("span", {
+    className: "switch__input"
+  }), React.createElement("span", {
+    className: "switch__label"
+  }, title)), curIdx >= 0 ? dd("span", enableTitleAppend) : null) : dd("div", title), disableable && curIdx < 0 ? null : React.createElement("div", {
+    className: "tabs-wrap panel"
+  }, variants[curIdx].component));
+};
+
+VariantSelector.propTypes = {
+  variants: PropTypes.arrayOf(PropTypes.shape({
+    variant: PropTypes.string,
+    display: PropTypes.string,
+    component: PropTypes.node
+  })).isRequired,
+  varPrefix: PropTypes.string.isRequired,
+  title: PropTypes.node,
+  inline: PropTypes.bool,
+  onChange: PropTypes.func,
+  disableable: PropTypes.bool,
+  enableTitleAppend: PropTypes.string,
+  className: PropTypes.string
+};
+VariantSelector.defaultProps = {
+  disableable: false,
+  title: null,
+  inline: false,
+  onChange: null,
+  enableTitleAppend: null,
+  className: null
+};
+
+export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, ToastContainer, VariantSelector, VerticalCenter, confirmation, notificationModal, toast };
 //# sourceMappingURL=index.es.js.map
