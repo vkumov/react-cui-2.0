@@ -1,0 +1,4 @@
+.cui .form-group.dropdown .select + .dropdown__menu {
+    max-width: unset !important;
+    width: unset !important;
+}

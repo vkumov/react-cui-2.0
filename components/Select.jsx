@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { v4 as uuid } from "uuid";
 import { getIn } from "formik";
 
+import "../css/select.css";
+
 import { InputHelpBlock } from "./InputHelpBlock";
 
 export class Select extends React.Component {
