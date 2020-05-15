@@ -1,5 +1,5 @@
 body.cui .btn.btn--light {
-  border: var(1px solid transparent);
+  border: 1px solid transparent;
   background: var(--cui-background-alt);
   color: var(--cui-inactive-color);
 }
