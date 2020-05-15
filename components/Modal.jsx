@@ -233,7 +233,7 @@ export const ConfirmationModal = ({
         <p>{prompt}</p>
       </ModalBody>
       <ModalFooter>
-        <Button.Ghost onClick={closeHandle}>Close</Button.Ghost>
+        <Button.Link onClick={closeHandle}>Close</Button.Link>
         <Button
           color={confirmType}
           disabled={doing}

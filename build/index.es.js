@@ -2384,7 +2384,7 @@ const ConfirmationModal = ({
     closeHandle: closeHandle,
     autoClose: autoClose,
     title: "Confirmation"
-  }, React.createElement(ModalBody, null, React.createElement("p", null, prompt)), React.createElement(ModalFooter, null, React.createElement(Button.Ghost, {
+  }, React.createElement(ModalBody, null, React.createElement("p", null, prompt)), React.createElement(ModalFooter, null, React.createElement(Button.Link, {
     onClick: closeHandle
   }, "Close"), React.createElement(Button, {
     color: confirmType,
