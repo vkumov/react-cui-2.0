@@ -16,7 +16,7 @@ export const eventManager = {
   cancelEmit(event) {
     const timers = this.emitQueue.get(event);
     if (timers) {
-      timers.forEach(timer => clearTimeout(timer));
+      timers.forEach((timer) => clearTimeout(timer));
       this.emitQueue.delete(event);
     }
 
@@ -33,7 +33,7 @@ export const eventManager = {
    */
   emit(event, ...args) {
     if (this.list.has(event)) {
-      this.list.get(event).forEach(callback => {
+      this.list.get(event).forEach((callback) => {
         const timer = setTimeout(() => {
           callback(...args);
         }, 0);
@@ -42,9 +42,9 @@ export const eventManager = {
         this.emitQueue.get(event).push(timer);
       });
     }
-  }
+  },
 };
 
 export const EVENTS = {
-  SHOW_MODAL: "showModal"
+  SHOW_MODAL: "showModal",
 };

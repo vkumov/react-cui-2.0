@@ -1,30 +1,41 @@
 body.cui .btn.btn--light {
-    border: var(--cui-pagination-border-inactive);
-    background: var(--cui-pagination-background-inactive);
-    color: var(--cui-inactive-color); }
-    body.cui .btn.btn--light.hover, body.cui .btn.btn--light:hover {
-        color: var(--cui-active-color);
-        text-decoration: none; 
-        border: var(--cui-pagination-border-hover);
-        transition: all .15s ease-in; }
-    body.cui .btn.btn--light.focus, body.cui .btn.btn--light:focus {
-        box-shadow: 0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color), var(--cui-focus-opacity));
-        opacity: 1;
-        outline: var(--cui-focus-thickness) transparent;
-        outline-offset: 1px;
-        outline-width: thin;
-        outline-style: none; }
-    body.cui .btn.btn--light.disabled, body.cui .btn.btn--light[disabled] {
-        background-color: transparent;
-        border: 1px dotted var(--cui-inactive-color);
-        color: var(--cui-inactive-color);
-        opacity: 1; }
-    body.cui .btn.btn--light.active, body.cui .btn.btn--light.selected, body.cui .btn.btn--light:active {
-        background-color: var(--cui-pagination-background-active);
-        color: var(--cui-pagination-color-active);
-        -webkit-transition: all .25s ease;
-        transition: all .25s ease }
+  border: var(1px solid transparent);
+  background: var(--cui-background-alt);
+  color: var(--cui-inactive-color);
+}
+body.cui .btn.btn--light.hover,
+body.cui .btn.btn--light:hover {
+  color: var(--cui-active-color);
+  text-decoration: none;
+  border: var(--cui-border-thickness) solid var(--cui-accent-color);
+  transition: all 0.15s ease-in;
+}
+body.cui .btn.btn--light.focus,
+body.cui .btn.btn--light:focus {
+  box-shadow: 0 0 0 var(--cui-focus-thickness)
+    rgba(var(--cui-focus-color), var(--cui-focus-opacity));
+  opacity: 1;
+  outline: var(--cui-focus-thickness) transparent;
+  outline-offset: 1px;
+  outline-width: thin;
+  outline-style: none;
+}
+body.cui .btn.btn--light.disabled,
+body.cui .btn.btn--light[disabled] {
+  background-color: transparent;
+  border: 1px dotted var(--cui-inactive-color);
+  color: var(--cui-inactive-color);
+  opacity: 1;
+}
+body.cui .btn.btn--light.active,
+body.cui .btn.btn--light.selected,
+body.cui .btn.btn--light:active {
+  background-color: var(--cui-accent-color);
+  color: var(--cui-color-dark);
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
 
-    body.cui .btn-group > .btn.btn--light:nth-child(n+2) {
-        margin-left: 0;
-    }
+body.cui .btn-group > .btn.btn--light:nth-child(n + 2) {
+  margin-left: 0;
+}

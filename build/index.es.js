@@ -2065,6 +2065,7 @@ const Switch = ({
 }, React.createElement("input", _extends({
   type: "checkbox"
 }, field, {
+  value: "on",
   id: id || field.name,
   checked: getIn(form.values, field.name, false)
 })), left ? React.createElement("span", {
