@@ -899,9 +899,13 @@ Button.Light = props => React.createElement(Button, _extends({}, props, {
   color: "light"
 }));
 
+Button.Danger = props => React.createElement(Button, _extends({}, props, {
+  color: "danger"
+}));
+
 Button.propTypes = {
   size: PropTypes.oneOf(["small", "default", "large"]),
-  color: PropTypes.oneOf(["primary", "secondary", "success", "dark", "ghost", "link", "light"]),
+  color: PropTypes.oneOf(["primary", "secondary", "success", "dark", "ghost", "link", "light", "danger"]),
   wide: PropTypes.bool,
   justified: PropTypes.bool,
   circle: PropTypes.bool,

@@ -36,6 +36,7 @@ Button.Dark = (props) => <Button {...props} color="dark" />;
 Button.Ghost = (props) => <Button {...props} color="ghost" />;
 Button.Link = (props) => <Button {...props} color="link" />;
 Button.Light = (props) => <Button {...props} color="light" />;
+Button.Danger = (props) => <Button {...props} color="danger" />;
 
 Button.propTypes = {
   size: PropTypes.oneOf(["small", "default", "large"]),
@@ -47,6 +48,7 @@ Button.propTypes = {
     "ghost",
     "link",
     "light",
+    "danger",
   ]),
   wide: PropTypes.bool,
   justified: PropTypes.bool,
