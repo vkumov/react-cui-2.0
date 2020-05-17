@@ -4,7 +4,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const AccordionElement = ({ children, defaultOpen, toggles, title }) => {
+export const AccordionElement = ({ children, defaultOpen, toggles, title }) => {
   const [isOpen, setIsOpen] = React.useState(defaultOpen);
 
   return (
@@ -35,7 +35,7 @@ AccordionElement.defaultProps = {
   toggles: false,
 };
 
-const Accordion = ({ children, toggles, bordered }) => {
+export const Accordion = ({ children, toggles, bordered }) => {
   return (
     <ul className={`accordion${bordered ? " accordion--bordered" : ""}`}>
       {React.Children.map(children, (child, idx) =>
@@ -60,5 +60,3 @@ Accordion.defaultProps = {
   toggles: false,
   bordered: false,
 };
-
-export default Accordion;

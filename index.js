@@ -17,7 +17,7 @@ export { Input } from "./components/Input";
 export * from "./components/Modal";
 export { Icon } from "./components/Icon";
 export { default as Portal } from "./components/Portal";
-export { default as Accordion } from "./components/Accordion";
+export * from "./components/Accordion";
 export { default as Badge } from "./components/Badge";
 export * from "./components/Tabs";
 export * from "./components/Section";

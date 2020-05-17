@@ -2587,7 +2587,6 @@ const Portal = ({
 };
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-
 const AccordionElement = ({
   children,
   defaultOpen,
@@ -2606,7 +2605,6 @@ const AccordionElement = ({
     className: "accordion__content"
   }, children));
 };
-
 AccordionElement.propTypes = {
   children: PropTypes.node.isRequired,
   defaultOpen: PropTypes.bool,
@@ -2617,7 +2615,6 @@ AccordionElement.defaultProps = {
   defaultOpen: false,
   toggles: false
 };
-
 const Accordion = ({
   children,
   toggles,
@@ -2630,7 +2627,6 @@ const Accordion = ({
     key: child.props.key || idx
   })));
 };
-
 Accordion.Element = AccordionElement;
 Accordion.propTypes = {
   children: PropTypes.node.isRequired,
@@ -3328,5 +3324,5 @@ Radios.propTypes = {
   }))
 };
 
-export { Accordion, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Radio, Radios, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, ToastContainer, VariantSelector, VerticalCenter, confirmation, notificationModal, toast };
+export { Accordion, AccordionElement, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Radio, Radios, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, ToastContainer, VariantSelector, VerticalCenter, confirmation, notificationModal, toast };
 //# sourceMappingURL=index.es.js.map
