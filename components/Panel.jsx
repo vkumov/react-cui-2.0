@@ -3,29 +3,24 @@ import PropTypes from "prop-types";
 
 import { appendClass as ac } from "../utils";
 
-export const Panel = ({
-  color,
-  padding,
-  bordered,
-  raised,
-  well,
-  className,
-  ...props
-}) => (
-  <div
-    className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
-      padding !== "default",
-      `panel--${padding}`
-    )}${ac(bordered, () => {
-      if (bordered === "string") return `panel--bordered-${bordered}`;
-      if (Array.isArray(bordered))
-        return bordered.map((b) => `panel--bordered-${b}`).join(" ");
-      return "panel--bordered";
-    })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
-      className
-    )}`}
-    {...props}
-  />
+export const Panel = React.forwardRef(
+  ({ color, padding, bordered, raised, well, className, ...props }, ref) => (
+    <div
+      className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
+        padding !== "default",
+        `panel--${padding}`
+      )}${ac(bordered, () => {
+        if (bordered === "string") return `panel--bordered-${bordered}`;
+        if (Array.isArray(bordered))
+          return bordered.map((b) => `panel--bordered-${b}`).join(" ");
+        return "panel--bordered";
+      })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
+        className
+      )}`}
+      ref={ref}
+      {...props}
+    />
+  )
 );
 
 Panel.propTypes = {

@@ -1326,7 +1326,7 @@ Select.defaultProps = {
   compressed: false
 };
 
-const Panel = (_ref) => {
+const Panel = React.forwardRef((_ref, ref) => {
   let {
     color,
     padding,
@@ -1342,9 +1342,10 @@ const Panel = (_ref) => {
       if (bordered === "string") return `panel--bordered-${bordered}`;
       if (Array.isArray(bordered)) return bordered.map(b => `panel--bordered-${b}`).join(" ");
       return "panel--bordered";
-    })}${appendClass(raised, "panel--raised")}${appendClass(well, "panel--well")}${appendClass(className)}`
+    })}${appendClass(raised, "panel--raised")}${appendClass(well, "panel--well")}${appendClass(className)}`,
+    ref: ref
   }, props));
-};
+});
 Panel.propTypes = {
   color: PropTypes.oneOf(["plain", "primary", "secondary", "tertiary", "success", "info", "warning-alt", "warning", "danger", "dark", "light"]),
   padding: PropTypes.oneOf(["none", "compressed", "default", "loose"]),
