@@ -15,6 +15,7 @@ export const Button = ({
   asLink,
   style,
   selected,
+  type,
   ...props
 }) =>
   React.createElement(asLink ? "a" : "button", {
@@ -26,6 +27,7 @@ export const Button = ({
       "selected"
     )}${ac(className)}${ac(asLink, " flex-middle flex-center")}`,
     style: { ...(style || {}), ...(asLink ? { display: "flex" } : {}) },
+    ...(asLink ? {} : { type: type || "button" }),
     ...props,
   });
 
