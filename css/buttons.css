@@ -2,12 +2,14 @@ body.cui .btn.btn--light {
   border: 1px solid transparent;
   background: var(--cui-background-alt);
   color: var(--cui-inactive-color);
+  transition: all 0.15s ease-in;
 }
 body.cui .btn.btn--light.hover,
 body.cui .btn.btn--light:hover {
   color: var(--cui-active-color);
   text-decoration: none;
-  border: var(--cui-border-thickness) solid var(--cui-accent-color);
+  /* border: var(--cui-border-thickness) solid var(--cui-accent-color); */
+  box-shadow: 0 0 0 1px var(--cui-accent-color);
   transition: all 0.15s ease-in;
 }
 body.cui .btn.btn--light.focus,
@@ -37,5 +39,5 @@ body.cui .btn.btn--light:active {
 }
 
 body.cui .btn-group > .btn.btn--light:nth-child(n + 2) {
-  margin-left: 0;
+  /* margin-left: 0; */
 }
