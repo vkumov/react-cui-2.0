@@ -39,3 +39,12 @@ body.cui .btn.btn--light:active {
   -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease;
 }
+.cui .btn-group > .btn.btn--light:active,
+.cui .btn-group > .btn.btn--light:focus,
+.cui .btn-group > .btn.btn--light:hover,
+.cui .btn-group > .dropdown > .btn.btn--light:active,
+.cui .btn-group > .dropdown > .btn.btn--light:focus,
+.cui .btn-group > .dropdown > .btn.btn--light:hover {
+  outline: 0;
+  box-shadow: none;
+}
