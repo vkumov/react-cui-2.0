@@ -2416,6 +2416,74 @@ ConfirmationModal.defaultProps = {
   autoClose: true,
   confirmText: "Confirm"
 };
+const PromptModal = ({
+  title,
+  question,
+  onSave: cb,
+  onClose,
+  initial,
+  type,
+  isOpen,
+  hint
+}) => {
+  const [val, setVal] = React.useState(initial);
+  const onSave = React.useCallback(() => {
+    onClose();
+    cb(val);
+  }, [onClose, cb, val]);
+  React.useLayoutEffect(() => setVal(initial), [initial]);
+  return React.createElement(Modal, {
+    isOpen: isOpen,
+    closeIcon: true,
+    closeHandle: onClose,
+    title: title
+  }, React.createElement(ModalBody, null, React.createElement(Input, {
+    type: type,
+    form: {
+      errors: {},
+      touched: {}
+    },
+    field: {
+      onChange: e => setVal(e.target.value),
+      name: "promptInput",
+      value: val
+    },
+    label: React.createElement(React.Fragment, null, question, React.createElement(DisplayIf, {
+      condition: !!hint && typeof hint === "string"
+    }, React.createElement("span", {
+      "data-balloon": hint,
+      "data-balloon-length": "large",
+      "data-balloon-pos": "up"
+    }, React.createElement("span", {
+      className: "icon-question-circle qtr-margin-left",
+      style: {
+        cursor: "help"
+      }
+    }))))
+  })), React.createElement(ModalFooter, null, React.createElement(Button, {
+    color: "white",
+    onClick: onClose
+  }, "Close"), React.createElement(Button, {
+    color: "primary",
+    onClick: onSave
+  }, "OK")));
+};
+PromptModal.propTypes = {
+  title: PropTypes.node.isRequired,
+  question: PropTypes.node.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  initial: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: PropTypes.string,
+  isOpen: PropTypes.bool.isRequired,
+  hint: PropTypes.node
+};
+PromptModal.defaultProps = {
+  onClose: null,
+  initial: null,
+  type: "text",
+  hint: null
+};
 const ConfirmationListener = () => {
   const [modal, setModal] = React.useState(null);
   const [modalShown, setModalShown] = React.useState(false);
@@ -2429,16 +2497,26 @@ const ConfirmationListener = () => {
   const onClose = () => setModalShown(false);
 
   if (!modal) return null;
-  if (modal.notification) return React.createElement(Modal, {
+  if (modal.modalType === "notification") return React.createElement(Modal, {
     isOpen: modalShown,
     closeIcon: true,
     closeHandle: onClose,
     title: modal.title
   }, React.createElement(ModalBody, null, modal.body), React.createElement(ModalFooter, null, React.createElement(Button, {
-    color: modal.buttonColor || "ghost",
+    color: modal.buttonColor || "link",
     onClick: onClose
   }, modal.button)));
-  return React.createElement(ConfirmationModal, {
+  if (modal.modalType === "prompt") return React.createElement(PromptModal, {
+    isOpen: modalShown,
+    onClose: onClose,
+    onSave: modal.cb,
+    title: modal.title,
+    question: modal.question,
+    initial: modal.initial,
+    type: modal.type,
+    hint: modal.hint
+  });
+  if (modal.modalType === "confirmation") return React.createElement(ConfirmationModal, {
     isOpen: modalShown,
     prompt: modal.prompt,
     confirmHandle: async () => {
@@ -2450,25 +2528,39 @@ const ConfirmationListener = () => {
     confirmText: modal.confirmText,
     confirmType: modal.confirmType
   });
+  return null;
 };
 const confirmation = (prompt, onConfirm, confirmType = "primary", confirmText = "Confirm") => {
   if (!prompt) throw new Error("Prompt must be specified");
   if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
   eventManager.emit(EVENTS.SHOW_MODAL, {
+    modalType: "confirmation",
     prompt,
     onConfirm,
     confirmText,
     confirmType
   });
 };
-const notificationModal = (title, body, buttonColor = "ghost", button = "OK") => {
+const notificationModal = (title, body, buttonColor = "link", button = "OK") => {
   if (!title || !body) throw new Error("Title and body must be specified");
   eventManager.emit(EVENTS.SHOW_MODAL, {
-    notification: true,
+    modalType: "notification",
     title,
     body,
     buttonColor,
     button
+  });
+};
+const prompt = (title, question, cb, initial = "", type = "text", hint = undefined) => {
+  if (!title || !question) throw new Error("Title and question must be specified");
+  eventManager.emit(EVENTS.SHOW_MODAL, {
+    modalType: "prompt",
+    title,
+    initial,
+    type,
+    question,
+    cb,
+    hint
   });
 };
 
@@ -3324,5 +3416,5 @@ Radios.propTypes = {
   }))
 };
 
-export { Accordion, AccordionElement, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, Radio, Radios, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, ToastContainer, VariantSelector, VerticalCenter, confirmation, notificationModal, toast };
+export { Accordion, AccordionElement, Alert, Badge, Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, connected as Dropzone, ConfirmationListener as DynamicModal, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, Section, Select, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, ToastContainer, VariantSelector, VerticalCenter, confirmation, notificationModal as notification, notificationModal, prompt, toast };
 //# sourceMappingURL=index.es.js.map
