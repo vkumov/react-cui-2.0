@@ -860,12 +860,13 @@ const Button = (_ref) => {
     asLink,
     style,
     selected,
-    type
+    type,
+    icon
   } = _ref,
-      props = _objectWithoutProperties(_ref, ["size", "color", "wide", "justified", "circle", "className", "asLink", "style", "selected", "type"]);
+      props = _objectWithoutProperties(_ref, ["size", "color", "wide", "justified", "circle", "className", "asLink", "style", "selected", "type", "icon"]);
 
   return React.createElement(asLink ? "a" : "button", _objectSpread2({
-    className: `btn${appendClass(size !== "default", `btn--${size}`)} btn--${color}${appendClass(wide, "btn--wide")}${appendClass(justified, " btn--justified")}${appendClass(circle, "btn--circle")}${appendClass(selected, "selected")}${appendClass(className)}${appendClass(asLink, " flex-middle flex-center")}`,
+    className: `btn${appendClass(size !== "default", `btn--${size}`)} btn--${color}${appendClass(wide, "btn--wide")}${appendClass(justified, "btn--justified")}${appendClass(icon, "btn--icon")}${appendClass(circle, "btn--circle")}${appendClass(selected, "selected")}${appendClass(className)}${appendClass(asLink, "flex-middle flex-center")}`,
     style: _objectSpread2({}, style || {}, {}, asLink ? {
       display: "flex"
     } : {})
@@ -915,7 +916,9 @@ Button.propTypes = {
   asLink: PropTypes.bool,
   selected: PropTypes.bool,
   style: PropTypes.shape({}),
-  className: PropTypes.string
+  className: PropTypes.string,
+  icon: PropTypes.bool,
+  type: PropTypes.string
 };
 Button.defaultProps = {
   size: "default",
@@ -926,7 +929,9 @@ Button.defaultProps = {
   asLink: false,
   selected: false,
   style: null,
-  className: null
+  className: null,
+  icon: false,
+  type: null
 };
 const ButtonGroup = (_ref2) => {
   let {

@@ -16,16 +16,20 @@ export const Button = ({
   style,
   selected,
   type,
+  icon,
   ...props
 }) =>
   React.createElement(asLink ? "a" : "button", {
     className: `btn${ac(size !== "default", `btn--${size}`)} btn--${color}${ac(
       wide,
       "btn--wide"
-    )}${ac(justified, " btn--justified")}${ac(circle, "btn--circle")}${ac(
-      selected,
-      "selected"
-    )}${ac(className)}${ac(asLink, " flex-middle flex-center")}`,
+    )}${ac(justified, "btn--justified")}${ac(icon, "btn--icon")}${ac(
+      circle,
+      "btn--circle"
+    )}${ac(selected, "selected")}${ac(className)}${ac(
+      asLink,
+      "flex-middle flex-center"
+    )}`,
     style: { ...(style || {}), ...(asLink ? { display: "flex" } : {}) },
     ...(asLink ? {} : { type: type || "button" }),
     ...props,
@@ -59,6 +63,8 @@ Button.propTypes = {
   selected: PropTypes.bool,
   style: PropTypes.shape({}),
   className: PropTypes.string,
+  icon: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 Button.defaultProps = {
@@ -71,6 +77,8 @@ Button.defaultProps = {
   selected: false,
   style: null,
   className: null,
+  icon: false,
+  type: null,
 };
 
 export const ButtonGroup = ({ square, withDivider, className, ...props }) => (
