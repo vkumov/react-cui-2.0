@@ -9,7 +9,7 @@ body.cui .btn.btn--light:hover {
   color: var(--cui-active-color);
   text-decoration: none;
   /* border: var(--cui-border-thickness) solid var(--cui-accent-color); */
-  box-shadow: 0 0 0 1px var(--cui-accent-color);
+  box-shadow: inset 0 0 0 1px var(--cui-accent-color);
   transition: all 0.15s ease-in;
 }
 body.cui .btn.btn--light.focus,
