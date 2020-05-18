@@ -2466,7 +2466,7 @@ const PromptModal = ({
       }
     }))))
   })), React.createElement(ModalFooter, null, React.createElement(Button, {
-    color: "white",
+    color: "link",
     onClick: onClose
   }, "Close"), React.createElement(Button, {
     color: "primary",

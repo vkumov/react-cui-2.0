@@ -320,7 +320,7 @@ export const PromptModal = ({
         />
       </ModalBody>
       <ModalFooter>
-        <Button color="white" onClick={onClose}>
+        <Button color="link" onClick={onClose}>
           Close
         </Button>
         <Button color="primary" onClick={onSave}>
