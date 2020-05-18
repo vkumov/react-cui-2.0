@@ -46,5 +46,5 @@ body.cui .btn.btn--light:active {
 .cui .btn-group > .dropdown > .btn.btn--light:focus,
 .cui .btn-group > .dropdown > .btn.btn--light:hover {
   outline: 0;
-  box-shadow: none;
+  box-shadow: inset 0 0 0 1px var(--cui-accent-color);
 }
