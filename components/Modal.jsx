@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -6,6 +7,7 @@ import Transition from "react-transition-group/Transition";
 import ReactModal from "react-modal";
 import PropTypes from "prop-types";
 
+import { Input } from "./Input";
 import { ConditionalWrapper, DisplayIf as If } from "./Conditional";
 import { Button } from "./Button";
 import "../css/modal.css";
@@ -269,6 +271,84 @@ ConfirmationModal.defaultProps = {
   confirmText: "Confirm",
 };
 
+export const PromptModal = ({
+  title,
+  question,
+  onSave: cb,
+  onClose,
+  initial,
+  type,
+  isOpen,
+  hint,
+}) => {
+  const [val, setVal] = React.useState(initial);
+  const onSave = React.useCallback(() => {
+    onClose();
+    cb(val);
+  }, [onClose, cb, val]);
+
+  React.useLayoutEffect(() => setVal(initial), [initial]);
+
+  return (
+    <Modal isOpen={isOpen} closeIcon closeHandle={onClose} title={title}>
+      <ModalBody>
+        <Input
+          type={type}
+          form={{ errors: {}, touched: {} }}
+          field={{
+            onChange: (e) => setVal(e.target.value),
+            name: "promptInput",
+            value: val,
+          }}
+          label={
+            <>
+              {question}
+              <If condition={!!hint && typeof hint === "string"}>
+                <span
+                  data-balloon={hint}
+                  data-balloon-length="large"
+                  data-balloon-pos="up"
+                >
+                  <span
+                    className="icon-question-circle qtr-margin-left"
+                    style={{ cursor: "help" }}
+                  />
+                </span>
+              </If>
+            </>
+          }
+        />
+      </ModalBody>
+      <ModalFooter>
+        <Button color="white" onClick={onClose}>
+          Close
+        </Button>
+        <Button color="primary" onClick={onSave}>
+          OK
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+};
+
+PromptModal.propTypes = {
+  title: PropTypes.node.isRequired,
+  question: PropTypes.node.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  initial: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: PropTypes.string,
+  isOpen: PropTypes.bool.isRequired,
+  hint: PropTypes.node,
+};
+
+PromptModal.defaultProps = {
+  onClose: null,
+  initial: null,
+  type: "text",
+  hint: null,
+};
+
 export const ConfirmationListener = () => {
   const [modal, setModal] = React.useState(null);
   const [modalShown, setModalShown] = React.useState(false);
@@ -284,7 +364,7 @@ export const ConfirmationListener = () => {
 
   if (!modal) return null;
 
-  if (modal.notification)
+  if (modal.modalType === "notification")
     return (
       <Modal
         isOpen={modalShown}
@@ -294,28 +374,47 @@ export const ConfirmationListener = () => {
       >
         <ModalBody>{modal.body}</ModalBody>
         <ModalFooter>
-          <Button color={modal.buttonColor || "ghost"} onClick={onClose}>
+          <Button color={modal.buttonColor || "link"} onClick={onClose}>
             {modal.button}
           </Button>
         </ModalFooter>
       </Modal>
     );
 
-  return (
-    <ConfirmationModal
-      isOpen={modalShown}
-      prompt={modal.prompt}
-      confirmHandle={async () => {
-        const r = await modal.onConfirm();
-        if (r) onClose();
-        return true;
-      }}
-      closeHandle={onClose}
-      confirmText={modal.confirmText}
-      confirmType={modal.confirmType}
-    />
-  );
+  if (modal.modalType === "prompt")
+    return (
+      <PromptModal
+        isOpen={modalShown}
+        onClose={onClose}
+        onSave={modal.cb}
+        title={modal.title}
+        question={modal.question}
+        initial={modal.initial}
+        type={modal.type}
+        hint={modal.hint}
+      />
+    );
+
+  if (modal.modalType === "confirmation")
+    return (
+      <ConfirmationModal
+        isOpen={modalShown}
+        prompt={modal.prompt}
+        confirmHandle={async () => {
+          const r = await modal.onConfirm();
+          if (r) onClose();
+          return true;
+        }}
+        closeHandle={onClose}
+        confirmText={modal.confirmText}
+        confirmType={modal.confirmType}
+      />
+    );
+
+  return null;
 };
+
+export { ConfirmationListener as DynamicModal };
 
 export const confirmation = (
   prompt,
@@ -328,6 +427,7 @@ export const confirmation = (
     throw new Error("onConfirm must be specified and must be a function");
 
   eventManager.emit(EVENTS.SHOW_MODAL, {
+    modalType: "confirmation",
     prompt,
     onConfirm,
     confirmText,
@@ -338,16 +438,40 @@ export const confirmation = (
 export const notificationModal = (
   title,
   body,
-  buttonColor = "ghost",
+  buttonColor = "link",
   button = "OK"
 ) => {
   if (!title || !body) throw new Error("Title and body must be specified");
 
   eventManager.emit(EVENTS.SHOW_MODAL, {
-    notification: true,
+    modalType: "notification",
     title,
     body,
     buttonColor,
     button,
+  });
+};
+
+export { notificationModal as notification };
+
+export const prompt = (
+  title,
+  question,
+  cb,
+  initial = "",
+  type = "text",
+  hint = undefined
+) => {
+  if (!title || !question)
+    throw new Error("Title and question must be specified");
+
+  eventManager.emit(EVENTS.SHOW_MODAL, {
+    modalType: "prompt",
+    title,
+    initial,
+    type,
+    question,
+    cb,
+    hint,
   });
 };
