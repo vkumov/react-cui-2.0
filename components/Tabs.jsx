@@ -110,8 +110,16 @@ export const Tabs = ({
   inline,
   renderHeader,
   renderBody,
+  onTabChange,
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
+  const changeTab = React.useCallback(
+    (id) => {
+      if (typeof onTabChange === "function") onTabChange(id);
+      setOpenTab(id);
+    },
+    [onTabChange]
+  );
 
   const header = (
     <ConditionalWrapper
@@ -130,7 +138,7 @@ export const Tabs = ({
           sticky={sticky}
           inline={inline}
           openTab={openTab}
-          onTabChange={(id) => setOpenTab(id)}
+          onTabChange={changeTab}
         >
           {children}
         </TabsHeader>
@@ -188,6 +196,7 @@ Tabs.propTypes = {
   inline: PropTypes.bool,
   renderHeader: PropTypes.func,
   renderBody: PropTypes.func,
+  onTabChange: PropTypes.func,
 };
 
 Tabs.defaultProps = {
@@ -204,4 +213,5 @@ Tabs.defaultProps = {
   inline: false,
   renderHeader: (header) => header,
   renderBody: (body) => body,
+  onTabChange: null,
 };

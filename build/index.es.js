@@ -2887,9 +2887,14 @@ const Tabs = ({
   sticky,
   inline,
   renderHeader,
-  renderBody
+  renderBody,
+  onTabChange
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
+  const changeTab = React.useCallback(id => {
+    if (typeof onTabChange === "function") onTabChange(id);
+    setOpenTab(id);
+  }, [onTabChange]);
   const header = React.createElement(ConditionalWrapper, {
     condition: vertical,
     wrapper: React.createElement("div", {
@@ -2906,7 +2911,7 @@ const Tabs = ({
     sticky: sticky,
     inline: inline,
     openTab: openTab,
-    onTabChange: id => setOpenTab(id)
+    onTabChange: changeTab
   }, children)));
   const body = React.createElement(ConditionalWrapper, {
     condition: vertical,
@@ -2946,7 +2951,8 @@ Tabs.propTypes = {
   sticky: PropTypes.bool,
   inline: PropTypes.bool,
   renderHeader: PropTypes.func,
-  renderBody: PropTypes.func
+  renderBody: PropTypes.func,
+  onTabChange: PropTypes.func
 };
 Tabs.defaultProps = {
   defaultTab: null,
@@ -2961,7 +2967,8 @@ Tabs.defaultProps = {
   sticky: false,
   inline: false,
   renderHeader: header => header,
-  renderBody: body => body
+  renderBody: body => body,
+  onTabChange: null
 };
 
 const Section = ({
