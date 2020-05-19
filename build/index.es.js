@@ -2791,6 +2791,7 @@ Badge.Wrapper.defaultProps = {
   className: null
 };
 
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
 
 const firstDefined = (...args) => args.find(el => typeof el !== "undefined" && el !== null);
@@ -3018,26 +3019,32 @@ const Display4 = props => React.createElement(Display, _extends({}, props, {
 const TimelineItem = ({
   icon,
   time,
-  children
+  children,
+  className,
+  contentClassName
 }) => React.createElement("div", {
-  className: "timeline__item"
+  className: `timeline__item${appendClass(className)}`
 }, React.createElement("div", {
   className: "timeline__icon"
 }, icon), time ? React.createElement("div", {
   className: "timeline__time"
 }, time) : null, React.createElement("div", {
-  className: "timeline__content"
+  className: `timeline__content${appendClass(contentClassName)}`
 }, children));
 TimelineItem.propTypes = {
   icon: PropTypes.node,
   time: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  contentClassName: PropTypes.string
 };
 TimelineItem.defaultProps = {
   icon: React.createElement(Icon, {
     icon: "circle"
   }),
-  time: null
+  time: null,
+  className: null,
+  contentClassName: null
 };
 const Timeline = ({
   center,
