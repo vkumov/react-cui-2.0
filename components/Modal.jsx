@@ -235,7 +235,7 @@ export const ConfirmationModal = ({
         <p>{prompt}</p>
       </ModalBody>
       <ModalFooter>
-        <Button.Link onClick={closeHandle}>Close</Button.Link>
+        <Button.Light onClick={closeHandle}>Close</Button.Light>
         <Button
           color={confirmType}
           disabled={doing}
@@ -320,7 +320,7 @@ export const PromptModal = ({
         />
       </ModalBody>
       <ModalFooter>
-        <Button color="link" onClick={onClose}>
+        <Button color="light" onClick={onClose}>
           Close
         </Button>
         <Button color="primary" onClick={onSave}>
@@ -374,7 +374,7 @@ export const ConfirmationListener = () => {
       >
         <ModalBody>{modal.body}</ModalBody>
         <ModalFooter>
-          <Button color={modal.buttonColor || "link"} onClick={onClose}>
+          <Button color={modal.buttonColor || "light"} onClick={onClose}>
             {modal.button}
           </Button>
         </ModalFooter>
@@ -438,7 +438,7 @@ export const confirmation = (
 export const notificationModal = (
   title,
   body,
-  buttonColor = "link",
+  buttonColor = "light",
   button = "OK"
 ) => {
   if (!title || !body) throw new Error("Title and body must be specified");

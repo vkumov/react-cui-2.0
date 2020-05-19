@@ -2393,7 +2393,7 @@ const ConfirmationModal = ({
     closeHandle: closeHandle,
     autoClose: autoClose,
     title: "Confirmation"
-  }, React.createElement(ModalBody, null, React.createElement("p", null, prompt)), React.createElement(ModalFooter, null, React.createElement(Button.Link, {
+  }, React.createElement(ModalBody, null, React.createElement("p", null, prompt)), React.createElement(ModalFooter, null, React.createElement(Button.Light, {
     onClick: closeHandle
   }, "Close"), React.createElement(Button, {
     color: confirmType,
@@ -2466,7 +2466,7 @@ const PromptModal = ({
       }
     }))))
   })), React.createElement(ModalFooter, null, React.createElement(Button, {
-    color: "link",
+    color: "light",
     onClick: onClose
   }, "Close"), React.createElement(Button, {
     color: "primary",
@@ -2508,7 +2508,7 @@ const ConfirmationListener = () => {
     closeHandle: onClose,
     title: modal.title
   }, React.createElement(ModalBody, null, modal.body), React.createElement(ModalFooter, null, React.createElement(Button, {
-    color: modal.buttonColor || "link",
+    color: modal.buttonColor || "light",
     onClick: onClose
   }, modal.button)));
   if (modal.modalType === "prompt") return React.createElement(PromptModal, {
@@ -2546,7 +2546,7 @@ const confirmation = (prompt, onConfirm, confirmType = "primary", confirmText = 
     confirmType
   });
 };
-const notificationModal = (title, body, buttonColor = "link", button = "OK") => {
+const notificationModal = (title, body, buttonColor = "light", button = "OK") => {
   if (!title || !body) throw new Error("Title and body must be specified");
   eventManager.emit(EVENTS.SHOW_MODAL, {
     modalType: "notification",
