@@ -130,6 +130,7 @@ export const InputChips = React.forwardRef(
                       color={chipsColor}
                       size="tiny"
                       key={`${v}-${i}`}
+                      className="qtr-margin-bottom"
                     >
                       {v}
                     </Label>
