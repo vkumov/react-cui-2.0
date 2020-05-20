@@ -17,6 +17,7 @@
   min-height: var(--cui-form-size);
   order: 3;
   padding: var(--cui-form-padding);
+  padding-left: 0;
   transition: all var(--cui-animate-speed) var(--cui-animate-timing-function);
 
   align-items: center;

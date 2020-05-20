@@ -79,7 +79,7 @@ export const InputChips = React.forwardRef(
         }
         event.target.value = "";
         setFocus(false);
-        field.onBlur();
+        field.onBlur(event);
       },
       [addOnBlur, allowRegex, addValue, field]
     );
@@ -112,14 +112,14 @@ export const InputChips = React.forwardRef(
         )}`}
         ref={ref}
       >
-        <div className={`form-group__text chips${ac(focused, "focus")}`}>
+        <div className="form-group__text chips">
           {label ? (
             <label htmlFor="-">
               {label}
               {baloon ? <InputHelpBaloon baloon={baloon} /> : null}
             </label>
           ) : null}
-          <div className="input">
+          <div className={`input${ac(focused, "focus")}`}>
             {Array.isArray(field.value) && field.value.length ? (
               <span className="chips-outer">
                 <span className="chips-inner">
