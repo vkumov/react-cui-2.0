@@ -1,0 +1,1 @@
+import e from"react";import a from"prop-types";const o=({baloon:a})=>e.createElement("span",{"data-balloon":a,"data-balloon-length":"large","data-balloon-pos":"up",className:"qtr-margin-left"},e.createElement("span",{className:"icon-question-circle",style:{cursor:"help"}}));o.propTypes={baloon:a.string.isRequired};export{o as InputHelpBaloon};
