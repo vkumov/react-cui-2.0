@@ -10,7 +10,7 @@ export const Panel = React.forwardRef(
         padding !== "default",
         `panel--${padding}`
       )}${ac(bordered, () => {
-        if (bordered === "string") return `panel--bordered-${bordered}`;
+        if (typeof bordered === "string") return `panel--bordered-${bordered}`;
         if (Array.isArray(bordered))
           return bordered.map((b) => `panel--bordered-${b}`).join(" ");
         return "panel--bordered";
