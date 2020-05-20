@@ -10,7 +10,7 @@ const Textarea = ({
   id,
   field,
   label,
-  labelInline,
+  inline,
   form: { touched, errors },
   inputRef,
   textareaClass,
@@ -19,7 +19,7 @@ const Textarea = ({
 }) => {
   return (
     <div
-      className={`form-group${ac(labelInline, "label--inline")}${ac(
+      className={`form-group${ac(inline, "form-group--inline")}${ac(
         className
       )}${
         getIn(touched, field.name) && getIn(errors, field.name)
@@ -48,7 +48,6 @@ const Textarea = ({
 
 Textarea.propTypes = {
   label: PropTypes.node,
-  labelInline: PropTypes.bool,
   textareaClass: PropTypes.string,
   inputRef: PropTypes.oneOfType([
     PropTypes.func,
@@ -63,16 +62,17 @@ Textarea.propTypes = {
     errors: PropTypes.shape({}),
   }).isRequired,
   resize: PropTypes.bool,
+  inline: PropTypes.bool,
 };
 
 Textarea.defaultProps = {
   label: null,
-  labelInline: false,
   textareaClass: null,
   className: null,
   id: null,
   inputRef: null,
   resize: false,
+  inline: false,
 };
 
 export { Textarea };
