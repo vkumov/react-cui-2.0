@@ -51,13 +51,13 @@
   z-index: 0 !important;
 }
 
-.cui .form-group .chips > .chips-outer {
+.cui .form-group .chips .chips-outer {
   overflow: hidden;
   white-space: nowrap;
   padding-left: var(--cui-form-padding);
 }
 
-.cui .form-group .chips > .chips-outer > .chips-inner {
+.cui .form-group .chips .chips-outer > .chips-inner {
   white-space: normal;
 }
 
