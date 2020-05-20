@@ -7,10 +7,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { getIn } from "formik";
 
+import { Label } from "./Label";
 import { InputHelpBaloon } from "./InputHelpBaloon";
 import { InputHelpBlock } from "./InputHelpBlock";
 
 import { appendClass as ac } from "../utils";
+
+import "../css/chips.css";
 
 export const InputChips = React.forwardRef(
   (
@@ -61,7 +64,7 @@ export const InputChips = React.forwardRef(
           event.preventDefault();
         }
       },
-      [delimiters]
+      [delimiters, addValue]
     );
 
     const handleBlur = React.useCallback(
@@ -78,7 +81,7 @@ export const InputChips = React.forwardRef(
         setFocus(false);
         field.onBlur();
       },
-      [addOnBlur, allowRegex]
+      [addOnBlur, allowRegex, addValue, field]
     );
 
     const handleDelete = React.useCallback(
@@ -89,7 +92,7 @@ export const InputChips = React.forwardRef(
         setFieldTouched(field.name, true);
         setFieldValue(field.name, na);
       },
-      [field.name]
+      [field.name, field.value]
     );
 
     React.useEffect(() => {
@@ -121,16 +124,15 @@ export const InputChips = React.forwardRef(
               <span className="chips-outer">
                 <span className="chips-inner">
                   {field.value.map((v, i) => (
-                    <span
-                      className={`label label--${chipsColor} label--small`}
+                    <Label
+                      removable
+                      onRemove={() => handleDelete(i)}
+                      color={chipsColor}
+                      size="tiny"
                       key={`${v}-${i}`}
                     >
                       {v}
-                      <span
-                        className="icon-close"
-                        onClick={() => handleDelete(i)}
-                      />
-                    </span>
+                    </Label>
                   ))}
                 </span>
               </span>
