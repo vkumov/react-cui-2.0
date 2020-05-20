@@ -14,6 +14,7 @@ const Textarea = ({
   form: { touched, errors },
   inputRef,
   textareaClass,
+  innerDivClass,
   resize,
   ...rest
 }) => {
@@ -27,7 +28,7 @@ const Textarea = ({
           : ""
       }`}
     >
-      <div className="form-group__text">
+      <div className={`form-group__text${ac(innerDivClass)}`}>
         <textarea
           {...field}
           className={textareaClass}
@@ -49,6 +50,7 @@ const Textarea = ({
 Textarea.propTypes = {
   label: PropTypes.node,
   textareaClass: PropTypes.string,
+  innerDivClass: PropTypes.string,
   inputRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
@@ -68,6 +70,7 @@ Textarea.propTypes = {
 Textarea.defaultProps = {
   label: null,
   textareaClass: null,
+  innerDivClass: null,
   className: null,
   id: null,
   inputRef: null,
