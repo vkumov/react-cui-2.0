@@ -30,6 +30,7 @@ export const InputChips = React.forwardRef(
       valueValidator,
       maxChips,
       baloon,
+      id,
     },
     ref
   ) => {
@@ -114,7 +115,7 @@ export const InputChips = React.forwardRef(
       >
         <div className="form-group__text chips">
           {label ? (
-            <label htmlFor="-">
+            <label htmlFor={id || field.name}>
               {label}
               {baloon ? <InputHelpBaloon baloon={baloon} /> : null}
             </label>
@@ -147,6 +148,7 @@ export const InputChips = React.forwardRef(
                 onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
                 onFocus={() => setFocus(true)}
+                id={id || field.name}
               />
             ) : null}
           </div>
@@ -198,6 +200,7 @@ InputChips.propTypes = {
     setFieldValue: PropTypes.func,
     setFieldTouched: PropTypes.func,
   }).isRequired,
+  id: PropTypes.string,
 };
 
 InputChips.defaultProps = {
@@ -211,4 +214,5 @@ InputChips.defaultProps = {
   maxChips: null,
   baloon: null,
   className: null,
+  id: null,
 };
