@@ -63,7 +63,7 @@ export default [
     external: ["React", "ReactDOM", "PropTypes"],
   },
   {
-    input: ["components/**/*.jsx"],
+    input: ["components/**/*.jsx", "components/**/*.js"],
     output: [
       {
         format: "esm",
