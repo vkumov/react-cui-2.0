@@ -17,6 +17,12 @@
   min-height: var(--cui-form-size);
   order: 3;
   padding: var(--cui-form-padding);
+  transition: all var(--cui-animate-speed) var(--cui-animate-timing-function);
+
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
 }
 
 .cui .form-group .chips .input:hover,
