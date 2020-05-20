@@ -112,7 +112,7 @@ export const InputChips = React.forwardRef(
         )}`}
         ref={ref}
       >
-        <div className={`form-group__text chips ${focused ? "focused" : ""}`}>
+        <div className={`form-group__text chips${ac(focused, "focus")}`}>
           {label ? (
             <label htmlFor="-">
               {label}
