@@ -1,2 +1,1 @@
 import e from"react";import s from"prop-types";import{_ as r,a}from"../_rollupPluginBabelHelpers-b60338eb.js";const i=s=>{let{icon:i,size:o,className:l}=s,n=r(s,["icon","size","className"]);return e.createElement("span",a({className:`icon-${i}${l?" "+l:""}${o?" icon-size-"+o:""}`},n))};i.propTypes={icon:s.string.isRequired,size:s.oneOf([!1,10,12,14,16,18,20,24,28,32,36,48]),className:s.string},i.defaultProps={size:!1,className:null};export{i as Icon};
-//# sourceMappingURL=Icon.js.map

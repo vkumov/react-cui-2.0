@@ -1,2 +1,1 @@
 import e from"react";import i from"prop-types";import{a as s}from"../../index-be24eb93.js";const t=({icon:i,children:t,visited:a,active:c,className:o})=>e.createElement("div",{className:`step${s(a,"visited")}${s(c,"active")}${s(o)}`},e.createElement("div",{className:"step__icon"},i),e.createElement("div",{className:"step__label"},t));t.propTypes={icon:i.node.isRequired,children:i.node.isRequired,visited:i.bool,active:i.bool,className:i.string},t.defaultProps={visited:!1,active:!1,className:null};export default t;
-//# sourceMappingURL=Step.js.map

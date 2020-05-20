@@ -1,2 +1,1 @@
 import e from"react";import o from"prop-types";const i=({condition:o,wrapper:i,children:r})=>o?e.cloneElement(i,null,r):r;i.propTypes={condition:o.bool.isRequired,wrapper:o.element.isRequired,children:o.node.isRequired};const r=({condition:e,children:o})=>e?o:null;r.propTypes={condition:o.bool.isRequired,children:o.node.isRequired};export{i as C,r as D};
-//# sourceMappingURL=Conditional-4aafc147.js.map

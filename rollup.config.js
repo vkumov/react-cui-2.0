@@ -51,12 +51,12 @@ export default [
       {
         file: pkg.main,
         format: "cjs",
-        sourcemap: true,
+        sourcemap: false,
       },
       {
         file: pkg.module,
         format: "es",
-        sourcemap: true,
+        sourcemap: false,
       },
     ],
     plugins,
@@ -67,7 +67,7 @@ export default [
     output: [
       {
         format: "esm",
-        sourcemap: true,
+        sourcemap: false,
         dir: "build",
       },
     ],
