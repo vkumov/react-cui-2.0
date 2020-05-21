@@ -18,7 +18,7 @@ export * from "./components/Modal";
 export { Icon } from "./components/Icon";
 export { default as Portal } from "./components/Portal";
 export * from "./components/Accordion";
-export { default as Badge } from "./components/Badge";
+export { default as Badge, WithBadge } from "./components/Badge";
 export * from "./components/Tabs";
 export * from "./components/Section";
 export * from "./components/Typo";

@@ -14,7 +14,7 @@ const Badge = ({ color, size, children, className }) => (
   </span>
 );
 
-Badge.propTypes = {
+const badgeProps = {
   color: PropTypes.oneOf([
     "primary",
     "secondary",
@@ -31,6 +31,8 @@ Badge.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node.isRequired,
 };
+
+Badge.propTypes = badgeProps;
 
 Badge.defaultProps = {
   color: "primary",
@@ -58,3 +60,16 @@ Badge.Wrapper.defaultProps = {
 };
 
 export default Badge;
+
+export const WithBadge = ({ children, badge, ...props }) => (
+  <Badge.Wrapper>
+    {children}
+    <Badge {...props}>{badge}</Badge>
+  </Badge.Wrapper>
+);
+
+WithBadge.propTypes = {
+  children: PropTypes.node.isRequired,
+  badge: PropTypes.node.isRequired,
+  ...badgeProps,
+};
