@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 
 import { appendClass as ac } from "../utils";
 
-const Badge = ({ color, size, children, className }) => (
+const Badge = ({ color, size, children, className, ...props }) => (
   <span
     className={`${`badge badge--${color}`}${ac(
       size !== "default",
       `badge--${size}`
     )}${ac(className)}`}
+    {...props}
   >
     {children}
   </span>
