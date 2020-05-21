@@ -61,8 +61,8 @@ Badge.Wrapper.defaultProps = {
 
 export default Badge;
 
-export const WithBadge = ({ children, badge, ...props }) => (
-  <Badge.Wrapper>
+export const WithBadge = ({ children, badge, wrapperClass, ...props }) => (
+  <Badge.Wrapper className={wrapperClass}>
     {children}
     <Badge {...props}>{badge}</Badge>
   </Badge.Wrapper>
@@ -71,5 +71,10 @@ export const WithBadge = ({ children, badge, ...props }) => (
 WithBadge.propTypes = {
   children: PropTypes.node.isRequired,
   badge: PropTypes.node.isRequired,
+  wrapperClass: PropTypes.string,
   ...badgeProps,
+};
+
+WithBadge.defaultProps = {
+  wrapperClass: null,
 };
