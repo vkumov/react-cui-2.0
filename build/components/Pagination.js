@@ -1,1 +1,213 @@
-import e from"react";import t from"prop-types";import{_ as n,a}from"../_rollupPluginBabelHelpers-b60338eb.js";const s=e.createContext({}),i=({active:t,content:n,disabled:a,position:i})=>e.createElement(s.Consumer,null,({changePage:s})=>e.createElement("li",{className:t?"active":""},e.createElement("a",{className:a?"disabled":"",onClick:e=>s(e,i)},n)));i.propTypes={active:t.bool,content:t.node.isRequired,disabled:t.bool,position:t.number.isRequired},i.defaultProps={active:!1,disabled:!1};const o=()=>{const{perPage:t,firstAndLast:n,position:a,icons:o,prev:r,beginAt:l}=e.useContext(s),c=a<t+l,p=[];return o&&n&&p.push(e.createElement(i,{content:e.createElement("span",{className:"icon-chevron-left-double"}),disabled:c,key:"first-page",position:l})),p.push(e.createElement(i,{content:o?e.createElement("span",{className:"icon-chevron-left"}):r,disabled:c,key:"previous-page",position:a-t})),p},r=()=>{const{beginAt:t,perPage:n,total:a,firstAndLast:o,position:r,icons:l,next:c}=e.useContext(s),p=Math.floor(a/n)+1,m=r>a-n+t,u=[];return u.push(e.createElement(i,{content:l?e.createElement("span",{className:"icon-chevron-right"}):c,disabled:m,key:"next-page",position:r+n})),l&&o&&u.push(e.createElement(i,{content:e.createElement("span",{className:"icon-chevron-right-double"}),disabled:m,key:"last-page",position:(p-1)*n+t})),u},l=({start:t,finish:n})=>e.createElement(s.Consumer,null,({perPage:a,active:s,beginAt:o})=>[...Array(n-t+1)].map((n,r)=>{const l=t+r;return e.createElement(i,{active:s===l,content:""+l,key:l+"-page",position:(l-1)*a+o})}));l.propTypes={start:t.number.isRequired,finish:t.number.isRequired};const c=t=>{let{size:c,rounded:p,icons:m,next:u,prev:d,position:g,perPage:b,total:E,onPageChange:f,className:h,firstAndLast:v,beginAt:P}=t,A=n(t,["size","rounded","icons","next","prev","position","perPage","total","onPageChange","className","firstAndLast","beginAt"]);const N=Math.ceil(E/b),y=Math.floor(g/b)+1;return e.createElement(s.Provider,{value:{active:y,beginAt:P,changePage:(e,t)=>{"function"==typeof f&&f(e,t)},firstAndLast:v,icons:m,next:u,perPage:b,position:g,prev:d,total:E}},e.createElement("ul",a({className:`pagination${"default"!==c?" pagination--"+c:""}${p?" pagination--rounded":""}${h?" "+h:""}`},A),e.createElement(o,null),y<4||4===N?e.createElement(e.Fragment,null,e.createElement(l,{start:1,finish:Math.min(N,4)}),N>4?e.createElement(e.Fragment,null,e.createElement("li",null,e.createElement("span",{className:"icon-more"})),e.createElement(i,{content:N,key:N+"-page",position:(N-1)*b+P})):null):e.createElement(e.Fragment,null,e.createElement(i,{active:y===P,content:"1",key:"1-page",position:P}),e.createElement("li",null,e.createElement("span",{className:"icon-more"})),y<N-2?e.createElement(e.Fragment,null,e.createElement(l,{start:y-1,finish:y+1}),e.createElement("li",null,e.createElement("span",{className:"icon-more"})),e.createElement(i,{active:y===N,content:N,key:N+"-page",position:(N-1)*b+P})):e.createElement(l,{start:N-3,finish:N})),e.createElement(r,null)))};c.propTypes={size:t.oneOf(["small","default","large"]),rounded:t.bool,icons:t.bool,next:t.node,prev:t.node,position:t.number.isRequired,perPage:t.number,total:t.number.isRequired,onPageChange:t.func.isRequired,firstAndLast:t.bool,beginAt:t.number,className:t.string},c.defaultProps={beginAt:1,rounded:!1,firstAndLast:!0,icons:!1,next:"Next",perPage:1,prev:"Previous",size:"default",className:null};export{c as Pagination};
+import React from 'react';
+import PropTypes from 'prop-types';
+import { _ as _objectWithoutProperties, a as _extends } from '../_rollupPluginBabelHelpers-b60338eb.js';
+
+const PaginationContext = React.createContext({});
+
+const Button = ({
+  active,
+  content,
+  disabled,
+  position
+}) => React.createElement(PaginationContext.Consumer, null, ({
+  changePage
+}) => React.createElement("li", {
+  className: active ? "active" : ""
+}, React.createElement("a", {
+  className: disabled ? "disabled" : "",
+  onClick: e => changePage(e, position)
+}, content)));
+
+Button.propTypes = {
+  active: PropTypes.bool,
+  content: PropTypes.node.isRequired,
+  disabled: PropTypes.bool,
+  position: PropTypes.number.isRequired
+};
+Button.defaultProps = {
+  active: false,
+  disabled: false
+};
+
+const FirstPrev = () => {
+  const {
+    perPage,
+    firstAndLast,
+    position,
+    icons,
+    prev,
+    beginAt
+  } = React.useContext(PaginationContext);
+  const disabled = position < perPage + beginAt;
+  const r = [];
+  if (icons && firstAndLast) r.push(React.createElement(Button, {
+    content: React.createElement("span", {
+      className: "icon-chevron-left-double"
+    }),
+    disabled: disabled,
+    key: "first-page",
+    position: beginAt
+  }));
+  r.push(React.createElement(Button, {
+    content: icons ? React.createElement("span", {
+      className: "icon-chevron-left"
+    }) : prev,
+    disabled: disabled,
+    key: "previous-page",
+    position: position - perPage
+  }));
+  return r;
+};
+
+const NextLast = () => {
+  const {
+    beginAt,
+    perPage,
+    total,
+    firstAndLast,
+    position,
+    icons,
+    next
+  } = React.useContext(PaginationContext);
+  const pages = Math.floor(total / perPage) + 1;
+  const disabled = position > total - perPage + beginAt;
+  const r = [];
+  r.push(React.createElement(Button, {
+    content: icons ? React.createElement("span", {
+      className: "icon-chevron-right"
+    }) : next,
+    disabled: disabled,
+    key: "next-page",
+    position: position + perPage
+  }));
+  if (icons && firstAndLast) r.push(React.createElement(Button, {
+    content: React.createElement("span", {
+      className: "icon-chevron-right-double"
+    }),
+    disabled: disabled,
+    key: "last-page",
+    position: (pages - 1) * perPage + beginAt
+  }));
+  return r;
+};
+
+const Pages = ({
+  start,
+  finish
+}) => React.createElement(PaginationContext.Consumer, null, ({
+  perPage,
+  active,
+  beginAt
+}) => [...Array(finish - start + 1)].map((v, i) => {
+  const current = start + i;
+  return React.createElement(Button, {
+    active: active === current,
+    content: `${current}`,
+    key: `${current}-page`,
+    position: (current - 1) * perPage + beginAt
+  });
+}));
+
+Pages.propTypes = {
+  start: PropTypes.number.isRequired,
+  finish: PropTypes.number.isRequired
+};
+
+const Pagination = (_ref) => {
+  let {
+    size,
+    rounded,
+    icons,
+    next,
+    prev,
+    position,
+    perPage,
+    total,
+    onPageChange,
+    className,
+    firstAndLast,
+    beginAt
+  } = _ref,
+      rest = _objectWithoutProperties(_ref, ["size", "rounded", "icons", "next", "prev", "position", "perPage", "total", "onPageChange", "className", "firstAndLast", "beginAt"]);
+
+  const pages = Math.ceil(total / perPage);
+  const active = Math.floor(position / perPage) + 1;
+
+  const changePage = (e, newPosition) => {
+    if (typeof onPageChange === "function") onPageChange(e, newPosition);
+  };
+
+  return React.createElement(PaginationContext.Provider, {
+    value: {
+      active,
+      beginAt,
+      changePage,
+      firstAndLast,
+      icons,
+      next,
+      perPage,
+      position,
+      prev,
+      total
+    }
+  }, React.createElement("ul", _extends({
+    className: `pagination${size !== "default" ? ` pagination--${size}` : ""}${rounded ? " pagination--rounded" : ""}${className ? ` ${className}` : ""}`
+  }, rest), React.createElement(FirstPrev, null), active < 4 || pages === 4 ? React.createElement(React.Fragment, null, React.createElement(Pages, {
+    start: 1,
+    finish: Math.min(pages, 4)
+  }), pages > 4 ? React.createElement(React.Fragment, null, React.createElement("li", null, React.createElement("span", {
+    className: "icon-more"
+  })), React.createElement(Button, {
+    content: pages,
+    key: `${pages}-page`,
+    position: (pages - 1) * perPage + beginAt
+  })) : null) : React.createElement(React.Fragment, null, React.createElement(Button, {
+    active: active === beginAt,
+    content: "1",
+    key: "1-page",
+    position: beginAt
+  }), React.createElement("li", null, React.createElement("span", {
+    className: "icon-more"
+  })), active < pages - 2 ? React.createElement(React.Fragment, null, React.createElement(Pages, {
+    start: active - 1,
+    finish: active + 1
+  }), React.createElement("li", null, React.createElement("span", {
+    className: "icon-more"
+  })), React.createElement(Button, {
+    active: active === pages,
+    content: pages,
+    key: `${pages}-page`,
+    position: (pages - 1) * perPage + beginAt
+  })) : React.createElement(Pages, {
+    start: pages - 3,
+    finish: pages
+  })), React.createElement(NextLast, null)));
+};
+
+Pagination.propTypes = {
+  size: PropTypes.oneOf(["small", "default", "large"]),
+  rounded: PropTypes.bool,
+  icons: PropTypes.bool,
+  next: PropTypes.node,
+  prev: PropTypes.node,
+  position: PropTypes.number.isRequired,
+  perPage: PropTypes.number,
+  total: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  firstAndLast: PropTypes.bool,
+  beginAt: PropTypes.number,
+  className: PropTypes.string
+};
+Pagination.defaultProps = {
+  beginAt: 1,
+  rounded: false,
+  firstAndLast: true,
+  icons: false,
+  next: "Next",
+  perPage: 1,
+  prev: "Previous",
+  size: "default",
+  className: null
+};
+
+export { Pagination };

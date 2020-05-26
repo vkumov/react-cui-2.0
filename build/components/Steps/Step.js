@@ -1,1 +1,32 @@
-import e from"react";import i from"prop-types";import{a as s}from"../../index-be24eb93.js";const t=({icon:i,children:t,visited:a,active:c,className:o})=>e.createElement("div",{className:`step${s(a,"visited")}${s(c,"active")}${s(o)}`},e.createElement("div",{className:"step__icon"},i),e.createElement("div",{className:"step__label"},t));t.propTypes={icon:i.node.isRequired,children:i.node.isRequired,visited:i.bool,active:i.bool,className:i.string},t.defaultProps={visited:!1,active:!1,className:null};export default t;
+import React from 'react';
+import PropTypes from 'prop-types';
+import { a as appendClass } from '../../index-be24eb93.js';
+
+const Step = ({
+  icon,
+  children,
+  visited,
+  active,
+  className
+}) => React.createElement("div", {
+  className: `step${appendClass(visited, "visited")}${appendClass(active, "active")}${appendClass(className)}`
+}, React.createElement("div", {
+  className: "step__icon"
+}, icon), React.createElement("div", {
+  className: "step__label"
+}, children));
+
+Step.propTypes = {
+  icon: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
+  visited: PropTypes.bool,
+  active: PropTypes.bool,
+  className: PropTypes.string
+};
+Step.defaultProps = {
+  visited: false,
+  active: false,
+  className: null
+};
+
+export default Step;

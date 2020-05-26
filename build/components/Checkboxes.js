@@ -1,1 +1,54 @@
-import e from"react";import a from"prop-types";import{a as n}from"../index-be24eb93.js";import{FieldArray as r,getIn as i}from"formik";const m=({field:a,form:m,variants:s,inline:t})=>e.createElement(r,{name:a.name,render:r=>s.map(s=>e.createElement("div",{className:"form-group"+n(t,"form-group--inline"),key:s.id},e.createElement("label",{className:"checkbox",htmlFor:a.name},e.createElement("input",{name:a.name,id:a.name,type:"checkbox",value:s.id,checked:i(m.values,a.name,[]).includes(s.id),onChange:e=>{if(e.target.checked)r.push(s.id);else{const e=i(m.values,a.name,[]).indexOf(s.id);r.remove(e)}}}),e.createElement("span",{className:"checkbox__input"}),e.createElement("span",{className:"checkbox__label"},s.name))))});m.propTypes={inline:a.bool,variants:a.arrayOf(a.shape({id:a.string,name:a.string})).isRequired,field:a.shape({name:a.string}).isRequired,form:a.shape({values:a.any}).isRequired},m.defaultProps={inline:!1};export{m as Checkboxes};
+import React from 'react';
+import PropTypes from 'prop-types';
+import { a as appendClass } from '../index-be24eb93.js';
+import { FieldArray, getIn } from 'formik';
+
+const Checkboxes = ({
+  field,
+  form,
+  variants,
+  inline
+}) => React.createElement(FieldArray, {
+  name: field.name,
+  render: arrayHelpers => variants.map(variant => React.createElement("div", {
+    className: `form-group${appendClass(inline, "form-group--inline")}`,
+    key: variant.id
+  }, React.createElement("label", {
+    className: "checkbox",
+    htmlFor: field.name
+  }, React.createElement("input", {
+    name: field.name,
+    id: field.name,
+    type: "checkbox",
+    value: variant.id,
+    checked: getIn(form.values, field.name, []).includes(variant.id),
+    onChange: e => {
+      if (e.target.checked) arrayHelpers.push(variant.id);else {
+        const idx = getIn(form.values, field.name, []).indexOf(variant.id);
+        arrayHelpers.remove(idx);
+      }
+    }
+  }), React.createElement("span", {
+    className: "checkbox__input"
+  }), React.createElement("span", {
+    className: "checkbox__label"
+  }, variant.name))))
+});
+Checkboxes.propTypes = {
+  inline: PropTypes.bool,
+  variants: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string
+  })).isRequired,
+  field: PropTypes.shape({
+    name: PropTypes.string
+  }).isRequired,
+  form: PropTypes.shape({
+    values: PropTypes.any
+  }).isRequired
+};
+Checkboxes.defaultProps = {
+  inline: false
+};
+
+export { Checkboxes };

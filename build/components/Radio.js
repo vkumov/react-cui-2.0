@@ -1,1 +1,82 @@
-import e from"react";import l from"prop-types";import{_ as a,a as n}from"../_rollupPluginBabelHelpers-b60338eb.js";import{a as r}from"../index-be24eb93.js";import{Field as s}from"formik";const i=l=>{let{field:{name:s,value:i,onChange:o,onBlur:t},id:m,inline:p,spacing:u,label:c,className:d}=l,g=a(l,["field","id","inline","spacing","label","className"]);return e.createElement("div",n({className:`form-group${r(p,"form-group--inline")}${r(u,"form-group--"+u)}${r(d)}`},g),e.createElement("label",{className:"radio",htmlFor:`${s}.${m}`},e.createElement("input",{type:"radio",name:s,value:m,checked:m===i,onChange:o,onBlur:t,id:`${s}.${m}`}),e.createElement("span",{className:"radio__input"}),c?e.createElement("span",{className:"radio__label"},c):null))};i.propTypes={spacing:l.oneOf([!1,"compressed","regular","loose","nospacing"]),inline:l.bool,label:l.node,className:l.string,id:l.string.isRequired,field:l.shape({name:l.string,value:l.string,onChange:l.func,onBlur:l.func}).isRequired},i.defaultProps={spacing:null,inline:!1,label:null,className:null};const o=l=>{let{values:r}=l,o=a(l,["values"]);return r.map(l=>e.createElement(s,n({component:i},o,{id:l.value,label:l.label,key:l.value})))};o.propTypes={values:l.arrayOf(l.exact({value:l.string,label:l.node}))};export{i as Radio,o as Radios};
+import React from 'react';
+import PropTypes from 'prop-types';
+import { _ as _objectWithoutProperties, a as _extends } from '../_rollupPluginBabelHelpers-b60338eb.js';
+import { a as appendClass } from '../index-be24eb93.js';
+import { Field } from 'formik';
+
+const Radio = (_ref) => {
+  let {
+    field: {
+      name,
+      value,
+      onChange,
+      onBlur
+    },
+    id,
+    inline,
+    spacing,
+    label,
+    className
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["field", "id", "inline", "spacing", "label", "className"]);
+
+  return React.createElement("div", _extends({
+    className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(spacing, `form-group--${spacing}`)}${appendClass(className)}`
+  }, props), React.createElement("label", {
+    className: "radio",
+    htmlFor: `${name}.${id}`
+  }, React.createElement("input", {
+    type: "radio",
+    name: name,
+    value: id,
+    checked: id === value,
+    onChange: onChange,
+    onBlur: onBlur,
+    id: `${name}.${id}`
+  }), React.createElement("span", {
+    className: "radio__input"
+  }), label ? React.createElement("span", {
+    className: "radio__label"
+  }, label) : null));
+};
+Radio.propTypes = {
+  spacing: PropTypes.oneOf([false, "compressed", "regular", "loose", "nospacing"]),
+  inline: PropTypes.bool,
+  label: PropTypes.node,
+  className: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  field: PropTypes.shape({
+    name: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func
+  }).isRequired
+};
+Radio.defaultProps = {
+  spacing: null,
+  inline: false,
+  label: null,
+  className: null
+};
+const Radios = (_ref2) => {
+  let {
+    values
+  } = _ref2,
+      props = _objectWithoutProperties(_ref2, ["values"]);
+
+  return values.map(v => React.createElement(Field, _extends({
+    component: Radio
+  }, props, {
+    id: v.value,
+    label: v.label,
+    key: v.value
+  })));
+};
+Radios.propTypes = {
+  values: PropTypes.arrayOf(PropTypes.exact({
+    value: PropTypes.string,
+    label: PropTypes.node
+  }))
+};
+
+export { Radio, Radios };

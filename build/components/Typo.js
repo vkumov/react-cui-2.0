@@ -1,1 +1,43 @@
-import e from"react";import s from"prop-types";import{_ as a,b as r,a as t}from"../_rollupPluginBabelHelpers-b60338eb.js";import{a as l}from"../index-be24eb93.js";const m=s=>{let{size:t,as:m,className:i}=s,o=a(s,["size","as","className"]);return e.createElement(m,r({},o,{className:`display-${t}${l(i)}`}))};m.propTypes={size:s.oneOf([0,1,2,3,4]).isRequired,as:s.node,className:s.string},m.defaultProps={as:"h1",className:null};const i=s=>e.createElement(m,t({},s,{size:0})),o=s=>e.createElement(m,t({},s,{size:1})),n=s=>e.createElement(m,t({},s,{size:2})),p=s=>e.createElement(m,t({},s,{size:3})),c=s=>e.createElement(m,t({},s,{size:4}));export{m as Display,i as Display0,o as Display1,n as Display2,p as Display3,c as Display4};
+import React from 'react';
+import PropTypes from 'prop-types';
+import { _ as _objectWithoutProperties, b as _objectSpread2, a as _extends } from '../_rollupPluginBabelHelpers-b60338eb.js';
+import { a as appendClass } from '../index-be24eb93.js';
+
+const Display = (_ref) => {
+  let {
+    size,
+    as,
+    className
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["size", "as", "className"]);
+
+  return React.createElement(as, _objectSpread2({}, props, {
+    className: `display-${size}${appendClass(className)}`
+  }));
+};
+Display.propTypes = {
+  size: PropTypes.oneOf([0, 1, 2, 3, 4]).isRequired,
+  as: PropTypes.node,
+  className: PropTypes.string
+};
+Display.defaultProps = {
+  as: "h1",
+  className: null
+};
+const Display0 = props => React.createElement(Display, _extends({}, props, {
+  size: 0
+}));
+const Display1 = props => React.createElement(Display, _extends({}, props, {
+  size: 1
+}));
+const Display2 = props => React.createElement(Display, _extends({}, props, {
+  size: 2
+}));
+const Display3 = props => React.createElement(Display, _extends({}, props, {
+  size: 3
+}));
+const Display4 = props => React.createElement(Display, _extends({}, props, {
+  size: 4
+}));
+
+export { Display, Display0, Display1, Display2, Display3, Display4 };

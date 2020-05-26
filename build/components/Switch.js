@@ -1,1 +1,72 @@
-import e from"react";import l from"prop-types";import{a as s}from"../_rollupPluginBabelHelpers-b60338eb.js";import{a}from"../index-be24eb93.js";import{getIn as o}from"formik";import{ConditionalWrapper as r}from"./Conditional.js";const i=({field:l,left:i,right:n,disabled:t,inline:m,className:p,asFormGroup:c,form:d,spacing:u,id:f,style:b})=>e.createElement(r,{condition:c,wrapper:e.createElement("div",{className:`form-group${a(m,"form-group--inline")}${a(p)}${a(u," form-group--"+u)}`,style:b})},e.createElement("label",{className:"switch"+(t?" disabled":""),htmlFor:f||l.name},e.createElement("input",s({type:"checkbox"},l,{id:f||l.name,checked:o(d.values,l.name,!1)})),i?e.createElement("span",{className:"switch__label"},i):null,e.createElement("span",{className:"switch__input"}),n?e.createElement("span",{className:"switch__label"},n):null));i.propTypes={left:l.node,right:l.node,disabled:l.bool,inline:l.bool,spacing:l.oneOf([!1,"compressed","loose"]),asFormGroup:l.bool,form:l.shape({values:l.object}).isRequired,field:l.shape({name:l.string,onChange:l.func}).isRequired,className:l.string,id:l.string,style:l.shape({})},i.defaultProps={left:null,right:null,disabled:!1,inline:!1,spacing:!1,asFormGroup:!0,className:null,id:null,style:null};export{i as Switch};
+import React from 'react';
+import PropTypes from 'prop-types';
+import { a as _extends } from '../_rollupPluginBabelHelpers-b60338eb.js';
+import { a as appendClass } from '../index-be24eb93.js';
+import { getIn } from 'formik';
+import { ConditionalWrapper } from './Conditional.js';
+
+const Switch = ({
+  field,
+  left,
+  right,
+  disabled,
+  inline,
+  className,
+  asFormGroup,
+  form,
+  spacing,
+  id,
+  style
+}) => React.createElement(ConditionalWrapper, {
+  condition: asFormGroup,
+  wrapper: React.createElement("div", {
+    className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}${appendClass(spacing, ` form-group--${spacing}`)}`,
+    style: style
+  })
+}, React.createElement("label", {
+  className: `switch${disabled ? " disabled" : ""}`,
+  htmlFor: id || field.name
+}, React.createElement("input", _extends({
+  type: "checkbox"
+}, field, {
+  id: id || field.name,
+  checked: getIn(form.values, field.name, false)
+})), left ? React.createElement("span", {
+  className: "switch__label"
+}, left) : null, React.createElement("span", {
+  className: "switch__input"
+}), right ? React.createElement("span", {
+  className: "switch__label"
+}, right) : null));
+
+Switch.propTypes = {
+  left: PropTypes.node,
+  right: PropTypes.node,
+  disabled: PropTypes.bool,
+  inline: PropTypes.bool,
+  spacing: PropTypes.oneOf([false, "compressed", "loose"]),
+  asFormGroup: PropTypes.bool,
+  form: PropTypes.shape({
+    values: PropTypes.object
+  }).isRequired,
+  field: PropTypes.shape({
+    name: PropTypes.string,
+    onChange: PropTypes.func
+  }).isRequired,
+  className: PropTypes.string,
+  id: PropTypes.string,
+  style: PropTypes.shape({})
+};
+Switch.defaultProps = {
+  left: null,
+  right: null,
+  disabled: false,
+  inline: false,
+  spacing: false,
+  asFormGroup: true,
+  className: null,
+  id: null,
+  style: null
+};
+
+export { Switch };

@@ -1,7 +1,1436 @@
-import e,{isValidElement as t,cloneElement as n,Component as o}from"react";import s from"prop-types";import{a as r}from"../_rollupPluginBabelHelpers-b60338eb.js";import{s as i}from"../style-inject.es-1f59c1d0.js";import{c as a}from"../_commonjsHelpers-62a4d7f9.js";import{a as l,_ as u}from"../inheritsLoose-5aebf23c.js";import{render as c}from"react-dom";import{Transition as p,TransitionGroup as d}from"react-transition-group";function f(){return(f=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(e[o]=n[o])}return e}).apply(this,arguments)}var g=a((function(e){
+import React, { isValidElement, cloneElement, Component } from 'react';
+import PropTypes from 'prop-types';
+import { a as _extends$1 } from '../_rollupPluginBabelHelpers-b60338eb.js';
+import { s as styleInject } from '../style-inject.es-1f59c1d0.js';
+import { a as _objectWithoutPropertiesLoose, _ as _inheritsLoose } from '../inheritsLoose-5aebf23c.js';
+import { render } from 'react-dom';
+import { Transition, TransitionGroup } from 'react-transition-group';
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var classnames = createCommonjsModule(function (module) {
 /*!
   Copyright (c) 2017 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
-!function(){var t={}.hasOwnProperty;function n(){for(var e=[],o=0;o<arguments.length;o++){var s=arguments[o];if(s){var r=typeof s;if("string"===r||"number"===r)e.push(s);else if(Array.isArray(s)&&s.length){var i=n.apply(null,s);i&&e.push(i)}else if("object"===r)for(var a in s)t.call(s,a)&&s[a]&&e.push(a)}}return e.join(" ")}e.exports?(n.default=n,e.exports=n):window.classNames=n}()})),m={TOP_LEFT:"top-left",TOP_RIGHT:"top-right",TOP_CENTER:"top-center",BOTTOM_LEFT:"bottom-left",BOTTOM_RIGHT:"bottom-right",BOTTOM_CENTER:"bottom-center"},h={INFO:"info",SUCCESS:"success",WARNING:"warning",ERROR:"error",DEFAULT:"default"},y=0,b=1,v=2,T=3,E=4,C=function(){};function O(e){return"number"==typeof e&&!isNaN(e)&&e>0}function _(e){return Object.keys(e).map((function(t){return e[t]}))}var N=!("undefined"==typeof window||!window.document||!window.document.createElement);var x,w=((x=function(e,t,n){var o=e[t];return!1===o||O(o)?null:new Error(n+" expect "+t+" \n      to be a valid Number > 0 or equal to false. "+o+" given.")}).isRequired=function(e,t,n){if(void 0===e[t])return new Error("The prop "+t+" is marked as required in \n      "+n+", but its value is undefined.");x(e,t,n)},x),D={list:new Map,emitQueue:new Map,on:function(e,t){return this.list.has(e)||this.list.set(e,[]),this.list.get(e).push(t),this},off:function(e){return this.list.delete(e),this},cancelEmit:function(e){var t=this.emitQueue.get(e);return t&&(t.forEach((function(e){return clearTimeout(e)})),this.emitQueue.delete(e)),this},emit:function(e){for(var t=this,n=arguments.length,o=new Array(n>1?n-1:0),s=1;s<n;s++)o[s-1]=arguments[s];this.list.has(e)&&this.list.get(e).forEach((function(n){var s=setTimeout((function(){n.apply(void 0,o)}),0);t.emitQueue.has(e)||t.emitQueue.set(e,[]),t.emitQueue.get(e).push(s)}))}};function L(t){var n=t.enter,o=t.exit,s=t.duration,r=void 0===s?750:s,i=t.appendPosition,a=void 0!==i&&i;return function(t){var s,i,u=t.children,c=t.position,d=t.preventExitTransition,g=l(t,["children","position","preventExitTransition"]),m=a?n+"--"+c:n,h=a?o+"--"+c:o;Array.isArray(r)&&2===r.length?(s=r[0],i=r[1]):s=i=r;return e.createElement(p,f({},g,{timeout:d?0:{enter:s,exit:i},onEnter:function(e){e.classList.add(m),e.style.animationFillMode="forwards",e.style.animationDuration=.001*s+"s"},onEntered:function(e){e.classList.remove(m),e.style.cssText=""},onExit:d?C:function(e){e.classList.add(h),e.style.animationFillMode="forwards",e.style.animationDuration=.001*i+"s"}}),u)}}function R(t){var n,o,s=t.delay,r=t.isRunning,i=t.closeToast,a=t.type,l=t.hide,u=t.className,c=t.style,p=t.controlledProgress,d=t.progress,m=t.rtl,h=f({},c,{animationDuration:s+"ms",animationPlayState:r?"running":"paused",opacity:l?0:1,transform:p?"scaleX("+d+")":null}),y=g("Toastify__progress-bar",p?"Toastify__progress-bar--controlled":"Toastify__progress-bar--animated","Toastify__progress-bar--"+a,((n={})["Toastify__progress-bar--rtl"]=m,n),u),b=((o={})[p&&d>=1?"onTransitionEnd":"onAnimationEnd"]=p&&d<1?null:i,o);return e.createElement("div",f({className:y,style:h},b))}function I(e){return e.targetTouches&&e.targetTouches.length>=1?e.targetTouches[0].clientX:e.clientX}function P(e){return e.targetTouches&&e.targetTouches.length>=1?e.targetTouches[0].clientY:e.clientY}R.propTypes={delay:w.isRequired,isRunning:s.bool.isRequired,closeToast:s.func.isRequired,rtl:s.bool.isRequired,type:s.string,hide:s.bool,className:s.oneOfType([s.string,s.object]),progress:s.number,controlledProgress:s.bool},R.defaultProps={type:h.DEFAULT,hide:!1};var k=N&&/(msie|trident)/i.test(navigator.userAgent),F=function(t){function n(){for(var e,n=arguments.length,o=new Array(n),s=0;s<n;s++)o[s]=arguments[s];return(e=t.call.apply(t,[this].concat(o))||this).state={isRunning:!0,preventExitTransition:!1},e.flag={canCloseOnClick:!0,canDrag:!1},e.drag={start:0,x:0,y:0,deltaX:0,removalDistance:0},e.boundingRect=null,e.ref=null,e.pauseToast=function(){e.props.autoClose&&e.setState({isRunning:!1})},e.playToast=function(){e.props.autoClose&&e.setState({isRunning:!0})},e.onDragStart=function(t){e.flag.canCloseOnClick=!0,e.flag.canDrag=!0,e.boundingRect=e.ref.getBoundingClientRect(),e.ref.style.transition="",e.drag.start=e.drag.x=I(t.nativeEvent),e.drag.removalDistance=e.ref.offsetWidth*(e.props.draggablePercent/100)},e.onDragMove=function(t){e.flag.canDrag&&(e.state.isRunning&&e.pauseToast(),e.drag.x=I(t),e.drag.deltaX=e.drag.x-e.drag.start,e.drag.y=P(t),e.drag.start!==e.drag.x&&(e.flag.canCloseOnClick=!1),e.ref.style.transform="translateX("+e.drag.deltaX+"px)",e.ref.style.opacity=1-Math.abs(e.drag.deltaX/e.drag.removalDistance))},e.onDragEnd=function(t){if(e.flag.canDrag){if(e.flag.canDrag=!1,Math.abs(e.drag.deltaX)>e.drag.removalDistance)return void e.setState({preventExitTransition:!0},e.props.closeToast);e.ref.style.transition="transform 0.2s, opacity 0.2s",e.ref.style.transform="translateX(0)",e.ref.style.opacity=1}},e.onDragTransitionEnd=function(){if(e.boundingRect){var t=e.boundingRect,n=t.top,o=t.bottom,s=t.left,r=t.right;e.props.pauseOnHover&&e.drag.x>=s&&e.drag.x<=r&&e.drag.y>=n&&e.drag.y<=o?e.pauseToast():e.playToast()}},e.onExitTransitionEnd=function(){if(k)e.props.onExited();else{var t=e.ref.scrollHeight,n=e.ref.style;requestAnimationFrame((function(){n.minHeight="initial",n.height=t+"px",n.transition="all 0.4s ",requestAnimationFrame((function(){n.height=0,n.padding=0,n.margin=0})),setTimeout((function(){return e.props.onExited()}),400)}))}},e}u(n,t);var o=n.prototype;return o.componentDidMount=function(){this.props.onOpen(this.props.children.props),this.props.draggable&&this.bindDragEvents(),this.props.pauseOnFocusLoss&&this.bindFocusEvents()},o.componentDidUpdate=function(e){e.draggable!==this.props.draggable&&(this.props.draggable?this.bindDragEvents():this.unbindDragEvents()),e.pauseOnFocusLoss!==this.props.pauseOnFocusLoss&&(this.props.pauseOnFocusLoss?this.bindFocusEvents():this.unbindFocusEvents())},o.componentWillUnmount=function(){this.props.onClose(this.props.children.props),this.props.draggable&&this.unbindDragEvents(),this.props.pauseOnFocusLoss&&this.unbindFocusEvents()},o.bindFocusEvents=function(){window.addEventListener("focus",this.playToast),window.addEventListener("blur",this.pauseToast)},o.unbindFocusEvents=function(){window.removeEventListener("focus",this.playToast),window.removeEventListener("blur",this.pauseToast)},o.bindDragEvents=function(){document.addEventListener("mousemove",this.onDragMove),document.addEventListener("mouseup",this.onDragEnd),document.addEventListener("touchmove",this.onDragMove),document.addEventListener("touchend",this.onDragEnd)},o.unbindDragEvents=function(){document.removeEventListener("mousemove",this.onDragMove),document.removeEventListener("mouseup",this.onDragEnd),document.removeEventListener("touchmove",this.onDragMove),document.removeEventListener("touchend",this.onDragEnd)},o.render=function(){var t,n=this,o=this.props,s=o.closeButton,r=o.children,i=o.autoClose,a=o.pauseOnHover,l=o.onClick,u=o.closeOnClick,c=o.type,p=o.hideProgressBar,d=o.closeToast,m=o.transition,h=o.position,y=o.className,b=o.bodyClassName,v=o.progressClassName,T=o.progressStyle,E=o.updateId,C=o.role,O=o.progress,_=o.rtl,N={className:g("Toastify__toast","Toastify__toast--"+c,(t={},t["Toastify__toast--rtl"]=_,t),y)};i&&a&&(N.onMouseEnter=this.pauseToast,N.onMouseLeave=this.playToast),u&&(N.onClick=function(e){l&&l(e),n.flag.canCloseOnClick&&d()});var x=parseFloat(O)===O;return e.createElement(m,{in:this.props.in,appear:!0,onExited:this.onExitTransitionEnd,position:h,preventExitTransition:this.state.preventExitTransition},e.createElement("div",f({onClick:l},N,{ref:function(e){return n.ref=e},onMouseDown:this.onDragStart,onTouchStart:this.onDragStart,onMouseUp:this.onDragTransitionEnd,onTouchEnd:this.onDragTransitionEnd}),e.createElement("div",f({},this.props.in&&{role:C},{className:g("Toastify__toast-body",b)}),r),s&&s,(i||x)&&e.createElement(R,f({},E&&!x?{key:"pb-"+E}:{},{rtl:_,delay:i,isRunning:this.state.isRunning,closeToast:d,hide:p,type:c,style:T,className:v,controlledProgress:x,progress:O}))))},n}(o);function B(t){var n=t.closeToast,o=t.type,s=t.ariaLabel;return e.createElement("button",{className:"Toastify__close-button Toastify__close-button--"+o,type:"button",onClick:function(e){e.stopPropagation(),n(e)},"aria-label":s},"✖︎")}F.propTypes={closeButton:s.oneOfType([s.node,s.bool]).isRequired,autoClose:w.isRequired,children:s.node.isRequired,closeToast:s.func.isRequired,position:s.oneOf(_(m)).isRequired,pauseOnHover:s.bool.isRequired,pauseOnFocusLoss:s.bool.isRequired,closeOnClick:s.bool.isRequired,transition:s.func.isRequired,rtl:s.bool.isRequired,hideProgressBar:s.bool.isRequired,draggable:s.bool.isRequired,draggablePercent:s.number.isRequired,in:s.bool,onExited:s.func,onOpen:s.func,onClose:s.func,type:s.oneOf(_(h)),className:s.oneOfType([s.string,s.object]),bodyClassName:s.oneOfType([s.string,s.object]),progressClassName:s.oneOfType([s.string,s.object]),progressStyle:s.object,progress:s.number,updateId:s.oneOfType([s.string,s.number]),ariaLabel:s.string,containerId:s.oneOfType([s.string,s.number]),role:s.string},F.defaultProps={type:h.DEFAULT,in:!0,onOpen:C,onClose:C,className:null,bodyClassName:null,progressClassName:null,updateId:null},B.propTypes={closeToast:s.func,arialLabel:s.string},B.defaultProps={ariaLabel:"close"};var j=L({enter:"Toastify__bounce-enter",exit:"Toastify__bounce-exit",appendPosition:!0}),A=(L({enter:"Toastify__slide-enter",exit:"Toastify__slide-exit",duration:[450,750],appendPosition:!0}),L({enter:"Toastify__zoom-enter",exit:"Toastify__zoom-exit"}),L({enter:"Toastify__flip-enter",exit:"Toastify__flip-exit"}),function(o){function s(){for(var e,t=arguments.length,n=new Array(t),s=0;s<t;s++)n[s]=arguments[s];return(e=o.call.apply(o,[this].concat(n))||this).state={toast:[]},e.toastKey=1,e.collection={},e.isToastActive=function(t){return-1!==e.state.toast.indexOf(t)},e}u(s,o);var r=s.prototype;return r.componentDidMount=function(){var e=this;D.cancelEmit(T).on(y,(function(t,n){return e.ref?e.buildToast(t,n):null})).on(b,(function(t){return e.ref?null==t?e.clear():e.removeToast(t):null})).emit(v,this)},r.componentWillUnmount=function(){D.emit(T,this)},r.removeToast=function(e){this.setState({toast:this.state.toast.filter((function(t){return t!==e}))},this.dispatchChange)},r.dispatchChange=function(){D.emit(E,this.state.toast.length,this.props.containerId)},r.makeCloseButton=function(o,s,r){var i=this,a=this.props.closeButton;return t(o)||!1===o?a=o:!0===o&&(a=this.props.closeButton&&"boolean"!=typeof this.props.closeButton?this.props.closeButton:e.createElement(B,null)),!1!==a&&n(a,{closeToast:function(){return i.removeToast(s)},type:r})},r.getAutoCloseDelay=function(e){return!1===e||O(e)?e:this.props.autoClose},r.canBeRendered=function(e){return t(e)||"string"==typeof e||"number"==typeof e||"function"==typeof e},r.parseClassName=function(e){return"string"==typeof e?e:null!==e&&"object"==typeof e&&"toString"in e?e.toString():null},r.belongToContainer=function(e){return e.containerId===this.props.containerId},r.buildToast=function(e,o){var s=this,r=o.delay,i=l(o,["delay"]);if(!this.canBeRendered(e))throw new Error("The element you provided cannot be rendered. You provided an element of type "+typeof e);var a=i.toastId,u=i.updateId;if(!(this.props.enableMultiContainer&&!this.belongToContainer(i)||this.isToastActive(a)&&null==u)){var c=function(){return s.removeToast(a)},p={id:a,key:i.key||this.toastKey++,type:i.type,closeToast:c,updateId:i.updateId,rtl:this.props.rtl,position:i.position||this.props.position,transition:i.transition||this.props.transition,className:this.parseClassName(i.className||this.props.toastClassName),bodyClassName:this.parseClassName(i.bodyClassName||this.props.bodyClassName),onClick:i.onClick||this.props.onClick,closeButton:this.makeCloseButton(i.closeButton,a,i.type),pauseOnHover:"boolean"==typeof i.pauseOnHover?i.pauseOnHover:this.props.pauseOnHover,pauseOnFocusLoss:"boolean"==typeof i.pauseOnFocusLoss?i.pauseOnFocusLoss:this.props.pauseOnFocusLoss,draggable:"boolean"==typeof i.draggable?i.draggable:this.props.draggable,draggablePercent:"number"!=typeof i.draggablePercent||isNaN(i.draggablePercent)?this.props.draggablePercent:i.draggablePercent,closeOnClick:"boolean"==typeof i.closeOnClick?i.closeOnClick:this.props.closeOnClick,progressClassName:this.parseClassName(i.progressClassName||this.props.progressClassName),progressStyle:this.props.progressStyle,autoClose:this.getAutoCloseDelay(i.autoClose),hideProgressBar:"boolean"==typeof i.hideProgressBar?i.hideProgressBar:this.props.hideProgressBar,progress:parseFloat(i.progress),role:"string"==typeof i.role?i.role:this.props.role};"function"==typeof i.onOpen&&(p.onOpen=i.onOpen),"function"==typeof i.onClose&&(p.onClose=i.onClose),t(e)&&"string"!=typeof e.type&&"number"!=typeof e.type?e=n(e,{closeToast:c}):"function"==typeof e&&(e=e({closeToast:c})),O(r)?setTimeout((function(){s.appendToast(p,e,i.staleToastId)}),r):this.appendToast(p,e,i.staleToastId)}},r.appendToast=function(e,t,n){var o,s=e.id,r=e.updateId;this.collection=f({},this.collection,((o={})[s]={options:e,content:t,position:e.position},o)),this.setState({toast:(r?[].concat(this.state.toast):[].concat(this.state.toast,[s])).filter((function(e){return e!==n}))},this.dispatchChange)},r.clear=function(){this.setState({toast:[]})},r.renderToast=function(){var t=this,n={},o=this.props,s=o.className,r=o.style;return(o.newestOnTop?Object.keys(this.collection).reverse():Object.keys(this.collection)).forEach((function(o){var s=t.collection[o],r=s.position,i=s.options,a=s.content;n[r]||(n[r]=[]),-1!==t.state.toast.indexOf(i.id)?n[r].push(e.createElement(F,f({},i,{isDocumentHidden:t.state.isDocumentHidden,key:"toast-"+i.key}),a)):(n[r].push(null),delete t.collection[o])})),Object.keys(n).map((function(o){var i,a=1===n[o].length&&null===n[o][0],l={className:g("Toastify__toast-container","Toastify__toast-container--"+o,(i={},i["Toastify__toast-container--rtl"]=t.props.rtl,i),t.parseClassName(s)),style:a?f({},r,{pointerEvents:"none"}):f({},r)};return e.createElement(d,f({},l,{key:"container-"+o}),n[o])}))},r.render=function(){var t=this;return e.createElement("div",{ref:function(e){return t.ref=e},className:"Toastify"},this.renderToast())},s}(o));A.propTypes={position:s.oneOf(_(m)),autoClose:w,closeButton:s.oneOfType([s.node,s.bool]),hideProgressBar:s.bool,pauseOnHover:s.bool,closeOnClick:s.bool,newestOnTop:s.bool,className:s.oneOfType([s.string,s.object]),style:s.object,toastClassName:s.oneOfType([s.string,s.object]),bodyClassName:s.oneOfType([s.string,s.object]),progressClassName:s.oneOfType([s.string,s.object]),progressStyle:s.object,transition:s.func,rtl:s.bool,draggable:s.bool,draggablePercent:s.number,pauseOnFocusLoss:s.bool,enableMultiContainer:s.bool,containerId:s.oneOfType([s.string,s.number]),role:s.string,onClick:s.func},A.defaultProps={position:m.TOP_RIGHT,transition:j,rtl:!1,autoClose:5e3,hideProgressBar:!1,closeButton:e.createElement(B,null),pauseOnHover:!0,pauseOnFocusLoss:!0,closeOnClick:!0,newestOnTop:!1,draggable:!0,draggablePercent:80,className:null,style:null,toastClassName:null,bodyClassName:null,progressClassName:null,progressStyle:null,role:"alert"};var S=new Map,M=null,q=null,H={},U=[],X=!1;function G(){return S.size>0}function Q(e,t){var n=function(e){return G()?e?S.get(e):S.get(M):null}(t.containerId);if(!n)return null;var o=n.collection[e];return void 0===o?null:o}function z(e,t){return f({},e,{type:t,toastId:Y(e)})}function W(){return(Math.random().toString(36)+Date.now().toString(36)).substr(2,10)}function Y(e){return e&&("string"==typeof e.toastId||"number"==typeof e.toastId&&!isNaN(e.toastId))?e.toastId:W()}function K(t,n){return G()?D.emit(y,t,n):(U.push({action:y,content:t,options:n}),X&&N&&(X=!1,q=document.createElement("div"),document.body.appendChild(q),c(e.createElement(A,H),q))),n.toastId}var J=function(e,t){return K(e,z(t,t&&t.type||h.DEFAULT))},V=function(e){h[e]!==h.DEFAULT&&(J[h[e].toLowerCase()]=function(t,n){return K(t,z(n,n&&n.type||h[e]))})};for(var Z in h)V(Z);J.warn=J.warning,J.dismiss=function(e){return void 0===e&&(e=null),G()&&D.emit(b,e)},J.isActive=function(e){var t=!1;return S.size>0&&S.forEach((function(n){n.isToastActive(e)&&(t=!0)})),t},J.update=function(e,t){void 0===t&&(t={}),setTimeout((function(){var n=Q(e,t);if(n){var o=n.options,s=n.content,r=f({},o,{},t,{toastId:t.toastId||e});t.toastId&&t.toastId!==e?r.staleToastId=e:r.updateId=W();var i=void 0!==r.render?r.render:s;delete r.render,K(i,r)}}),0)},J.done=function(e){J.update(e,{progress:1})},J.onChange=function(e){"function"==typeof e&&D.on(E,e)},J.configure=function(e){X=!0,H=e},J.POSITION=m,J.TYPE=h,D.on(v,(function(e){M=e.props.containerId||e,S.set(M,e),U.forEach((function(e){D.emit(e.action,e.content,e.options)})),U=[]})).on(T,(function(e){e?S.delete(e.props.containerId||e):S.clear(),0===S.size&&D.off(y).off(b),N&&q&&document.body.removeChild(q)}));i(".cui .Toastify__toast{min-height:unset!important;padding:unset;overflow:unset;font-family:unset;box-shadow:unset}.cui .Toastify__toast--default,.cui .Toastify__toast-container{color:unset}");const $=e=>{switch(e){case"success":return"text-success icon-check-outline";case"error":return"text-danger icon-error-outline";case"warning":return"text-warning icon-warning-outline";case"info":return"text-info icon-info-outline";case"none":return null;default:return"text-muted icon-alert"}},ee=({type:t})=>e.createElement("div",{className:"toast__icon "+($(t)||"")}),te=({title:t,message:n,type:o,copyError:s})=>e.createElement("div",{className:"toast"},e.createElement(ee,{type:o}),e.createElement("div",{className:"toast__body"},t?e.createElement("div",{className:"toast__title"},t):null,n?e.createElement("div",{className:"toast__message"},n,"error"===o&&s?e.createElement(e.Fragment,null,e.createElement("br",null),e.createElement("br",null),e.createElement("a",{onClick:()=>(e=>{const t=document.createElement("textarea");t.value=e,t.setAttribute("readonly",""),t.style={position:"absolute",left:"-9999px"},document.body.appendChild(t),t.select(),document.execCommand("copy"),document.body.removeChild(t)})(n)},"Copy to clipboard")):null):null)),ne=L({enter:"fadeIn",exit:"fadeOut",duration:300}),oe=(t,n,o,s=!0,r="_GLOBAL_")=>J(e.createElement(te,{type:t,title:n,message:o,copyError:s}),{containerId:r});oe.success=(...e)=>oe("success",...e),oe.error=(...e)=>oe("error",...e),oe.warning=(...e)=>oe("warning",...e),oe.info=(...e)=>oe("info",...e),oe.none=(...e)=>oe("none",...e),oe.update=(...e)=>J.update(...e),oe.dismiss=(...e)=>J.dismiss(...e);const se=t=>e.createElement(A,r({transition:ne},t,{closeButton:!1,style:{width:"unset"}}));se.propTypes={position:s.string,autoClose:s.number,draggable:s.bool,hideProgressBar:s.bool,containerId:s.oneOfType([s.string,s.number])},se.defaultProps={position:"bottom-right",autoClose:5e3,draggable:!1,hideProgressBar:!0,containerId:"_GLOBAL_"};export{se as ToastContainer,oe as toast};
+/* global define */
+
+(function () {
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else {
+		window.classNames = classNames;
+	}
+}());
+});
+
+var POSITION = {
+  TOP_LEFT: 'top-left',
+  TOP_RIGHT: 'top-right',
+  TOP_CENTER: 'top-center',
+  BOTTOM_LEFT: 'bottom-left',
+  BOTTOM_RIGHT: 'bottom-right',
+  BOTTOM_CENTER: 'bottom-center'
+};
+var TYPE = {
+  INFO: 'info',
+  SUCCESS: 'success',
+  WARNING: 'warning',
+  ERROR: 'error',
+  DEFAULT: 'default'
+};
+var ACTION = {
+  SHOW: 0,
+  CLEAR: 1,
+  DID_MOUNT: 2,
+  WILL_UNMOUNT: 3,
+  ON_CHANGE: 4
+};
+var NOOP = function NOOP() {};
+var RT_NAMESPACE = 'Toastify';
+
+function isValidDelay(val) {
+  return typeof val === 'number' && !isNaN(val) && val > 0;
+}
+function objectValues(obj) {
+  return Object.keys(obj).map(function (key) {
+    return obj[key];
+  });
+}
+var canUseDom = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+function withRequired(fn) {
+  fn.isRequired = function (props, propName, componentName) {
+    var prop = props[propName];
+
+    if (typeof prop === 'undefined') {
+      return new Error("The prop " + propName + " is marked as required in \n      " + componentName + ", but its value is undefined.");
+    }
+
+    fn(props, propName, componentName);
+  };
+
+  return fn;
+}
+
+var falseOrDelay = withRequired(function (props, propName, componentName) {
+  var prop = props[propName];
+
+  if (prop !== false && !isValidDelay(prop)) {
+    return new Error(componentName + " expect " + propName + " \n      to be a valid Number > 0 or equal to false. " + prop + " given.");
+  }
+
+  return null;
+});
+
+var eventManager = {
+  list: new Map(),
+  emitQueue: new Map(),
+  on: function on(event, callback) {
+    this.list.has(event) || this.list.set(event, []);
+    this.list.get(event).push(callback);
+    return this;
+  },
+  off: function off(event) {
+    this.list.delete(event);
+    return this;
+  },
+  cancelEmit: function cancelEmit(event) {
+    var timers = this.emitQueue.get(event);
+
+    if (timers) {
+      timers.forEach(function (timer) {
+        return clearTimeout(timer);
+      });
+      this.emitQueue.delete(event);
+    }
+
+    return this;
+  },
+
+  /**
+   * Enqueue the event at the end of the call stack
+   * Doing so let the user call toast as follow:
+   * toast('1')
+   * toast('2')
+   * toast('3')
+   * Without setTimemout the code above will not work
+   */
+  emit: function emit(event) {
+    var _this = this;
+
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    this.list.has(event) && this.list.get(event).forEach(function (callback) {
+      var timer = setTimeout(function () {
+        callback.apply(void 0, args);
+      }, 0);
+      _this.emitQueue.has(event) || _this.emitQueue.set(event, []);
+
+      _this.emitQueue.get(event).push(timer);
+    });
+  }
+};
+
+function cssTransition(_ref) {
+  var enter = _ref.enter,
+      exit = _ref.exit,
+      _ref$duration = _ref.duration,
+      duration = _ref$duration === void 0 ? 750 : _ref$duration,
+      _ref$appendPosition = _ref.appendPosition,
+      appendPosition = _ref$appendPosition === void 0 ? false : _ref$appendPosition;
+  return function Animation(_ref2) {
+    var children = _ref2.children,
+        position = _ref2.position,
+        preventExitTransition = _ref2.preventExitTransition,
+        props = _objectWithoutPropertiesLoose(_ref2, ["children", "position", "preventExitTransition"]);
+
+    var enterClassName = appendPosition ? enter + "--" + position : enter;
+    var exitClassName = appendPosition ? exit + "--" + position : exit;
+    var enterDuration, exitDuration;
+
+    if (Array.isArray(duration) && duration.length === 2) {
+      enterDuration = duration[0];
+      exitDuration = duration[1];
+    } else {
+      enterDuration = exitDuration = duration;
+    }
+
+    var onEnter = function onEnter(node) {
+      node.classList.add(enterClassName);
+      node.style.animationFillMode = 'forwards';
+      node.style.animationDuration = enterDuration * 0.001 + "s";
+    };
+
+    var onEntered = function onEntered(node) {
+      node.classList.remove(enterClassName);
+      node.style.cssText = '';
+    };
+
+    var onExit = function onExit(node) {
+      node.classList.add(exitClassName);
+      node.style.animationFillMode = 'forwards';
+      node.style.animationDuration = exitDuration * 0.001 + "s";
+    };
+
+    return React.createElement(Transition, _extends({}, props, {
+      timeout: preventExitTransition ? 0 : {
+        enter: enterDuration,
+        exit: exitDuration
+      },
+      onEnter: onEnter,
+      onEntered: onEntered,
+      onExit: preventExitTransition ? NOOP : onExit
+    }), children);
+  };
+}
+
+function ProgressBar(_ref) {
+  var _cx, _animationEvent;
+
+  var delay = _ref.delay,
+      isRunning = _ref.isRunning,
+      closeToast = _ref.closeToast,
+      type = _ref.type,
+      hide = _ref.hide,
+      className = _ref.className,
+      userStyle = _ref.style,
+      controlledProgress = _ref.controlledProgress,
+      progress = _ref.progress,
+      rtl = _ref.rtl;
+
+  var style = _extends({}, userStyle, {
+    animationDuration: delay + "ms",
+    animationPlayState: isRunning ? 'running' : 'paused',
+    opacity: hide ? 0 : 1,
+    transform: controlledProgress ? "scaleX(" + progress + ")" : null
+  });
+
+  var classNames = classnames(RT_NAMESPACE + "__progress-bar", controlledProgress ? RT_NAMESPACE + "__progress-bar--controlled" : RT_NAMESPACE + "__progress-bar--animated", RT_NAMESPACE + "__progress-bar--" + type, (_cx = {}, _cx[RT_NAMESPACE + "__progress-bar--rtl"] = rtl, _cx), className);
+  var animationEvent = (_animationEvent = {}, _animationEvent[controlledProgress && progress >= 1 ? 'onTransitionEnd' : 'onAnimationEnd'] = controlledProgress && progress < 1 ? null : closeToast, _animationEvent);
+  return React.createElement("div", _extends({
+    className: classNames,
+    style: style
+  }, animationEvent));
+}
+
+ProgressBar.propTypes = {
+  /**
+   * The animation delay which determine when to close the toast
+   */
+  delay: falseOrDelay.isRequired,
+
+  /**
+   * Whether or not the animation is running or paused
+   */
+  isRunning: PropTypes.bool.isRequired,
+
+  /**
+   * Func to close the current toast
+   */
+  closeToast: PropTypes.func.isRequired,
+
+  /**
+   * Support rtl content
+   */
+  rtl: PropTypes.bool.isRequired,
+
+  /**
+   * Optional type : info, success ...
+   */
+  type: PropTypes.string,
+
+  /**
+   * Hide or not the progress bar
+   */
+  hide: PropTypes.bool,
+
+  /**
+   * Optionnal className
+   */
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+  /**
+   * Controlled progress value
+   */
+  progress: PropTypes.number,
+
+  /**
+   * Tell wether or not controlled progress bar is used
+   */
+  controlledProgress: PropTypes.bool
+};
+ProgressBar.defaultProps = {
+  type: TYPE.DEFAULT,
+  hide: false
+};
+
+function getX(e) {
+  return e.targetTouches && e.targetTouches.length >= 1 ? e.targetTouches[0].clientX : e.clientX;
+}
+
+function getY(e) {
+  return e.targetTouches && e.targetTouches.length >= 1 ? e.targetTouches[0].clientY : e.clientY;
+}
+
+var iLoveInternetExplorer = canUseDom && /(msie|trident)/i.test(navigator.userAgent);
+
+var Toast =
+/*#__PURE__*/
+function (_Component) {
+  _inheritsLoose(Toast, _Component);
+
+  function Toast() {
+    var _this;
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this.state = {
+      isRunning: true,
+      preventExitTransition: false
+    };
+    _this.flag = {
+      canCloseOnClick: true,
+      canDrag: false
+    };
+    _this.drag = {
+      start: 0,
+      x: 0,
+      y: 0,
+      deltaX: 0,
+      removalDistance: 0
+    };
+    _this.boundingRect = null;
+    _this.ref = null;
+
+    _this.pauseToast = function () {
+      if (_this.props.autoClose) {
+        _this.setState({
+          isRunning: false
+        });
+      }
+    };
+
+    _this.playToast = function () {
+      if (_this.props.autoClose) {
+        _this.setState({
+          isRunning: true
+        });
+      }
+    };
+
+    _this.onDragStart = function (e) {
+      _this.flag.canCloseOnClick = true;
+      _this.flag.canDrag = true;
+      _this.boundingRect = _this.ref.getBoundingClientRect();
+      _this.ref.style.transition = '';
+      _this.drag.start = _this.drag.x = getX(e.nativeEvent);
+      _this.drag.removalDistance = _this.ref.offsetWidth * (_this.props.draggablePercent / 100);
+    };
+
+    _this.onDragMove = function (e) {
+      if (_this.flag.canDrag) {
+        if (_this.state.isRunning) {
+          _this.pauseToast();
+        }
+
+        _this.drag.x = getX(e);
+        _this.drag.deltaX = _this.drag.x - _this.drag.start;
+        _this.drag.y = getY(e); // prevent false positif during a toast click
+
+        _this.drag.start !== _this.drag.x && (_this.flag.canCloseOnClick = false);
+        _this.ref.style.transform = "translateX(" + _this.drag.deltaX + "px)";
+        _this.ref.style.opacity = 1 - Math.abs(_this.drag.deltaX / _this.drag.removalDistance);
+      }
+    };
+
+    _this.onDragEnd = function (e) {
+      if (_this.flag.canDrag) {
+        _this.flag.canDrag = false;
+
+        if (Math.abs(_this.drag.deltaX) > _this.drag.removalDistance) {
+          _this.setState({
+            preventExitTransition: true
+          }, _this.props.closeToast);
+
+          return;
+        }
+
+        _this.ref.style.transition = 'transform 0.2s, opacity 0.2s';
+        _this.ref.style.transform = 'translateX(0)';
+        _this.ref.style.opacity = 1;
+      }
+    };
+
+    _this.onDragTransitionEnd = function () {
+      if (_this.boundingRect) {
+        var _this$boundingRect = _this.boundingRect,
+            top = _this$boundingRect.top,
+            bottom = _this$boundingRect.bottom,
+            left = _this$boundingRect.left,
+            right = _this$boundingRect.right;
+
+        if (_this.props.pauseOnHover && _this.drag.x >= left && _this.drag.x <= right && _this.drag.y >= top && _this.drag.y <= bottom) {
+          _this.pauseToast();
+        } else {
+          _this.playToast();
+        }
+      }
+    };
+
+    _this.onExitTransitionEnd = function () {
+      if (iLoveInternetExplorer) {
+        _this.props.onExited();
+
+        return;
+      }
+
+      var height = _this.ref.scrollHeight;
+      var style = _this.ref.style;
+      requestAnimationFrame(function () {
+        style.minHeight = 'initial';
+        style.height = height + 'px';
+        style.transition = 'all 0.4s ';
+        requestAnimationFrame(function () {
+          style.height = 0;
+          style.padding = 0;
+          style.margin = 0;
+        });
+        setTimeout(function () {
+          return _this.props.onExited();
+        }, 400);
+      });
+    };
+
+    return _this;
+  }
+
+  var _proto = Toast.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    this.props.onOpen(this.props.children.props);
+
+    if (this.props.draggable) {
+      this.bindDragEvents();
+    } // Maybe I could bind the event in the ToastContainer and rely on delegation
+
+
+    if (this.props.pauseOnFocusLoss) {
+      this.bindFocusEvents();
+    }
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    if (prevProps.draggable !== this.props.draggable) {
+      if (this.props.draggable) {
+        this.bindDragEvents();
+      } else {
+        this.unbindDragEvents();
+      }
+    }
+
+    if (prevProps.pauseOnFocusLoss !== this.props.pauseOnFocusLoss) {
+      if (this.props.pauseOnFocusLoss) {
+        this.bindFocusEvents();
+      } else {
+        this.unbindFocusEvents();
+      }
+    }
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.props.onClose(this.props.children.props);
+
+    if (this.props.draggable) {
+      this.unbindDragEvents();
+    }
+
+    if (this.props.pauseOnFocusLoss) {
+      this.unbindFocusEvents();
+    }
+  };
+
+  _proto.bindFocusEvents = function bindFocusEvents() {
+    window.addEventListener('focus', this.playToast);
+    window.addEventListener('blur', this.pauseToast);
+  };
+
+  _proto.unbindFocusEvents = function unbindFocusEvents() {
+    window.removeEventListener('focus', this.playToast);
+    window.removeEventListener('blur', this.pauseToast);
+  };
+
+  _proto.bindDragEvents = function bindDragEvents() {
+    document.addEventListener('mousemove', this.onDragMove);
+    document.addEventListener('mouseup', this.onDragEnd);
+    document.addEventListener('touchmove', this.onDragMove);
+    document.addEventListener('touchend', this.onDragEnd);
+  };
+
+  _proto.unbindDragEvents = function unbindDragEvents() {
+    document.removeEventListener('mousemove', this.onDragMove);
+    document.removeEventListener('mouseup', this.onDragEnd);
+    document.removeEventListener('touchmove', this.onDragMove);
+    document.removeEventListener('touchend', this.onDragEnd);
+  };
+
+  _proto.render = function render() {
+    var _cx,
+        _this2 = this;
+
+    var _this$props = this.props,
+        closeButton = _this$props.closeButton,
+        children = _this$props.children,
+        autoClose = _this$props.autoClose,
+        pauseOnHover = _this$props.pauseOnHover,
+        onClick = _this$props.onClick,
+        closeOnClick = _this$props.closeOnClick,
+        type = _this$props.type,
+        hideProgressBar = _this$props.hideProgressBar,
+        closeToast = _this$props.closeToast,
+        Transition = _this$props.transition,
+        position = _this$props.position,
+        className = _this$props.className,
+        bodyClassName = _this$props.bodyClassName,
+        progressClassName = _this$props.progressClassName,
+        progressStyle = _this$props.progressStyle,
+        updateId = _this$props.updateId,
+        role = _this$props.role,
+        progress = _this$props.progress,
+        rtl = _this$props.rtl;
+    var toastProps = {
+      className: classnames(RT_NAMESPACE + "__toast", RT_NAMESPACE + "__toast--" + type, (_cx = {}, _cx[RT_NAMESPACE + "__toast--rtl"] = rtl, _cx), className)
+    };
+
+    if (autoClose && pauseOnHover) {
+      toastProps.onMouseEnter = this.pauseToast;
+      toastProps.onMouseLeave = this.playToast;
+    } // prevent toast from closing when user drags the toast
+
+
+    if (closeOnClick) {
+      toastProps.onClick = function (e) {
+        onClick && onClick(e);
+        _this2.flag.canCloseOnClick && closeToast();
+      };
+    }
+
+    var controlledProgress = parseFloat(progress) === progress;
+    return React.createElement(Transition, {
+      in: this.props.in,
+      appear: true,
+      onExited: this.onExitTransitionEnd,
+      position: position,
+      preventExitTransition: this.state.preventExitTransition
+    }, React.createElement("div", _extends({
+      onClick: onClick
+    }, toastProps, {
+      ref: function ref(_ref) {
+        return _this2.ref = _ref;
+      },
+      onMouseDown: this.onDragStart,
+      onTouchStart: this.onDragStart,
+      onMouseUp: this.onDragTransitionEnd,
+      onTouchEnd: this.onDragTransitionEnd
+    }), React.createElement("div", _extends({}, this.props.in && {
+      role: role
+    }, {
+      className: classnames(RT_NAMESPACE + "__toast-body", bodyClassName)
+    }), children), closeButton && closeButton, (autoClose || controlledProgress) && React.createElement(ProgressBar, _extends({}, updateId && !controlledProgress ? {
+      key: "pb-" + updateId
+    } : {}, {
+      rtl: rtl,
+      delay: autoClose,
+      isRunning: this.state.isRunning,
+      closeToast: closeToast,
+      hide: hideProgressBar,
+      type: type,
+      style: progressStyle,
+      className: progressClassName,
+      controlledProgress: controlledProgress,
+      progress: progress
+    }))));
+  };
+
+  return Toast;
+}(Component);
+
+Toast.propTypes = {
+  closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]).isRequired,
+  autoClose: falseOrDelay.isRequired,
+  children: PropTypes.node.isRequired,
+  closeToast: PropTypes.func.isRequired,
+  position: PropTypes.oneOf(objectValues(POSITION)).isRequired,
+  pauseOnHover: PropTypes.bool.isRequired,
+  pauseOnFocusLoss: PropTypes.bool.isRequired,
+  closeOnClick: PropTypes.bool.isRequired,
+  transition: PropTypes.func.isRequired,
+  rtl: PropTypes.bool.isRequired,
+  hideProgressBar: PropTypes.bool.isRequired,
+  draggable: PropTypes.bool.isRequired,
+  draggablePercent: PropTypes.number.isRequired,
+  in: PropTypes.bool,
+  onExited: PropTypes.func,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func,
+  type: PropTypes.oneOf(objectValues(TYPE)),
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  progressStyle: PropTypes.object,
+  progress: PropTypes.number,
+  updateId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  ariaLabel: PropTypes.string,
+  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  role: PropTypes.string
+};
+Toast.defaultProps = {
+  type: TYPE.DEFAULT,
+  in: true,
+  onOpen: NOOP,
+  onClose: NOOP,
+  className: null,
+  bodyClassName: null,
+  progressClassName: null,
+  updateId: null
+};
+
+function CloseButton(_ref) {
+  var closeToast = _ref.closeToast,
+      type = _ref.type,
+      ariaLabel = _ref.ariaLabel;
+  return React.createElement("button", {
+    className: RT_NAMESPACE + "__close-button " + RT_NAMESPACE + "__close-button--" + type,
+    type: "button",
+    onClick: function onClick(e) {
+      e.stopPropagation();
+      closeToast(e);
+    },
+    "aria-label": ariaLabel
+  }, "\u2716\uFE0E");
+}
+
+CloseButton.propTypes = {
+  closeToast: PropTypes.func,
+  arialLabel: PropTypes.string
+};
+CloseButton.defaultProps = {
+  ariaLabel: 'close'
+};
+
+var Bounce = cssTransition({
+  enter: RT_NAMESPACE + "__bounce-enter",
+  exit: RT_NAMESPACE + "__bounce-exit",
+  appendPosition: true
+});
+var Slide = cssTransition({
+  enter: RT_NAMESPACE + "__slide-enter",
+  exit: RT_NAMESPACE + "__slide-exit",
+  duration: [450, 750],
+  appendPosition: true
+});
+var Zoom = cssTransition({
+  enter: RT_NAMESPACE + "__zoom-enter",
+  exit: RT_NAMESPACE + "__zoom-exit"
+});
+var Flip = cssTransition({
+  enter: RT_NAMESPACE + "__flip-enter",
+  exit: RT_NAMESPACE + "__flip-exit"
+});
+
+var ToastContainer =
+/*#__PURE__*/
+function (_Component) {
+  _inheritsLoose(ToastContainer, _Component);
+
+  function ToastContainer() {
+    var _this;
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this.state = {
+      toast: []
+    };
+    _this.toastKey = 1;
+    _this.collection = {};
+
+    _this.isToastActive = function (id) {
+      return _this.state.toast.indexOf(id) !== -1;
+    };
+
+    return _this;
+  }
+
+  var _proto = ToastContainer.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    var _this2 = this;
+
+    eventManager.cancelEmit(ACTION.WILL_UNMOUNT).on(ACTION.SHOW, function (content, options) {
+      return _this2.ref ? _this2.buildToast(content, options) : null;
+    }).on(ACTION.CLEAR, function (id) {
+      return !_this2.ref ? null : id == null ? _this2.clear() : _this2.removeToast(id);
+    }).emit(ACTION.DID_MOUNT, this);
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    eventManager.emit(ACTION.WILL_UNMOUNT, this);
+  };
+
+  _proto.removeToast = function removeToast(id) {
+    this.setState({
+      toast: this.state.toast.filter(function (v) {
+        return v !== id;
+      })
+    }, this.dispatchChange);
+  };
+
+  _proto.dispatchChange = function dispatchChange() {
+    eventManager.emit(ACTION.ON_CHANGE, this.state.toast.length, this.props.containerId);
+  };
+
+  _proto.makeCloseButton = function makeCloseButton(toastClose, toastId, type) {
+    var _this3 = this;
+
+    var closeButton = this.props.closeButton;
+
+    if (isValidElement(toastClose) || toastClose === false) {
+      closeButton = toastClose;
+    } else if (toastClose === true) {
+      closeButton = this.props.closeButton && typeof this.props.closeButton !== 'boolean' ? this.props.closeButton : React.createElement(CloseButton, null);
+    }
+
+    return closeButton === false ? false : cloneElement(closeButton, {
+      closeToast: function closeToast() {
+        return _this3.removeToast(toastId);
+      },
+      type: type
+    });
+  };
+
+  _proto.getAutoCloseDelay = function getAutoCloseDelay(toastAutoClose) {
+    return toastAutoClose === false || isValidDelay(toastAutoClose) ? toastAutoClose : this.props.autoClose;
+  };
+
+  _proto.canBeRendered = function canBeRendered(content) {
+    return isValidElement(content) || typeof content === 'string' || typeof content === 'number' || typeof content === 'function';
+  };
+
+  _proto.parseClassName = function parseClassName(prop) {
+    if (typeof prop === 'string') {
+      return prop;
+    } else if (prop !== null && typeof prop === 'object' && 'toString' in prop) {
+      return prop.toString();
+    }
+
+    return null;
+  };
+
+  _proto.belongToContainer = function belongToContainer(_ref) {
+    var containerId = _ref.containerId;
+    return containerId === this.props.containerId;
+  };
+
+  _proto.buildToast = function buildToast(content, _ref2) {
+    var _this4 = this;
+
+    var delay = _ref2.delay,
+        options = _objectWithoutPropertiesLoose(_ref2, ["delay"]);
+
+    if (!this.canBeRendered(content)) {
+      throw new Error("The element you provided cannot be rendered. You provided an element of type " + typeof content);
+    }
+
+    var toastId = options.toastId,
+        updateId = options.updateId; // Check for multi-container and also for duplicate toastId
+    // Maybe it would be better to extract it
+
+    if (this.props.enableMultiContainer && !this.belongToContainer(options) || this.isToastActive(toastId) && updateId == null) {
+      return;
+    }
+
+    var closeToast = function closeToast() {
+      return _this4.removeToast(toastId);
+    };
+
+    var toastOptions = {
+      id: toastId,
+      // ⚠️ if no options.key, this.toastKey - 1 is assigned
+      key: options.key || this.toastKey++,
+      type: options.type,
+      closeToast: closeToast,
+      updateId: options.updateId,
+      rtl: this.props.rtl,
+      position: options.position || this.props.position,
+      transition: options.transition || this.props.transition,
+      className: this.parseClassName(options.className || this.props.toastClassName),
+      bodyClassName: this.parseClassName(options.bodyClassName || this.props.bodyClassName),
+      onClick: options.onClick || this.props.onClick,
+      closeButton: this.makeCloseButton(options.closeButton, toastId, options.type),
+      pauseOnHover: typeof options.pauseOnHover === 'boolean' ? options.pauseOnHover : this.props.pauseOnHover,
+      pauseOnFocusLoss: typeof options.pauseOnFocusLoss === 'boolean' ? options.pauseOnFocusLoss : this.props.pauseOnFocusLoss,
+      draggable: typeof options.draggable === 'boolean' ? options.draggable : this.props.draggable,
+      draggablePercent: typeof options.draggablePercent === 'number' && !isNaN(options.draggablePercent) ? options.draggablePercent : this.props.draggablePercent,
+      closeOnClick: typeof options.closeOnClick === 'boolean' ? options.closeOnClick : this.props.closeOnClick,
+      progressClassName: this.parseClassName(options.progressClassName || this.props.progressClassName),
+      progressStyle: this.props.progressStyle,
+      autoClose: this.getAutoCloseDelay(options.autoClose),
+      hideProgressBar: typeof options.hideProgressBar === 'boolean' ? options.hideProgressBar : this.props.hideProgressBar,
+      progress: parseFloat(options.progress),
+      role: typeof options.role === 'string' ? options.role : this.props.role
+    };
+    typeof options.onOpen === 'function' && (toastOptions.onOpen = options.onOpen);
+    typeof options.onClose === 'function' && (toastOptions.onClose = options.onClose); // add closeToast function to react component only
+
+    if (isValidElement(content) && typeof content.type !== 'string' && typeof content.type !== 'number') {
+      content = cloneElement(content, {
+        closeToast: closeToast
+      });
+    } else if (typeof content === 'function') {
+      content = content({
+        closeToast: closeToast
+      });
+    }
+
+    if (isValidDelay(delay)) {
+      setTimeout(function () {
+        _this4.appendToast(toastOptions, content, options.staleToastId);
+      }, delay);
+    } else {
+      this.appendToast(toastOptions, content, options.staleToastId);
+    }
+  };
+
+  _proto.appendToast = function appendToast(options, content, staleToastId) {
+    var _extends2;
+
+    var id = options.id,
+        updateId = options.updateId;
+    this.collection = _extends({}, this.collection, (_extends2 = {}, _extends2[id] = {
+      options: options,
+      content: content,
+      position: options.position
+    }, _extends2));
+    this.setState({
+      toast: (updateId ? [].concat(this.state.toast) : [].concat(this.state.toast, [id])).filter(function (id) {
+        return id !== staleToastId;
+      })
+    }, this.dispatchChange);
+  };
+
+  _proto.clear = function clear() {
+    this.setState({
+      toast: []
+    });
+  };
+
+  _proto.renderToast = function renderToast() {
+    var _this5 = this;
+
+    var toastToRender = {};
+    var _this$props = this.props,
+        className = _this$props.className,
+        style = _this$props.style,
+        newestOnTop = _this$props.newestOnTop;
+    var collection = newestOnTop ? Object.keys(this.collection).reverse() : Object.keys(this.collection); // group toast by position
+
+    collection.forEach(function (toastId) {
+      var _this5$collection$toa = _this5.collection[toastId],
+          position = _this5$collection$toa.position,
+          options = _this5$collection$toa.options,
+          content = _this5$collection$toa.content;
+      toastToRender[position] || (toastToRender[position] = []);
+
+      if (_this5.state.toast.indexOf(options.id) !== -1) {
+        toastToRender[position].push(React.createElement(Toast, _extends({}, options, {
+          isDocumentHidden: _this5.state.isDocumentHidden,
+          key: "toast-" + options.key
+        }), content));
+      } else {
+        toastToRender[position].push(null);
+        delete _this5.collection[toastId];
+      }
+    });
+    return Object.keys(toastToRender).map(function (position) {
+      var _cx;
+
+      var disablePointer = toastToRender[position].length === 1 && toastToRender[position][0] === null;
+      var props = {
+        className: classnames(RT_NAMESPACE + "__toast-container", RT_NAMESPACE + "__toast-container--" + position, (_cx = {}, _cx[RT_NAMESPACE + "__toast-container--rtl"] = _this5.props.rtl, _cx), _this5.parseClassName(className)),
+        style: disablePointer ? _extends({}, style, {
+          pointerEvents: 'none'
+        }) : _extends({}, style)
+      };
+      return React.createElement(TransitionGroup, _extends({}, props, {
+        key: "container-" + position
+      }), toastToRender[position]);
+    });
+  };
+
+  _proto.render = function render() {
+    var _this6 = this;
+
+    return React.createElement("div", {
+      ref: function ref(node) {
+        return _this6.ref = node;
+      },
+      className: "" + RT_NAMESPACE
+    }, this.renderToast());
+  };
+
+  return ToastContainer;
+}(Component);
+
+ToastContainer.propTypes = {
+  /**
+   * Set toast position
+   */
+  position: PropTypes.oneOf(objectValues(POSITION)),
+
+  /**
+   * Disable or set autoClose delay
+   */
+  autoClose: falseOrDelay,
+
+  /**
+   * Disable or set a custom react element for the close button
+   */
+  closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
+
+  /**
+   * Hide or not progress bar when autoClose is enabled
+   */
+  hideProgressBar: PropTypes.bool,
+
+  /**
+   * Pause toast duration on hover
+   */
+  pauseOnHover: PropTypes.bool,
+
+  /**
+   * Dismiss toast on click
+   */
+  closeOnClick: PropTypes.bool,
+
+  /**
+   * Newest on top
+   */
+  newestOnTop: PropTypes.bool,
+
+  /**
+   * An optional className
+   */
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+  /**
+   * An optional style
+   */
+  style: PropTypes.object,
+
+  /**
+   * An optional className for the toast
+   */
+  toastClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+  /**
+   * An optional className for the toast body
+   */
+  bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+  /**
+   * An optional className for the toast progress bar
+   */
+  progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+  /**
+   * An optional style for the toast progress bar
+   */
+  progressStyle: PropTypes.object,
+
+  /**
+   * Define enter and exit transition using react-transition-group
+   */
+  transition: PropTypes.func,
+
+  /**
+   * Support rtl display
+   */
+  rtl: PropTypes.bool,
+
+  /**
+   * Allow toast to be draggable
+   */
+  draggable: PropTypes.bool,
+
+  /**
+   * The percentage of the toast's width it takes for a drag to dismiss a toast
+   */
+  draggablePercent: PropTypes.number,
+
+  /**
+   * Pause the toast on focus loss
+   */
+  pauseOnFocusLoss: PropTypes.bool,
+
+  /**
+   * Show the toast only if it includes containerId and it's the same as containerId
+   */
+  enableMultiContainer: PropTypes.bool,
+
+  /**
+   * Set id to handle multiple container
+   */
+  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+  /**
+   * Set role attribute for the toast body
+   */
+  role: PropTypes.string,
+
+  /**
+   * Fired when clicking inside toaster
+   */
+  onClick: PropTypes.func
+};
+ToastContainer.defaultProps = {
+  position: POSITION.TOP_RIGHT,
+  transition: Bounce,
+  rtl: false,
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeButton: React.createElement(CloseButton, null),
+  pauseOnHover: true,
+  pauseOnFocusLoss: true,
+  closeOnClick: true,
+  newestOnTop: false,
+  draggable: true,
+  draggablePercent: 80,
+  className: null,
+  style: null,
+  toastClassName: null,
+  bodyClassName: null,
+  progressClassName: null,
+  progressStyle: null,
+  role: 'alert'
+};
+
+var containers = new Map();
+var latestInstance = null;
+var containerDomNode = null;
+var containerConfig = {};
+var queue = [];
+var lazy = false;
+/**
+ * Check whether any container is currently mounted in the DOM
+ */
+
+function isAnyContainerMounted() {
+  return containers.size > 0;
+}
+/**
+ * Get the container by id. Returns the last container declared when no id is given.
+ */
+
+
+function getContainer(containerId) {
+  if (!isAnyContainerMounted()) return null;
+  if (!containerId) return containers.get(latestInstance);
+  return containers.get(containerId);
+}
+/**
+ * Get the toast by id, given it's in the DOM, otherwise returns null
+ */
+
+
+function getToast(toastId, _ref) {
+  var containerId = _ref.containerId;
+  var container = getContainer(containerId);
+  if (!container) return null;
+  var toast = container.collection[toastId];
+  if (typeof toast === 'undefined') return null;
+  return toast;
+}
+/**
+ * Merge provided options with the defaults settings and generate the toastId
+ */
+
+
+function mergeOptions(options, type) {
+  return _extends({}, options, {
+    type: type,
+    toastId: getToastId(options)
+  });
+}
+/**
+ * Generate a random toastId
+ */
+
+
+function generateToastId() {
+  return (Math.random().toString(36) + Date.now().toString(36)).substr(2, 10);
+}
+/**
+ * Generate a toastId or use the one provided
+ */
+
+
+function getToastId(options) {
+  if (options && (typeof options.toastId === 'string' || typeof options.toastId === 'number' && !isNaN(options.toastId))) {
+    return options.toastId;
+  }
+
+  return generateToastId();
+}
+/**
+ * If the container is not mounted, the toast is enqueued and
+ * the container lazy mounted
+ */
+
+
+function dispatchToast(content, options) {
+  if (isAnyContainerMounted()) {
+    eventManager.emit(ACTION.SHOW, content, options);
+  } else {
+    queue.push({
+      action: ACTION.SHOW,
+      content: content,
+      options: options
+    });
+
+    if (lazy && canUseDom) {
+      lazy = false;
+      containerDomNode = document.createElement('div');
+      document.body.appendChild(containerDomNode);
+      render(React.createElement(ToastContainer, containerConfig), containerDomNode);
+    }
+  }
+
+  return options.toastId;
+}
+
+var toast = function toast(content, options) {
+  return dispatchToast(content, mergeOptions(options, options && options.type || TYPE.DEFAULT));
+};
+/**
+ * For each available type create a shortcut
+ */
+
+
+var _loop = function _loop(t) {
+  if (TYPE[t] !== TYPE.DEFAULT) {
+    toast[TYPE[t].toLowerCase()] = function (content, options) {
+      return dispatchToast(content, mergeOptions(options, options && options.type || TYPE[t]));
+    };
+  }
+};
+
+for (var t in TYPE) {
+  _loop(t);
+}
+/**
+ * Maybe I should remove warning in favor of warn, I don't know
+ */
+
+
+toast.warn = toast.warning;
+/**
+ * Remove toast programmaticaly
+ */
+
+toast.dismiss = function (id) {
+  if (id === void 0) {
+    id = null;
+  }
+
+  return isAnyContainerMounted() && eventManager.emit(ACTION.CLEAR, id);
+};
+/**
+ * return true if one container is displaying the toast
+ */
+
+
+toast.isActive = function (id) {
+  var isToastActive = false;
+
+  if (containers.size > 0) {
+    containers.forEach(function (container) {
+      if (container.isToastActive(id)) {
+        isToastActive = true;
+      }
+    });
+  }
+
+  return isToastActive;
+};
+
+toast.update = function (toastId, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  // if you call toast and toast.update directly nothing will be displayed
+  // this is why I defered the update
+  setTimeout(function () {
+    var toast = getToast(toastId, options);
+
+    if (toast) {
+      var oldOptions = toast.options,
+          oldContent = toast.content;
+
+      var nextOptions = _extends({}, oldOptions, {}, options, {
+        toastId: options.toastId || toastId
+      });
+
+      if (!options.toastId || options.toastId === toastId) {
+        nextOptions.updateId = generateToastId();
+      } else {
+        nextOptions.staleToastId = toastId;
+      }
+
+      var content = typeof nextOptions.render !== 'undefined' ? nextOptions.render : oldContent;
+      delete nextOptions.render;
+      dispatchToast(content, nextOptions);
+    }
+  }, 0);
+};
+/**
+ * Used for controlled progress bar.
+ */
+
+
+toast.done = function (id) {
+  toast.update(id, {
+    progress: 1
+  });
+};
+/**
+ * Track changes. The callback get the number of toast displayed
+ */
+
+
+toast.onChange = function (callback) {
+  if (typeof callback === 'function') {
+    eventManager.on(ACTION.ON_CHANGE, callback);
+  }
+};
+/**
+ * Configure the ToastContainer when lazy mounted
+ */
+
+
+toast.configure = function (config) {
+  lazy = true;
+  containerConfig = config;
+};
+
+toast.POSITION = POSITION;
+toast.TYPE = TYPE;
+/**
+ * Wait until the ToastContainer is mounted to dispatch the toast
+ * and attach isActive method
+ */
+
+eventManager.on(ACTION.DID_MOUNT, function (containerInstance) {
+  latestInstance = containerInstance.props.containerId || containerInstance;
+  containers.set(latestInstance, containerInstance);
+  queue.forEach(function (item) {
+    eventManager.emit(item.action, item.content, item.options);
+  });
+  queue = [];
+}).on(ACTION.WILL_UNMOUNT, function (containerInstance) {
+  if (containerInstance) containers.delete(containerInstance.props.containerId || containerInstance);else containers.clear();
+
+  if (containers.size === 0) {
+    eventManager.off(ACTION.SHOW).off(ACTION.CLEAR);
+  }
+
+  if (canUseDom && containerDomNode) {
+    document.body.removeChild(containerDomNode);
+  }
+});
+
+var css = ".cui .Toastify__toast{min-height:unset!important;padding:unset;overflow:unset;font-family:unset;box-shadow:unset}.cui .Toastify__toast--default,.cui .Toastify__toast-container{color:unset}";
+styleInject(css);
+
+const copyStringToClipboard = str => {
+  // Create new element
+  const el = document.createElement("textarea"); // Set value (string to be copied)
+
+  el.value = str; // Set non-editable to avoid focus and move outside of view
+
+  el.setAttribute("readonly", "");
+  el.style = {
+    position: "absolute",
+    left: "-9999px"
+  };
+  document.body.appendChild(el); // Select text inside element
+
+  el.select(); // Copy text to clipboard
+
+  document.execCommand("copy"); // Remove temporary element
+
+  document.body.removeChild(el);
+};
+
+const iconType = type => {
+  switch (type) {
+    case "success":
+      return "text-success icon-check-outline";
+
+    case "error":
+      return "text-danger icon-error-outline";
+
+    case "warning":
+      return "text-warning icon-warning-outline";
+
+    case "info":
+      return "text-info icon-info-outline";
+
+    case "none":
+      return null;
+
+    default:
+      return "text-muted icon-alert";
+  }
+};
+
+const ToastIcon = ({
+  type
+}) => {
+  return React.createElement("div", {
+    className: `toast__icon ${iconType(type) || ""}`
+  });
+};
+
+const Toast$1 = ({
+  title,
+  message,
+  type,
+  copyError
+}) => React.createElement("div", {
+  className: "toast"
+}, React.createElement(ToastIcon, {
+  type: type
+}), React.createElement("div", {
+  className: "toast__body"
+}, title ? React.createElement("div", {
+  className: "toast__title"
+}, title) : null, message ? React.createElement("div", {
+  className: "toast__message"
+}, message, type === "error" && copyError ? React.createElement(React.Fragment, null, React.createElement("br", null), React.createElement("br", null), React.createElement("a", {
+  onClick: () => copyStringToClipboard(message)
+}, "Copy to clipboard")) : null) : null));
+
+const Fade = cssTransition({
+  enter: "fadeIn",
+  exit: "fadeOut",
+  duration: 300
+});
+const toast$1 = (type, title, message, copyError = true, containerId = "_GLOBAL_") => toast(React.createElement(Toast$1, {
+  type,
+  title,
+  message,
+  copyError
+}), {
+  containerId
+});
+
+toast$1.success = (...args) => toast$1("success", ...args);
+
+toast$1.error = (...args) => toast$1("error", ...args);
+
+toast$1.warning = (...args) => toast$1("warning", ...args);
+
+toast$1.info = (...args) => toast$1("info", ...args);
+
+toast$1.none = (...args) => toast$1("none", ...args);
+
+toast$1.update = (...args) => toast.update(...args);
+
+toast$1.dismiss = (...args) => toast.dismiss(...args);
+
+const ToastContainer$1 = props => React.createElement(ToastContainer, _extends$1({
+  transition: Fade
+}, props, {
+  closeButton: false,
+  style: {
+    width: "unset"
+  }
+}));
+ToastContainer$1.propTypes = {
+  position: PropTypes.string,
+  autoClose: PropTypes.number,
+  draggable: PropTypes.bool,
+  hideProgressBar: PropTypes.bool,
+  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+};
+ToastContainer$1.defaultProps = {
+  position: "bottom-right",
+  autoClose: 5000,
+  draggable: false,
+  hideProgressBar: true,
+  containerId: "_GLOBAL_"
+};
+
+export { ToastContainer$1 as ToastContainer, toast$1 as toast };

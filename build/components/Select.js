@@ -1,1 +1,258 @@
-import e from"react";import t from"prop-types";import{c as i,a as r}from"../_rollupPluginBabelHelpers-b60338eb.js";import{a as l}from"../index-be24eb93.js";import{s}from"../style-inject.es-1f59c1d0.js";import{getIn as n}from"formik";import{InputHelpBlock as o}from"./InputHelpBlock.js";import a from"crypto";function d(){return a.randomBytes(16)}for(var p=[],c=0;c<256;++c)p[c]=(c+256).toString(16).substr(1);s(".cui .form-group.dropdown .select+.dropdown__menu{max-width:unset!important;width:100%!important}");class h extends e.Component{constructor(t){super(t),i(this,"handleClick",()=>{this.state.isOpen?document.removeEventListener("click",this.handleOutsideClick,!1):document.addEventListener("click",this.handleOutsideClick,!1),this.setState(e=>({isOpen:!e.isOpen}))}),i(this,"handleOutsideClick",e=>{const t=this.props.innerRef?this.props.innerRef:this.node;t&&t.contains(e.target)||this.handleClick()}),i(this,"handleOptionClick",(e,t,i)=>{const{field:r,multiple:l,form:s}=this.props;l?e.target.checked?(s.setFieldValue(r.name,[...r.value,t]),s.setFieldTouched(r.name,!0),this.setState({title:[...this.state.title,i]})):(s.setFieldValue(r.name,r.value.filter(e=>e!==t)),s.setFieldTouched(r.name,!0),this.setState({title:this.state.title.filter(e=>e!==i)})):(s.setFieldValue(r.name,t),s.setFieldTouched(r.name,!0),this.setState({title:i}),this.handleClick())}),i(this,"isSelected",e=>{const{value:t}=this.props.field;return this.props.multiple?Array.isArray(t)&&t.findIndex(t=>t===e)>=0:t===e}),i(this,"renderOption",t=>{const{value:i,children:r,disabled:l}=t.props;return this.props.multiple?e.createElement("a",{disabled:l},e.createElement("label",{className:"checkbox"},e.createElement("input",{type:"checkbox",onClick:e=>this.handleOptionClick(e,i,Array.isArray(r)?r.join(""):r),checked:!!this.isSelected(i)}),e.createElement("span",{className:"checkbox__input"})),e.createElement("span",null,r)):e.createElement("a",{disabled:l,onClick:e=>this.handleOptionClick(e,i,Array.isArray(r)?r.join(""):r),className:this.isSelected(i)?"selected":""},r)}),i(this,"renderOptgroup",t=>{const{label:i,children:r}=t.props;return e.createElement("div",{className:"dropdown__group"},e.createElement("div",{className:"dropdown__group-header"},i),this.renderChildren(r))}),i(this,"renderChildren",t=>e.Children.map(t,e=>{switch(e.type){case"option":return this.renderOption(e);case"optgroup":return this.renderOptgroup(e);default:return e}})),i(this,"findTitle",t=>{let i=[];return e.Children.forEach(t||this.props.children,e=>{if("optgroup"===e.type){const t=this.findTitle(e.props.children);t&&i.push(t)}this.isSelected(e.props.value)&&i.push(Array.isArray(e.props.children)?e.props.children.join(""):e.props.children)}),i.join(", ")}),i(this,"getShowValue",()=>{const{multiple:e,prompt:t,field:i}=this.props;return void 0!==i.value&&null!==i.value&&i.value.toString().length?e?this.state.title.length?this.state.title.join(", "):this.findTitle():this.state.title?this.state.title:this.findTitle():t}),this.state={isOpen:!1,title:t.multiple?[]:""}}render(){const{compressed:t,field:i,id:s,form:a,title:d,children:p,inline:c,up:h,innerRef:m,className:u,disabled:f,width:b}=this.props,{touched:g,errors:v}=a;return e.createElement("div",r({className:`form-group dropdown${l(t,"input--compressed")}${l(this.state.isOpen,"active")}${l(c,"label--inline")}${l(h,"dropdown--up")}${l(f,"disabled")}${l(u)}${l(n(g,i.name)&&n(v,i.name),"form-group--error")}`,ref:m||(e=>{this.node=e})},"both"===c?{style:{display:"inline-block"}}:{}),e.createElement("div",{className:"form-group__text select",onClick:this.handleClick},e.createElement("input",r({id:s},i,{value:this.getShowValue(),disabled:f},b?{style:{width:b+"px",minWidth:b+"px"}}:{})),d?e.createElement("label",{htmlFor:s},d):null),e.createElement("div",r({className:"dropdown__menu"},b?{style:{width:b+"px",minWidth:b+"px"}}:{}),this.renderChildren(p)),n(g,i.name)&&n(v,i.name)?e.createElement(o,{text:n(v,i.name)}):null)}}h.propTypes={id:t.string,label:t.string,title:t.string,prompt:t.string,multiple:t.bool,inline:t.oneOf([!1,!0,"both"]),up:t.bool,disabled:t.bool,width:t.number,compressed:t.bool},h.defaultProps={prompt:"Select an option",multiple:!1,inline:!1,id:function(e,t,i){var r=t&&i||0;"string"==typeof e&&(t="binary"===e?new Array(16):null,e=null);var l=(e=e||{}).random||(e.rng||d)();if(l[6]=15&l[6]|64,l[8]=63&l[8]|128,t)for(var s=0;s<16;++s)t[r+s]=l[s];return t||function(e,t){var i=t||0,r=p;return[r[e[i++]],r[e[i++]],r[e[i++]],r[e[i++]],"-",r[e[i++]],r[e[i++]],"-",r[e[i++]],r[e[i++]],"-",r[e[i++]],r[e[i++]],"-",r[e[i++]],r[e[i++]],r[e[i++]],r[e[i++]],r[e[i++]],r[e[i++]]].join("")}(l)}(),label:null,title:null,width:null,up:!1,disabled:!1,compressed:!1};export{h as Select};
+import React from 'react';
+import PropTypes from 'prop-types';
+import { c as _defineProperty, a as _extends } from '../_rollupPluginBabelHelpers-b60338eb.js';
+import { a as appendClass } from '../index-be24eb93.js';
+import { s as styleInject } from '../style-inject.es-1f59c1d0.js';
+import { getIn } from 'formik';
+import { InputHelpBlock } from './InputHelpBlock.js';
+import { v4 } from 'uuid';
+
+var css = ".cui .form-group.dropdown .select+.dropdown__menu{max-width:unset!important;width:100%!important}";
+styleInject(css);
+
+class Select extends React.Component {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "handleClick", () => {
+      if (!this.state.isOpen) {
+        // attach/remove event handler
+        document.addEventListener("click", this.handleOutsideClick, false);
+      } else {
+        document.removeEventListener("click", this.handleOutsideClick, false);
+      }
+
+      this.setState(prevState => ({
+        isOpen: !prevState.isOpen
+      }));
+    });
+
+    _defineProperty(this, "handleOutsideClick", e => {
+      // ignore clicks on the component itself
+      const n = this.props.innerRef ? this.props.innerRef : this.node;
+
+      if (n && n.contains(e.target)) {
+        return;
+      }
+
+      this.handleClick();
+    });
+
+    _defineProperty(this, "handleOptionClick", (e, newValue, title) => {
+      const {
+        field,
+        multiple,
+        form
+      } = this.props;
+
+      if (!multiple) {
+        form.setFieldValue(field.name, newValue);
+        form.setFieldTouched(field.name, true);
+        this.setState({
+          title
+        });
+        this.handleClick();
+      } else if (e.target.checked) {
+        form.setFieldValue(field.name, [...field.value, newValue]);
+        form.setFieldTouched(field.name, true);
+        this.setState({
+          title: [...this.state.title, title]
+        });
+      } else {
+        form.setFieldValue(field.name, field.value.filter(v => v !== newValue));
+        form.setFieldTouched(field.name, true);
+        this.setState({
+          title: this.state.title.filter(t => t !== title)
+        });
+      }
+    });
+
+    _defineProperty(this, "isSelected", checkValue => {
+      const {
+        value
+      } = this.props.field;
+
+      if (this.props.multiple) {
+        return Array.isArray(value) && value.findIndex(v => v === checkValue) >= 0;
+      }
+
+      return value === checkValue;
+    });
+
+    _defineProperty(this, "renderOption", child => {
+      const {
+        value,
+        children,
+        disabled
+      } = child.props;
+
+      if (this.props.multiple) {
+        return React.createElement("a", {
+          disabled: disabled
+        }, React.createElement("label", {
+          className: "checkbox"
+        }, React.createElement("input", {
+          type: "checkbox",
+          onClick: e => this.handleOptionClick(e, value, Array.isArray(children) ? children.join("") : children),
+          checked: this.isSelected(value) ? true : false
+        }), React.createElement("span", {
+          className: "checkbox__input"
+        })), React.createElement("span", null, children));
+      }
+
+      return React.createElement("a", {
+        disabled: disabled,
+        onClick: e => this.handleOptionClick(e, value, Array.isArray(children) ? children.join("") : children),
+        className: this.isSelected(value) ? "selected" : ""
+      }, children);
+    });
+
+    _defineProperty(this, "renderOptgroup", child => {
+      const {
+        label,
+        children
+      } = child.props;
+      return React.createElement("div", {
+        className: "dropdown__group"
+      }, React.createElement("div", {
+        className: "dropdown__group-header"
+      }, label), this.renderChildren(children));
+    });
+
+    _defineProperty(this, "renderChildren", children => {
+      return React.Children.map(children, child => {
+        switch (child.type) {
+          case "option":
+            return this.renderOption(child);
+
+          case "optgroup":
+            return this.renderOptgroup(child);
+
+          default:
+            return child;
+        }
+      });
+    });
+
+    _defineProperty(this, "findTitle", where => {
+      let r = [];
+      React.Children.forEach(where || this.props.children, ch => {
+        if (ch.type === "optgroup") {
+          const temp = this.findTitle(ch.props.children);
+          if (temp) r.push(temp);
+        }
+
+        if (this.isSelected(ch.props.value)) {
+          r.push(Array.isArray(ch.props.children) ? ch.props.children.join("") : ch.props.children);
+        }
+      });
+      return r.join(", ");
+    });
+
+    _defineProperty(this, "getShowValue", () => {
+      const {
+        multiple,
+        prompt,
+        field
+      } = this.props;
+
+      if (typeof field.value === "undefined" || field.value === null || !field.value.toString().length) {
+        return prompt;
+      }
+
+      if (multiple) {
+        return this.state.title.length ? this.state.title.join(", ") : this.findTitle();
+      }
+
+      return this.state.title ? this.state.title : this.findTitle();
+    });
+
+    this.state = {
+      isOpen: false,
+      title: props.multiple ? [] : ""
+    };
+  }
+
+  render() {
+    const {
+      compressed,
+      field,
+      id,
+      form,
+      title,
+      children,
+      inline,
+      up,
+      innerRef,
+      className,
+      disabled,
+      width
+    } = this.props;
+    const {
+      touched,
+      errors
+    } = form;
+    return React.createElement("div", _extends({
+      className: `form-group dropdown${appendClass(compressed, "input--compressed")}${appendClass(this.state.isOpen, "active")}${appendClass(inline, "label--inline")}${appendClass(up, "dropdown--up")}${appendClass(disabled, "disabled")}${appendClass(className)}${appendClass(getIn(touched, field.name) && getIn(errors, field.name), "form-group--error")}` // (asyncValidating ? " form-group--loading" : "")
+      ,
+      ref: innerRef || (node => {
+        this.node = node;
+      })
+    }, inline === "both" ? {
+      style: {
+        display: "inline-block"
+      }
+    } : {}), React.createElement("div", {
+      className: "form-group__text select",
+      onClick: this.handleClick
+    }, React.createElement("input", _extends({
+      id: id
+    }, field, {
+      value: this.getShowValue(),
+      disabled: disabled
+    }, width ? {
+      style: {
+        width: `${width}px`,
+        minWidth: `${width}px`
+      }
+    } : {})), title ? React.createElement("label", {
+      htmlFor: id
+    }, title) : null), React.createElement("div", _extends({
+      className: "dropdown__menu"
+    }, width ? {
+      style: {
+        width: `${width}px`,
+        minWidth: `${width}px`
+      }
+    } : {}), this.renderChildren(children)), getIn(touched, field.name) && getIn(errors, field.name) ? React.createElement(InputHelpBlock, {
+      text: getIn(errors, field.name)
+    }) : null);
+  }
+
+}
+Select.propTypes = {
+  id: PropTypes.string,
+  label: PropTypes.string,
+  title: PropTypes.string,
+  prompt: PropTypes.string,
+  multiple: PropTypes.bool,
+  inline: PropTypes.oneOf([false, true, "both"]),
+  up: PropTypes.bool,
+  disabled: PropTypes.bool,
+  width: PropTypes.number,
+  compressed: PropTypes.bool
+};
+Select.defaultProps = {
+  prompt: "Select an option",
+  multiple: false,
+  inline: false,
+  id: v4(),
+  label: null,
+  title: null,
+  width: null,
+  up: false,
+  disabled: false,
+  compressed: false
+};
+
+export { Select };

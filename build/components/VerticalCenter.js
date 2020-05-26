@@ -1,1 +1,25 @@
-import e from"react";import l from"prop-types";const t=({children:l})=>e.createElement("div",{className:"content-fluid",style:{display:"flex",minHeight:"100vh",flexDirection:"column"}},e.createElement("main",{style:{display:"flex",flexDirection:"column",flex:1}},l));t.propTypes={children:l.node.isRequired};export default t;
+import React from 'react';
+import PropTypes from 'prop-types';
+
+const VerticalCenter = ({
+  children
+}) => React.createElement("div", {
+  className: "content-fluid",
+  style: {
+    display: "flex",
+    minHeight: "100vh",
+    flexDirection: "column"
+  }
+}, React.createElement("main", {
+  style: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1
+  }
+}, children));
+
+VerticalCenter.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
+export default VerticalCenter;

@@ -1,14 +1,12 @@
 import babel from "rollup-plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-// import embedCSS from "rollup-plugin-embed-css";
 import external from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import multiInput from "rollup-plugin-multi-input";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 import builtins from "rollup-plugin-node-builtins";
-// import { uglify } from "rollup-plugin-uglify";
 
 import * as react from "react";
 import * as reactDom from "react-dom";
@@ -27,7 +25,6 @@ const plugins = [
     extensions: [".mjs", ".js", ".jsx", ".json"],
     preferBuiltins: true,
   }),
-  // embedCSS(),
   commonjs({
     namedExports: {
       react: Object.keys(react),
@@ -44,8 +41,6 @@ const plugins = [
     plugins: [],
     minimize: true,
   }),
-  // embedCSS()
-  // uglify()
 ];
 
 const oneUMD = {
@@ -111,7 +106,17 @@ export default [
       ...plugins,
       terser(),
     ],
-    external: ["react", "react-dom", "prop-types", "formik", "crypto"],
+    external: [
+      "react",
+      "react-dom",
+      "prop-types",
+      "formik",
+      "react-modal",
+      "react-transition-group",
+      "react-json-tree",
+      "uuid",
+      "react-dropzone",
+    ],
   },
   ...umd,
   {
@@ -129,9 +134,10 @@ export default [
           "react-json-tree": "ReactJsonTree",
           "react-modal": "ReactModal",
           "react-sortable-hoc": "SortableHOC",
+          "react-dropzone": "ReactDropzone",
           "prop-types": "PropTypes",
           formik: "formik",
-          crypto: "crypto",
+          uuid: "uuid",
         },
       },
     ],
@@ -144,7 +150,8 @@ export default [
       "react-modal",
       "react-transition-group",
       "react-json-tree",
-      "crypto",
+      "uuid",
+      "react-dropzone",
     ],
   },
 ];

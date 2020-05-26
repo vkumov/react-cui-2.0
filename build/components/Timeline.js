@@ -1,1 +1,57 @@
-import e from"react";import t from"prop-types";import"../_rollupPluginBabelHelpers-b60338eb.js";import{a as i}from"../index-be24eb93.js";import{Icon as l}from"./Icon.js";const n=({icon:t,time:l,children:n,className:s,contentClassName:r})=>e.createElement("div",{className:"timeline__item"+i(s)},e.createElement("div",{className:"timeline__icon"},t),l?e.createElement("div",{className:"timeline__time"},l):null,e.createElement("div",{className:"timeline__content"+i(r)},n));n.propTypes={icon:t.node,time:t.string,children:t.node.isRequired,className:t.string,contentClassName:t.string},n.defaultProps={icon:e.createElement(l,{icon:"circle"}),time:null,className:null,contentClassName:null};const s=({center:t,right:l,className:n,children:s})=>e.createElement("div",{className:`timeline${i(t,"timeline--centered")}${i(l,"timeline--right")}${i(n)}`},s);s.propTypes={center:t.bool,right:t.bool,className:t.string,children:t.oneOfType([t.arrayOf(n),n]).isRequired},s.defaultProps={center:!1,right:!1,className:null};export{s as Timeline,n as TimelineItem};
+import React from 'react';
+import PropTypes from 'prop-types';
+import '../_rollupPluginBabelHelpers-b60338eb.js';
+import { a as appendClass } from '../index-be24eb93.js';
+import { Icon } from './Icon.js';
+
+const TimelineItem = ({
+  icon,
+  time,
+  children,
+  className,
+  contentClassName
+}) => React.createElement("div", {
+  className: `timeline__item${appendClass(className)}`
+}, React.createElement("div", {
+  className: "timeline__icon"
+}, icon), time ? React.createElement("div", {
+  className: "timeline__time"
+}, time) : null, React.createElement("div", {
+  className: `timeline__content${appendClass(contentClassName)}`
+}, children));
+TimelineItem.propTypes = {
+  icon: PropTypes.node,
+  time: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  contentClassName: PropTypes.string
+};
+TimelineItem.defaultProps = {
+  icon: React.createElement(Icon, {
+    icon: "circle"
+  }),
+  time: null,
+  className: null,
+  contentClassName: null
+};
+const Timeline = ({
+  center,
+  right,
+  className,
+  children
+}) => React.createElement("div", {
+  className: `timeline${appendClass(center, "timeline--centered")}${appendClass(right, "timeline--right")}${appendClass(className)}`
+}, children);
+Timeline.propTypes = {
+  center: PropTypes.bool,
+  right: PropTypes.bool,
+  className: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(TimelineItem), TimelineItem]).isRequired
+};
+Timeline.defaultProps = {
+  center: false,
+  right: false,
+  className: null
+};
+
+export { Timeline, TimelineItem };

@@ -1,1 +1,61 @@
-const t={list:new Map,emitQueue:new Map,on(t,e){return this.list.has(t)||this.list.set(t,[]),this.list.get(t).push(e),this},off(t){return this.list.delete(t),this},cancelEmit(t){const e=this.emitQueue.get(t);return e&&(e.forEach(t=>clearTimeout(t)),this.emitQueue.delete(t)),this},emit(t,...e){this.list.has(t)&&this.list.get(t).forEach(s=>{const i=setTimeout(()=>{s(...e)},0);this.emitQueue.has(t)||this.emitQueue.set(t,[]),this.emitQueue.get(t).push(i)})}},e={SHOW_MODAL:"showModal"},s=(t,e)=>t?"function"==typeof e?" "+e():" "+(e||t):"";export{e as E,s as a,t as e};
+const eventManager = {
+  list: new Map(),
+  emitQueue: new Map(),
+
+  on(event, callback) {
+    if (!this.list.has(event)) this.list.set(event, []);
+    this.list.get(event).push(callback);
+    return this;
+  },
+
+  off(event) {
+    this.list.delete(event);
+    return this;
+  },
+
+  cancelEmit(event) {
+    const timers = this.emitQueue.get(event);
+
+    if (timers) {
+      timers.forEach(timer => clearTimeout(timer));
+      this.emitQueue.delete(event);
+    }
+
+    return this;
+  },
+
+  /**
+   * Enqueue the event at the end of the call stack
+   * Doing so let the user call toast as follow:
+   * toast('1')
+   * toast('2')
+   * toast('3')
+   * Without setTimemout the code above will not work
+   */
+  emit(event, ...args) {
+    if (this.list.has(event)) {
+      this.list.get(event).forEach(callback => {
+        const timer = setTimeout(() => {
+          callback(...args);
+        }, 0);
+        if (!this.emitQueue.has(event)) this.emitQueue.set(event, []);
+        this.emitQueue.get(event).push(timer);
+      });
+    }
+  }
+
+};
+const EVENTS = {
+  SHOW_MODAL: "showModal"
+};
+
+const appendClass = (c, what) => {
+  if (c) {
+    if (typeof what === "function") return ` ${what()}`;
+    return ` ${what || c}`;
+  }
+
+  return "";
+};
+
+export { EVENTS as E, appendClass as a, eventManager as e };

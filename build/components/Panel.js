@@ -1,1 +1,43 @@
-import e from"react";import r from"prop-types";import{_ as a,a as o}from"../_rollupPluginBabelHelpers-b60338eb.js";import{a as l}from"../index-be24eb93.js";const d=e.forwardRef((r,d)=>{let{color:n,padding:p,bordered:s,raised:t,well:i,className:f}=r,m=a(r,["color","padding","bordered","raised","well","className"]);return e.createElement("div",o({className:`panel${l("plain"!==n,"panel--"+n)}${l("default"!==p,"panel--"+p)}${l(s,()=>"string"==typeof s?"panel--bordered-"+s:Array.isArray(s)?s.map(e=>"panel--bordered-"+e).join(" "):"panel--bordered")}${l(t,"panel--raised")}${l(i,"panel--well")}${l(f)}`,ref:d},m))});d.propTypes={color:r.oneOf(["plain","primary","secondary","tertiary","success","info","warning-alt","warning","danger","dark","light"]),padding:r.oneOf(["none","compressed","default","loose"]),bordered:r.oneOfType([r.bool,r.oneOf(["top","right","left","bottom"]),r.arrayOf(r.oneOf(["top","right","left","bottom"]))]),raised:r.bool,well:r.bool,className:r.string},d.defaultProps={color:"plain",padding:"default",bordered:!1,raised:!1,well:!1,className:null};export{d as Panel};
+import React from 'react';
+import PropTypes from 'prop-types';
+import { _ as _objectWithoutProperties, a as _extends } from '../_rollupPluginBabelHelpers-b60338eb.js';
+import { a as appendClass } from '../index-be24eb93.js';
+
+const Panel = React.forwardRef((_ref, ref) => {
+  let {
+    color,
+    padding,
+    bordered,
+    raised,
+    well,
+    className
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["color", "padding", "bordered", "raised", "well", "className"]);
+
+  return React.createElement("div", _extends({
+    className: `panel${appendClass(color !== "plain", `panel--${color}`)}${appendClass(padding !== "default", `panel--${padding}`)}${appendClass(bordered, () => {
+      if (typeof bordered === "string") return `panel--bordered-${bordered}`;
+      if (Array.isArray(bordered)) return bordered.map(b => `panel--bordered-${b}`).join(" ");
+      return "panel--bordered";
+    })}${appendClass(raised, "panel--raised")}${appendClass(well, "panel--well")}${appendClass(className)}`,
+    ref: ref
+  }, props));
+});
+Panel.propTypes = {
+  color: PropTypes.oneOf(["plain", "primary", "secondary", "tertiary", "success", "info", "warning-alt", "warning", "danger", "dark", "light"]),
+  padding: PropTypes.oneOf(["none", "compressed", "default", "loose"]),
+  bordered: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(["top", "right", "left", "bottom"]), PropTypes.arrayOf(PropTypes.oneOf(["top", "right", "left", "bottom"]))]),
+  raised: PropTypes.bool,
+  well: PropTypes.bool,
+  className: PropTypes.string
+};
+Panel.defaultProps = {
+  color: "plain",
+  padding: "default",
+  bordered: false,
+  raised: false,
+  well: false,
+  className: null
+};
+
+export { Panel };

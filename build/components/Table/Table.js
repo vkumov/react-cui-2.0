@@ -1,1 +1,102 @@
-import e from"react";import t from"prop-types";import{_ as o}from"../../_rollupPluginBabelHelpers-b60338eb.js";import{a as n}from"../../index-be24eb93.js";import{DisplayIf as a}from"../Conditional.js";import"../Dropdown.js";import"../Pagination.js";import{DefaultTablePagination as r}from"./DefaultTablePagination.js";import{GenericTable as i}from"./GenericTable.js";const l=e=>Array.isArray(e)?e:[e],p=t=>{let{pagination:r,paginationLocation:p,paginationProps:s,data:m,children:d,start:c}=t,g=o(t,["pagination","paginationLocation","paginationProps","data","children","start"]);const[f,u]=e.useState("number"==typeof c?c:0),[b,h]=e.useState(50),y=e.useMemo(()=>d?l(d).find(e=>"tbody"===e.type):null,[d]),P=e.useMemo(()=>d?l(d).find(e=>"thead"===e.type):null,[d]),E=e.useMemo(()=>(m?m.length:l(y.props.children).length)||0,[m,y]);return e.useEffect(()=>u(0),[m,y]),e.createElement(e.Fragment,null,e.createElement(a,{condition:p.includes("top-")},e.createElement("div",{className:"flex base-margin-bottom"+n("top-right"===p,"flex-right")},e.createElement(r,{total:E,position:f,onPageChange:(e,t)=>u(t),onPerPageChange:e=>h(e),paginationProps:s}))),e.createElement(i,g,P,e.createElement("tbody",null,m?m.slice(f,f+b).map((t,o)=>e.createElement("tr",{key:o},t.map((t,o)=>e.createElement("td",{key:o},t)))):l(y.props.children).slice(f,f+b))),e.createElement(a,{condition:p.includes("bottom-")},e.createElement("div",{className:"flex base-margin-top"+n("bottom-right"===p,"flex-right")},e.createElement(r,{total:E,position:f,onPageChange:(e,t)=>u(t),onPerPageChange:e=>h(e),perPageUp:!0,paginationProps:s}))))},s=["thead","tbody"],m=e=>s.includes(e);p.propTypes={pagination:t.elementType,paginationLocation:t.oneOf(["top-left","bottom-left","bottom-right","top-right"]),paginationProps:t.exact({size:t.oneOf(["small","default","large"]),rounded:t.bool,icons:t.bool,next:t.node,prev:t.node,firstAndLast:t.bool}),data:t.arrayOf(t.arrayOf(t.any)),children:(e,t,o)=>{const{[t]:n}=e,a=new Error(`Invalid prop \`${t}\` supplied to \`${o}\`. Validation failed, should be one of: ${s.join(", ")}.`);if(Array.isArray(n)){if(!n.every(e=>m(e.type)))return a}else if(n&&!m(n.type))return a;return null},start:t.number},p.defaultProps={pagination:r,paginationLocation:"bottom-right",paginationProps:{icons:!0,firstAndLast:!0},data:null,children:null,start:1};export default p;
+import React from 'react';
+import PropTypes from 'prop-types';
+import { _ as _objectWithoutProperties } from '../../_rollupPluginBabelHelpers-b60338eb.js';
+import { a as appendClass } from '../../index-be24eb93.js';
+import { DisplayIf } from '../Conditional.js';
+import '../Dropdown.js';
+import '../Pagination.js';
+import { DefaultTablePagination } from './DefaultTablePagination.js';
+import { GenericTable } from './GenericTable.js';
+
+const asArray = v => Array.isArray(v) ? v : [v];
+
+const PAGINATION_LOCATION = ["top-left", "bottom-left", "bottom-right", "top-right"];
+
+const Table = (_ref) => {
+  let {
+    pagination,
+    paginationLocation,
+    paginationProps,
+    data,
+    children,
+    start
+  } = _ref,
+      props = _objectWithoutProperties(_ref, ["pagination", "paginationLocation", "paginationProps", "data", "children", "start"]);
+
+  const [position, setPosition] = React.useState(typeof start === "number" ? start : 0);
+  const [perPage, setPerPage] = React.useState(50);
+  const tbody = React.useMemo(() => children ? asArray(children).find(child => child.type === "tbody") : null, [children]);
+  const thead = React.useMemo(() => children ? asArray(children).find(child => child.type === "thead") : null, [children]);
+  const total = React.useMemo(() => (data ? data.length : asArray(tbody.props.children).length) || 0, [data, tbody]);
+  React.useEffect(() => setPosition(0), [data, tbody]);
+  return React.createElement(React.Fragment, null, React.createElement(DisplayIf, {
+    condition: paginationLocation.includes("top-")
+  }, React.createElement("div", {
+    className: `flex base-margin-bottom${appendClass(paginationLocation === "top-right", "flex-right")}`
+  }, React.createElement(pagination, {
+    total,
+    position,
+    onPageChange: (_, p) => setPosition(p),
+    onPerPageChange: p => setPerPage(p),
+    paginationProps
+  }))), React.createElement(GenericTable, props, thead, React.createElement("tbody", null, data ? data.slice(position, position + perPage).map((row, rid) => React.createElement("tr", {
+    key: rid
+  }, row.map((col, cid) => React.createElement("td", {
+    key: cid
+  }, col)))) : asArray(tbody.props.children).slice(position, position + perPage))), React.createElement(DisplayIf, {
+    condition: paginationLocation.includes("bottom-")
+  }, React.createElement("div", {
+    className: `flex base-margin-top${appendClass(paginationLocation === "bottom-right", "flex-right")}`
+  }, React.createElement(pagination, {
+    total,
+    position,
+    onPageChange: (_, p) => setPosition(p),
+    onPerPageChange: p => setPerPage(p),
+    perPageUp: true,
+    paginationProps
+  }))));
+};
+
+const ALLOWED_TABLE_CHILD = ["thead", "tbody"];
+
+const allowedChild = type => ALLOWED_TABLE_CHILD.includes(type);
+
+Table.propTypes = {
+  pagination: PropTypes.elementType,
+  paginationLocation: PropTypes.oneOf(PAGINATION_LOCATION),
+  paginationProps: PropTypes.exact({
+    size: PropTypes.oneOf(["small", "default", "large"]),
+    rounded: PropTypes.bool,
+    icons: PropTypes.bool,
+    next: PropTypes.node,
+    prev: PropTypes.node,
+    firstAndLast: PropTypes.bool
+  }),
+  data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
+  children: (props, propName, componentName) => {
+    const {
+      [propName]: t
+    } = props;
+    const err = new Error(`Invalid prop \`${propName}\` supplied to` + ` \`${componentName}\`. Validation failed, should be one of:` + ` ${ALLOWED_TABLE_CHILD.join(", ")}.`);
+
+    if (Array.isArray(t)) {
+      if (!t.every(ch => allowedChild(ch.type))) return err;
+    } else if (t && !allowedChild(t.type)) return err;
+
+    return null;
+  },
+  start: PropTypes.number
+};
+Table.defaultProps = {
+  pagination: DefaultTablePagination,
+  paginationLocation: "bottom-right",
+  paginationProps: {
+    icons: true,
+    firstAndLast: true
+  },
+  data: null,
+  children: null,
+  start: 1
+};
+
+export default Table;
