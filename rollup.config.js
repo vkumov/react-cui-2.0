@@ -8,6 +8,8 @@ import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 import builtins from "rollup-plugin-node-builtins";
 import replace from "rollup-plugin-replace";
+import json from "@rollup/plugin-json";
+import alias from "@rollup/plugin-alias";
 
 import * as react from "react";
 import * as reactDom from "react-dom";
@@ -48,7 +50,7 @@ const oneUMD = {
   input: "./index.js",
   output: [
     {
-      file: "build/umd/bundle.umd.js",
+      file: "build/umd/react-cui.umd.js",
       format: "umd",
       sourcemap: false,
       name: "ReactCUI",
@@ -65,7 +67,11 @@ const oneUMD = {
     },
   ],
   plugins: [
-    builtins(),
+    json(),
+    // builtins(),
+    alias({
+      entries: [{ find: "crypto", replacement: "./utils/randomBytes.js" }],
+    }),
     ...plugins,
     replace({
       "process.env.NODE_ENV": JSON.stringify("production"),
@@ -86,7 +92,7 @@ const umd = [
   oneUMD,
   {
     ...oneUMD,
-    output: [{ ...oneUMD.output[0], file: "build/umd/bundle.umd.min.js" }],
+    output: [{ ...oneUMD.output[0], file: "build/umd/react-cui.umd.min.js" }],
     plugins: [...oneUMD.plugins, terser()],
   },
 ];
