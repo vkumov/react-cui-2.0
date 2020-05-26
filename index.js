@@ -31,3 +31,7 @@ export * from "./components/Textarea";
 export * from "./components/VariantSelector";
 export * from "./components/Radio";
 export * from "./components/InputChips";
+export * from "./components/EditableSelect";
+export * from "./components/Checkboxes";
+export * from "./components/InputHelpBaloon";
+export * from "./components/InputHelpBlock";
