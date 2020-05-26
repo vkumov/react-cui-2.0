@@ -64,6 +64,7 @@ const oneUMD = {
         "react-modal": "ReactModal",
         "react-sortable-hoc": "SortableHOC",
         "prop-types": "PropTypes",
+        formik: "formik",
       },
     },
   ],
@@ -86,6 +87,7 @@ const oneUMD = {
     "react-modal",
     "react-sortable-hoc",
     "prop-types",
+    "formik",
   ],
 };
 
