@@ -7,6 +7,7 @@ import multiInput from "rollup-plugin-multi-input";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 import builtins from "rollup-plugin-node-builtins";
+import replace from "rollup-plugin-replace";
 
 import * as react from "react";
 import * as reactDom from "react-dom";
@@ -63,7 +64,13 @@ const oneUMD = {
       },
     },
   ],
-  plugins: [builtins(), ...plugins],
+  plugins: [
+    builtins(),
+    ...plugins,
+    replace({
+      "process.env.NODE_ENV": JSON.stringify("production"),
+    }),
+  ],
   external: [
     "react-dom",
     "react-is",
@@ -79,7 +86,7 @@ const umd = [
   oneUMD,
   {
     ...oneUMD,
-    output: { ...oneUMD.output, file: "build/umd/bundle.umd.min.js" },
+    output: [{ ...oneUMD.output[0], file: "build/umd/bundle.umd.min.js" }],
     plugins: [...oneUMD.plugins, terser()],
   },
 ];
