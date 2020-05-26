@@ -1,3 +1,5 @@
+@import "../node_modules/react-toastify/dist/ReactToastify.css";
+
 .cui .Toastify__toast {
     min-height: unset !important;
     padding: unset;

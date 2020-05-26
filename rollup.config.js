@@ -6,10 +6,11 @@ import postcss from "rollup-plugin-postcss";
 import multiInput from "rollup-plugin-multi-input";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
-import builtins from "rollup-plugin-node-builtins";
+// import builtins from "rollup-plugin-node-builtins";
 import replace from "rollup-plugin-replace";
 import json from "@rollup/plugin-json";
 import alias from "@rollup/plugin-alias";
+import cssImport from "postcss-import";
 
 import * as react from "react";
 import * as reactDom from "react-dom";
@@ -25,7 +26,7 @@ const plugins = [
     plugins: ["@babel/plugin-proposal-class-properties"],
   }),
   resolve({
-    extensions: [".mjs", ".js", ".jsx", ".json"],
+    extensions: [".mjs", ".js", ".jsx", ".json", ".css"],
     preferBuiltins: true,
   }),
   commonjs({
@@ -39,10 +40,6 @@ const plugins = [
         "LowPriority",
       ],
     },
-  }),
-  postcss({
-    plugins: [],
-    minimize: true,
   }),
 ];
 
@@ -73,6 +70,11 @@ const oneUMD = {
       entries: [{ find: "crypto", replacement: "./utils/randomBytes.js" }],
     }),
     ...plugins,
+    postcss({
+      plugins: [cssImport()],
+      minimize: true,
+      extract: true,
+    }),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),
@@ -117,6 +119,10 @@ export default [
         targets: ["./build/"],
       }),
       ...plugins,
+      postcss({
+        plugins: [cssImport()],
+        minimize: true,
+      }),
       terser(),
     ],
     external: [
@@ -154,7 +160,15 @@ export default [
         },
       },
     ],
-    plugins: [multiInput(), ...plugins, terser()],
+    plugins: [
+      multiInput(),
+      ...plugins,
+      postcss({
+        plugins: [cssImport()],
+        minimize: true,
+      }),
+      terser(),
+    ],
     external: [
       "react",
       "react-dom",
