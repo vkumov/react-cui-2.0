@@ -41,6 +41,10 @@ const plugins = [
       ],
     },
   }),
+  postcss({
+    plugins: [cssImport()],
+    minimize: true,
+  }),
 ];
 
 const oneUMD = {
@@ -70,11 +74,6 @@ const oneUMD = {
       entries: [{ find: "crypto", replacement: "./utils/randomBytes.js" }],
     }),
     ...plugins,
-    postcss({
-      plugins: [cssImport()],
-      minimize: true,
-      extract: true,
-    }),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),
@@ -119,10 +118,6 @@ export default [
         targets: ["./build/"],
       }),
       ...plugins,
-      postcss({
-        plugins: [cssImport()],
-        minimize: true,
-      }),
       terser(),
     ],
     external: [
@@ -160,15 +155,7 @@ export default [
         },
       },
     ],
-    plugins: [
-      multiInput(),
-      ...plugins,
-      postcss({
-        plugins: [cssImport()],
-        minimize: true,
-      }),
-      terser(),
-    ],
+    plugins: [multiInput(), ...plugins, terser()],
     external: [
       "react",
       "react-dom",
