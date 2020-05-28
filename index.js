@@ -35,3 +35,4 @@ export * from "./components/EditableSelect";
 export * from "./components/Checkboxes";
 export * from "./components/InputHelpBaloon";
 export * from "./components/InputHelpBlock";
+export * from "./utils/base16Theme";
