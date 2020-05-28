@@ -69,6 +69,7 @@
   },
   "dependencies": {
     "react-toastify": "^6.0.5",
-    "react-transition-group": "^4.3.0"
+    "react-transition-group": "^4.3.0",
+    "react-dropzone": "^10.2.1"
   }
 }
