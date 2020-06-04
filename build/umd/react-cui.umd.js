@@ -1924,89 +1924,85 @@
     constructor(props) {
       super(props);
 
+      _defineProperty(this, "removeFile", toRemove => {
+        this.props.formik.setFieldValue(this.props.name, this.props.input.value.filter((_, idx) => toRemove !== idx));
+      });
+
+      _defineProperty(this, "handleDrop", filesToUpload => {
+        if (this.maxFileSize) {
+          filesToUpload = filesToUpload.filter(file => file.size <= this.maxFileSize);
+        }
+
+        if (this.props.maxFiles && filesToUpload.length > this.props.maxFiles) {
+          filesToUpload = filesToUpload.slice(0, this.props.maxFiles);
+        }
+
+        this.props.formik.setFieldValue(this.props.name, filesToUpload);
+      });
+
+      _defineProperty(this, "renderFiles", () => {
+        const files = this.props.input.value;
+
+        if (!files || !files.length || !Array.isArray(files)) {
+          return null;
+        }
+
+        return React__default.createElement("div", {
+          className: "dropzone-previews"
+        }, React__default.createElement("div", {
+          className: "file-drop__container container--fluid"
+        }, React__default.createElement("div", {
+          className: "row"
+        }, files.map((file, i) => React__default.createElement(FileCard, {
+          key: i,
+          file: file,
+          i: i,
+          inline: this.props.inline,
+          removeFile: this.removeFile
+        })))), this.props.showTotalSelected && React__default.createElement("div", {
+          className: "file-drop__filecnt"
+        }, files.length, " selected"));
+      });
+
+      _defineProperty(this, "renderMessage", () => {
+        const files = this.props.input.value;
+
+        if (files && files.length) {
+          return null;
+        }
+
+        if (this.props.inline) {
+          return React__default.createElement("div", {
+            className: "dropzone-message flex flex-row flex-center-vertical"
+          }, React__default.createElement("h5", {
+            className: "text-muted text-left flex-fill no-margin"
+          }, "Click Here or Drop Files to Upload"), this.props.accept && React__default.createElement("span", {
+            className: "text-muted text-small half-margin-right"
+          }, "Allowed files: ", this.props.accept.split(",").join(", ")), React__default.createElement("span", {
+            className: "file-drop__icon icon-upload"
+          }));
+        }
+
+        return React__default.createElement("div", {
+          className: "dropzone-message"
+        }, React__default.createElement("span", {
+          className: "file-drop__icon icon-upload"
+        }), React__default.createElement("h4", {
+          className: "text-muted"
+        }, "Click Here or Drop Files to Upload"), this.props.accept && React__default.createElement("div", {
+          className: "text-muted"
+        }, "Allowed files: ", this.props.accept.split(",").join(", ")), this.maxFileSize && React__default.createElement("div", {
+          className: "text-muted"
+        }, "Max file size:", " ", bytes_1.format(this.maxFileSize, {
+          unitSeparator: " "
+        })));
+      });
+
       if (props.maxFileSize) {
         this.maxFileSize = bytes_1.parse(props.maxFileSize);
       } else {
         this.maxFileSize = null;
       }
-    }
-
-    removeFile(toRemove) {
-      this.props.formik.setFieldValue(this.props.name, this.props.input.value.filter((_, idx) => toRemove !== idx));
-    } // renderFileCard = (file, i) => {
-    //   return (
-    //   );
-    // };
-
-
-    handleDrop(filesToUpload) {
-      if (this.maxFileSize) {
-        filesToUpload = filesToUpload.filter(file => file.size <= this.maxFileSize);
-      }
-
-      if (this.props.maxFiles && filesToUpload.length > this.props.maxFiles) {
-        filesToUpload = filesToUpload.slice(0, this.props.maxFiles);
-      }
-
-      this.props.formik.setFieldValue(this.props.name, filesToUpload);
-    }
-
-    renderFiles() {
-      const files = this.props.input.value;
-
-      if (!files || !files.length || !Array.isArray(files)) {
-        return null;
-      }
-
-      return React__default.createElement("div", {
-        className: "dropzone-previews"
-      }, React__default.createElement("div", {
-        className: "file-drop__container container--fluid"
-      }, React__default.createElement("div", {
-        className: "row"
-      }, files.map((file, i) => React__default.createElement(FileCard, {
-        key: i,
-        file: file,
-        i: i,
-        inline: this.props.inline,
-        removeFile: this.removeFile
-      })))), this.props.showTotalSelected && React__default.createElement("div", {
-        className: "file-drop__filecnt"
-      }, files.length, " selected"));
-    }
-
-    renderMessage() {
-      const files = this.props.input.value;
-
-      if (files && files.length) {
-        return null;
-      }
-
-      if (this.props.inline) {
-        return React__default.createElement("div", {
-          className: "dropzone-message flex flex-row flex-center-vertical"
-        }, React__default.createElement("h5", {
-          className: "text-muted text-left flex-fill no-margin"
-        }, "Click Here or Drop Files to Upload"), this.props.accept && React__default.createElement("span", {
-          className: "text-muted text-small half-margin-right"
-        }, "Allowed files: ", this.props.accept.split(",").join(", ")), React__default.createElement("span", {
-          className: "file-drop__icon icon-upload"
-        }));
-      }
-
-      return React__default.createElement("div", {
-        className: "dropzone-message"
-      }, React__default.createElement("span", {
-        className: "file-drop__icon icon-upload"
-      }), React__default.createElement("h4", {
-        className: "text-muted"
-      }, "Click Here or Drop Files to Upload"), this.props.accept && React__default.createElement("div", {
-        className: "text-muted"
-      }, "Allowed files: ", this.props.accept.split(",").join(", ")), this.maxFileSize && React__default.createElement("div", {
-        className: "text-muted"
-      }, "Max file size:", " ", bytes_1.format(this.maxFileSize, {
-        unitSeparator: " "
-      })));
     }
 
     render() {
@@ -7342,6 +7338,27 @@
     inline: false
   };
 
+  const base16Theme = {
+    scheme: "monokai",
+    author: "Vitaly Kumov based on Cisco UI kit",
+    base00: "var(--cui-background-inactive)",
+    base01: "#f2f2f2",
+    base02: "#64bbe3",
+    base03: "#b6b9bb",
+    base04: "#39393b",
+    base05: "#58585b",
+    base06: "#626469",
+    base07: "#ffffff",
+    base08: "#14a792",
+    base09: "#14a792",
+    base0A: "#017cad",
+    base0B: "#6cc04a",
+    base0C: "#ffcc00",
+    base0D: "#7f7f86",
+    base0E: "#626469",
+    base0F: "#626469"
+  };
+
   exports.Accordion = Accordion;
   exports.AccordionElement = AccordionElement;
   exports.Alert = Alert;
@@ -7405,6 +7422,7 @@
   exports.VariantSelector = VariantSelector;
   exports.VerticalCenter = VerticalCenter;
   exports.WithBadge = WithBadge;
+  exports.base16Theme = base16Theme;
   exports.confirmation = confirmation;
   exports.notification = notificationModal;
   exports.notificationModal = notificationModal;

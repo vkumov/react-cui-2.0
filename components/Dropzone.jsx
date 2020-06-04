@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import ReactDropzone from "react-dropzone";
 import PropTypes from "prop-types";
@@ -25,7 +28,7 @@ const FileCard = ({ file, i, removeFile, inline }) => (
             </small>
           </div>
           <a className="link pull-right" onClick={() => removeFile(i)}>
-            <span className="icon-close" title="Remove the file."></span>
+            <span className="icon-close" title="Remove the file." />
           </a>
         </div>
       ) : (
@@ -57,20 +60,14 @@ class Dropzone extends React.Component {
     }
   }
 
-  removeFile(toRemove) {
+  removeFile = (toRemove) => {
     this.props.formik.setFieldValue(
       this.props.name,
       this.props.input.value.filter((_, idx) => toRemove !== idx)
     );
-  }
+  };
 
-  // renderFileCard = (file, i) => {
-  //   return (
-
-  //   );
-  // };
-
-  handleDrop(filesToUpload) {
+  handleDrop = (filesToUpload) => {
     if (this.maxFileSize) {
       filesToUpload = filesToUpload.filter(
         (file) => file.size <= this.maxFileSize
@@ -82,9 +79,9 @@ class Dropzone extends React.Component {
     }
 
     this.props.formik.setFieldValue(this.props.name, filesToUpload);
-  }
+  };
 
-  renderFiles() {
+  renderFiles = () => {
     const files = this.props.input.value;
     if (!files || !files.length || !Array.isArray(files)) {
       return null;
@@ -110,9 +107,9 @@ class Dropzone extends React.Component {
         )}
       </div>
     );
-  }
+  };
 
-  renderMessage() {
+  renderMessage = () => {
     const files = this.props.input.value;
     if (files && files.length) {
       return null;
@@ -151,7 +148,7 @@ class Dropzone extends React.Component {
         )}
       </div>
     );
-  }
+  };
 
   render() {
     const { meta, loose, compressed } = this.props;
