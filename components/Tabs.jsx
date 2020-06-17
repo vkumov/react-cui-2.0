@@ -174,7 +174,9 @@ export const Tabs = ({
         <div className="row" style={sticky ? { position: "relative" } : {}} />
       }
     >
-      <DisplayIf condition={vertical && !right}>{header}</DisplayIf>
+      <DisplayIf condition={(vertical && !right) || !vertical}>
+        {header}
+      </DisplayIf>
       {body}
       <DisplayIf condition={vertical && right}>{header}</DisplayIf>
     </ConditionalWrapper>

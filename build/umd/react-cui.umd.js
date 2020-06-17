@@ -6502,7 +6502,7 @@
         } : {}
       })
     }, React__default.createElement(DisplayIf, {
-      condition: vertical && !right
+      condition: vertical && !right || !vertical
     }, header), body, React__default.createElement(DisplayIf, {
       condition: vertical && right
     }, header));
