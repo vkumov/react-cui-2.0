@@ -5937,7 +5937,7 @@
       closeHandle: closeHandle,
       autoClose: autoClose,
       title: "Confirmation"
-    }, React__default.createElement(ModalBody, null, React__default.createElement("p", null, prompt)), React__default.createElement(ModalFooter, null, React__default.createElement(Button.Light, {
+    }, React__default.createElement(ModalBody, null, prompt), React__default.createElement(ModalFooter, null, React__default.createElement(Button.Light, {
       onClick: closeHandle
     }, "Close"), React__default.createElement(Button, {
       color: confirmType,
@@ -6084,7 +6084,7 @@
     if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
     eventManager.emit(EVENTS.SHOW_MODAL, {
       modalType: "confirmation",
-      prompt,
+      prompt: React__default.createElement("p", null, prompt),
       onConfirm,
       confirmText,
       confirmType

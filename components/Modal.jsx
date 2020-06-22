@@ -231,9 +231,7 @@ export const ConfirmationModal = ({
       autoClose={autoClose}
       title="Confirmation"
     >
-      <ModalBody>
-        <p>{prompt}</p>
-      </ModalBody>
+      <ModalBody>{prompt}</ModalBody>
       <ModalFooter>
         <Button.Light onClick={closeHandle}>Close</Button.Light>
         <Button
@@ -428,7 +426,7 @@ export const confirmation = (
 
   eventManager.emit(EVENTS.SHOW_MODAL, {
     modalType: "confirmation",
-    prompt,
+    prompt: <p>{prompt}</p>,
     onConfirm,
     confirmText,
     confirmType,
