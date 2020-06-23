@@ -4556,7 +4556,6 @@
   }, message, type === "error" && copyError ? React__default.createElement(React__default.Fragment, null, React__default.createElement("br", null), React__default.createElement("br", null), React__default.createElement("a", {
     onClick: () => copyStringToClipboard(message)
   }, "Copy to clipboard")) : null) : null));
-
   const Fade = cssTransition({
     enter: "fadeIn",
     exit: "fadeOut",
@@ -7418,6 +7417,7 @@
   exports.Textarea = Textarea;
   exports.Timeline = Timeline;
   exports.TimelineItem = TimelineItem;
+  exports.Toast = Toast$1;
   exports.ToastContainer = ToastContainer$1;
   exports.VariantSelector = VariantSelector;
   exports.VerticalCenter = VerticalCenter;

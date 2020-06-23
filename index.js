@@ -7,7 +7,7 @@ export { Button, ButtonGroup } from "./components/Button";
 export { Label } from "./components/Label";
 export { Select } from "./components/Select";
 export { Panel } from "./components/Panel";
-export { toast, ToastContainer } from "./components/Toast";
+export { toast, ToastContainer, Toast } from "./components/Toast";
 export { Header, HeaderPanel, HeaderTitle } from "./components/Header";
 export { Footer } from "./components/Footer";
 export * from "./components/Table";

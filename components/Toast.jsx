@@ -45,7 +45,7 @@ const ToastIcon = ({ type }) => {
   return <div className={`toast__icon ${iconType(type) || ""}`} />;
 };
 
-const Toast = ({ title, message, type, copyError }) => (
+export const Toast = ({ title, message, type, copyError }) => (
   <div className="toast">
     <ToastIcon type={type} />
     <div className="toast__body">
