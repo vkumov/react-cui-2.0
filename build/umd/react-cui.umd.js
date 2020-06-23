@@ -4562,14 +4562,14 @@
     exit: "fadeOut",
     duration: 300
   });
-  const toast$1 = (type, title, message, copyError = true, containerId = "_GLOBAL_") => toast(React__default.createElement(Toast$1, {
+  const toast$1 = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {}) => toast(React__default.createElement(Toast$1, {
     type,
     title,
     message,
     copyError
-  }), {
+  }), _objectSpread2({
     containerId
-  });
+  }, args));
 
   toast$1.success = (...args) => toast$1("success", ...args);
 

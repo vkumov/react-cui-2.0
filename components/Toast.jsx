@@ -79,9 +79,13 @@ export const toast = (
   title,
   message,
   copyError = true,
-  containerId = "_GLOBAL_"
+  containerId = "_GLOBAL_",
+  args = {}
 ) =>
-  _toast(<Toast {...{ type, title, message, copyError }} />, { containerId });
+  _toast(<Toast {...{ type, title, message, copyError }} />, {
+    containerId,
+    ...args,
+  });
 
 toast.success = (...args) => toast("success", ...args);
 toast.error = (...args) => toast("error", ...args);
