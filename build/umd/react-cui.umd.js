@@ -6060,17 +6060,15 @@
 
     if (!modals.length) return null;
     return modals.map(modal => {
-      const onClose = () => closeModal(modal.id);
-
       if (modal.modalType === "notification") return React__default.createElement(Modal, {
         key: modal.id,
         isOpen: modal.shown,
         closeIcon: true,
-        closeHandle: onClose,
+        closeHandle: () => closeModal(modal.id),
         title: modal.title
       }, React__default.createElement(ModalBody, null, modal.body), React__default.createElement(ModalFooter, null, React__default.createElement(Button, {
         color: modal.buttonColor || "light",
-        onClick: onClose
+        onClick: () => closeModal(modal.id)
       }, modal.button)));
 
       if (modal.modalType === "prompt") {
@@ -6084,7 +6082,7 @@
           return React__default.createElement(PromptModal, {
             key: modal.id,
             isOpen: modal.shown,
-            onClose: onClose,
+            onClose: () => closeModal(modal.id),
             onSave: modal.cb,
             title: modal.title,
             question: modal.question,
@@ -6098,7 +6096,7 @@
         return React__default.createElement(PromptModal, {
           key: modal.id,
           isOpen: modal.shown,
-          onClose: onClose,
+          onClose: () => closeModal(modal.id),
           onSave: modal.cb,
           title: modal.title,
           question: modal.question,
@@ -6114,10 +6112,10 @@
         prompt: modal.prompt,
         confirmHandle: async () => {
           const r = await modal.onConfirm();
-          if (r) onClose();
+          if (r) closeModal(modal.id);
           return true;
         },
-        closeHandle: onClose,
+        closeHandle: () => closeModal(modal.id),
         confirmText: modal.confirmText,
         confirmType: modal.confirmType
       });

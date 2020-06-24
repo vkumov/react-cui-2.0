@@ -396,19 +396,21 @@ export const ConfirmationListener = () => {
   if (!modals.length) return null;
 
   return modals.map((modal) => {
-    const onClose = () => closeModal(modal.id);
     if (modal.modalType === "notification")
       return (
         <Modal
           key={modal.id}
           isOpen={modal.shown}
           closeIcon
-          closeHandle={onClose}
+          closeHandle={() => closeModal(modal.id)}
           title={modal.title}
         >
           <ModalBody>{modal.body}</ModalBody>
           <ModalFooter>
-            <Button color={modal.buttonColor || "light"} onClick={onClose}>
+            <Button
+              color={modal.buttonColor || "light"}
+              onClick={() => closeModal(modal.id)}
+            >
               {modal.button}
             </Button>
           </ModalFooter>
@@ -427,7 +429,7 @@ export const ConfirmationListener = () => {
           <PromptModal
             key={modal.id}
             isOpen={modal.shown}
-            onClose={onClose}
+            onClose={() => closeModal(modal.id)}
             onSave={modal.cb}
             title={modal.title}
             question={modal.question}
@@ -443,7 +445,7 @@ export const ConfirmationListener = () => {
         <PromptModal
           key={modal.id}
           isOpen={modal.shown}
-          onClose={onClose}
+          onClose={() => closeModal(modal.id)}
           onSave={modal.cb}
           title={modal.title}
           question={modal.question}
@@ -462,10 +464,10 @@ export const ConfirmationListener = () => {
           prompt={modal.prompt}
           confirmHandle={async () => {
             const r = await modal.onConfirm();
-            if (r) onClose();
+            if (r) closeModal(modal.id);
             return true;
           }}
-          closeHandle={onClose}
+          closeHandle={() => closeModal(modal.id)}
           confirmText={modal.confirmText}
           confirmType={modal.confirmType}
         />
