@@ -6043,11 +6043,18 @@
       id: Date.now(),
       shown: true
     }, modal)]), []);
-    const hideModal = React__default.useCallback(id => setModals(curr => curr.map(m => m.id === id ? _objectSpread2({}, m, {
-      shown: false
-    }) : m)), []);
-    const deleteModal = React__default.useCallback(id => setModals(curr => curr.filter(m => m.id !== id)), []);
+    const hideModal = React__default.useCallback(id => {
+      console.log(`hide ${id}`);
+      setModals(curr => curr.map(m => m.id === id ? _objectSpread2({}, m, {
+        shown: false
+      }) : m));
+    }, []);
+    const deleteModal = React__default.useCallback(id => {
+      console.log(`delete ${id}`);
+      setModals(curr => curr.filter(m => m.id !== id));
+    }, []);
     const closeModal = React__default.useCallback(id => {
+      console.log(`closing ${id}`);
       hideModal(id);
       setTimeout(() => deleteModal(id), 500);
     }, [hideModal, deleteModal]);
