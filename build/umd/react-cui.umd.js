@@ -6047,10 +6047,10 @@
       shown: false
     }) : m)), []);
     const deleteModal = React__default.useCallback(id => setModals(curr => curr.filter(m => m.id !== id)), []);
-    const onClose = React__default.useCallback(id => {
+    const closeModal = React__default.useCallback(id => {
       hideModal(id);
       setTimeout(() => deleteModal(id), 500);
-    }, []);
+    }, [hideModal, deleteModal]);
     React__default.useEffect(() => {
       eventManager.on(EVENTS.SHOW_MODAL, m => addModal(m));
     }, [addModal]); // React.useEffect(() => {
@@ -6060,6 +6060,8 @@
 
     if (!modals.length) return null;
     return modals.map(modal => {
+      const onClose = () => closeModal(modal.id);
+
       if (modal.modalType === "notification") return React__default.createElement(Modal, {
         key: modal.id,
         isOpen: modal.shown,

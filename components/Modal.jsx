@@ -375,10 +375,13 @@ export const ConfirmationListener = () => {
     []
   );
 
-  const onClose = React.useCallback((id) => {
-    hideModal(id);
-    setTimeout(() => deleteModal(id), 500);
-  }, []);
+  const closeModal = React.useCallback(
+    (id) => {
+      hideModal(id);
+      setTimeout(() => deleteModal(id), 500);
+    },
+    [hideModal, deleteModal]
+  );
 
   React.useEffect(() => {
     eventManager.on(EVENTS.SHOW_MODAL, (m) => addModal(m));
@@ -393,6 +396,7 @@ export const ConfirmationListener = () => {
   if (!modals.length) return null;
 
   return modals.map((modal) => {
+    const onClose = () => closeModal(modal.id);
     if (modal.modalType === "notification")
       return (
         <Modal
