@@ -5976,8 +5976,8 @@
     validate
   }) => {
     const [val, setVal] = React__default.useState(initial);
-    const onSave = React__default.useCallback(() => {
-      if (typeof validate === "function" && !validate(val)) return;
+    const onSave = React__default.useCallback(async () => {
+      if (typeof validate === "function" && !(await validate(val))) return;
       onClose();
       cb(val);
     }, [onClose, cb, val, validate]);

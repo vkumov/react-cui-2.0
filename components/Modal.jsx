@@ -281,8 +281,9 @@ export const PromptModal = ({
   validate,
 }) => {
   const [val, setVal] = React.useState(initial);
-  const onSave = React.useCallback(() => {
-    if (typeof validate === "function" && !validate(val)) return;
+  const onSave = React.useCallback(async () => {
+    if (typeof validate === "function" && !(await validate(val))) return;
+
     onClose();
     cb(val);
   }, [onClose, cb, val, validate]);
