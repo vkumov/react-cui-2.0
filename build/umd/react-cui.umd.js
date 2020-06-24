@@ -6037,74 +6037,90 @@
     validate: null
   };
   const ConfirmationListener = () => {
-    const [modal, setModal] = React__default.useState(null);
-    const [modalShown, setModalShown] = React__default.useState(false);
-    React__default.useEffect(() => {
-      eventManager.on(EVENTS.SHOW_MODAL, m => setModal(m));
+    const [modals, setModals] = React__default.useState([]); // const [modalShown, setModalShown] = React.useState(false);
+
+    const addModal = React__default.useCallback(modal => setModals(curr => [...curr, _objectSpread2({
+      id: Date.now(),
+      shown: true
+    }, modal)]), []);
+    const hideModal = React__default.useCallback(id => setModals(curr => curr.map(m => m.id === id ? _objectSpread2({}, m, {
+      shown: false
+    }) : m)), []);
+    const deleteModal = React__default.useCallback(id => setModals(curr => curr.filter(m => m.id !== id)), []);
+    const onClose = React__default.useCallback(id => {
+      hideModal(id);
+      setTimeout(() => deleteModal(id), 500);
     }, []);
     React__default.useEffect(() => {
-      if (modal) setModalShown(true);
-    }, [modal]);
+      eventManager.on(EVENTS.SHOW_MODAL, m => addModal(m));
+    }, [addModal]); // React.useEffect(() => {
+    //   if (modal) setModalShown(true);
+    // }, [modal]);
+    // const onClose = () => setModalShown(false);
 
-    const onClose = () => setModalShown(false);
+    if (!modals.length) return null;
+    return modals.map(modal => {
+      if (modal.modalType === "notification") return React__default.createElement(Modal, {
+        key: modal.id,
+        isOpen: modal.shown,
+        closeIcon: true,
+        closeHandle: onClose,
+        title: modal.title
+      }, React__default.createElement(ModalBody, null, modal.body), React__default.createElement(ModalFooter, null, React__default.createElement(Button, {
+        color: modal.buttonColor || "light",
+        onClick: onClose
+      }, modal.button)));
 
-    if (!modal) return null;
-    if (modal.modalType === "notification") return React__default.createElement(Modal, {
-      isOpen: modalShown,
-      closeIcon: true,
-      closeHandle: onClose,
-      title: modal.title
-    }, React__default.createElement(ModalBody, null, modal.body), React__default.createElement(ModalFooter, null, React__default.createElement(Button, {
-      color: modal.buttonColor || "light",
-      onClick: onClose
-    }, modal.button)));
+      if (modal.modalType === "prompt") {
+        if (typeof modal.options !== "undefined") {
+          const {
+            initial = "",
+            type = "text",
+            hint = undefined,
+            validate = undefined
+          } = modal.options;
+          return React__default.createElement(PromptModal, {
+            key: modal.id,
+            isOpen: modal.shown,
+            onClose: onClose,
+            onSave: modal.cb,
+            title: modal.title,
+            question: modal.question,
+            initial: initial,
+            type: type,
+            hint: hint,
+            validate: validate
+          });
+        }
 
-    if (modal.modalType === "prompt") {
-      if (typeof modal.options !== "undefined") {
-        const {
-          initial = "",
-          type = "text",
-          hint = undefined,
-          validate = undefined
-        } = modal.options;
         return React__default.createElement(PromptModal, {
-          isOpen: modalShown,
+          key: modal.id,
+          isOpen: modal.shown,
           onClose: onClose,
           onSave: modal.cb,
           title: modal.title,
           question: modal.question,
-          initial: initial,
-          type: type,
-          hint: hint,
-          validate: validate
+          initial: modal.initial,
+          type: modal.type,
+          hint: modal.hint
         });
       }
 
-      return React__default.createElement(PromptModal, {
-        isOpen: modalShown,
-        onClose: onClose,
-        onSave: modal.cb,
-        title: modal.title,
-        question: modal.question,
-        initial: modal.initial,
-        type: modal.type,
-        hint: modal.hint
+      if (modal.modalType === "confirmation") return React__default.createElement(ConfirmationModal, {
+        key: modal.id,
+        isOpen: modal.shown,
+        prompt: modal.prompt,
+        confirmHandle: async () => {
+          const r = await modal.onConfirm();
+          if (r) onClose();
+          return true;
+        },
+        closeHandle: onClose,
+        confirmText: modal.confirmText,
+        confirmType: modal.confirmType
       });
-    }
-
-    if (modal.modalType === "confirmation") return React__default.createElement(ConfirmationModal, {
-      isOpen: modalShown,
-      prompt: modal.prompt,
-      confirmHandle: async () => {
-        const r = await modal.onConfirm();
-        if (r) onClose();
-        return true;
-      },
-      closeHandle: onClose,
-      confirmText: modal.confirmText,
-      confirmType: modal.confirmType
+      return null;
     });
-    return null;
   };
   const confirmation = (prompt, onConfirm, confirmType = "primary", confirmText = "Confirm") => {
     if (!prompt) throw new Error("Prompt must be specified");
