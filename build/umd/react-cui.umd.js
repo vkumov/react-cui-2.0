@@ -6138,6 +6138,7 @@
         cb,
         options: initial
       });
+      return;
     }
 
     eventManager.emit(EVENTS.SHOW_MODAL, {
