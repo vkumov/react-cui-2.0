@@ -6037,34 +6037,26 @@
     validate: null
   };
   const ConfirmationListener = () => {
-    const [modals, setModals] = React__default.useState([]); // const [modalShown, setModalShown] = React.useState(false);
-
+    const [modals, setModals] = React__default.useState([]);
     const addModal = React__default.useCallback(modal => setModals(curr => [...curr, _objectSpread2({
       id: Date.now(),
       shown: true
     }, modal)]), []);
     const hideModal = React__default.useCallback(id => {
-      console.log(`hide ${id}`);
       setModals(curr => curr.map(m => m.id === id ? _objectSpread2({}, m, {
         shown: false
       }) : m));
     }, []);
     const deleteModal = React__default.useCallback(id => {
-      console.log(`delete ${id}`);
       setModals(curr => curr.filter(m => m.id !== id));
     }, []);
     const closeModal = React__default.useCallback(id => {
-      console.log(`closing ${id}`);
       hideModal(id);
       setTimeout(() => deleteModal(id), 500);
     }, [hideModal, deleteModal]);
     React__default.useEffect(() => {
       eventManager.on(EVENTS.SHOW_MODAL, m => addModal(m));
-    }, [addModal]); // React.useEffect(() => {
-    //   if (modal) setModalShown(true);
-    // }, [modal]);
-    // const onClose = () => setModalShown(false);
-
+    }, [addModal]);
     if (!modals.length) return null;
     return modals.map(modal => {
       if (modal.modalType === "notification") return React__default.createElement(Modal, {
