@@ -5972,13 +5972,15 @@
     initial,
     type,
     isOpen,
-    hint
+    hint,
+    validate
   }) => {
     const [val, setVal] = React__default.useState(initial);
     const onSave = React__default.useCallback(() => {
+      if (typeof validate === "function" && !validate(val)) return;
       onClose();
       cb(val);
-    }, [onClose, cb, val]);
+    }, [onClose, cb, val, validate]);
     React__default.useLayoutEffect(() => setVal(initial), [initial]);
     return React__default.createElement(Modal, {
       isOpen: isOpen,
@@ -6024,13 +6026,15 @@
     initial: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     type: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
-    hint: PropTypes.node
+    hint: PropTypes.node,
+    validate: PropTypes.func
   };
   PromptModal.defaultProps = {
     onClose: null,
     initial: null,
     type: "text",
-    hint: null
+    hint: null,
+    validate: null
   };
   const ConfirmationListener = () => {
     const [modal, setModal] = React__default.useState(null);
@@ -6054,16 +6058,40 @@
       color: modal.buttonColor || "light",
       onClick: onClose
     }, modal.button)));
-    if (modal.modalType === "prompt") return React__default.createElement(PromptModal, {
-      isOpen: modalShown,
-      onClose: onClose,
-      onSave: modal.cb,
-      title: modal.title,
-      question: modal.question,
-      initial: modal.initial,
-      type: modal.type,
-      hint: modal.hint
-    });
+
+    if (modal.modalType === "prompt") {
+      if (typeof modal.options !== "undefined") {
+        const {
+          initial = "",
+          type = "text",
+          hint = undefined,
+          validate = undefined
+        } = modal.options;
+        return React__default.createElement(PromptModal, {
+          isOpen: modalShown,
+          onClose: onClose,
+          onSave: modal.cb,
+          title: modal.title,
+          question: modal.question,
+          initial: initial,
+          type: type,
+          hint: hint,
+          validate: validate
+        });
+      }
+
+      return React__default.createElement(PromptModal, {
+        isOpen: modalShown,
+        onClose: onClose,
+        onSave: modal.cb,
+        title: modal.title,
+        question: modal.question,
+        initial: modal.initial,
+        type: modal.type,
+        hint: modal.hint
+      });
+    }
+
     if (modal.modalType === "confirmation") return React__default.createElement(ConfirmationModal, {
       isOpen: modalShown,
       prompt: modal.prompt,
@@ -6101,6 +6129,17 @@
   };
   const prompt = (title, question, cb, initial = "", type = "text", hint = undefined) => {
     if (!title || !question) throw new Error("Title and question must be specified");
+
+    if (typeof initial === "object") {
+      eventManager.emit(EVENTS.SHOW_MODAL, {
+        modalType: "prompt",
+        title,
+        question,
+        cb,
+        options: initial
+      });
+    }
+
     eventManager.emit(EVENTS.SHOW_MODAL, {
       modalType: "prompt",
       title,

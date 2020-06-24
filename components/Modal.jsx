@@ -278,12 +278,14 @@ export const PromptModal = ({
   type,
   isOpen,
   hint,
+  validate,
 }) => {
   const [val, setVal] = React.useState(initial);
   const onSave = React.useCallback(() => {
+    if (typeof validate === "function" && !validate(val)) return;
     onClose();
     cb(val);
-  }, [onClose, cb, val]);
+  }, [onClose, cb, val, validate]);
 
   React.useLayoutEffect(() => setVal(initial), [initial]);
 
@@ -338,6 +340,7 @@ PromptModal.propTypes = {
   type: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
   hint: PropTypes.node,
+  validate: PropTypes.func,
 };
 
 PromptModal.defaultProps = {
@@ -345,6 +348,7 @@ PromptModal.defaultProps = {
   initial: null,
   type: "text",
   hint: null,
+  validate: null,
 };
 
 export const ConfirmationListener = () => {
@@ -379,7 +383,29 @@ export const ConfirmationListener = () => {
       </Modal>
     );
 
-  if (modal.modalType === "prompt")
+  if (modal.modalType === "prompt") {
+    if (typeof modal.options !== "undefined") {
+      const {
+        initial = "",
+        type = "text",
+        hint = undefined,
+        validate = undefined,
+      } = modal.options;
+      return (
+        <PromptModal
+          isOpen={modalShown}
+          onClose={onClose}
+          onSave={modal.cb}
+          title={modal.title}
+          question={modal.question}
+          initial={initial}
+          type={type}
+          hint={hint}
+          validate={validate}
+        />
+      );
+    }
+
     return (
       <PromptModal
         isOpen={modalShown}
@@ -392,6 +418,7 @@ export const ConfirmationListener = () => {
         hint={modal.hint}
       />
     );
+  }
 
   if (modal.modalType === "confirmation")
     return (
@@ -462,6 +489,16 @@ export const prompt = (
 ) => {
   if (!title || !question)
     throw new Error("Title and question must be specified");
+
+  if (typeof initial === "object") {
+    eventManager.emit(EVENTS.SHOW_MODAL, {
+      modalType: "prompt",
+      title,
+      question,
+      cb,
+      options: initial,
+    });
+  }
 
   eventManager.emit(EVENTS.SHOW_MODAL, {
     modalType: "prompt",
