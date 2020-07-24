@@ -11,6 +11,7 @@ import replace from "rollup-plugin-replace";
 import json from "@rollup/plugin-json";
 import alias from "@rollup/plugin-alias";
 import cssImport from "postcss-import";
+import path from "path";
 
 import * as react from "react";
 import * as reactDom from "react-dom";
@@ -18,6 +19,8 @@ import * as reactIs from "react-is";
 import * as propTypes from "prop-types";
 
 import pkg from "./package.json";
+
+const projectRootDir = path.resolve(__dirname);
 
 const plugins = [
   external(),
@@ -72,7 +75,12 @@ const oneUMD = {
     json(),
     // builtins(),
     alias({
-      entries: [{ find: "crypto", replacement: "./utils/randomBytes.js" }],
+      entries: [
+        {
+          find: "crypto",
+          replacement: path.resolve(projectRootDir, "utils/randomBytes.js"),
+        },
+      ],
     }),
     ...plugins,
     replace({

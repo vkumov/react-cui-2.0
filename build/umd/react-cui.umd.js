@@ -5,9 +5,9 @@
 }(this, (function (exports, React, PropTypes, formik, ReactDOM, ReactModal) { 'use strict';
 
   var React__default = 'default' in React ? React['default'] : React;
-  PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
+  PropTypes = PropTypes && Object.prototype.hasOwnProperty.call(PropTypes, 'default') ? PropTypes['default'] : PropTypes;
   var ReactDOM__default = 'default' in ReactDOM ? ReactDOM['default'] : ReactDOM;
-  ReactModal = ReactModal && ReactModal.hasOwnProperty('default') ? ReactModal['default'] : ReactModal;
+  ReactModal = ReactModal && Object.prototype.hasOwnProperty.call(ReactModal, 'default') ? ReactModal['default'] : ReactModal;
 
   function _defineProperty(obj, key, value) {
     if (key in obj) {
@@ -157,13 +157,13 @@
 
     if (dismissed) return null;
     const [alertClass, iconClass] = classes(type, icon);
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: `alert ${alertClass} ${className || ""}`
-    }, withIcon ? React__default.createElement("div", {
+    }, withIcon ? /*#__PURE__*/React__default.createElement("div", {
       className: `alert__icon ${iconClass}`
-    }) : null, React__default.createElement("div", {
+    }) : null, /*#__PURE__*/React__default.createElement("div", {
       className: "alert__message"
-    }, title && React__default.createElement("h4", null, title), children), dismissable && React__default.createElement("a", {
+    }, title && /*#__PURE__*/React__default.createElement("h4", null, title), children), dismissable && /*#__PURE__*/React__default.createElement("a", {
       className: "alert__close icon-close",
       onClick: handleDismiss
     }));
@@ -191,7 +191,7 @@
   Alert.Warning = (_ref) => {
     let props = _objectWithoutProperties(_ref, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "warning"
     }, props));
   };
@@ -199,7 +199,7 @@
   Alert.Danger = (_ref2) => {
     let props = _objectWithoutProperties(_ref2, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "danger"
     }, props));
   };
@@ -207,7 +207,7 @@
   Alert.Error = (_ref3) => {
     let props = _objectWithoutProperties(_ref3, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "error"
     }, props));
   };
@@ -215,7 +215,7 @@
   Alert.Success = (_ref4) => {
     let props = _objectWithoutProperties(_ref4, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "success"
     }, props));
   };
@@ -223,7 +223,7 @@
   Alert.Info = (_ref5) => {
     let props = _objectWithoutProperties(_ref5, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "info"
     }, props));
   };
@@ -231,7 +231,7 @@
   Alert.Dark = (_ref6) => {
     let props = _objectWithoutProperties(_ref6, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "dark"
     }, props));
   };
@@ -239,7 +239,7 @@
   Alert.Light = (_ref7) => {
     let props = _objectWithoutProperties(_ref7, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "light"
     }, props));
   };
@@ -247,7 +247,7 @@
   Alert.WarningAlt = (_ref8) => {
     let props = _objectWithoutProperties(_ref8, ["type"]);
 
-    return React__default.createElement(Alert, _extends({
+    return /*#__PURE__*/React__default.createElement(Alert, _extends({
       type: "warning-alt"
     }, props));
   };
@@ -256,7 +256,7 @@
     condition,
     wrapper,
     children
-  }) => condition ? React__default.cloneElement(wrapper, null, children) : children;
+  }) => condition ? /*#__PURE__*/React__default.cloneElement(wrapper, null, children) : children;
   ConditionalWrapper.propTypes = {
     condition: PropTypes.bool.isRequired,
     wrapper: PropTypes.element.isRequired,
@@ -339,32 +339,32 @@
   }) => {
     switch (type) {
       case "icon":
-        return React__default.createElement("span", {
+        return /*#__PURE__*/React__default.createElement("span", {
           onClick: handleClick,
           className: className
         });
 
       case "link":
-        return React__default.createElement("a", {
+        return /*#__PURE__*/React__default.createElement("a", {
           onClick: handleClick,
           className: className
         }, header);
 
       case "div":
-        return React__default.createElement("div", {
+        return /*#__PURE__*/React__default.createElement("div", {
           onClick: handleClick,
           className: className
         }, header);
 
       case "button":
-        return React__default.createElement("button", {
+        return /*#__PURE__*/React__default.createElement("button", {
           type: "button",
           onClick: handleClick,
           className: `btn ${className}`
         }, header);
 
       default:
-        return React__default.cloneElement(header, {
+        return /*#__PURE__*/React__default.cloneElement(header, {
           onClick: handleClick
         });
     }
@@ -434,17 +434,17 @@
       const {
         isOpen
       } = this.state;
-      return React__default.createElement("div", {
+      return /*#__PURE__*/React__default.createElement("div", {
         className: `dropdown${appendClass(["left", "center"].includes(openTo), `dropdown--${openTo}`)}${appendClass(up, "dropdown--up")}${appendClass(isOpen, "active")}${appendClass(divClassName)}`,
         ref: node => {
           this.node = node;
         }
-      }, React__default.createElement(DropdownHeader, {
+      }, /*#__PURE__*/React__default.createElement(DropdownHeader, {
         type: type,
         handleClick: this.handleClick,
         className: className,
         header: header
-      }), React__default.createElement("div", {
+      }), /*#__PURE__*/React__default.createElement("div", {
         className: "dropdown__menu"
       }, children));
     }
@@ -485,13 +485,13 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["selected", "icon", "children", "className"]);
 
-    return React__default.createElement("a", _extends({
+    return /*#__PURE__*/React__default.createElement("a", _extends({
       className: `${selected ? "selected" : ""}${className ? ` ${className}` : ""}`
-    }, props), icon ? React__default.createElement("span", {
+    }, props), icon ? /*#__PURE__*/React__default.createElement("span", {
       className: `icon-${icon}`
-    }) : null, React__default.createElement(ConditionalWrapper, {
+    }) : null, /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
       condition: Boolean(icon),
-      wrapper: React__default.createElement("span", {
+      wrapper: /*#__PURE__*/React__default.createElement("span", {
         className: "qtr-margin-left"
       })
     }, children));
@@ -509,13 +509,13 @@
     className: null
   };
 
-  Dropdown.Divider = () => React__default.createElement("div", {
+  Dropdown.Divider = () => /*#__PURE__*/React__default.createElement("div", {
     className: "divider"
   });
 
   Dropdown.Group = ({
     children
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: "dropdown__group"
   }, children);
 
@@ -525,7 +525,7 @@
 
   Dropdown.GroupHeader = ({
     header
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: "dropdown__group-header"
   }, header);
 
@@ -860,7 +860,17 @@
     return value !== undefined && value !== null;
   }
 
-  function allFilesAccepted(files, accept, minSize, maxSize) {
+  function allFilesAccepted(_ref) {
+    var files = _ref.files,
+        accept = _ref.accept,
+        minSize = _ref.minSize,
+        maxSize = _ref.maxSize,
+        multiple = _ref.multiple;
+
+    if (!multiple && files.length > 1) {
+      return false;
+    }
+
     return files.every(function (file) {
       return fileAccepted(file, accept) && fileMatchSize(file, minSize, maxSize);
     });
@@ -1520,9 +1530,6 @@
       event.persist();
       stopPropagation(event);
       dragTargetsRef.current = [];
-      dispatch({
-        type: 'reset'
-      });
 
       if (isEvtWithFiles(event)) {
         Promise.resolve(getFilesFromEvent(event)).then(function (files) {
@@ -1563,6 +1570,10 @@
           }
         });
       }
+
+      dispatch({
+        type: 'reset'
+      });
     }, [multiple, accept, minSize, maxSize, getFilesFromEvent, onDrop, onDropAccepted, onDropRejected, noDragEventsBubbling]);
 
     var composeHandler = function composeHandler(fn) {
@@ -1641,9 +1652,14 @@
       };
     }, [inputRef, accept, multiple, onDropCb, disabled]);
     var fileCount = draggedFiles.length;
-    var isMultipleAllowed = multiple || fileCount <= 1;
-    var isDragAccept = fileCount > 0 && allFilesAccepted(draggedFiles, accept, minSize, maxSize);
-    var isDragReject = fileCount > 0 && (!isDragAccept || !isMultipleAllowed);
+    var isDragAccept = fileCount > 0 && allFilesAccepted({
+      files: draggedFiles,
+      accept: accept,
+      minSize: minSize,
+      maxSize: maxSize,
+      multiple: multiple
+    });
+    var isDragReject = fileCount > 0 && !isDragAccept;
     return _objectSpread({}, state, {
       isDragAccept: isDragAccept,
       isDragReject: isDragReject,
@@ -1698,7 +1714,9 @@
         return _objectSpread({}, state, {
           isFileDialogActive: false,
           isDragActive: false,
-          draggedFiles: []
+          draggedFiles: [],
+          acceptedFiles: [],
+          rejectedFiles: []
         });
 
       default:
@@ -1874,49 +1892,49 @@
     i,
     removeFile,
     inline
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: "file-drop__card col-lg-4 col-md-6 col-sm-6",
     key: `${i}-${file.name}`
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "panel panel--bordered hover-emboss--small",
     onClick: e => e.stopPropagation()
-  }, inline ? React__default.createElement("div", {
+  }, inline ? /*#__PURE__*/React__default.createElement("div", {
     className: "panel__body flex flex-row"
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "text-left flex-fill",
     style: {
       maxWidth: "calc(100% - 20px)"
     }
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "text-ellipsis"
-  }, file.name), React__default.createElement("small", {
+  }, file.name), /*#__PURE__*/React__default.createElement("small", {
     style: {
       whiteSpace: "nowrap"
     }
   }, bytes_1.format(file.size, {
     unitSeparator: " "
-  }))), React__default.createElement("a", {
+  }))), /*#__PURE__*/React__default.createElement("a", {
     className: "link pull-right",
     onClick: () => removeFile(i)
-  }, React__default.createElement("span", {
+  }, /*#__PURE__*/React__default.createElement("span", {
     className: "icon-close",
     title: "Remove the file."
-  }))) : React__default.createElement("div", {
+  }))) : /*#__PURE__*/React__default.createElement("div", {
     className: "panel__body"
-  }, React__default.createElement("a", {
+  }, /*#__PURE__*/React__default.createElement("a", {
     className: "link pull-right",
     style: {
       marginRight: "5px"
     },
     onClick: () => removeFile(i)
-  }, React__default.createElement("span", {
+  }, /*#__PURE__*/React__default.createElement("span", {
     className: "icon-close",
     title: "Remove the file."
-  })), React__default.createElement("div", {
+  })), /*#__PURE__*/React__default.createElement("div", {
     className: "text-ellipsis half-margin-bottom"
-  }, file.name), React__default.createElement("span", {
+  }, file.name), /*#__PURE__*/React__default.createElement("span", {
     className: "file-icon text-muted icon-file-o qtr-margin-right"
-  }), React__default.createElement("small", null, bytes_1.format(file.size, {
+  }), /*#__PURE__*/React__default.createElement("small", null, bytes_1.format(file.size, {
     unitSeparator: " "
   })))));
 
@@ -1947,19 +1965,19 @@
           return null;
         }
 
-        return React__default.createElement("div", {
+        return /*#__PURE__*/React__default.createElement("div", {
           className: "dropzone-previews"
-        }, React__default.createElement("div", {
+        }, /*#__PURE__*/React__default.createElement("div", {
           className: "file-drop__container container--fluid"
-        }, React__default.createElement("div", {
+        }, /*#__PURE__*/React__default.createElement("div", {
           className: "row"
-        }, files.map((file, i) => React__default.createElement(FileCard, {
+        }, files.map((file, i) => /*#__PURE__*/React__default.createElement(FileCard, {
           key: i,
           file: file,
           i: i,
           inline: this.props.inline,
           removeFile: this.removeFile
-        })))), this.props.showTotalSelected && React__default.createElement("div", {
+        })))), this.props.showTotalSelected && /*#__PURE__*/React__default.createElement("div", {
           className: "file-drop__filecnt"
         }, files.length, " selected"));
       });
@@ -1972,26 +1990,26 @@
         }
 
         if (this.props.inline) {
-          return React__default.createElement("div", {
+          return /*#__PURE__*/React__default.createElement("div", {
             className: "dropzone-message flex flex-row flex-center-vertical"
-          }, React__default.createElement("h5", {
+          }, /*#__PURE__*/React__default.createElement("h5", {
             className: "text-muted text-left flex-fill no-margin"
-          }, "Click Here or Drop Files to Upload"), this.props.accept && React__default.createElement("span", {
+          }, "Click Here or Drop Files to Upload"), this.props.accept && /*#__PURE__*/React__default.createElement("span", {
             className: "text-muted text-small half-margin-right"
-          }, "Allowed files: ", this.props.accept.split(",").join(", ")), React__default.createElement("span", {
+          }, "Allowed files: ", this.props.accept.split(",").join(", ")), /*#__PURE__*/React__default.createElement("span", {
             className: "file-drop__icon icon-upload"
           }));
         }
 
-        return React__default.createElement("div", {
+        return /*#__PURE__*/React__default.createElement("div", {
           className: "dropzone-message"
-        }, React__default.createElement("span", {
+        }, /*#__PURE__*/React__default.createElement("span", {
           className: "file-drop__icon icon-upload"
-        }), React__default.createElement("h4", {
+        }), /*#__PURE__*/React__default.createElement("h4", {
           className: "text-muted"
-        }, "Click Here or Drop Files to Upload"), this.props.accept && React__default.createElement("div", {
+        }, "Click Here or Drop Files to Upload"), this.props.accept && /*#__PURE__*/React__default.createElement("div", {
           className: "text-muted"
-        }, "Allowed files: ", this.props.accept.split(",").join(", ")), this.maxFileSize && React__default.createElement("div", {
+        }, "Allowed files: ", this.props.accept.split(",").join(", ")), this.maxFileSize && /*#__PURE__*/React__default.createElement("div", {
           className: "text-muted"
         }, "Max file size:", " ", bytes_1.format(this.maxFileSize, {
           unitSeparator: " "
@@ -2037,13 +2055,13 @@
         }
       }
 
-      return React__default.createElement("div", {
+      return /*#__PURE__*/React__default.createElement("div", {
         className: "form-group" + (meta.touched && meta.error ? " form-group--error" : "")
-      }, React__default.createElement("div", {
+      }, /*#__PURE__*/React__default.createElement("div", {
         className: "form-group__text"
-      }, this.props.label ? React__default.createElement("label", {
+      }, this.props.label ? /*#__PURE__*/React__default.createElement("label", {
         htmlFor: this.props.name
-      }, this.props.label) : null, React__default.createElement(Dropzone, {
+      }, this.props.label) : null, /*#__PURE__*/React__default.createElement(Dropzone, {
         name: this.props.name,
         onDrop: this.handleDrop,
         maxSize: this.maxFileSize,
@@ -2051,12 +2069,12 @@
       }, ({
         getRootProps,
         getInputProps
-      }) => React__default.createElement("div", _extends({
+      }) => /*#__PURE__*/React__default.createElement("div", _extends({
         className: `dropzone ${padding}`
-      }, getRootProps()), React__default.createElement("input", getInputProps()), this.renderFiles(), this.renderMessage()))), meta.touched && meta.error && React__default.createElement("div", {
+      }, getRootProps()), /*#__PURE__*/React__default.createElement("input", getInputProps()), this.renderFiles(), this.renderMessage()))), meta.touched && meta.error && /*#__PURE__*/React__default.createElement("div", {
         className: `help-block text-danger`,
         role: "alert"
-      }, React__default.createElement("span", null, meta.error)));
+      }, /*#__PURE__*/React__default.createElement("span", null, meta.error)));
     }
 
   }
@@ -2076,18 +2094,18 @@
   const Spinner = ({
     size,
     text
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: "flex-center flex-middle",
     style: {
       flex: 1
     }
-  }, React__default.createElement("div", null, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("div", {
     className: `loader${size !== "default" ? ` loader--${size}` : ""} flex-center`
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "wrapper flex flex-center"
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "wheel"
-  }))), !text ? null : React__default.createElement("div", {
+  }))), !text ? null : /*#__PURE__*/React__default.createElement("div", {
     className: "base-margin-top text-center"
   }, text || "Loading...")));
   Spinner.propTypes = {
@@ -2100,9 +2118,9 @@
   };
   const Dots = ({
     color
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: `loading-dots${color !== "primary" ? ` loading-dots--${color}` : ""}`
-  }, React__default.createElement("span", null), React__default.createElement("span", null), React__default.createElement("span", null));
+  }, /*#__PURE__*/React__default.createElement("span", null), /*#__PURE__*/React__default.createElement("span", null), /*#__PURE__*/React__default.createElement("span", null));
   Dots.propTypes = {
     color: PropTypes.oneOf(["primary", "secondary", "tertiary", "success", "info", "warning", "warning-alt", "danger", "dark", "light"])
   };
@@ -2121,16 +2139,16 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["percentage", "withLabel", "label", "size", "color", "className"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `progressbar${appendClass(size !== "default", `progressbar--${size}`)}${appendClass(color, `progressbar--${color}`)}${appendClass(className)}`,
       "data-percentage": percentage
-    }, props), React__default.createElement("div", {
+    }, props), /*#__PURE__*/React__default.createElement("div", {
       className: "progressbar__fill"
-    }), React__default.createElement(DisplayIf, {
+    }), /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: withLabel
-    }, label ? React__default.createElement("div", {
+    }, label ? /*#__PURE__*/React__default.createElement("div", {
       className: "progressbar__label"
-    }, label) : React__default.createElement("div", {
+    }, label) : /*#__PURE__*/React__default.createElement("div", {
       className: "progressbar__label"
     }, `${percentage}%`)));
   };
@@ -2177,8 +2195,8 @@
     }
   }
 
-  var css = "body.cui .btn.btn--light{border:1px solid transparent;background:var(--cui-background-alt);color:var(--cui-inactive-color);transition:all .15s ease-in}body.cui .btn.btn--light.hover,body.cui .btn.btn--light:hover{color:var(--cui-active-color);text-decoration:none;box-shadow:inset 0 0 0 1px var(--cui-accent-color);transition:all .15s ease-in}body.cui .btn.btn--light.focus,body.cui .btn.btn--light:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity)),inset 0 0 0 1px var(--cui-accent-color);opacity:1;outline:var(--cui-focus-thickness) transparent;outline-offset:1px;outline-width:thin;outline-style:none}body.cui .btn.btn--light.disabled,body.cui .btn.btn--light[disabled]{background-color:transparent;border:1px dotted var(--cui-inactive-color);color:var(--cui-inactive-color);opacity:1}body.cui .btn.btn--light.active,body.cui .btn.btn--light.selected,body.cui .btn.btn--light:active{background-color:var(--cui-accent-color);box-shadow:inset 0 0 0 1px var(--cui-accent-color);color:var(--cui-color-dark);-webkit-transition:all .25s ease;transition:all .25s ease}.cui .btn-group>.btn.btn--light:active,.cui .btn-group>.btn.btn--light:focus,.cui .btn-group>.btn.btn--light:hover,.cui .btn-group>.dropdown>.btn.btn--light:active,.cui .btn-group>.dropdown>.btn.btn--light:focus,.cui .btn-group>.dropdown>.btn.btn--light:hover{outline:0;box-shadow:inset 0 0 0 1px var(--cui-accent-color)}";
-  styleInject(css);
+  var css_248z = "body.cui .btn.btn--light{border:1px solid transparent;background:var(--cui-background-alt);color:var(--cui-inactive-color);transition:all .15s ease-in}body.cui .btn.btn--light.hover,body.cui .btn.btn--light:hover{color:var(--cui-active-color);text-decoration:none;box-shadow:inset 0 0 0 1px var(--cui-accent-color);transition:all .15s ease-in}body.cui .btn.btn--light.focus,body.cui .btn.btn--light:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity)),inset 0 0 0 1px var(--cui-accent-color);opacity:1;outline:var(--cui-focus-thickness) transparent;outline-offset:1px;outline-width:thin;outline-style:none}body.cui .btn.btn--light.disabled,body.cui .btn.btn--light[disabled]{background-color:transparent;border:1px dotted var(--cui-inactive-color);color:var(--cui-inactive-color);opacity:1}body.cui .btn.btn--light.active,body.cui .btn.btn--light.selected,body.cui .btn.btn--light:active{background-color:var(--cui-accent-color);box-shadow:inset 0 0 0 1px var(--cui-accent-color);color:var(--cui-color-dark);-webkit-transition:all .25s ease;transition:all .25s ease}.cui .btn-group>.btn.btn--light:active,.cui .btn-group>.btn.btn--light:focus,.cui .btn-group>.btn.btn--light:hover,.cui .btn-group>.dropdown>.btn.btn--light:active,.cui .btn-group>.dropdown>.btn.btn--light:focus,.cui .btn-group>.dropdown>.btn.btn--light:hover{outline:0;box-shadow:inset 0 0 0 1px var(--cui-accent-color)}";
+  styleInject(css_248z);
 
   const Button = (_ref) => {
     let {
@@ -2196,45 +2214,45 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["size", "color", "wide", "justified", "circle", "className", "asLink", "style", "selected", "type", "icon"]);
 
-    return React__default.createElement(asLink ? "a" : "button", _objectSpread2({
+    return /*#__PURE__*/React__default.createElement(asLink ? "a" : "button", _objectSpread2(_objectSpread2({
       className: `btn${appendClass(size !== "default", `btn--${size}`)} btn--${color}${appendClass(wide, "btn--wide")}${appendClass(justified, "btn--justified")}${appendClass(icon, "btn--icon")}${appendClass(circle, "btn--circle")}${appendClass(selected, "selected")}${appendClass(className)}${appendClass(asLink, "flex-middle flex-center")}`,
-      style: _objectSpread2({}, style || {}, {}, asLink ? {
+      style: _objectSpread2(_objectSpread2({}, style || {}), asLink ? {
         display: "flex"
       } : {})
     }, asLink ? {} : {
       type: type || "button"
-    }, {}, props));
+    }), props));
   };
 
-  Button.Primary = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Primary = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "primary"
   }));
 
-  Button.Secondary = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Secondary = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "secondary"
   }));
 
-  Button.Success = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Success = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "success"
   }));
 
-  Button.Dark = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Dark = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "dark"
   }));
 
-  Button.Ghost = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Ghost = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "ghost"
   }));
 
-  Button.Link = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Link = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "link"
   }));
 
-  Button.Light = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Light = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "light"
   }));
 
-  Button.Danger = props => React__default.createElement(Button, _extends({}, props, {
+  Button.Danger = props => /*#__PURE__*/React__default.createElement(Button, _extends({}, props, {
     color: "danger"
   }));
 
@@ -2272,7 +2290,7 @@
     } = _ref2,
         props = _objectWithoutProperties(_ref2, ["square", "withDivider", "className"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `btn-group${appendClass(square, "btn-group--square")}${appendClass(withDivider, " btn-group--divider")}${appendClass(className)}`
     }, props));
   };
@@ -2300,9 +2318,9 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["size", "color", "bordered", "removable", "onRemove", "raised", "className", "children"]);
 
-    return React__default.createElement("span", _extends({
+    return /*#__PURE__*/React__default.createElement("span", _extends({
       className: `${"label" + ` label--${color}`}${size !== "default" ? ` label--${size}` : ""}${bordered ? " label--bordered" : ""}${raised ? " label--raised" : ""}${className ? ` ${className}` : ""}`
-    }, props), children, removable ? React__default.createElement("span", {
+    }, props), children, removable ? /*#__PURE__*/React__default.createElement("span", {
       className: "icon-close",
       onClick: onRemove
     }) : null);
@@ -2330,7 +2348,7 @@
   Label.Primary = (_ref2) => {
     let props = _objectWithoutProperties(_ref2, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "primary"
     }, props));
   };
@@ -2338,7 +2356,7 @@
   Label.Secondary = (_ref3) => {
     let props = _objectWithoutProperties(_ref3, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "secondary"
     }, props));
   };
@@ -2346,7 +2364,7 @@
   Label.Tertiary = (_ref4) => {
     let props = _objectWithoutProperties(_ref4, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "tertiary"
     }, props));
   };
@@ -2354,7 +2372,7 @@
   Label.Success = (_ref5) => {
     let props = _objectWithoutProperties(_ref5, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "success"
     }, props));
   };
@@ -2362,7 +2380,7 @@
   Label.Info = (_ref6) => {
     let props = _objectWithoutProperties(_ref6, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "info"
     }, props));
   };
@@ -2370,7 +2388,7 @@
   Label.WarningAlt = (_ref7) => {
     let props = _objectWithoutProperties(_ref7, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "warning-alt"
     }, props));
   };
@@ -2378,7 +2396,7 @@
   Label.Warning = (_ref8) => {
     let props = _objectWithoutProperties(_ref8, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "warning"
     }, props));
   };
@@ -2386,7 +2404,7 @@
   Label.Danger = (_ref9) => {
     let props = _objectWithoutProperties(_ref9, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "danger"
     }, props));
   };
@@ -2394,7 +2412,7 @@
   Label.Dark = (_ref10) => {
     let props = _objectWithoutProperties(_ref10, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "dark"
     }, props));
   };
@@ -2402,19 +2420,19 @@
   Label.Light = (_ref11) => {
     let props = _objectWithoutProperties(_ref11, ["color"]);
 
-    return React__default.createElement(Label, _extends({
+    return /*#__PURE__*/React__default.createElement(Label, _extends({
       color: "light"
     }, props));
   };
 
   const randomBytes = (typeof self !== "undefined" && (self.crypto || self.msCrypto) ? function () {
     // Browsers
-    var crypto = self.crypto || self.msCrypto,
-        QUOTA = 65536;
+    const crypto = self.crypto || self.msCrypto;
+    const QUOTA = 65536;
     return function (n) {
-      var a = new Uint8Array(n);
+      const a = new Uint8Array(n);
 
-      for (var i = 0; i < n; i += QUOTA) {
+      for (let i = 0; i < n; i += QUOTA) {
         crypto.getRandomValues(a.subarray(i, i + Math.min(n - i, QUOTA)));
       }
 
@@ -2422,7 +2440,7 @@
     };
   } : function () {
     // Node
-    return require("crypto").randomBytes;
+    return crypto.randomBytes;
   })();
   const crypto = {
     randomBytes
@@ -2472,15 +2490,15 @@
     return buf || bytesToUuid(rnds);
   }
 
-  var css$1 = ".cui .form-group.dropdown .select+.dropdown__menu{max-width:unset!important;width:100%!important}";
-  styleInject(css$1);
+  var css_248z$1 = ".cui .form-group.dropdown .select+.dropdown__menu{max-width:unset!important;width:100%!important}";
+  styleInject(css_248z$1);
 
   const InputHelpBlock = ({
     text
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: "form-group__help",
     role: "alert"
-  }, React__default.createElement("span", null, text));
+  }, /*#__PURE__*/React__default.createElement("span", null, text));
 
   class Select extends React__default.Component {
     constructor(props) {
@@ -2559,20 +2577,20 @@
         } = child.props;
 
         if (this.props.multiple) {
-          return React__default.createElement("a", {
+          return /*#__PURE__*/React__default.createElement("a", {
             disabled: disabled
-          }, React__default.createElement("label", {
+          }, /*#__PURE__*/React__default.createElement("label", {
             className: "checkbox"
-          }, React__default.createElement("input", {
+          }, /*#__PURE__*/React__default.createElement("input", {
             type: "checkbox",
             onClick: e => this.handleOptionClick(e, value, Array.isArray(children) ? children.join("") : children),
             checked: this.isSelected(value) ? true : false
-          }), React__default.createElement("span", {
+          }), /*#__PURE__*/React__default.createElement("span", {
             className: "checkbox__input"
-          })), React__default.createElement("span", null, children));
+          })), /*#__PURE__*/React__default.createElement("span", null, children));
         }
 
-        return React__default.createElement("a", {
+        return /*#__PURE__*/React__default.createElement("a", {
           disabled: disabled,
           onClick: e => this.handleOptionClick(e, value, Array.isArray(children) ? children.join("") : children),
           className: this.isSelected(value) ? "selected" : ""
@@ -2584,9 +2602,9 @@
           label,
           children
         } = child.props;
-        return React__default.createElement("div", {
+        return /*#__PURE__*/React__default.createElement("div", {
           className: "dropdown__group"
-        }, React__default.createElement("div", {
+        }, /*#__PURE__*/React__default.createElement("div", {
           className: "dropdown__group-header"
         }, label), this.renderChildren(children));
       });
@@ -2664,7 +2682,7 @@
         touched,
         errors
       } = form;
-      return React__default.createElement("div", _extends({
+      return /*#__PURE__*/React__default.createElement("div", _extends({
         className: `form-group dropdown${appendClass(compressed, "input--compressed")}${appendClass(this.state.isOpen, "active")}${appendClass(inline, "label--inline")}${appendClass(up, "dropdown--up")}${appendClass(disabled, "disabled")}${appendClass(className)}${appendClass(formik.getIn(touched, field.name) && formik.getIn(errors, field.name), "form-group--error")}` // (asyncValidating ? " form-group--loading" : "")
         ,
         ref: innerRef || (node => {
@@ -2674,10 +2692,10 @@
         style: {
           display: "inline-block"
         }
-      } : {}), React__default.createElement("div", {
+      } : {}), /*#__PURE__*/React__default.createElement("div", {
         className: "form-group__text select",
         onClick: this.handleClick
-      }, React__default.createElement("input", _extends({
+      }, /*#__PURE__*/React__default.createElement("input", _extends({
         id: id
       }, field, {
         value: this.getShowValue(),
@@ -2687,16 +2705,16 @@
           width: `${width}px`,
           minWidth: `${width}px`
         }
-      } : {})), title ? React__default.createElement("label", {
+      } : {})), title ? /*#__PURE__*/React__default.createElement("label", {
         htmlFor: id
-      }, title) : null), React__default.createElement("div", _extends({
+      }, title) : null), /*#__PURE__*/React__default.createElement("div", _extends({
         className: "dropdown__menu"
       }, width ? {
         style: {
           width: `${width}px`,
           minWidth: `${width}px`
         }
-      } : {}), this.renderChildren(children)), formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? React__default.createElement(InputHelpBlock, {
+      } : {}), this.renderChildren(children)), formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? /*#__PURE__*/React__default.createElement(InputHelpBlock, {
         text: formik.getIn(errors, field.name)
       }) : null);
     }
@@ -2727,7 +2745,7 @@
     compressed: false
   };
 
-  const Panel = React__default.forwardRef((_ref, ref) => {
+  const Panel = /*#__PURE__*/React__default.forwardRef((_ref, ref) => {
     let {
       color,
       padding,
@@ -2738,7 +2756,7 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["color", "padding", "bordered", "raised", "well", "className"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `panel${appendClass(color !== "plain", `panel--${color}`)}${appendClass(padding !== "default", `panel--${padding}`)}${appendClass(bordered, () => {
       if (typeof bordered === "string") return `panel--bordered-${bordered}`;
       if (Array.isArray(bordered)) return bordered.map(b => `panel--bordered-${b}`).join(" ");
@@ -3495,7 +3513,9 @@
       };
 
       return React.createElement(Transition, Object.assign({}, props, {
-        timeout: preventExitTransition ? 0 : {
+        timeout: preventExitTransition ? collapse ? collapseDuration : 50
+        /* DEBOUNCE_DURATION */
+        : {
           enter: enterDuration,
           exit: collapse ? exitDuration + collapseDuration : exitDuration + 50
           /* DEBOUNCE_DURATION */
@@ -3503,7 +3523,7 @@
         },
         onEnter: onEnter,
         onEntered: onEntered,
-        onExit: preventExitTransition ? done : onExit,
+        onExit: preventExitTransition ? onExited : onExit,
         unmountOnExit: true
       }), children);
     };
@@ -4485,8 +4505,8 @@
     };
   }
 
-  var css$2 = ".Toastify__toast-container{z-index:9999;-webkit-transform:translateZ(9999px);position:fixed;padding:4px;width:320px;box-sizing:border-box;color:#fff}.Toastify__toast-container--top-left{top:1em;left:1em}.Toastify__toast-container--top-center{top:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--top-right{top:1em;right:1em}.Toastify__toast-container--bottom-left{bottom:1em;left:1em}.Toastify__toast-container--bottom-center{bottom:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--bottom-right{bottom:1em;right:1em}@media only screen and (max-width:480px){.Toastify__toast-container{width:100vw;padding:0;left:0;margin:0}.Toastify__toast-container--top-center,.Toastify__toast-container--top-left,.Toastify__toast-container--top-right{top:0;transform:translateX(0)}.Toastify__toast-container--bottom-center,.Toastify__toast-container--bottom-left,.Toastify__toast-container--bottom-right{bottom:0;transform:translateX(0)}.Toastify__toast-container--rtl{right:0;left:auto}}.Toastify__toast{position:relative;min-height:64px;box-sizing:border-box;margin-bottom:1rem;padding:8px;border-radius:1px;box-shadow:0 1px 10px 0 rgba(0,0,0,.1),0 2px 15px 0 rgba(0,0,0,.05);display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between;max-height:800px;overflow:hidden;font-family:sans-serif;cursor:pointer;direction:ltr}.Toastify__toast--rtl{direction:rtl}.Toastify__toast--dark{background:#121212;color:#fff}.Toastify__toast--default{background:#fff;color:#aaa}.Toastify__toast--info{background:#3498db}.Toastify__toast--success{background:#07bc0c}.Toastify__toast--warning{background:#f1c40f}.Toastify__toast--error{background:#e74c3c}.Toastify__toast-body{margin:auto 0;-ms-flex:1 1 auto;flex:1 1 auto}@media only screen and (max-width:480px){.Toastify__toast{margin-bottom:0}}.Toastify__close-button{color:#fff;background:transparent;outline:none;border:none;padding:0;cursor:pointer;opacity:.7;transition:.3s ease;-ms-flex-item-align:start;align-self:flex-start}.Toastify__close-button--default{color:#000;opacity:.3}.Toastify__close-button>svg{fill:currentColor;height:16px;width:14px}.Toastify__close-button:focus,.Toastify__close-button:hover{opacity:1}@keyframes Toastify__trackProgress{0%{transform:scaleX(1)}to{transform:scaleX(0)}}.Toastify__progress-bar{position:absolute;bottom:0;left:0;width:100%;height:5px;z-index:9999;opacity:.7;background-color:hsla(0,0%,100%,.7);transform-origin:left}.Toastify__progress-bar--animated{animation:Toastify__trackProgress linear 1 forwards}.Toastify__progress-bar--controlled{transition:transform .2s}.Toastify__progress-bar--rtl{right:0;left:auto;transform-origin:right}.Toastify__progress-bar--default{background:linear-gradient(90deg,#4cd964,#5ac8fa,#007aff,#34aadc,#5856d6,#ff2d55)}.Toastify__progress-bar--dark{background:#bb86fc}@keyframes Toastify__bounceInRight{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(3000px,0,0)}60%{opacity:1;transform:translate3d(-25px,0,0)}75%{transform:translate3d(10px,0,0)}90%{transform:translate3d(-5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutRight{20%{opacity:1;transform:translate3d(-20px,0,0)}to{opacity:0;transform:translate3d(2000px,0,0)}}@keyframes Toastify__bounceInLeft{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(-3000px,0,0)}60%{opacity:1;transform:translate3d(25px,0,0)}75%{transform:translate3d(-10px,0,0)}90%{transform:translate3d(5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutLeft{20%{opacity:1;transform:translate3d(20px,0,0)}to{opacity:0;transform:translate3d(-2000px,0,0)}}@keyframes Toastify__bounceInUp{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,3000px,0)}60%{opacity:1;transform:translate3d(0,-20px,0)}75%{transform:translate3d(0,10px,0)}90%{transform:translate3d(0,-5px,0)}to{transform:translateZ(0)}}@keyframes Toastify__bounceOutUp{20%{transform:translate3d(0,-10px,0)}40%,45%{opacity:1;transform:translate3d(0,20px,0)}to{opacity:0;transform:translate3d(0,-2000px,0)}}@keyframes Toastify__bounceInDown{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,-3000px,0)}60%{opacity:1;transform:translate3d(0,25px,0)}75%{transform:translate3d(0,-10px,0)}90%{transform:translate3d(0,5px,0)}to{transform:none}}@keyframes Toastify__bounceOutDown{20%{transform:translate3d(0,10px,0)}40%,45%{opacity:1;transform:translate3d(0,-20px,0)}to{opacity:0;transform:translate3d(0,2000px,0)}}.Toastify__bounce-enter--bottom-left,.Toastify__bounce-enter--top-left{animation-name:Toastify__bounceInLeft}.Toastify__bounce-enter--bottom-right,.Toastify__bounce-enter--top-right{animation-name:Toastify__bounceInRight}.Toastify__bounce-enter--top-center{animation-name:Toastify__bounceInDown}.Toastify__bounce-enter--bottom-center{animation-name:Toastify__bounceInUp}.Toastify__bounce-exit--bottom-left,.Toastify__bounce-exit--top-left{animation-name:Toastify__bounceOutLeft}.Toastify__bounce-exit--bottom-right,.Toastify__bounce-exit--top-right{animation-name:Toastify__bounceOutRight}.Toastify__bounce-exit--top-center{animation-name:Toastify__bounceOutUp}.Toastify__bounce-exit--bottom-center{animation-name:Toastify__bounceOutDown}@keyframes Toastify__zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}@keyframes Toastify__zoomOut{0%{opacity:1}50%{opacity:0;transform:scale3d(.3,.3,.3)}to{opacity:0}}.Toastify__zoom-enter{animation-name:Toastify__zoomIn}.Toastify__zoom-exit{animation-name:Toastify__zoomOut}@keyframes Toastify__flipIn{0%{transform:perspective(400px) rotateX(90deg);animation-timing-function:ease-in;opacity:0}40%{transform:perspective(400px) rotateX(-20deg);animation-timing-function:ease-in}60%{transform:perspective(400px) rotateX(10deg);opacity:1}80%{transform:perspective(400px) rotateX(-5deg)}to{transform:perspective(400px)}}@keyframes Toastify__flipOut{0%{transform:perspective(400px)}30%{transform:perspective(400px) rotateX(-20deg);opacity:1}to{transform:perspective(400px) rotateX(90deg);opacity:0}}.Toastify__flip-enter{animation-name:Toastify__flipIn}.Toastify__flip-exit{animation-name:Toastify__flipOut}@keyframes Toastify__slideInRight{0%{transform:translate3d(110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInLeft{0%{transform:translate3d(-110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInUp{0%{transform:translate3d(0,110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInDown{0%{transform:translate3d(0,-110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideOutRight{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(110%,0,0)}}@keyframes Toastify__slideOutLeft{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(-110%,0,0)}}@keyframes Toastify__slideOutDown{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(0,500px,0)}}@keyframes Toastify__slideOutUp{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(0,-500px,0)}}.Toastify__slide-enter--bottom-left,.Toastify__slide-enter--top-left{animation-name:Toastify__slideInLeft}.Toastify__slide-enter--bottom-right,.Toastify__slide-enter--top-right{animation-name:Toastify__slideInRight}.Toastify__slide-enter--top-center{animation-name:Toastify__slideInDown}.Toastify__slide-enter--bottom-center{animation-name:Toastify__slideInUp}.Toastify__slide-exit--bottom-left,.Toastify__slide-exit--top-left{animation-name:Toastify__slideOutLeft}.Toastify__slide-exit--bottom-right,.Toastify__slide-exit--top-right{animation-name:Toastify__slideOutRight}.Toastify__slide-exit--top-center{animation-name:Toastify__slideOutUp}.Toastify__slide-exit--bottom-center{animation-name:Toastify__slideOutDown}.cui .Toastify__toast{min-height:unset!important;padding:unset;overflow:unset;font-family:unset;box-shadow:unset}.cui .Toastify__toast--default,.cui .Toastify__toast-container{color:unset}";
-  styleInject(css$2);
+  var css_248z$2 = ".Toastify__toast-container{z-index:9999;-webkit-transform:translateZ(9999px);position:fixed;padding:4px;width:320px;box-sizing:border-box;color:#fff}.Toastify__toast-container--top-left{top:1em;left:1em}.Toastify__toast-container--top-center{top:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--top-right{top:1em;right:1em}.Toastify__toast-container--bottom-left{bottom:1em;left:1em}.Toastify__toast-container--bottom-center{bottom:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--bottom-right{bottom:1em;right:1em}@media only screen and (max-width:480px){.Toastify__toast-container{width:100vw;padding:0;left:0;margin:0}.Toastify__toast-container--top-center,.Toastify__toast-container--top-left,.Toastify__toast-container--top-right{top:0;transform:translateX(0)}.Toastify__toast-container--bottom-center,.Toastify__toast-container--bottom-left,.Toastify__toast-container--bottom-right{bottom:0;transform:translateX(0)}.Toastify__toast-container--rtl{right:0;left:auto}}.Toastify__toast{position:relative;min-height:64px;box-sizing:border-box;margin-bottom:1rem;padding:8px;border-radius:1px;box-shadow:0 1px 10px 0 rgba(0,0,0,.1),0 2px 15px 0 rgba(0,0,0,.05);display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between;max-height:800px;overflow:hidden;font-family:sans-serif;cursor:pointer;direction:ltr}.Toastify__toast--rtl{direction:rtl}.Toastify__toast--dark{background:#121212;color:#fff}.Toastify__toast--default{background:#fff;color:#aaa}.Toastify__toast--info{background:#3498db}.Toastify__toast--success{background:#07bc0c}.Toastify__toast--warning{background:#f1c40f}.Toastify__toast--error{background:#e74c3c}.Toastify__toast-body{margin:auto 0;-ms-flex:1 1 auto;flex:1 1 auto}@media only screen and (max-width:480px){.Toastify__toast{margin-bottom:0}}.Toastify__close-button{color:#fff;background:transparent;outline:none;border:none;padding:0;cursor:pointer;opacity:.7;transition:.3s ease;-ms-flex-item-align:start;align-self:flex-start}.Toastify__close-button--default{color:#000;opacity:.3}.Toastify__close-button>svg{fill:currentColor;height:16px;width:14px}.Toastify__close-button:focus,.Toastify__close-button:hover{opacity:1}@keyframes Toastify__trackProgress{0%{transform:scaleX(1)}to{transform:scaleX(0)}}.Toastify__progress-bar{position:absolute;bottom:0;left:0;width:100%;height:5px;z-index:9999;opacity:.7;background-color:hsla(0,0%,100%,.7);transform-origin:left}.Toastify__progress-bar--animated{animation:Toastify__trackProgress linear 1 forwards}.Toastify__progress-bar--controlled{transition:transform .2s}.Toastify__progress-bar--rtl{right:0;left:auto;transform-origin:right}.Toastify__progress-bar--default{background:linear-gradient(90deg,#4cd964,#5ac8fa,#007aff,#34aadc,#5856d6,#ff2d55)}.Toastify__progress-bar--dark{background:#bb86fc}@keyframes Toastify__bounceInRight{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(3000px,0,0)}60%{opacity:1;transform:translate3d(-25px,0,0)}75%{transform:translate3d(10px,0,0)}90%{transform:translate3d(-5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutRight{20%{opacity:1;transform:translate3d(-20px,0,0)}to{opacity:0;transform:translate3d(2000px,0,0)}}@keyframes Toastify__bounceInLeft{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(-3000px,0,0)}60%{opacity:1;transform:translate3d(25px,0,0)}75%{transform:translate3d(-10px,0,0)}90%{transform:translate3d(5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutLeft{20%{opacity:1;transform:translate3d(20px,0,0)}to{opacity:0;transform:translate3d(-2000px,0,0)}}@keyframes Toastify__bounceInUp{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,3000px,0)}60%{opacity:1;transform:translate3d(0,-20px,0)}75%{transform:translate3d(0,10px,0)}90%{transform:translate3d(0,-5px,0)}to{transform:translateZ(0)}}@keyframes Toastify__bounceOutUp{20%{transform:translate3d(0,-10px,0)}40%,45%{opacity:1;transform:translate3d(0,20px,0)}to{opacity:0;transform:translate3d(0,-2000px,0)}}@keyframes Toastify__bounceInDown{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,-3000px,0)}60%{opacity:1;transform:translate3d(0,25px,0)}75%{transform:translate3d(0,-10px,0)}90%{transform:translate3d(0,5px,0)}to{transform:none}}@keyframes Toastify__bounceOutDown{20%{transform:translate3d(0,10px,0)}40%,45%{opacity:1;transform:translate3d(0,-20px,0)}to{opacity:0;transform:translate3d(0,2000px,0)}}.Toastify__bounce-enter--bottom-left,.Toastify__bounce-enter--top-left{animation-name:Toastify__bounceInLeft}.Toastify__bounce-enter--bottom-right,.Toastify__bounce-enter--top-right{animation-name:Toastify__bounceInRight}.Toastify__bounce-enter--top-center{animation-name:Toastify__bounceInDown}.Toastify__bounce-enter--bottom-center{animation-name:Toastify__bounceInUp}.Toastify__bounce-exit--bottom-left,.Toastify__bounce-exit--top-left{animation-name:Toastify__bounceOutLeft}.Toastify__bounce-exit--bottom-right,.Toastify__bounce-exit--top-right{animation-name:Toastify__bounceOutRight}.Toastify__bounce-exit--top-center{animation-name:Toastify__bounceOutUp}.Toastify__bounce-exit--bottom-center{animation-name:Toastify__bounceOutDown}@keyframes Toastify__zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}@keyframes Toastify__zoomOut{0%{opacity:1}50%{opacity:0;transform:scale3d(.3,.3,.3)}to{opacity:0}}.Toastify__zoom-enter{animation-name:Toastify__zoomIn}.Toastify__zoom-exit{animation-name:Toastify__zoomOut}@keyframes Toastify__flipIn{0%{transform:perspective(400px) rotateX(90deg);animation-timing-function:ease-in;opacity:0}40%{transform:perspective(400px) rotateX(-20deg);animation-timing-function:ease-in}60%{transform:perspective(400px) rotateX(10deg);opacity:1}80%{transform:perspective(400px) rotateX(-5deg)}to{transform:perspective(400px)}}@keyframes Toastify__flipOut{0%{transform:perspective(400px)}30%{transform:perspective(400px) rotateX(-20deg);opacity:1}to{transform:perspective(400px) rotateX(90deg);opacity:0}}.Toastify__flip-enter{animation-name:Toastify__flipIn}.Toastify__flip-exit{animation-name:Toastify__flipOut}@keyframes Toastify__slideInRight{0%{transform:translate3d(110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInLeft{0%{transform:translate3d(-110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInUp{0%{transform:translate3d(0,110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInDown{0%{transform:translate3d(0,-110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideOutRight{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(110%,0,0)}}@keyframes Toastify__slideOutLeft{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(-110%,0,0)}}@keyframes Toastify__slideOutDown{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(0,500px,0)}}@keyframes Toastify__slideOutUp{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(0,-500px,0)}}.Toastify__slide-enter--bottom-left,.Toastify__slide-enter--top-left{animation-name:Toastify__slideInLeft}.Toastify__slide-enter--bottom-right,.Toastify__slide-enter--top-right{animation-name:Toastify__slideInRight}.Toastify__slide-enter--top-center{animation-name:Toastify__slideInDown}.Toastify__slide-enter--bottom-center{animation-name:Toastify__slideInUp}.Toastify__slide-exit--bottom-left,.Toastify__slide-exit--top-left{animation-name:Toastify__slideOutLeft}.Toastify__slide-exit--bottom-right,.Toastify__slide-exit--top-right{animation-name:Toastify__slideOutRight}.Toastify__slide-exit--top-center{animation-name:Toastify__slideOutUp}.Toastify__slide-exit--bottom-center{animation-name:Toastify__slideOutDown}.cui .Toastify__toast{min-height:unset!important;padding:unset;overflow:unset;font-family:unset;box-shadow:unset}.cui .Toastify__toast--default,.cui .Toastify__toast-container{color:unset}";
+  styleInject(css_248z$2);
 
   const copyStringToClipboard = str => {
     // Create new element
@@ -4533,7 +4553,7 @@
   const ToastIcon = ({
     type
   }) => {
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: `toast__icon ${iconType(type) || ""}`
     });
   };
@@ -4543,17 +4563,17 @@
     message,
     type,
     copyError
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: "toast"
-  }, React__default.createElement(ToastIcon, {
+  }, /*#__PURE__*/React__default.createElement(ToastIcon, {
     type: type
-  }), React__default.createElement("div", {
+  }), /*#__PURE__*/React__default.createElement("div", {
     className: "toast__body"
-  }, title ? React__default.createElement("div", {
+  }, title ? /*#__PURE__*/React__default.createElement("div", {
     className: "toast__title"
-  }, title) : null, message ? React__default.createElement("div", {
+  }, title) : null, message ? /*#__PURE__*/React__default.createElement("div", {
     className: "toast__message"
-  }, message, type === "error" && copyError ? React__default.createElement(React__default.Fragment, null, React__default.createElement("br", null), React__default.createElement("br", null), React__default.createElement("a", {
+  }, message, type === "error" && copyError ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement("br", null), /*#__PURE__*/React__default.createElement("br", null), /*#__PURE__*/React__default.createElement("a", {
     onClick: () => copyStringToClipboard(message)
   }, "Copy to clipboard")) : null) : null));
   const Fade = cssTransition({
@@ -4561,7 +4581,7 @@
     exit: "fadeOut",
     duration: 300
   });
-  const toast$1 = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {}) => toast(React__default.createElement(Toast$1, {
+  const toast$1 = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {}) => toast( /*#__PURE__*/React__default.createElement(Toast$1, {
     type,
     title,
     message,
@@ -4584,7 +4604,7 @@
 
   toast$1.dismiss = (...args) => toast.dismiss(...args);
 
-  const ToastContainer$1 = props => React__default.createElement(ToastContainer, _extends({
+  const ToastContainer$1 = props => /*#__PURE__*/React__default.createElement(ToastContainer, _extends({
     transition: Fade
   }, props, {
     closeButton: false,
@@ -4614,11 +4634,11 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["children", "fluid"]);
 
-    return React__default.createElement("header", _extends({
+    return /*#__PURE__*/React__default.createElement("header", _extends({
       className: "header"
-    }, props), React__default.createElement("div", {
+    }, props), /*#__PURE__*/React__default.createElement("div", {
       className: `container${fluid ? "-fluid" : ""}`
-    }, React__default.createElement("div", {
+    }, /*#__PURE__*/React__default.createElement("div", {
       className: "header-panels"
     }, children)));
   };
@@ -4637,7 +4657,7 @@
     } = _ref2,
         props = _objectWithoutProperties(_ref2, ["children", "center", "right"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `header-panel${center ? " header-panel--center" : ""}${right ? " header-panel--right" : ""}`
     }, props), children);
   };
@@ -4658,14 +4678,14 @@
     } = _ref3,
         props = _objectWithoutProperties(_ref3, ["icon", "link", "title"]);
 
-    return React__default.createElement(HeaderPanel, props, icon ? React__default.createElement("a", {
+    return /*#__PURE__*/React__default.createElement(HeaderPanel, props, icon ? /*#__PURE__*/React__default.createElement("a", {
       className: "header__logo",
       href: link || "http://www.cisco.com",
       target: "_blank",
       rel: "noopener noreferrer"
-    }, React__default.createElement("span", {
+    }, /*#__PURE__*/React__default.createElement("span", {
       className: typeof icon === "string" ? `icon-${icon}` : "icon-cisco"
-    })) : null, React__default.createElement("div", {
+    })) : null, /*#__PURE__*/React__default.createElement("div", {
       className: "header__title"
     }, title));
   };
@@ -4679,47 +4699,47 @@
     link: null
   };
 
-  const Footer = () => React__default.createElement("footer", {
+  const Footer = () => /*#__PURE__*/React__default.createElement("footer", {
     className: "footer"
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "footer__links"
-  }, React__default.createElement("ul", {
+  }, /*#__PURE__*/React__default.createElement("ul", {
     className: "list list--inline"
-  }, React__default.createElement("li", null, React__default.createElement("a", {
+  }, /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "http://www.cisco.com/cisco/web/siteassets/contacts/index.html",
     target: "_blank",
     rel: "noopener noreferrer"
-  }, "Contacts")), React__default.createElement("li", null, React__default.createElement("a", {
+  }, "Contacts")), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "https://secure.opinionlab.com/ccc01/o.asp?id=jBjOhqOJ",
     target: "_blank",
     rel: "noopener noreferrer"
-  }, "Feedback")), React__default.createElement("li", null, React__default.createElement("a", {
+  }, "Feedback")), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "https://www.cisco.com/c/en/us/about/help.html",
     target: "_blank",
     rel: "noopener noreferrer"
-  }, "Help")), React__default.createElement("li", null, React__default.createElement("a", {
+  }, "Help")), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "http://www.cisco.com/c/en/us/about/sitemap.html",
     target: "_blank",
     rel: "noopener noreferrer"
-  }, "Site Map")), React__default.createElement("li", null, React__default.createElement("a", {
+  }, "Site Map")), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "https://www.cisco.com/c/en/us/about/legal/terms-conditions.html",
     target: "_blank",
     rel: "noopener noreferrer"
-  }, "Terms & Conditions")), React__default.createElement("li", null, React__default.createElement("a", {
+  }, "Terms & Conditions")), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html",
     target: "_blank",
     rel: "noopener noreferrer"
-  }, "Privacy Statement")), React__default.createElement("li", null, React__default.createElement("a", {
+  }, "Privacy Statement")), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html#cookies",
     target: "_blank",
     rel: "noopener noreferrer"
-  }, "Cookie Policy")), React__default.createElement("li", null, React__default.createElement("a", {
+  }, "Cookie Policy")), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("a", {
     href: "https://www.cisco.com/c/en/us/about/legal/trademarks.html",
     target: "_blank",
     rel: "noopener noreferrer"
   }, "Trademarks")))));
 
-  const Wrapper = React__default.createElement("div", {
+  const Wrapper = /*#__PURE__*/React__default.createElement("div", {
     className: "responsive-table"
   });
   const GenericTable = (_ref) => {
@@ -4737,10 +4757,10 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["outerWrap", "lined", "bordered", "striped", "selectable", "fixed", "wrapped", "compressed", "loose", "className"]);
 
-    return React__default.createElement(ConditionalWrapper, {
+    return /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
       condition: outerWrap,
       wrapper: Wrapper
-    }, React__default.createElement("table", _extends({
+    }, /*#__PURE__*/React__default.createElement("table", _extends({
       className: `table${appendClass(lined, "table--lined")}${appendClass(bordered, "table--bordered")}${appendClass(striped, "table--striped")}${appendClass(selectable, "table--selectable")}${appendClass(fixed, "table--fixed")}${appendClass(wrapped, "table--wrapped")}${appendClass(compressed, "table--compressed")}${appendClass(loose, "table--loose")}${appendClass(className)}`
     }, props)));
   };
@@ -4769,18 +4789,18 @@
     className: null
   };
 
-  const PaginationContext = React__default.createContext({});
+  const PaginationContext = /*#__PURE__*/React__default.createContext({});
 
   const Button$1 = ({
     active,
     content,
     disabled,
     position
-  }) => React__default.createElement(PaginationContext.Consumer, null, ({
+  }) => /*#__PURE__*/React__default.createElement(PaginationContext.Consumer, null, ({
     changePage
-  }) => React__default.createElement("li", {
+  }) => /*#__PURE__*/React__default.createElement("li", {
     className: active ? "active" : ""
-  }, React__default.createElement("a", {
+  }, /*#__PURE__*/React__default.createElement("a", {
     className: disabled ? "disabled" : "",
     onClick: e => changePage(e, position)
   }, content)));
@@ -4807,16 +4827,16 @@
     } = React__default.useContext(PaginationContext);
     const disabled = position < perPage + beginAt;
     const r = [];
-    if (icons && firstAndLast) r.push(React__default.createElement(Button$1, {
-      content: React__default.createElement("span", {
+    if (icons && firstAndLast) r.push( /*#__PURE__*/React__default.createElement(Button$1, {
+      content: /*#__PURE__*/React__default.createElement("span", {
         className: "icon-chevron-left-double"
       }),
       disabled: disabled,
       key: "first-page",
       position: beginAt
     }));
-    r.push(React__default.createElement(Button$1, {
-      content: icons ? React__default.createElement("span", {
+    r.push( /*#__PURE__*/React__default.createElement(Button$1, {
+      content: icons ? /*#__PURE__*/React__default.createElement("span", {
         className: "icon-chevron-left"
       }) : prev,
       disabled: disabled,
@@ -4839,16 +4859,16 @@
     const pages = Math.floor(total / perPage) + 1;
     const disabled = position > total - perPage + beginAt;
     const r = [];
-    r.push(React__default.createElement(Button$1, {
-      content: icons ? React__default.createElement("span", {
+    r.push( /*#__PURE__*/React__default.createElement(Button$1, {
+      content: icons ? /*#__PURE__*/React__default.createElement("span", {
         className: "icon-chevron-right"
       }) : next,
       disabled: disabled,
       key: "next-page",
       position: position + perPage
     }));
-    if (icons && firstAndLast) r.push(React__default.createElement(Button$1, {
-      content: React__default.createElement("span", {
+    if (icons && firstAndLast) r.push( /*#__PURE__*/React__default.createElement(Button$1, {
+      content: /*#__PURE__*/React__default.createElement("span", {
         className: "icon-chevron-right-double"
       }),
       disabled: disabled,
@@ -4861,13 +4881,13 @@
   const Pages = ({
     start,
     finish
-  }) => React__default.createElement(PaginationContext.Consumer, null, ({
+  }) => /*#__PURE__*/React__default.createElement(PaginationContext.Consumer, null, ({
     perPage,
     active,
     beginAt
   }) => [...Array(finish - start + 1)].map((v, i) => {
     const current = start + i;
-    return React__default.createElement(Button$1, {
+    return /*#__PURE__*/React__default.createElement(Button$1, {
       active: active === current,
       content: `${current}`,
       key: `${current}-page`,
@@ -4904,7 +4924,7 @@
       if (typeof onPageChange === "function") onPageChange(e, newPosition);
     };
 
-    return React__default.createElement(PaginationContext.Provider, {
+    return /*#__PURE__*/React__default.createElement(PaginationContext.Provider, {
       value: {
         active,
         beginAt,
@@ -4917,38 +4937,38 @@
         prev,
         total
       }
-    }, React__default.createElement("ul", _extends({
+    }, /*#__PURE__*/React__default.createElement("ul", _extends({
       className: `pagination${size !== "default" ? ` pagination--${size}` : ""}${rounded ? " pagination--rounded" : ""}${className ? ` ${className}` : ""}`
-    }, rest), React__default.createElement(FirstPrev, null), active < 4 || pages === 4 ? React__default.createElement(React__default.Fragment, null, React__default.createElement(Pages, {
+    }, rest), /*#__PURE__*/React__default.createElement(FirstPrev, null), active < 4 || pages === 4 ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Pages, {
       start: 1,
       finish: Math.min(pages, 4)
-    }), pages > 4 ? React__default.createElement(React__default.Fragment, null, React__default.createElement("li", null, React__default.createElement("span", {
+    }), pages > 4 ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("span", {
       className: "icon-more"
-    })), React__default.createElement(Button$1, {
+    })), /*#__PURE__*/React__default.createElement(Button$1, {
       content: pages,
       key: `${pages}-page`,
       position: (pages - 1) * perPage + beginAt
-    })) : null) : React__default.createElement(React__default.Fragment, null, React__default.createElement(Button$1, {
+    })) : null) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Button$1, {
       active: active === beginAt,
       content: "1",
       key: "1-page",
       position: beginAt
-    }), React__default.createElement("li", null, React__default.createElement("span", {
+    }), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("span", {
       className: "icon-more"
-    })), active < pages - 2 ? React__default.createElement(React__default.Fragment, null, React__default.createElement(Pages, {
+    })), active < pages - 2 ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Pages, {
       start: active - 1,
       finish: active + 1
-    }), React__default.createElement("li", null, React__default.createElement("span", {
+    }), /*#__PURE__*/React__default.createElement("li", null, /*#__PURE__*/React__default.createElement("span", {
       className: "icon-more"
-    })), React__default.createElement(Button$1, {
+    })), /*#__PURE__*/React__default.createElement(Button$1, {
       active: active === pages,
       content: pages,
       key: `${pages}-page`,
       position: (pages - 1) * perPage + beginAt
-    })) : React__default.createElement(Pages, {
+    })) : /*#__PURE__*/React__default.createElement(Pages, {
       start: pages - 3,
       finish: pages
-    })), React__default.createElement(NextLast, null)));
+    })), /*#__PURE__*/React__default.createElement(NextLast, null)));
   };
 
   Pagination.propTypes = {
@@ -4989,11 +5009,11 @@
     React__default.useEffect(() => {
       if (typeof onPerPageChange === "function") onPerPageChange(perPage);
     }, [perPage, onPerPageChange]);
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: "flex-middle"
-    }, React__default.createElement("span", {
+    }, /*#__PURE__*/React__default.createElement("span", {
       className: "qtr-margin-right"
-    }, "Page:"), React__default.createElement(Pagination, _extends({
+    }, "Page:"), /*#__PURE__*/React__default.createElement(Pagination, _extends({
       firstAndLast: true,
       icons: true,
       perPage: perPage,
@@ -5002,17 +5022,17 @@
       onPageChange: onPageChange,
       beginAt: 0,
       className: "no-margin-top"
-    }, paginationProps)), React__default.createElement("span", {
+    }, paginationProps)), /*#__PURE__*/React__default.createElement("span", {
       className: "text-muted qtr-margin-left qtr-margin-right"
-    }, "|"), React__default.createElement("span", {
+    }, "|"), /*#__PURE__*/React__default.createElement("span", {
       className: "qtr-margin-right"
-    }, "Per page:"), React__default.createElement(Dropdown, {
+    }, "Per page:"), /*#__PURE__*/React__default.createElement(Dropdown, {
       type: "link",
       header: perPage,
       openTo: "left",
       alwaysClose: true,
       up: perPageUp
-    }, [10, 25, 50, 100, 250, 500].map(v => React__default.createElement(Dropdown.Element, {
+    }, [10, 25, 50, 100, 250, 500].map(v => /*#__PURE__*/React__default.createElement(Dropdown.Element, {
       onClick: () => setPerPage(v),
       key: v,
       selected: v === perPage
@@ -5059,25 +5079,25 @@
     const thead = React__default.useMemo(() => children ? asArray(children).find(child => child.type === "thead") : null, [children]);
     const total = React__default.useMemo(() => (data ? data.length : asArray(tbody.props.children).length) || 0, [data, tbody]);
     React__default.useEffect(() => setPosition(0), [data, tbody]);
-    return React__default.createElement(React__default.Fragment, null, React__default.createElement(DisplayIf, {
+    return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: paginationLocation.includes("top-")
-    }, React__default.createElement("div", {
+    }, /*#__PURE__*/React__default.createElement("div", {
       className: `flex base-margin-bottom${appendClass(paginationLocation === "top-right", "flex-right")}`
-    }, React__default.createElement(pagination, {
+    }, /*#__PURE__*/React__default.createElement(pagination, {
       total,
       position,
       onPageChange: (_, p) => setPosition(p),
       onPerPageChange: p => setPerPage(p),
       paginationProps
-    }))), React__default.createElement(GenericTable, props, thead, React__default.createElement("tbody", null, data ? data.slice(position, position + perPage).map((row, rid) => React__default.createElement("tr", {
+    }))), /*#__PURE__*/React__default.createElement(GenericTable, props, thead, /*#__PURE__*/React__default.createElement("tbody", null, data ? data.slice(position, position + perPage).map((row, rid) => /*#__PURE__*/React__default.createElement("tr", {
       key: rid
-    }, row.map((col, cid) => React__default.createElement("td", {
+    }, row.map((col, cid) => /*#__PURE__*/React__default.createElement("td", {
       key: cid
-    }, col)))) : asArray(tbody.props.children).slice(position, position + perPage))), React__default.createElement(DisplayIf, {
+    }, col)))) : asArray(tbody.props.children).slice(position, position + perPage))), /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: paginationLocation.includes("bottom-")
-    }, React__default.createElement("div", {
+    }, /*#__PURE__*/React__default.createElement("div", {
       className: `flex base-margin-top${appendClass(paginationLocation === "bottom-right", "flex-right")}`
-    }, React__default.createElement(pagination, {
+    }, /*#__PURE__*/React__default.createElement(pagination, {
       total,
       position,
       onPageChange: (_, p) => setPosition(p),
@@ -5135,20 +5155,20 @@
     inline,
     asFormGroup,
     children
-  }) => React__default.createElement(ConditionalWrapper, {
+  }) => /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
     condition: asFormGroup,
-    wrapper: React__default.createElement("div", {
+    wrapper: /*#__PURE__*/React__default.createElement("div", {
       className: `form-group ${inline ? "form-group--inline" : ""}`
     })
-  }, React__default.createElement("label", {
+  }, /*#__PURE__*/React__default.createElement("label", {
     className: "checkbox"
-  }, React__default.createElement("input", _extends({
+  }, /*#__PURE__*/React__default.createElement("input", _extends({
     type: "checkbox"
   }, field, {
     checked: formik.getIn(form.values, field.name, false)
-  })), React__default.createElement("span", {
+  })), /*#__PURE__*/React__default.createElement("span", {
     className: "checkbox__input"
-  }), children ? React__default.createElement("span", {
+  }), children ? /*#__PURE__*/React__default.createElement("span", {
     className: "checkbox__label"
   }, children) : null));
 
@@ -5182,25 +5202,25 @@
     spacing,
     id,
     style
-  }) => React__default.createElement(ConditionalWrapper, {
+  }) => /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
     condition: asFormGroup,
-    wrapper: React__default.createElement("div", {
+    wrapper: /*#__PURE__*/React__default.createElement("div", {
       className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}${appendClass(spacing, ` form-group--${spacing}`)}`,
       style: style
     })
-  }, React__default.createElement("label", {
+  }, /*#__PURE__*/React__default.createElement("label", {
     className: `switch${disabled ? " disabled" : ""}`,
     htmlFor: id || field.name
-  }, React__default.createElement("input", _extends({
+  }, /*#__PURE__*/React__default.createElement("input", _extends({
     type: "checkbox"
   }, field, {
     id: id || field.name,
     checked: formik.getIn(form.values, field.name, false)
-  })), left ? React__default.createElement("span", {
+  })), left ? /*#__PURE__*/React__default.createElement("span", {
     className: "switch__label"
-  }, left) : null, React__default.createElement("span", {
+  }, left) : null, /*#__PURE__*/React__default.createElement("span", {
     className: "switch__input"
-  }), right ? React__default.createElement("span", {
+  }), right ? /*#__PURE__*/React__default.createElement("span", {
     className: "switch__label"
   }, right) : null));
 
@@ -5254,28 +5274,28 @@
     } = _ref,
         rest = _objectWithoutProperties(_ref, ["className", "id", "field", "label", "type", "form", "inputRef", "inline", "icon", "iconClick", "helpBlock", "plain"]);
 
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: `form-group${appendClass(className)}${appendClass(formik.getIn(touched, field.name) && formik.getIn(errors, field.name), "form-group--error")}${appendClass(inline === "form" || inline === "both", "form-group--inline")}${appendClass(inline === "label" || inline === "both", "label--inline")}${appendClass(icon, "input--icon")}`
-    }, React__default.createElement("div", {
+    }, /*#__PURE__*/React__default.createElement("div", {
       className: "form-group__text"
-    }, React__default.createElement("input", _extends({}, field, {
+    }, /*#__PURE__*/React__default.createElement("input", _extends({}, field, {
       id: id || field.name,
       type: type,
       ref: inputRef
     }, rest, {
       className: appendClass(plain, "form-group--plaintext")
-    })), label ? React__default.createElement("label", {
+    })), label ? /*#__PURE__*/React__default.createElement("label", {
       htmlFor: id || field.name
-    }, label) : null, icon ? React__default.createElement("button", {
+    }, label) : null, icon ? /*#__PURE__*/React__default.createElement("button", {
       type: "button",
       className: "link",
       tabIndex: "-1",
       onClick: iconClick
-    }, React__default.createElement("span", {
+    }, /*#__PURE__*/React__default.createElement("span", {
       className: `icon-${icon}`
-    })) : null), React__default.createElement(DisplayIf, {
+    })) : null), /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: !inline && helpBlock && !!formik.getIn(touched, field.name) && !!formik.getIn(errors, field.name)
-    }, React__default.createElement(InputHelpBlock, {
+    }, /*#__PURE__*/React__default.createElement(InputHelpBlock, {
       text: formik.getIn(errors, field.name)
     })));
   };
@@ -5316,435 +5336,8 @@
     inputRef: null
   };
 
-  var config$1 = {
-    disabled: false
-  };
-
-  var TransitionGroupContext$1 = React__default.createContext(null);
-
-  var UNMOUNTED$1 = 'unmounted';
-  var EXITED$1 = 'exited';
-  var ENTERING$1 = 'entering';
-  var ENTERED$1 = 'entered';
-  var EXITING$1 = 'exiting';
-  /**
-   * The Transition component lets you describe a transition from one component
-   * state to another _over time_ with a simple declarative API. Most commonly
-   * it's used to animate the mounting and unmounting of a component, but can also
-   * be used to describe in-place transition states as well.
-   *
-   * ---
-   *
-   * **Note**: `Transition` is a platform-agnostic base component. If you're using
-   * transitions in CSS, you'll probably want to use
-   * [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
-   * instead. It inherits all the features of `Transition`, but contains
-   * additional features necessary to play nice with CSS transitions (hence the
-   * name of the component).
-   *
-   * ---
-   *
-   * By default the `Transition` component does not alter the behavior of the
-   * component it renders, it only tracks "enter" and "exit" states for the
-   * components. It's up to you to give meaning and effect to those states. For
-   * example we can add styles to a component when it enters or exits:
-   *
-   * ```jsx
-   * import { Transition } from 'react-transition-group';
-   *
-   * const duration = 300;
-   *
-   * const defaultStyle = {
-   *   transition: `opacity ${duration}ms ease-in-out`,
-   *   opacity: 0,
-   * }
-   *
-   * const transitionStyles = {
-   *   entering: { opacity: 1 },
-   *   entered:  { opacity: 1 },
-   *   exiting:  { opacity: 0 },
-   *   exited:  { opacity: 0 },
-   * };
-   *
-   * const Fade = ({ in: inProp }) => (
-   *   <Transition in={inProp} timeout={duration}>
-   *     {state => (
-   *       <div style={{
-   *         ...defaultStyle,
-   *         ...transitionStyles[state]
-   *       }}>
-   *         I'm a fade Transition!
-   *       </div>
-   *     )}
-   *   </Transition>
-   * );
-   * ```
-   *
-   * There are 4 main states a Transition can be in:
-   *  - `'entering'`
-   *  - `'entered'`
-   *  - `'exiting'`
-   *  - `'exited'`
-   *
-   * Transition state is toggled via the `in` prop. When `true` the component
-   * begins the "Enter" stage. During this stage, the component will shift from
-   * its current transition state, to `'entering'` for the duration of the
-   * transition and then to the `'entered'` stage once it's complete. Let's take
-   * the following example (we'll use the
-   * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
-   *
-   * ```jsx
-   * function App() {
-   *   const [inProp, setInProp] = useState(false);
-   *   return (
-   *     <div>
-   *       <Transition in={inProp} timeout={500}>
-   *         {state => (
-   *           // ...
-   *         )}
-   *       </Transition>
-   *       <button onClick={() => setInProp(true)}>
-   *         Click to Enter
-   *       </button>
-   *     </div>
-   *   );
-   * }
-   * ```
-   *
-   * When the button is clicked the component will shift to the `'entering'` state
-   * and stay there for 500ms (the value of `timeout`) before it finally switches
-   * to `'entered'`.
-   *
-   * When `in` is `false` the same thing happens except the state moves from
-   * `'exiting'` to `'exited'`.
-   */
-
-  var Transition$1 =
-  /*#__PURE__*/
-  function (_React$Component) {
-    _inheritsLoose(Transition, _React$Component);
-
-    function Transition(props, context) {
-      var _this;
-
-      _this = _React$Component.call(this, props, context) || this;
-      var parentGroup = context; // In the context of a TransitionGroup all enters are really appears
-
-      var appear = parentGroup && !parentGroup.isMounting ? props.enter : props.appear;
-      var initialStatus;
-      _this.appearStatus = null;
-
-      if (props.in) {
-        if (appear) {
-          initialStatus = EXITED$1;
-          _this.appearStatus = ENTERING$1;
-        } else {
-          initialStatus = ENTERED$1;
-        }
-      } else {
-        if (props.unmountOnExit || props.mountOnEnter) {
-          initialStatus = UNMOUNTED$1;
-        } else {
-          initialStatus = EXITED$1;
-        }
-      }
-
-      _this.state = {
-        status: initialStatus
-      };
-      _this.nextCallback = null;
-      return _this;
-    }
-
-    Transition.getDerivedStateFromProps = function getDerivedStateFromProps(_ref, prevState) {
-      var nextIn = _ref.in;
-
-      if (nextIn && prevState.status === UNMOUNTED$1) {
-        return {
-          status: EXITED$1
-        };
-      }
-
-      return null;
-    }; // getSnapshotBeforeUpdate(prevProps) {
-    //   let nextStatus = null
-    //   if (prevProps !== this.props) {
-    //     const { status } = this.state
-    //     if (this.props.in) {
-    //       if (status !== ENTERING && status !== ENTERED) {
-    //         nextStatus = ENTERING
-    //       }
-    //     } else {
-    //       if (status === ENTERING || status === ENTERED) {
-    //         nextStatus = EXITING
-    //       }
-    //     }
-    //   }
-    //   return { nextStatus }
-    // }
-
-
-    var _proto = Transition.prototype;
-
-    _proto.componentDidMount = function componentDidMount() {
-      this.updateStatus(true, this.appearStatus);
-    };
-
-    _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
-      var nextStatus = null;
-
-      if (prevProps !== this.props) {
-        var status = this.state.status;
-
-        if (this.props.in) {
-          if (status !== ENTERING$1 && status !== ENTERED$1) {
-            nextStatus = ENTERING$1;
-          }
-        } else {
-          if (status === ENTERING$1 || status === ENTERED$1) {
-            nextStatus = EXITING$1;
-          }
-        }
-      }
-
-      this.updateStatus(false, nextStatus);
-    };
-
-    _proto.componentWillUnmount = function componentWillUnmount() {
-      this.cancelNextCallback();
-    };
-
-    _proto.getTimeouts = function getTimeouts() {
-      var timeout = this.props.timeout;
-      var exit, enter, appear;
-      exit = enter = appear = timeout;
-
-      if (timeout != null && typeof timeout !== 'number') {
-        exit = timeout.exit;
-        enter = timeout.enter; // TODO: remove fallback for next major
-
-        appear = timeout.appear !== undefined ? timeout.appear : enter;
-      }
-
-      return {
-        exit: exit,
-        enter: enter,
-        appear: appear
-      };
-    };
-
-    _proto.updateStatus = function updateStatus(mounting, nextStatus) {
-      if (mounting === void 0) {
-        mounting = false;
-      }
-
-      if (nextStatus !== null) {
-        // nextStatus will always be ENTERING or EXITING.
-        this.cancelNextCallback();
-        var node = ReactDOM__default.findDOMNode(this);
-
-        if (nextStatus === ENTERING$1) {
-          this.performEnter(node, mounting);
-        } else {
-          this.performExit(node);
-        }
-      } else if (this.props.unmountOnExit && this.state.status === EXITED$1) {
-        this.setState({
-          status: UNMOUNTED$1
-        });
-      }
-    };
-
-    _proto.performEnter = function performEnter(node, mounting) {
-      var _this2 = this;
-
-      var enter = this.props.enter;
-      var appearing = this.context ? this.context.isMounting : mounting;
-      var timeouts = this.getTimeouts();
-      var enterTimeout = appearing ? timeouts.appear : timeouts.enter; // no enter animation skip right to ENTERED
-      // if we are mounting and running this it means appear _must_ be set
-
-      if (!mounting && !enter || config$1.disabled) {
-        this.safeSetState({
-          status: ENTERED$1
-        }, function () {
-          _this2.props.onEntered(node);
-        });
-        return;
-      }
-
-      this.props.onEnter(node, appearing);
-      this.safeSetState({
-        status: ENTERING$1
-      }, function () {
-        _this2.props.onEntering(node, appearing);
-
-        _this2.onTransitionEnd(node, enterTimeout, function () {
-          _this2.safeSetState({
-            status: ENTERED$1
-          }, function () {
-            _this2.props.onEntered(node, appearing);
-          });
-        });
-      });
-    };
-
-    _proto.performExit = function performExit(node) {
-      var _this3 = this;
-
-      var exit = this.props.exit;
-      var timeouts = this.getTimeouts(); // no exit animation skip right to EXITED
-
-      if (!exit || config$1.disabled) {
-        this.safeSetState({
-          status: EXITED$1
-        }, function () {
-          _this3.props.onExited(node);
-        });
-        return;
-      }
-
-      this.props.onExit(node);
-      this.safeSetState({
-        status: EXITING$1
-      }, function () {
-        _this3.props.onExiting(node);
-
-        _this3.onTransitionEnd(node, timeouts.exit, function () {
-          _this3.safeSetState({
-            status: EXITED$1
-          }, function () {
-            _this3.props.onExited(node);
-          });
-        });
-      });
-    };
-
-    _proto.cancelNextCallback = function cancelNextCallback() {
-      if (this.nextCallback !== null) {
-        this.nextCallback.cancel();
-        this.nextCallback = null;
-      }
-    };
-
-    _proto.safeSetState = function safeSetState(nextState, callback) {
-      // This shouldn't be necessary, but there are weird race conditions with
-      // setState callbacks and unmounting in testing, so always make sure that
-      // we can cancel any pending setState callbacks after we unmount.
-      callback = this.setNextCallback(callback);
-      this.setState(nextState, callback);
-    };
-
-    _proto.setNextCallback = function setNextCallback(callback) {
-      var _this4 = this;
-
-      var active = true;
-
-      this.nextCallback = function (event) {
-        if (active) {
-          active = false;
-          _this4.nextCallback = null;
-          callback(event);
-        }
-      };
-
-      this.nextCallback.cancel = function () {
-        active = false;
-      };
-
-      return this.nextCallback;
-    };
-
-    _proto.onTransitionEnd = function onTransitionEnd(node, timeout, handler) {
-      this.setNextCallback(handler);
-      var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
-
-      if (!node || doesNotHaveTimeoutOrListener) {
-        setTimeout(this.nextCallback, 0);
-        return;
-      }
-
-      if (this.props.addEndListener) {
-        this.props.addEndListener(node, this.nextCallback);
-      }
-
-      if (timeout != null) {
-        setTimeout(this.nextCallback, timeout);
-      }
-    };
-
-    _proto.render = function render() {
-      var status = this.state.status;
-
-      if (status === UNMOUNTED$1) {
-        return null;
-      }
-
-      var _this$props = this.props,
-          children = _this$props.children,
-          childProps = _objectWithoutPropertiesLoose$2(_this$props, ["children"]); // filter props for Transtition
-
-
-      delete childProps.in;
-      delete childProps.mountOnEnter;
-      delete childProps.unmountOnExit;
-      delete childProps.appear;
-      delete childProps.enter;
-      delete childProps.exit;
-      delete childProps.timeout;
-      delete childProps.addEndListener;
-      delete childProps.onEnter;
-      delete childProps.onEntering;
-      delete childProps.onEntered;
-      delete childProps.onExit;
-      delete childProps.onExiting;
-      delete childProps.onExited;
-
-      if (typeof children === 'function') {
-        // allows for nested Transitions
-        return React__default.createElement(TransitionGroupContext$1.Provider, {
-          value: null
-        }, children(status, childProps));
-      }
-
-      var child = React__default.Children.only(children);
-      return (// allows for nested Transitions
-        React__default.createElement(TransitionGroupContext$1.Provider, {
-          value: null
-        }, React__default.cloneElement(child, childProps))
-      );
-    };
-
-    return Transition;
-  }(React__default.Component);
-
-  Transition$1.contextType = TransitionGroupContext$1;
-  Transition$1.propTypes =  {};
-
-  function noop$1() {}
-
-  Transition$1.defaultProps = {
-    in: false,
-    mountOnEnter: false,
-    unmountOnExit: false,
-    appear: false,
-    enter: true,
-    exit: true,
-    onEnter: noop$1,
-    onEntering: noop$1,
-    onEntered: noop$1,
-    onExit: noop$1,
-    onExiting: noop$1,
-    onExited: noop$1
-  };
-  Transition$1.UNMOUNTED = 0;
-  Transition$1.EXITED = 1;
-  Transition$1.ENTERING = 2;
-  Transition$1.ENTERED = 3;
-  Transition$1.EXITING = 4;
-
-  var css$3 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}body.cui .modal .modal__content div.modal__close>a{color:var(--cui-inactive-color)}body.cui .modal .modal__content div.modal__close>a:hover{color:var(--cui-active-color);text-decoration:none}";
-  styleInject(css$3);
+  var css_248z$3 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}body.cui .modal .modal__content div.modal__close>a{color:var(--cui-inactive-color)}body.cui .modal .modal__content div.modal__close>a:hover{color:var(--cui-active-color);text-decoration:none}";
+  styleInject(css_248z$3);
 
   const ModalHeader = (_ref) => {
     let {
@@ -5753,7 +5346,7 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["className", "children"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `modal__header${className ? ` ${className}` : ""}`
     }, props), children);
   };
@@ -5771,7 +5364,7 @@
     } = _ref2,
         props = _objectWithoutProperties(_ref2, ["className", "children"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `modal__body${className ? ` ${className}` : ""}`
     }, props), children);
   };
@@ -5789,7 +5382,7 @@
     } = _ref3,
         props = _objectWithoutProperties(_ref3, ["className", "children"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `modal__footer${className ? ` ${className}` : ""}`
     }, props), children);
   };
@@ -5824,48 +5417,48 @@
     const maximizeCb = React__default.useCallback(() => {
       setMaximized(curr => !curr);
     }, []);
-    return React__default.createElement(Transition$1, _extends({
+    return /*#__PURE__*/React__default.createElement(Transition, _extends({
       in: isOpen,
       mountOnEnter: true,
       unmountOnExit: true,
       timeout: animationDuration
-    }, transitionEvents), state => React__default.createElement(ReactModal, _extends({}, props, {
+    }, transitionEvents), state => /*#__PURE__*/React__default.createElement(ReactModal, _extends({}, props, {
       autoClose: autoClose,
       onRequestClose: autoClose && closeHandle ? closeHandle : undefined,
       overlayClassName: "modal-backdrop",
       isOpen: ["entering", "entered"].includes(state),
       className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
       closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exiting : animationDuration
-    }), React__default.createElement("div", _extends({
+    }), /*#__PURE__*/React__default.createElement("div", _extends({
       className: "modal__dialog"
     }, dialogProps, {
       onClick: e => e.stopPropagation()
-    }), React__default.createElement("div", _extends({
+    }), /*#__PURE__*/React__default.createElement("div", _extends({
       className: "modal__content"
-    }, contentProps), React__default.createElement(DisplayIf, {
+    }, contentProps), /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: !!(closeIcon && closeHandle) || maximize
-    }, React__default.createElement(ConditionalWrapper, {
+    }, /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
       condition: !!(closeIcon && closeHandle) && maximize,
-      wrapper: React__default.createElement("div", {
+      wrapper: /*#__PURE__*/React__default.createElement("div", {
         className: "modal__close"
       })
-    }, React__default.createElement(DisplayIf, {
+    }, /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: maximize
-    }, React__default.createElement("a", {
+    }, /*#__PURE__*/React__default.createElement("a", {
       className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
       onClick: maximizeCb
-    }, React__default.createElement("span", {
+    }, /*#__PURE__*/React__default.createElement("span", {
       className: maximized ? "icon-minimize" : "icon-maximize"
-    }))), React__default.createElement(DisplayIf, {
+    }))), /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: !!(closeIcon && closeHandle)
-    }, React__default.createElement("a", {
+    }, /*#__PURE__*/React__default.createElement("a", {
       className: !maximize ? "modal__close" : "",
       onClick: closeHandle
-    }, React__default.createElement("span", {
+    }, /*#__PURE__*/React__default.createElement("span", {
       className: "icon-close"
-    }))))), React__default.createElement(DisplayIf, {
+    }))))), /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: !!title
-    }, React__default.createElement(ModalHeader, null, React__default.createElement("h1", {
+    }, /*#__PURE__*/React__default.createElement(ModalHeader, null, /*#__PURE__*/React__default.createElement("h1", {
       className: "modal__title"
     }, title))), children))));
   };
@@ -5901,19 +5494,19 @@
     maximize: false
   };
 
-  Modal.Small = props => React__default.createElement(Modal, _extends({}, props, {
+  Modal.Small = props => /*#__PURE__*/React__default.createElement(Modal, _extends({}, props, {
     size: "small"
   }));
 
-  Modal.Large = props => React__default.createElement(Modal, _extends({}, props, {
+  Modal.Large = props => /*#__PURE__*/React__default.createElement(Modal, _extends({}, props, {
     size: "large"
   }));
 
-  Modal.Full = props => React__default.createElement(Modal, _extends({}, props, {
+  Modal.Full = props => /*#__PURE__*/React__default.createElement(Modal, _extends({}, props, {
     size: "full"
   }));
 
-  Modal.Fluid = props => React__default.createElement(Modal, _extends({}, props, {
+  Modal.Fluid = props => /*#__PURE__*/React__default.createElement(Modal, _extends({}, props, {
     size: "fluid"
   }));
 
@@ -5930,22 +5523,22 @@
     autoClose
   }) => {
     const [doing, setDoing] = React__default.useState(false);
-    return React__default.createElement(Modal, {
+    return /*#__PURE__*/React__default.createElement(Modal, {
       isOpen: isOpen,
       closeIcon: true,
       closeHandle: closeHandle,
       autoClose: autoClose,
       title: "Confirmation"
-    }, React__default.createElement(ModalBody, null, prompt), React__default.createElement(ModalFooter, null, React__default.createElement(Button.Light, {
+    }, /*#__PURE__*/React__default.createElement(ModalBody, null, prompt), /*#__PURE__*/React__default.createElement(ModalFooter, null, /*#__PURE__*/React__default.createElement(Button.Light, {
       onClick: closeHandle
-    }, "Close"), React__default.createElement(Button, {
+    }, "Close"), /*#__PURE__*/React__default.createElement(Button, {
       color: confirmType,
       disabled: doing,
       onClick: async () => {
         setDoing(true);
         if (await confirmHandle()) setDoing(false);
       }
-    }, confirmText, doing ? React__default.createElement("span", {
+    }, confirmText, doing ? /*#__PURE__*/React__default.createElement("span", {
       className: "icon-animation spin qtr-margin-left"
     }) : null)));
   };
@@ -5982,12 +5575,12 @@
       cb(val);
     }, [onClose, cb, val, validate]);
     React__default.useLayoutEffect(() => setVal(initial), [initial]);
-    return React__default.createElement(Modal, {
+    return /*#__PURE__*/React__default.createElement(Modal, {
       isOpen: isOpen,
       closeIcon: true,
       closeHandle: onClose,
       title: title
-    }, React__default.createElement(ModalBody, null, React__default.createElement(Input, {
+    }, /*#__PURE__*/React__default.createElement(ModalBody, null, /*#__PURE__*/React__default.createElement(Input, {
       type: type,
       form: {
         errors: {},
@@ -5998,22 +5591,22 @@
         name: "promptInput",
         value: val
       },
-      label: React__default.createElement(React__default.Fragment, null, question, React__default.createElement(DisplayIf, {
+      label: /*#__PURE__*/React__default.createElement(React__default.Fragment, null, question, /*#__PURE__*/React__default.createElement(DisplayIf, {
         condition: !!hint && typeof hint === "string"
-      }, React__default.createElement("span", {
+      }, /*#__PURE__*/React__default.createElement("span", {
         "data-balloon": hint,
         "data-balloon-length": "large",
         "data-balloon-pos": "up"
-      }, React__default.createElement("span", {
+      }, /*#__PURE__*/React__default.createElement("span", {
         className: "icon-question-circle qtr-margin-left",
         style: {
           cursor: "help"
         }
       }))))
-    })), React__default.createElement(ModalFooter, null, React__default.createElement(Button, {
+    })), /*#__PURE__*/React__default.createElement(ModalFooter, null, /*#__PURE__*/React__default.createElement(Button, {
       color: "light",
       onClick: onClose
-    }, "Close"), React__default.createElement(Button, {
+    }, "Close"), /*#__PURE__*/React__default.createElement(Button, {
       color: "primary",
       onClick: onSave
     }, "OK")));
@@ -6043,7 +5636,7 @@
       shown: true
     }, modal)]), []);
     const hideModal = React__default.useCallback(id => {
-      setModals(curr => curr.map(m => m.id === id ? _objectSpread2({}, m, {
+      setModals(curr => curr.map(m => m.id === id ? _objectSpread2(_objectSpread2({}, m), {}, {
         shown: false
       }) : m));
     }, []);
@@ -6059,13 +5652,13 @@
     }, [addModal]);
     if (!modals.length) return null;
     return modals.map(modal => {
-      if (modal.modalType === "notification") return React__default.createElement(Modal, {
+      if (modal.modalType === "notification") return /*#__PURE__*/React__default.createElement(Modal, {
         key: modal.id,
         isOpen: modal.shown,
         closeIcon: true,
         closeHandle: () => closeModal(modal.id),
         title: modal.title
-      }, React__default.createElement(ModalBody, null, modal.body), React__default.createElement(ModalFooter, null, React__default.createElement(Button, {
+      }, /*#__PURE__*/React__default.createElement(ModalBody, null, modal.body), /*#__PURE__*/React__default.createElement(ModalFooter, null, /*#__PURE__*/React__default.createElement(Button, {
         color: modal.buttonColor || "light",
         onClick: () => closeModal(modal.id)
       }, modal.button)));
@@ -6078,7 +5671,7 @@
             hint = undefined,
             validate = undefined
           } = modal.options;
-          return React__default.createElement(PromptModal, {
+          return /*#__PURE__*/React__default.createElement(PromptModal, {
             key: modal.id,
             isOpen: modal.shown,
             onClose: () => closeModal(modal.id),
@@ -6092,7 +5685,7 @@
           });
         }
 
-        return React__default.createElement(PromptModal, {
+        return /*#__PURE__*/React__default.createElement(PromptModal, {
           key: modal.id,
           isOpen: modal.shown,
           onClose: () => closeModal(modal.id),
@@ -6105,7 +5698,7 @@
         });
       }
 
-      if (modal.modalType === "confirmation") return React__default.createElement(ConfirmationModal, {
+      if (modal.modalType === "confirmation") return /*#__PURE__*/React__default.createElement(ConfirmationModal, {
         key: modal.id,
         isOpen: modal.shown,
         prompt: modal.prompt,
@@ -6126,7 +5719,7 @@
     if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
     eventManager.emit(EVENTS.SHOW_MODAL, {
       modalType: "confirmation",
-      prompt: React__default.createElement("p", null, prompt),
+      prompt: /*#__PURE__*/React__default.createElement("p", null, prompt),
       onConfirm,
       confirmText,
       confirmType
@@ -6175,7 +5768,7 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["icon", "size", "className"]);
 
-    return React__default.createElement("span", _extends({
+    return /*#__PURE__*/React__default.createElement("span", _extends({
       className: `icon-${icon}${className ? ` ${className}` : ""}${size ? ` icon-size-${size}` : ""}`
     }, props));
   };
@@ -6278,7 +5871,7 @@
     children
   }) => {
     const target = usePortal(id);
-    return ReactDOM.createPortal(children, target);
+    return /*#__PURE__*/ReactDOM.createPortal(children, target);
   };
 
   /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -6289,14 +5882,14 @@
     title
   }) => {
     const [isOpen, setIsOpen] = React__default.useState(defaultOpen);
-    return React__default.createElement("li", {
+    return /*#__PURE__*/React__default.createElement("li", {
       className: isOpen ? "active" : ""
-    }, React__default.createElement("a", {
+    }, /*#__PURE__*/React__default.createElement("a", {
       className: "accordion__title",
       onClick: () => setIsOpen(prev => !prev)
-    }, React__default.createElement("span", null, title), toggles ? React__default.createElement("span", {
+    }, /*#__PURE__*/React__default.createElement("span", null, title), toggles ? /*#__PURE__*/React__default.createElement("span", {
       className: "accordion__toggle icon-chevron-down"
-    }) : null), React__default.createElement("div", {
+    }) : null), /*#__PURE__*/React__default.createElement("div", {
       className: "accordion__content"
     }, children));
   };
@@ -6315,9 +5908,9 @@
     toggles,
     bordered
   }) => {
-    return React__default.createElement("ul", {
+    return /*#__PURE__*/React__default.createElement("ul", {
       className: `accordion${bordered ? " accordion--bordered" : ""}`
-    }, React__default.Children.map(children, (child, idx) => React__default.cloneElement(child, {
+    }, React__default.Children.map(children, (child, idx) => /*#__PURE__*/React__default.cloneElement(child, {
       toggles,
       key: child.props.key || idx
     })));
@@ -6342,7 +5935,7 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["color", "size", "children", "className"]);
 
-    return React__default.createElement("span", _extends({
+    return /*#__PURE__*/React__default.createElement("span", _extends({
       className: `${`badge badge--${color}`}${appendClass(size !== "default", `badge--${size}`)}${appendClass(className)}`
     }, props), children);
   };
@@ -6360,30 +5953,30 @@
     className: ""
   };
 
-  Badge.Dot = props => React__default.createElement(Badge, _extends({}, props, {
+  Badge.Dot = props => /*#__PURE__*/React__default.createElement(Badge, _extends({}, props, {
     size: "dot"
   }));
 
-  Badge.Tiny = props => React__default.createElement(Badge, _extends({}, props, {
+  Badge.Tiny = props => /*#__PURE__*/React__default.createElement(Badge, _extends({}, props, {
     size: "tiny"
   }));
 
-  Badge.Small = props => React__default.createElement(Badge, _extends({}, props, {
+  Badge.Small = props => /*#__PURE__*/React__default.createElement(Badge, _extends({}, props, {
     size: "small"
   }));
 
-  Badge.Default = props => React__default.createElement(Badge, _extends({}, props, {
+  Badge.Default = props => /*#__PURE__*/React__default.createElement(Badge, _extends({}, props, {
     size: "default"
   }));
 
-  Badge.Large = props => React__default.createElement(Badge, _extends({}, props, {
+  Badge.Large = props => /*#__PURE__*/React__default.createElement(Badge, _extends({}, props, {
     size: "large"
   }));
 
   Badge.Wrapper = ({
     children,
     className
-  }) => React__default.createElement("span", {
+  }) => /*#__PURE__*/React__default.createElement("span", {
     className: `badge-wrapper${appendClass(className)}`
   }, children);
 
@@ -6402,9 +5995,9 @@
     } = _ref2,
         props = _objectWithoutProperties(_ref2, ["children", "badge", "wrapperClass"]);
 
-    return React__default.createElement(Badge.Wrapper, {
+    return /*#__PURE__*/React__default.createElement(Badge.Wrapper, {
       className: wrapperClass
-    }, children, React__default.createElement(Badge, props, badge));
+    }, children, /*#__PURE__*/React__default.createElement(Badge, props, badge));
   };
   WithBadge.propTypes = _objectSpread2({
     children: PropTypes.node.isRequired,
@@ -6423,7 +6016,7 @@
   const Tab = ({
     children,
     active
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: `tab-pane${active ? " active" : ""}`
   }, children);
   Tab.propTypes = {
@@ -6454,7 +6047,7 @@
     openTab,
     onTabChange,
     children
-  }) => React__default.createElement("ul", {
+  }) => /*#__PURE__*/React__default.createElement("ul", {
     className: `tabs${appendClass(tabsClassName)}${appendClass(center, "tabs--centered")}${appendClass(right, "tabs--right")}${appendClass(justified, "tabs--justified")}${appendClass(embossed, "tabs--embossed")}${appendClass(bordered, "tabs--bordered")}${appendClass(vertical, "tabs--vertical")}${appendClass(inline, "tabs--inline")}`,
     style: sticky ? {
       position: "sticky",
@@ -6465,10 +6058,10 @@
       id,
       title
     }
-  }, idx) => React__default.createElement("li", {
+  }, idx) => /*#__PURE__*/React__default.createElement("li", {
     className: `tab${appendClass(isActive(openTab, id, idx), "active")}`,
     key: firstDefined(id, idx)
-  }, React__default.createElement("a", {
+  }, /*#__PURE__*/React__default.createElement("a", {
     onClick: () => onTabChange(firstDefined(id, idx))
   }, title))));
   TabsHeader.propTypes = {
@@ -6519,12 +6112,13 @@
       if (typeof onTabChange === "function") onTabChange(id);
       setOpenTab(id);
     }, [onTabChange]);
-    const header = React__default.createElement(ConditionalWrapper, {
+    React__default.useEffect(() => changeTab(defaultTab), [defaultTab, changeTab]);
+    const header = /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
       condition: vertical,
-      wrapper: React__default.createElement("div", {
+      wrapper: /*#__PURE__*/React__default.createElement("div", {
         className: "col-md-3"
       })
-    }, renderHeader(React__default.createElement(TabsHeader, {
+    }, renderHeader( /*#__PURE__*/React__default.createElement(TabsHeader, {
       tabsClassName: tabsClassName,
       center: center,
       right: right,
@@ -6537,27 +6131,27 @@
       openTab: openTab,
       onTabChange: changeTab
     }, children)));
-    const body = React__default.createElement(ConditionalWrapper, {
+    const body = /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
       condition: vertical,
-      wrapper: React__default.createElement("div", {
+      wrapper: /*#__PURE__*/React__default.createElement("div", {
         className: "col-md-9"
       })
-    }, renderBody(React__default.createElement("div", {
+    }, renderBody( /*#__PURE__*/React__default.createElement("div", {
       className: `tab-content${contentClassName ? ` ${contentClassName}` : ""}`
-    }, React__default.Children.map(children, (child, idx) => React__default.cloneElement(child, {
+    }, React__default.Children.map(children, (child, idx) => /*#__PURE__*/React__default.cloneElement(child, {
       active: isActive(openTab, child.props.id, idx)
     })))));
-    return React__default.createElement(ConditionalWrapper, {
+    return /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
       condition: vertical,
-      wrapper: React__default.createElement("div", {
+      wrapper: /*#__PURE__*/React__default.createElement("div", {
         className: "row",
         style: sticky ? {
           position: "relative"
         } : {}
       })
-    }, React__default.createElement(DisplayIf, {
+    }, /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: vertical && !right || !vertical
-    }, header), body, React__default.createElement(DisplayIf, {
+    }, header), body, /*#__PURE__*/React__default.createElement(DisplayIf, {
       condition: vertical && right
     }, header));
   };
@@ -6598,7 +6192,7 @@
   const Section = ({
     children,
     className
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: `section${appendClass(className)}`
   }, children);
 
@@ -6618,7 +6212,7 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["size", "as", "className"]);
 
-    return React__default.createElement(as, _objectSpread2({}, props, {
+    return /*#__PURE__*/React__default.createElement(as, _objectSpread2(_objectSpread2({}, props), {}, {
       className: `display-${size}${appendClass(className)}`
     }));
   };
@@ -6631,19 +6225,19 @@
     as: "h1",
     className: null
   };
-  const Display0 = props => React__default.createElement(Display, _extends({}, props, {
+  const Display0 = props => /*#__PURE__*/React__default.createElement(Display, _extends({}, props, {
     size: 0
   }));
-  const Display1 = props => React__default.createElement(Display, _extends({}, props, {
+  const Display1 = props => /*#__PURE__*/React__default.createElement(Display, _extends({}, props, {
     size: 1
   }));
-  const Display2 = props => React__default.createElement(Display, _extends({}, props, {
+  const Display2 = props => /*#__PURE__*/React__default.createElement(Display, _extends({}, props, {
     size: 2
   }));
-  const Display3 = props => React__default.createElement(Display, _extends({}, props, {
+  const Display3 = props => /*#__PURE__*/React__default.createElement(Display, _extends({}, props, {
     size: 3
   }));
-  const Display4 = props => React__default.createElement(Display, _extends({}, props, {
+  const Display4 = props => /*#__PURE__*/React__default.createElement(Display, _extends({}, props, {
     size: 4
   }));
 
@@ -6653,13 +6247,13 @@
     children,
     className,
     contentClassName
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: `timeline__item${appendClass(className)}`
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "timeline__icon"
-  }, icon), time ? React__default.createElement("div", {
+  }, icon), time ? /*#__PURE__*/React__default.createElement("div", {
     className: "timeline__time"
-  }, time) : null, React__default.createElement("div", {
+  }, time) : null, /*#__PURE__*/React__default.createElement("div", {
     className: `timeline__content${appendClass(contentClassName)}`
   }, children));
   TimelineItem.propTypes = {
@@ -6670,7 +6264,7 @@
     contentClassName: PropTypes.string
   };
   TimelineItem.defaultProps = {
-    icon: React__default.createElement(Icon, {
+    icon: /*#__PURE__*/React__default.createElement(Icon, {
       icon: "circle"
     }),
     time: null,
@@ -6682,7 +6276,7 @@
     right,
     className,
     children
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: `timeline${appendClass(center, "timeline--centered")}${appendClass(right, "timeline--right")}${appendClass(className)}`
   }, children);
   Timeline.propTypes = {
@@ -6703,11 +6297,11 @@
     visited,
     active,
     className
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: `step${appendClass(visited, "visited")}${appendClass(active, "active")}${appendClass(className)}`
-  }, React__default.createElement("div", {
+  }, /*#__PURE__*/React__default.createElement("div", {
     className: "step__icon"
-  }, icon), React__default.createElement("div", {
+  }, icon), /*#__PURE__*/React__default.createElement("div", {
     className: "step__label"
   }, children));
 
@@ -6730,7 +6324,7 @@
     vertical,
     children,
     className
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: `steps${appendClass(size !== "default", `steps--${size}`)} steps--${color}${appendClass(vertical, "steps--vertical")}${appendClass(className)}`
   }, children);
 
@@ -6748,28 +6342,28 @@
     className: null
   };
 
-  Steps.Dot = props => React__default.createElement(Steps, _extends({}, props, {
+  Steps.Dot = props => /*#__PURE__*/React__default.createElement(Steps, _extends({}, props, {
     size: "dot"
   }));
 
-  Steps.Small = props => React__default.createElement(Steps, _extends({}, props, {
+  Steps.Small = props => /*#__PURE__*/React__default.createElement(Steps, _extends({}, props, {
     size: "small"
   }));
 
-  Steps.Large = props => React__default.createElement(Steps, _extends({}, props, {
+  Steps.Large = props => /*#__PURE__*/React__default.createElement(Steps, _extends({}, props, {
     size: "large"
   }));
 
   const VerticalCenter = ({
     children
-  }) => React__default.createElement("div", {
+  }) => /*#__PURE__*/React__default.createElement("div", {
     className: "content-fluid",
     style: {
       display: "flex",
       minHeight: "100vh",
       flexDirection: "column"
     }
-  }, React__default.createElement("main", {
+  }, /*#__PURE__*/React__default.createElement("main", {
     style: {
       display: "flex",
       flexDirection: "column",
@@ -6799,17 +6393,17 @@
     } = _ref,
         rest = _objectWithoutProperties(_ref, ["className", "id", "field", "label", "inline", "form", "inputRef", "textareaClass", "innerDivClass", "resize"]);
 
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}${formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? " form-group--error" : ""}`
-    }, React__default.createElement("div", {
+    }, /*#__PURE__*/React__default.createElement("div", {
       className: `form-group__text${appendClass(innerDivClass)}`
-    }, React__default.createElement("textarea", _extends({}, field, {
+    }, /*#__PURE__*/React__default.createElement("textarea", _extends({}, field, {
       className: textareaClass,
       id: id,
       ref: inputRef
-    }, rest), field.value), label ? React__default.createElement("label", {
+    }, rest), field.value), label ? /*#__PURE__*/React__default.createElement("label", {
       htmlFor: id
-    }, label) : null), formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? React__default.createElement(InputHelpBlock, {
+    }, label) : null), formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? /*#__PURE__*/React__default.createElement(InputHelpBlock, {
       text: formik.getIn(errors, field.name)
     }) : null);
   };
@@ -6851,14 +6445,14 @@
     variants,
     selectedIdx,
     setIdx
-  }) => React__default.createElement(Dropdown, {
+  }) => /*#__PURE__*/React__default.createElement(Dropdown, {
     type: "link",
     tail: true,
     header: variants[selectedIdx].display,
     alwaysClose: true,
     className: "flex-center-vertical",
     stopPropagation: true
-  }, variants.map((v, idx) => React__default.createElement("a", {
+  }, variants.map((v, idx) => /*#__PURE__*/React__default.createElement("a", {
     key: v.variant,
     onClick: () => setIdx(idx),
     className: variants[selectedIdx].variant === v.variant ? "selected" : ""
@@ -6874,13 +6468,13 @@
     variants,
     selectedIdx,
     setIdx
-  }) => React__default.createElement("ul", {
+  }) => /*#__PURE__*/React__default.createElement("ul", {
     className: "list list--inline divider--vertical"
-  }, variants.map((v, idx) => React__default.createElement("li", {
+  }, variants.map((v, idx) => /*#__PURE__*/React__default.createElement("li", {
     key: v.variant
-  }, React__default.createElement(ConditionalWrapper, {
+  }, /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
     condition: variants[selectedIdx].variant !== v.variant,
-    wrapper: React__default.createElement("a", {
+    wrapper: /*#__PURE__*/React__default.createElement("a", {
       key: v.variant,
       onClick: () => setIdx(idx)
     })
@@ -6927,37 +6521,37 @@
       }
     }, [variantIdx]);
 
-    const dd = (el, t) => React__default.createElement(el, {
+    const dd = (el, t) => /*#__PURE__*/React__default.createElement(el, {
       className: "secondary-tabs"
-    }, t ? React__default.createElement("span", {
+    }, t ? /*#__PURE__*/React__default.createElement("span", {
       className: "half-margin-right"
-    }, t) : null, list ? React__default.createElement(ListHeader, {
+    }, t) : null, list ? /*#__PURE__*/React__default.createElement(ListHeader, {
       variants: variants,
       selectedIdx: variantIdx,
       setIdx: setIdx
-    }) : React__default.createElement(DropdownHeader$1, {
+    }) : /*#__PURE__*/React__default.createElement(DropdownHeader$1, {
       variants: variants,
       selectedIdx: variantIdx,
       setIdx: setIdx
     }));
 
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: `form-group${appendClass(inline, " inline-variants")}${appendClass(className)}`
-    }, disableable ? React__default.createElement("span", {
+    }, disableable ? /*#__PURE__*/React__default.createElement("span", {
       className: "flex-center-vertical"
-    }, React__default.createElement("label", {
+    }, /*#__PURE__*/React__default.createElement("label", {
       className: "switch",
       htmlFor: `${varPrefix}.disableable`
-    }, React__default.createElement("input", {
+    }, /*#__PURE__*/React__default.createElement("input", {
       type: "checkbox",
       onChange: () => setIdx(p => p >= 0 ? -1 : 0),
       checked: variantIdx >= 0,
       id: `${varPrefix}.disableable`
-    }), React__default.createElement("span", {
+    }), /*#__PURE__*/React__default.createElement("span", {
       className: "switch__input"
-    }), React__default.createElement("span", {
+    }), /*#__PURE__*/React__default.createElement("span", {
       className: "switch__label"
-    }, title)), variantIdx >= 0 ? dd("span", enableTitleAppend) : null) : dd("div", title), disableable && variantIdx < 0 ? null : React__default.createElement("div", {
+    }, title)), variantIdx >= 0 ? dd("span", enableTitleAppend) : null) : dd("div", title), disableable && variantIdx < 0 ? null : /*#__PURE__*/React__default.createElement("div", {
       className: "tabs-wrap panel base-padding-top"
     }, variants[variantIdx].component));
   };
@@ -7003,12 +6597,12 @@
     } = _ref,
         props = _objectWithoutProperties(_ref, ["field", "id", "inline", "spacing", "label", "className"]);
 
-    return React__default.createElement("div", _extends({
+    return /*#__PURE__*/React__default.createElement("div", _extends({
       className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(spacing, `form-group--${spacing}`)}${appendClass(className)}`
-    }, props), React__default.createElement("label", {
+    }, props), /*#__PURE__*/React__default.createElement("label", {
       className: "radio",
       htmlFor: `${name}.${id}`
-    }, React__default.createElement("input", {
+    }, /*#__PURE__*/React__default.createElement("input", {
       type: "radio",
       name: name,
       value: id,
@@ -7016,9 +6610,9 @@
       onChange: onChange,
       onBlur: onBlur,
       id: `${name}.${id}`
-    }), React__default.createElement("span", {
+    }), /*#__PURE__*/React__default.createElement("span", {
       className: "radio__input"
-    }), label ? React__default.createElement("span", {
+    }), label ? /*#__PURE__*/React__default.createElement("span", {
       className: "radio__label"
     }, label) : null));
   };
@@ -7047,7 +6641,7 @@
     } = _ref2,
         props = _objectWithoutProperties(_ref2, ["values"]);
 
-    return values.map(v => React__default.createElement(formik.Field, _extends({
+    return values.map(v => /*#__PURE__*/React__default.createElement(formik.Field, _extends({
       component: Radio
     }, props, {
       id: v.value,
@@ -7064,12 +6658,12 @@
 
   const InputHelpBaloon = ({
     baloon
-  }) => React__default.createElement("span", {
+  }) => /*#__PURE__*/React__default.createElement("span", {
     "data-balloon": baloon,
     "data-balloon-length": "large",
     "data-balloon-pos": "up",
     className: "qtr-margin-left"
-  }, React__default.createElement("span", {
+  }, /*#__PURE__*/React__default.createElement("span", {
     className: "icon-question-circle",
     style: {
       cursor: "help"
@@ -7079,11 +6673,11 @@
     baloon: PropTypes.string.isRequired
   };
 
-  var css$4 = ".cui .form-group .chips .input{-moz-appearance:none;-webkit-appearance:none;background:var(--cui-form-background);border-radius:var(--cui-border-radius);border:var(--cui-border);box-shadow:none;color:var(--cui-form-value-color);flex-shrink:0;flex:1;font-family:var(--cui-font-stack);font-size:var(--cui-font-size);font-weight:var(--cui-form-value-font-weight);height:var(--cui-form-size);line-height:2.4rem;max-height:var(--cui-form-size);min-height:var(--cui-form-size);order:3;padding:var(--cui-form-padding);padding-left:0;transition:all var(--cui-animate-speed) var(--cui-animate-timing-function);align-items:center;box-sizing:border-box;display:flex;position:relative}.cui .form-group .chips .input.focus,.cui .form-group .chips .input.hover,.cui .form-group .chips .input:focus,.cui .form-group .chips .input:hover{border-color:var(--cui-accent-color)}.cui .form-group .chips .input.focus,.cui .form-group .chips .input:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity));opacity:1;outline:transparent var(--cui-focus-thickness);outline-offset:1px;outline-width:thin;outline-style:none}.cui .form-group .chips .input.disabled~label,.cui .form-group .chips .input[disabled]~label{opacity:.5;cursor:not-allowed!important;pointer-events:none!important;z-index:0!important}.cui .form-group .chips .chips-outer{overflow:hidden;white-space:nowrap;padding-left:var(--cui-form-padding)}.cui .form-group .chips .chips-outer>.chips-inner{white-space:normal}.cui .form-group .chips .input input{border:none;height:calc(var(--cui-form-size) - 2px);max-height:calc(var(--cui-form-size) - 2px);min-height:calc(var(--cui-form-size) - 2px);padding-top:calc(var(--cui-form-padding) - 1px);padding-bottom:calc(var(--cui-form-padding) - 1px);background:transparent}.cui .form-group .chips .input input:focus{box-shadow:unset}.cui .form-group.form-group--error .chips .input{border-color:var(--cui-theme-danger)}";
-  styleInject(css$4);
+  var css_248z$4 = ".cui .form-group .chips .input{-moz-appearance:none;-webkit-appearance:none;background:var(--cui-form-background);border-radius:var(--cui-border-radius);border:var(--cui-border);box-shadow:none;color:var(--cui-form-value-color);flex-shrink:0;flex:1;font-family:var(--cui-font-stack);font-size:var(--cui-font-size);font-weight:var(--cui-form-value-font-weight);height:var(--cui-form-size);line-height:2.4rem;max-height:var(--cui-form-size);min-height:var(--cui-form-size);order:3;padding:var(--cui-form-padding);padding-left:0;transition:all var(--cui-animate-speed) var(--cui-animate-timing-function);align-items:center;box-sizing:border-box;display:flex;position:relative}.cui .form-group .chips .input.focus,.cui .form-group .chips .input.hover,.cui .form-group .chips .input:focus,.cui .form-group .chips .input:hover{border-color:var(--cui-accent-color)}.cui .form-group .chips .input.focus,.cui .form-group .chips .input:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity));opacity:1;outline:transparent var(--cui-focus-thickness);outline-offset:1px;outline-width:thin;outline-style:none}.cui .form-group .chips .input.disabled~label,.cui .form-group .chips .input[disabled]~label{opacity:.5;cursor:not-allowed!important;pointer-events:none!important;z-index:0!important}.cui .form-group .chips .chips-outer{overflow:hidden;white-space:nowrap;padding-left:var(--cui-form-padding)}.cui .form-group .chips .chips-outer>.chips-inner{white-space:normal}.cui .form-group .chips .input input{border:none;height:calc(var(--cui-form-size) - 2px);max-height:calc(var(--cui-form-size) - 2px);min-height:calc(var(--cui-form-size) - 2px);padding-top:calc(var(--cui-form-padding) - 1px);padding-bottom:calc(var(--cui-form-padding) - 1px);background:transparent}.cui .form-group .chips .input input:focus{box-shadow:unset}.cui .form-group.form-group--error .chips .input{border-color:var(--cui-theme-danger)}";
+  styleInject(css_248z$4);
 
   /* eslint-disable no-param-reassign */
-  const InputChips = React__default.forwardRef(({
+  const InputChips = /*#__PURE__*/React__default.forwardRef(({
     className,
     field,
     label,
@@ -7157,35 +6751,35 @@
     React__default.useEffect(() => {
       if (!Number.isNaN(maxChips) && Array.isArray(field.value) && field.value.length >= maxChips) setFocus(false);
     }, [field.value, maxChips]);
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: `form-group${appendClass(className)}${appendClass(formik.getIn(touched, field.name) && formik.getIn(errors, field.name), "form-group--error")}`,
       ref: ref
-    }, React__default.createElement("div", {
+    }, /*#__PURE__*/React__default.createElement("div", {
       className: "form-group__text chips"
-    }, label ? React__default.createElement("label", {
+    }, label ? /*#__PURE__*/React__default.createElement("label", {
       htmlFor: id || field.name
-    }, label, baloon ? React__default.createElement(InputHelpBaloon, {
+    }, label, baloon ? /*#__PURE__*/React__default.createElement(InputHelpBaloon, {
       baloon: baloon
-    }) : null) : null, React__default.createElement("div", {
+    }) : null) : null, /*#__PURE__*/React__default.createElement("div", {
       className: `input${appendClass(focused, "focus")}`
-    }, Array.isArray(field.value) && field.value.length ? React__default.createElement("span", {
+    }, Array.isArray(field.value) && field.value.length ? /*#__PURE__*/React__default.createElement("span", {
       className: "chips-outer"
-    }, React__default.createElement("span", {
+    }, /*#__PURE__*/React__default.createElement("span", {
       className: "chips-inner"
-    }, field.value.map((v, i) => React__default.createElement(Label, {
+    }, field.value.map((v, i) => /*#__PURE__*/React__default.createElement(Label, {
       removable: true,
       onRemove: () => handleDelete(i),
       color: chipsColor,
       size: "tiny",
       key: `${v}-${i}`,
       className: "qtr-margin-bottom"
-    }, v)))) : null, !maxChips || maxChips && Array.isArray(field.value) && field.value.length < maxChips ? React__default.createElement("input", {
+    }, v)))) : null, !maxChips || maxChips && Array.isArray(field.value) && field.value.length < maxChips ? /*#__PURE__*/React__default.createElement("input", {
       type: "text",
       onKeyDown: handleKeyDown,
       onBlur: handleBlur,
       onFocus: () => setFocus(true),
       id: id || field.name
-    }) : null)), formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? React__default.createElement(InputHelpBlock, {
+    }) : null)), formik.getIn(touched, field.name) && formik.getIn(errors, field.name) ? /*#__PURE__*/React__default.createElement(InputHelpBlock, {
       text: formik.getIn(errors, field.name)
     }) : null);
   });
@@ -7234,7 +6828,7 @@
   }) => React__default.Children.map(children, (child, idx) => {
     switch (child.type) {
       case "option":
-        return React__default.createElement("a", {
+        return /*#__PURE__*/React__default.createElement("a", {
           key: idx,
           disabled: child.props.disabled,
           onClick: e => handleOptionClick(e, child.props.value),
@@ -7242,12 +6836,12 @@
         }, child.props.children);
 
       case "optgroup":
-        return React__default.createElement("div", {
+        return /*#__PURE__*/React__default.createElement("div", {
           key: idx,
           className: "dropdown__group"
-        }, React__default.createElement("div", {
+        }, /*#__PURE__*/React__default.createElement("div", {
           className: "dropdown__group-header"
-        }, child.props.label), React__default.createElement(SelectChildren, {
+        }, child.props.label), /*#__PURE__*/React__default.createElement(SelectChildren, {
           handleOptionClick: handleOptionClick,
           isSelected: isSelected
         }, child.props.children));
@@ -7257,7 +6851,7 @@
     }
   });
 
-  const EditableSelect = React__default.forwardRef((_ref, innerRef) => {
+  const EditableSelect = /*#__PURE__*/React__default.forwardRef((_ref, innerRef) => {
     let {
       children,
       compressed,
@@ -7294,26 +6888,26 @@
 
     const isSelected = checkValue => field.value === checkValue;
 
-    return React__default.createElement("div", {
+    return /*#__PURE__*/React__default.createElement("div", {
       className: `form-group dropdown${appendClass(compressed, "input--compressed")}${appendClass(isOpen, "active")}${appendClass(inline, "label--inline")}${appendClass(formik.getIn(form.touched, field.name) && formik.getIn(form.errors, field.name), " form-group--error")}`,
       ref: innerRef || (n => setNode(n))
-    }, React__default.createElement("div", {
+    }, /*#__PURE__*/React__default.createElement("div", {
       className: "form-group__text select editable",
       onClick: () => handleClick(true)
-    }, React__default.createElement("input", _extends({
+    }, /*#__PURE__*/React__default.createElement("input", _extends({
       id: id || field.name
     }, field, {
       type: type,
       placeholder: prompt,
       autoComplete: "off"
-    }, rest)), React__default.createElement("label", {
+    }, rest)), /*#__PURE__*/React__default.createElement("label", {
       htmlFor: id || field.name
-    }, title)), React__default.createElement("div", {
+    }, title)), /*#__PURE__*/React__default.createElement("div", {
       className: "dropdown__menu"
-    }, React__default.createElement(SelectChildren, {
+    }, /*#__PURE__*/React__default.createElement(SelectChildren, {
       handleOptionClick: handleOptionClick,
       isSelected: isSelected
-    }, children)), formik.getIn(form.touched, field.name) && formik.getIn(form.errors, field.name) ? React__default.createElement(InputHelpBlock, {
+    }, children)), formik.getIn(form.touched, field.name) && formik.getIn(form.errors, field.name) ? /*#__PURE__*/React__default.createElement(InputHelpBlock, {
       text: formik.getIn(form.errors, field.name)
     }) : null);
   });
@@ -7349,15 +6943,15 @@
     form,
     variants,
     inline
-  }) => React__default.createElement(formik.FieldArray, {
+  }) => /*#__PURE__*/React__default.createElement(formik.FieldArray, {
     name: field.name,
-    render: arrayHelpers => variants.map(variant => React__default.createElement("div", {
+    render: arrayHelpers => variants.map(variant => /*#__PURE__*/React__default.createElement("div", {
       className: `form-group${appendClass(inline, "form-group--inline")}`,
       key: variant.id
-    }, React__default.createElement("label", {
+    }, /*#__PURE__*/React__default.createElement("label", {
       className: "checkbox",
       htmlFor: field.name
-    }, React__default.createElement("input", {
+    }, /*#__PURE__*/React__default.createElement("input", {
       name: field.name,
       id: field.name,
       type: "checkbox",
@@ -7369,9 +6963,9 @@
           arrayHelpers.remove(idx);
         }
       }
-    }), React__default.createElement("span", {
+    }), /*#__PURE__*/React__default.createElement("span", {
       className: "checkbox__input"
-    }), React__default.createElement("span", {
+    }), /*#__PURE__*/React__default.createElement("span", {
       className: "checkbox__label"
     }, variant.name))))
   });

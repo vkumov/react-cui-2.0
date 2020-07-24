@@ -121,6 +121,8 @@ export const Tabs = ({
     [onTabChange]
   );
 
+  React.useEffect(() => changeTab(defaultTab), [defaultTab, changeTab]);
+
   const header = (
     <ConditionalWrapper
       condition={vertical}
