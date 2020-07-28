@@ -6015,9 +6015,10 @@
 
   const Tab = ({
     children,
-    active
+    active,
+    className
   }) => /*#__PURE__*/React__default.createElement("div", {
-    className: `tab-pane${active ? " active" : ""}`
+    className: `tab-pane${appendClass(active, "active")}${appendClass(className)}`
   }, children);
   Tab.propTypes = {
     // eslint-disable-next-line react/no-unused-prop-types
@@ -6025,10 +6026,12 @@
     active: PropTypes.bool,
     // eslint-disable-next-line react/no-unused-prop-types
     title: PropTypes.node.isRequired,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string
   };
   Tab.defaultProps = {
-    active: false
+    active: false,
+    className: null
   };
   const tabsChildrenProp = PropTypes.oneOfType([PropTypes.arrayOf(Tab), Tab]);
 

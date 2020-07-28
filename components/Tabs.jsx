@@ -12,8 +12,10 @@ const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
 const firstDefined = (...args) =>
   args.find((el) => typeof el !== "undefined" && el !== null);
 
-export const Tab = ({ children, active }) => (
-  <div className={`tab-pane${active ? " active" : ""}`}>{children}</div>
+export const Tab = ({ children, active, className }) => (
+  <div className={`tab-pane${ac(active, "active")}${ac(className)}`}>
+    {children}
+  </div>
 );
 
 Tab.propTypes = {
@@ -23,9 +25,10 @@ Tab.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
-Tab.defaultProps = { active: false };
+Tab.defaultProps = { active: false, className: null };
 
 const tabsChildrenProp = PropTypes.oneOfType([PropTypes.arrayOf(Tab), Tab]);
 
