@@ -33,16 +33,16 @@ const plugins = [
     preferBuiltins: true,
   }),
   commonjs({
-    namedExports: {
-      react: Object.keys(react),
-      "react-dom": Object.keys(reactDom),
-      "react-is": Object.keys(reactIs),
-      "prop-types": Object.keys(propTypes),
-      "node_modules/scheduler/index.js": [
-        "unstable_runWithPriority",
-        "LowPriority",
-      ],
-    },
+    // namedExports: {
+    //   react: Object.keys(react),
+    //   "react-dom": Object.keys(reactDom),
+    //   "react-is": Object.keys(reactIs),
+    //   "prop-types": Object.keys(propTypes),
+    //   "node_modules/scheduler/index.js": [
+    //     "unstable_runWithPriority",
+    //     "LowPriority",
+    //   ],
+    // },
   }),
   postcss({
     plugins: [cssImport()],
