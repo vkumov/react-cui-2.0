@@ -1,4 +1,4 @@
-import babel from "rollup-plugin-babel";
+// import babel from "rollup-plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import external from "rollup-plugin-peer-deps-external";
@@ -11,12 +11,14 @@ import replace from "rollup-plugin-replace";
 import json from "@rollup/plugin-json";
 import alias from "@rollup/plugin-alias";
 import cssImport from "postcss-import";
+import typescript from "rollup-plugin-typescript2";
+
 import path from "path";
 
-import * as react from "react";
-import * as reactDom from "react-dom";
-import * as reactIs from "react-is";
-import * as propTypes from "prop-types";
+// import * as react from "react";
+// import * as reactDom from "react-dom";
+// import * as reactIs from "react-is";
+// import * as propTypes from "prop-types";
 
 import pkg from "./package.json";
 
@@ -24,26 +26,28 @@ const projectRootDir = path.resolve(__dirname);
 
 const plugins = [
   external(),
-  babel({
-    exclude: "node_modules/**",
-    plugins: ["@babel/plugin-proposal-class-properties"],
-  }),
+  // babel({
+  //   exclude: "node_modules/**",
+  //   plugins: ["@babel/plugin-proposal-class-properties"],
+  // }),
   resolve({
     extensions: [".mjs", ".js", ".jsx", ".json", ".css"],
     preferBuiltins: true,
   }),
-  commonjs({
-    // namedExports: {
-    //   react: Object.keys(react),
-    //   "react-dom": Object.keys(reactDom),
-    //   "react-is": Object.keys(reactIs),
-    //   "prop-types": Object.keys(propTypes),
-    //   "node_modules/scheduler/index.js": [
-    //     "unstable_runWithPriority",
-    //     "LowPriority",
-    //   ],
-    // },
-  }),
+  // {
+  // namedExports: {
+  //   react: Object.keys(react),
+  //   "react-dom": Object.keys(reactDom),
+  //   "react-is": Object.keys(reactIs),
+  //   "prop-types": Object.keys(propTypes),
+  //   "node_modules/scheduler/index.js": [
+  //     "unstable_runWithPriority",
+  //     "LowPriority",
+  //   ],
+  // },
+  // }
+  commonjs(),
+  typescript({ useTsconfigDeclarationDir: true }),
   postcss({
     plugins: [cssImport()],
     minimize: true,
@@ -51,7 +55,7 @@ const plugins = [
 ];
 
 const oneUMD = {
-  input: "./index.js",
+  input: "./index.ts",
   output: [
     {
       file: "build/umd/react-cui.umd.js",
@@ -110,7 +114,7 @@ const umd = [
 
 export default [
   {
-    input: "./index.js",
+    input: "./index.ts",
     output: [
       {
         file: pkg.main,
@@ -144,7 +148,7 @@ export default [
   },
   ...umd,
   {
-    input: ["components/**/*.jsx", "components/**/*.js"],
+    input: ["components/**/*.tsx", "components/**/*.ts"],
     output: [
       {
         format: "esm",

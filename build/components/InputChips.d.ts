@@ -1,0 +1,20 @@
+import React, { ReactNode } from "react";
+import { FormikProps, FieldInputProps } from "formik";
+import "../css/chips.css";
+declare type InputChipsProps = {
+    label?: ReactNode;
+    chipsColor?: "primary" | "secondary" | "tertiary" | "success" | "info" | "warning-alt" | "warning" | "danger" | "dark" | "light";
+    addOnBlur?: boolean;
+    allowRepeat?: boolean;
+    allowRegex?: string;
+    delimiters?: string | number[];
+    valueValidator?: (value: any) => boolean;
+    maxChips?: number;
+    baloon?: string;
+    className?: string;
+    field: FieldInputProps<any>;
+    form: FormikProps<any>;
+    id?: string;
+};
+export declare const InputChips: React.ForwardRefExoticComponent<InputChipsProps & React.RefAttributes<HTMLDivElement>>;
+export {};
