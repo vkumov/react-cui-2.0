@@ -2279,7 +2279,7 @@
     }(React__default.Component));
 
     var Panel = React__default.forwardRef(function (_a, ref) {
-        var color = _a.color, padding = _a.padding, bordered = _a.bordered, raised = _a.raised, well = _a.well, className = _a.className, props = __rest(_a, ["color", "padding", "bordered", "raised", "well", "className"]);
+        var _b = _a.color, color = _b === void 0 ? "plain" : _b, _c = _a.padding, padding = _c === void 0 ? "default" : _c, _d = _a.bordered, bordered = _d === void 0 ? false : _d, _e = _a.raised, raised = _e === void 0 ? false : _e, _f = _a.well, well = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? null : _g, props = __rest(_a, ["color", "padding", "bordered", "raised", "well", "className"]);
         return (React__default.createElement("div", __assign({ className: "panel" + appendClass(color !== "plain", "panel--" + color) + appendClass(padding !== "default", "panel--" + padding) + appendClass(bordered, function () {
                 if (typeof bordered === "string")
                     return "panel--bordered-" + bordered;
@@ -2307,14 +2307,6 @@
         raised: PropTypes.bool,
         well: PropTypes.bool,
         className: PropTypes.string,
-    };
-    Panel.defaultProps = {
-        color: "plain",
-        padding: "default",
-        bordered: false,
-        raised: false,
-        well: false,
-        className: null,
     };
 
     function _objectWithoutPropertiesLoose$1(source, excluded) {

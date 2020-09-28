@@ -54,7 +54,7 @@ HeaderPanel.propTypes = {
 };
 
 type HeaderTitleProps = {
-  icon: boolean | string;
+  icon?: boolean | string;
   link?: string;
   title: string;
   [x: string]: unknown;

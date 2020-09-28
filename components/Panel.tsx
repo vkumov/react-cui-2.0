@@ -5,7 +5,7 @@ import { appendClass as ac } from "../utils";
 
 type Borders = "top" | "right" | "left" | "bottom";
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
-  color:
+  color?:
     | "plain"
     | "primary"
     | "secondary"
@@ -17,33 +17,46 @@ interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     | "danger"
     | "dark"
     | "light";
-  padding: "none" | "compressed" | "default" | "loose";
-  bordered: boolean | Borders | Borders[];
-  raised: boolean;
-  well: boolean;
-  className: string;
+  padding?: "none" | "compressed" | "default" | "loose";
+  bordered?: boolean | Borders | Borders[];
+  raised?: boolean;
+  well?: boolean;
+  className?: string;
 }
 
 export const Panel: FC<PanelProps> = React.forwardRef<
   HTMLDivElement,
   PanelProps
->(({ color, padding, bordered, raised, well, className, ...props }, ref) => (
-  <div
-    className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
-      padding !== "default",
-      `panel--${padding}`
-    )}${ac(bordered, () => {
-      if (typeof bordered === "string") return `panel--bordered-${bordered}`;
-      if (Array.isArray(bordered))
-        return bordered.map((b) => `panel--bordered-${b}`).join(" ");
-      return "panel--bordered";
-    })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
-      className
-    )}`}
-    ref={ref}
-    {...props}
-  />
-));
+>(
+  (
+    {
+      color = "plain",
+      padding = "default",
+      bordered = false,
+      raised = false,
+      well = false,
+      className = null,
+      ...props
+    },
+    ref
+  ) => (
+    <div
+      className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
+        padding !== "default",
+        `panel--${padding}`
+      )}${ac(bordered, () => {
+        if (typeof bordered === "string") return `panel--bordered-${bordered}`;
+        if (Array.isArray(bordered))
+          return bordered.map((b) => `panel--bordered-${b}`).join(" ");
+        return "panel--bordered";
+      })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
+        className
+      )}`}
+      ref={ref}
+      {...props}
+    />
+  )
+);
 
 Panel.propTypes = {
   color: PropTypes.oneOf([
@@ -64,13 +77,4 @@ Panel.propTypes = {
   raised: PropTypes.bool,
   well: PropTypes.bool,
   className: PropTypes.string,
-};
-
-Panel.defaultProps = {
-  color: "plain",
-  padding: "default",
-  bordered: false,
-  raised: false,
-  well: false,
-  className: null,
 };

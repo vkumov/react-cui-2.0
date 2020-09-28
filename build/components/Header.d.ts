@@ -13,7 +13,7 @@ declare type HeaderPanelProps = {
 };
 export declare const HeaderPanel: FC<HeaderPanelProps>;
 declare type HeaderTitleProps = {
-    icon: boolean | string;
+    icon?: boolean | string;
     link?: string;
     title: string;
     [x: string]: unknown;
