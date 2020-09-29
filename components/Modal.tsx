@@ -415,7 +415,7 @@ PromptModal.defaultProps = {
   validate: null,
 };
 
-export const ConfirmationListener = (): ReactNode => {
+export const ConfirmationListener: FC = () => {
   const [modals, setModals] = React.useState([]);
 
   const addModal = React.useCallback(
@@ -448,86 +448,90 @@ export const ConfirmationListener = (): ReactNode => {
 
   if (!modals.length) return null;
 
-  return modals.map((modal) => {
-    if (modal.modalType === "notification")
-      return (
-        <Modal
-          key={modal.id}
-          isOpen={modal.shown}
-          closeIcon
-          closeHandle={() => closeModal(modal.id)}
-          title={modal.title}
-        >
-          <ModalBody>{modal.body}</ModalBody>
-          <ModalFooter>
-            <Button
-              color={modal.buttonColor || "light"}
-              onClick={() => closeModal(modal.id)}
+  return (
+    <>
+      {modals.map((modal) => {
+        if (modal.modalType === "notification")
+          return (
+            <Modal
+              key={modal.id}
+              isOpen={modal.shown}
+              closeIcon
+              closeHandle={() => closeModal(modal.id)}
+              title={modal.title}
             >
-              {modal.button}
-            </Button>
-          </ModalFooter>
-        </Modal>
-      );
+              <ModalBody>{modal.body}</ModalBody>
+              <ModalFooter>
+                <Button
+                  color={modal.buttonColor || "light"}
+                  onClick={() => closeModal(modal.id)}
+                >
+                  {modal.button}
+                </Button>
+              </ModalFooter>
+            </Modal>
+          );
 
-    if (modal.modalType === "prompt") {
-      if (typeof modal.options !== "undefined") {
-        const {
-          initial = "",
-          type = "text",
-          hint = undefined,
-          validate = undefined,
-        } = modal.options;
-        return (
-          <PromptModal
-            key={modal.id}
-            isOpen={modal.shown}
-            onClose={() => closeModal(modal.id)}
-            onSave={modal.cb}
-            title={modal.title}
-            question={modal.question}
-            initial={initial}
-            type={type}
-            hint={hint}
-            validate={validate}
-          />
-        );
-      }
+        if (modal.modalType === "prompt") {
+          if (typeof modal.options !== "undefined") {
+            const {
+              initial = "",
+              type = "text",
+              hint = undefined,
+              validate = undefined,
+            } = modal.options;
+            return (
+              <PromptModal
+                key={modal.id}
+                isOpen={modal.shown}
+                onClose={() => closeModal(modal.id)}
+                onSave={modal.cb}
+                title={modal.title}
+                question={modal.question}
+                initial={initial}
+                type={type}
+                hint={hint}
+                validate={validate}
+              />
+            );
+          }
 
-      return (
-        <PromptModal
-          key={modal.id}
-          isOpen={modal.shown}
-          onClose={() => closeModal(modal.id)}
-          onSave={modal.cb}
-          title={modal.title}
-          question={modal.question}
-          initial={modal.initial}
-          type={modal.type}
-          hint={modal.hint}
-        />
-      );
-    }
+          return (
+            <PromptModal
+              key={modal.id}
+              isOpen={modal.shown}
+              onClose={() => closeModal(modal.id)}
+              onSave={modal.cb}
+              title={modal.title}
+              question={modal.question}
+              initial={modal.initial}
+              type={modal.type}
+              hint={modal.hint}
+            />
+          );
+        }
 
-    if (modal.modalType === "confirmation")
-      return (
-        <ConfirmationModal
-          key={modal.id}
-          isOpen={modal.shown}
-          prompt={modal.prompt}
-          confirmHandle={async () => {
-            const r = await modal.onConfirm();
-            if (r) closeModal(modal.id);
-            return true;
-          }}
-          closeHandle={() => closeModal(modal.id)}
-          confirmText={modal.confirmText}
-          confirmType={modal.confirmType}
-        />
-      );
+        if (modal.modalType === "confirmation")
+          return (
+            <ConfirmationModal
+              key={modal.id}
+              isOpen={modal.shown}
+              prompt={modal.prompt}
+              confirmHandle={async () => {
+                const r = await modal.onConfirm();
+                if (r) closeModal(modal.id);
+                return true;
+              }}
+              closeHandle={() => closeModal(modal.id)}
+              confirmText={modal.confirmText}
+              confirmType={modal.confirmType}
+            />
+          );
 
-    return null;
-  });
+        return null;
+      })}
+    </>
+  );
 };
 
 export { ConfirmationListener as DynamicModal };

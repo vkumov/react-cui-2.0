@@ -107,7 +107,7 @@ export declare namespace PromptModal {
         validate: any;
     };
 }
-export declare const ConfirmationListener: () => ReactNode;
+export declare const ConfirmationListener: FC;
 export { ConfirmationListener as DynamicModal };
 export declare const confirmation: (prompt: string, onConfirm: () => boolean | Promise<boolean>, confirmType?: string, confirmText?: string) => void;
 export declare const notificationModal: (title: ReactNode, body: ReactNode, buttonColor?: string, button?: string) => void;

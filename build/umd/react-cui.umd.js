@@ -4689,7 +4689,7 @@
         }, [addModal]);
         if (!modals.length)
             return null;
-        return modals.map(function (modal) {
+        return (React__default.createElement(React__default.Fragment, null, modals.map(function (modal) {
             if (modal.modalType === "notification")
                 return (React__default.createElement(Modal, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id); }, title: modal.title },
                     React__default.createElement(ModalBody, null, modal.body),
@@ -4717,7 +4717,7 @@
                         });
                     }); }, closeHandle: function () { return closeModal(modal.id); }, confirmText: modal.confirmText, confirmType: modal.confirmType }));
             return null;
-        });
+        })));
     };
     var confirmation = function (prompt, onConfirm, confirmType, confirmText) {
         if (confirmType === void 0) { confirmType = "primary"; }
