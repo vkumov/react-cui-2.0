@@ -220,7 +220,7 @@
 
     var ConditionalWrapper = function (_a) {
         var condition = _a.condition, wrapper = _a.wrapper, children = _a.children;
-        return condition ? (React__default.cloneElement(wrapper, null, children)) : React__default.isValidElement(children) ? (children) : (React__default.createElement(React__default.Fragment, null, "children"));
+        return condition ? (React__default.cloneElement(wrapper, null, children)) : React__default.isValidElement(children) ? (children) : (React__default.createElement(React__default.Fragment, null, children));
     };
     ConditionalWrapper.propTypes = {
         condition: PropTypes.bool.isRequired,

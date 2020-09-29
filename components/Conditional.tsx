@@ -17,7 +17,7 @@ const ConditionalWrapper: FC<ConditionalWrapperProps> = ({
   ) : React.isValidElement(children) ? (
     children
   ) : (
-    <>children</>
+    <>{children}</>
   );
 
 ConditionalWrapper.propTypes = {
