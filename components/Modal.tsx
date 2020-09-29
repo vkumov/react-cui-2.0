@@ -537,9 +537,9 @@ export const ConfirmationListener: FC = () => {
 export { ConfirmationListener as DynamicModal };
 
 export const confirmation = (
-  prompt: string,
+  prompt: ReactNode,
   onConfirm: () => boolean | Promise<boolean>,
-  confirmType = "primary",
+  confirmType: ButtonColor = "primary",
   confirmText = "Confirm"
 ): void => {
   if (!prompt) throw new Error("Prompt must be specified");
@@ -558,7 +558,7 @@ export const confirmation = (
 export const notificationModal = (
   title: ReactNode,
   body: ReactNode,
-  buttonColor = "light",
+  buttonColor: ButtonColor = "light",
   button = "OK"
 ): void => {
   if (!title || !body) throw new Error("Title and body must be specified");
@@ -576,7 +576,7 @@ export { notificationModal as notification };
 
 export const prompt = (
   title: React.ReactText,
-  question: React.ReactText,
+  question: ReactNode,
   cb: (value: unknown) => void | Promise<void>,
   initial = "",
   type = "text",
