@@ -97,15 +97,6 @@ Input.propTypes = {
   type: PropTypes.string,
   inline: PropTypes.oneOf(["group", "label", "both", "form"]),
   helpBlock: PropTypes.bool,
-  form: PropTypes.exact({
-    values: PropTypes.shape({}),
-    touched: PropTypes.shape({}),
-    errors: PropTypes.shape({}),
-  }).isRequired,
-  field: PropTypes.exact({
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-  }).isRequired,
   iconClick: PropTypes.func,
   icon: PropTypes.string,
   id: PropTypes.string,
