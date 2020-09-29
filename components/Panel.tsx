@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, PropsWithChildren } from "react";
 import PropTypes from "prop-types";
 
 import { appendClass as ac } from "../utils";
 
 type Borders = "top" | "right" | "left" | "bottom";
+
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
   color?:
     | "plain"

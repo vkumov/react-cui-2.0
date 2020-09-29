@@ -371,7 +371,7 @@
             _this.handleOutsideClick = function (e) {
                 // ignore clicks on the component itself
                 var alwaysClose = _this.props.alwaysClose;
-                if (!alwaysClose && _this.node.contains(e.target))
+                if (!alwaysClose && _this.node && _this.node.contains(e.target))
                     return;
                 _this.handleClick(e);
             };

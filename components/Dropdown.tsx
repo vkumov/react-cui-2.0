@@ -200,7 +200,7 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   handleOutsideClick = (e): void => {
     // ignore clicks on the component itself
     const { alwaysClose } = this.props;
-    if (!alwaysClose && this.node.contains(e.target)) return;
+    if (!alwaysClose && this.node && this.node.contains(e.target)) return;
 
     this.handleClick(e);
   };
