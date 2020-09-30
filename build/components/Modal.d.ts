@@ -38,8 +38,9 @@ declare type ModalProps = {
     autoClose?: boolean;
     left?: boolean;
     animationDuration?: number | {
-        entering: number;
-        exiting: number;
+        appear?: number;
+        enter?: number;
+        exit?: number;
     };
     children: ReactNode;
     transitionEvents?: Record<string, unknown>;

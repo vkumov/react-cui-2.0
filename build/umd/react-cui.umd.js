@@ -4523,8 +4523,8 @@
         var maximizeCb = React__default.useCallback(function () {
             setMaximized(function (curr) { return !curr; });
         }, []);
-        return (React__default.createElement(Transition, __assign({ in: isOpen, mountOnEnter: true, unmountOnExit: true, timeout: animationDuration }, transitionEvents), function (state) { return (React__default.createElement(ReactModal, __assign({}, props, { autoClose: autoClose, onRequestClose: autoClose && closeHandle ? closeHandle : undefined, overlayClassName: "modal-backdrop", isOpen: ["entering", "entered"].includes(state), className: "modal" + appendClass(realSize, "modal--" + realSize) + appendClass(left, "modal--left"), closeTimeoutMS: typeof animationDuration === "object"
-                ? animationDuration.exiting
+        return (React__default.createElement(Transition, __assign({ in: isOpen, mountOnEnter: true, unmountOnExit: true, timeout: animationDuration }, transitionEvents), function (state) { return (React__default.createElement(ReactModal, __assign({}, props, { onRequestClose: autoClose && closeHandle ? closeHandle : undefined, overlayClassName: "modal-backdrop", isOpen: ["entering", "entered"].includes(state), className: "modal" + appendClass(realSize, "modal--" + realSize) + appendClass(left, "modal--left"), closeTimeoutMS: typeof animationDuration === "object"
+                ? animationDuration.exit
                 : animationDuration }),
             React__default.createElement("div", __assign({ className: "modal__dialog" }, dialogProps, { onClick: function (e) { return e.stopPropagation(); } }),
                 React__default.createElement("div", __assign({ className: "modal__content" }, contentProps),
@@ -4549,13 +4549,6 @@
         isOpen: PropTypes.bool.isRequired,
         autoClose: PropTypes.bool,
         left: PropTypes.bool,
-        animationDuration: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.exact({
-                entering: PropTypes.number,
-                exiting: PropTypes.number,
-            }),
-        ]),
         children: PropTypes.node.isRequired,
         transitionEvents: PropTypes.objectOf(PropTypes.func),
         dialogProps: PropTypes.shape({}),

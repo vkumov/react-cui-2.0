@@ -96,10 +96,7 @@ type ModalProps = {
   left?: boolean;
   animationDuration?:
     | number
-    | {
-        entering: number;
-        exiting: number;
-      };
+    | { appear?: number; enter?: number; exit?: number };
   children: ReactNode;
   transitionEvents?: Record<string, unknown>;
   dialogProps?: React.ComponentProps<"div">;
@@ -158,7 +155,6 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
       {(state) => (
         <ReactModal
           {...props}
-          autoClose={autoClose}
           onRequestClose={autoClose && closeHandle ? closeHandle : undefined}
           overlayClassName="modal-backdrop"
           isOpen={["entering", "entered"].includes(state)}
@@ -168,7 +164,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
           )}`}
           closeTimeoutMS={
             typeof animationDuration === "object"
-              ? animationDuration.exiting
+              ? animationDuration.exit
               : animationDuration
           }
         >
@@ -230,13 +226,6 @@ Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   autoClose: PropTypes.bool,
   left: PropTypes.bool,
-  animationDuration: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.exact({
-      entering: PropTypes.number,
-      exiting: PropTypes.number,
-    }),
-  ]),
   children: PropTypes.node.isRequired,
   transitionEvents: PropTypes.objectOf(PropTypes.func),
   dialogProps: PropTypes.shape({}),
