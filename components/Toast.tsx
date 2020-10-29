@@ -135,11 +135,11 @@ toast.update = (...args) => _toast.update(...args);
 toast.dismiss = (...args) => _toast.dismiss(...args);
 
 type ToastContainerProps = {
-  position: ToastPosition;
-  autoClose: number;
-  draggable: boolean;
-  hideProgressBar: boolean;
-  containerId: string | number;
+  position?: ToastPosition;
+  autoClose?: number;
+  draggable?: boolean;
+  hideProgressBar?: boolean;
+  containerId?: string | number;
   [x: string]: unknown;
 };
 

@@ -22,11 +22,11 @@ interface ToastMethods {
 }
 export declare const toast: IToast & Toasts & ToastMethods;
 declare type ToastContainerProps = {
-    position: ToastPosition;
-    autoClose: number;
-    draggable: boolean;
-    hideProgressBar: boolean;
-    containerId: string | number;
+    position?: ToastPosition;
+    autoClose?: number;
+    draggable?: boolean;
+    hideProgressBar?: boolean;
+    containerId?: string | number;
     [x: string]: unknown;
 };
 export declare const ToastContainer: FC<ToastContainerProps>;

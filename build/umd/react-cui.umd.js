@@ -2106,8 +2106,8 @@
     styleInject(css_248z$1);
 
     var InputHelpBlock = function (_a) {
-        var text = _a.text;
-        return (React__default.createElement("div", { className: "form-group__help", role: "alert" },
+        var _b = _a.text, text = _b === void 0 ? null : _b;
+        return text && (React__default.createElement("div", { className: "form-group__help", role: "alert" },
             React__default.createElement("span", null, text)));
     };
 
