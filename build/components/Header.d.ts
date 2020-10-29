@@ -9,6 +9,7 @@ declare type HeaderPanelProps = {
     children: ReactNode;
     center?: boolean;
     right?: boolean;
+    className?: string;
     [x: string]: unknown;
 };
 export declare const HeaderPanel: FC<HeaderPanelProps>;

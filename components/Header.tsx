@@ -29,6 +29,7 @@ type HeaderPanelProps = {
   children: ReactNode;
   center?: boolean;
   right?: boolean;
+  className?: string;
   [x: string]: unknown;
 };
 
