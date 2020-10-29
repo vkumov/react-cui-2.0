@@ -4177,13 +4177,14 @@
         fluid: PropTypes.bool,
     };
     var HeaderPanel = function (_a) {
-        var children = _a.children, _b = _a.center, center = _b === void 0 ? false : _b, _c = _a.right, right = _c === void 0 ? false : _c, props = __rest(_a, ["children", "center", "right"]);
-        return (React__default.createElement("div", __assign({ className: "header-panel" + (center ? " header-panel--center" : "") + (right ? " header-panel--right" : "") }, props), children));
+        var children = _a.children, _b = _a.center, center = _b === void 0 ? false : _b, _c = _a.right, right = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, props = __rest(_a, ["children", "center", "right", "className"]);
+        return (React__default.createElement("div", __assign({ className: "header-panel" + appendClass(center, "header-panel--center") + appendClass(right, " header-panel--right") + appendClass(className) }, props), children));
     };
     HeaderPanel.propTypes = {
         children: PropTypes.node.isRequired,
         center: PropTypes.bool,
         right: PropTypes.bool,
+        className: PropTypes.string,
     };
     var HeaderTitle = function (_a) {
         var _b = _a.icon, icon = _b === void 0 ? true : _b, _c = _a.link, link = _c === void 0 ? null : _c, title = _a.title, props = __rest(_a, ["icon", "link", "title"]);
@@ -4196,6 +4197,7 @@
         icon: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
         link: PropTypes.string,
         title: PropTypes.string.isRequired,
+        className: PropTypes.string,
     };
 
     var Footer = function () { return (React__default.createElement("footer", { className: "footer" },
