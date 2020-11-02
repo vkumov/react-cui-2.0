@@ -88,9 +88,9 @@ const Fade = cssTransition({
 type ToastFunction = (
   title: ReactNode,
   message: React.ReactText,
-  copyError: boolean,
-  containerId: string,
-  args: Record<string, unknown>
+  copyError?: boolean,
+  containerId?: string,
+  args?: Record<string, unknown>
 ) => React.ReactText;
 
 interface IToast {

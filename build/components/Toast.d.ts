@@ -9,7 +9,7 @@ declare type ToastProps = {
     copyError: boolean;
 };
 export declare const Toast: FC<ToastProps>;
-declare type ToastFunction = (title: ReactNode, message: React.ReactText, copyError: boolean, containerId: string, args: Record<string, unknown>) => React.ReactText;
+declare type ToastFunction = (title: ReactNode, message: React.ReactText, copyError?: boolean, containerId?: string, args?: Record<string, unknown>) => React.ReactText;
 interface IToast {
     (type: ToastType, title: ReactNode, message: React.ReactText, copyError: boolean, containerId: string, args: Record<string, unknown>): React.ReactText;
 }
