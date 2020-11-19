@@ -1969,7 +1969,7 @@
 
     var Label = function (_a) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.color, color = _c === void 0 ? "primary" : _c, _d = _a.bordered, bordered = _d === void 0 ? false : _d, _e = _a.removable, removable = _e === void 0 ? false : _e, _f = _a.onRemove, onRemove = _f === void 0 ? null : _f, _g = _a.raised, raised = _g === void 0 ? false : _g, _h = _a.className, className = _h === void 0 ? null : _h, children = _a.children, props = __rest(_a, ["size", "color", "bordered", "removable", "onRemove", "raised", "className", "children"]);
-        return (React__default.createElement("span", __assign({ className: "" + ("label" + (" label--" + color)) + (size !== "default" ? " label--" + size : "") + (bordered ? " label--bordered" : "") + (raised ? " label--raised" : "") + (className ? " " + className : "") }, props),
+        return (React__default.createElement("span", __assign({ className: "label label--" + color + appendClass(size !== "default", "label--" + size) + appendClass(bordered, "label--bordered") + appendClass(raised, "label--raised") + appendClass(className) }, props),
             children,
             removable ? React__default.createElement("span", { className: "icon-close", onClick: onRemove }) : null));
     };
@@ -1994,46 +1994,16 @@
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
     };
-    Label.Primary = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "primary" }, props));
-    };
-    Label.Secondary = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return (React__default.createElement(Label, __assign({ color: "secondary" }, props)));
-    };
-    Label.Tertiary = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "tertiary" }, props));
-    };
-    Label.Success = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "success" }, props));
-    };
-    Label.Info = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "info" }, props));
-    };
-    Label.WarningAlt = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return (React__default.createElement(Label, __assign({ color: "warning-alt" }, props)));
-    };
-    Label.Warning = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "warning" }, props));
-    };
-    Label.Danger = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "danger" }, props));
-    };
-    Label.Dark = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "dark" }, props));
-    };
-    Label.Light = function (_a) {
-        var color = _a.color, props = __rest(_a, ["color"]);
-        return React__default.createElement(Label, __assign({ color: "light" }, props));
-    };
+    Label.Primary = function (props) { return React__default.createElement(Label, __assign({ color: "primary" }, props)); };
+    Label.Secondary = function (props) { return React__default.createElement(Label, __assign({ color: "secondary" }, props)); };
+    Label.Tertiary = function (props) { return React__default.createElement(Label, __assign({ color: "tertiary" }, props)); };
+    Label.Success = function (props) { return React__default.createElement(Label, __assign({ color: "success" }, props)); };
+    Label.Info = function (props) { return React__default.createElement(Label, __assign({ color: "info" }, props)); };
+    Label.WarningAlt = function (props) { return React__default.createElement(Label, __assign({ color: "warning-alt" }, props)); };
+    Label.Warning = function (props) { return React__default.createElement(Label, __assign({ color: "warning" }, props)); };
+    Label.Danger = function (props) { return React__default.createElement(Label, __assign({ color: "danger" }, props)); };
+    Label.Dark = function (props) { return React__default.createElement(Label, __assign({ color: "dark" }, props)); };
+    Label.Light = function (props) { return React__default.createElement(Label, __assign({ color: "light" }, props)); };
 
     const randomBytes = (typeof self !== "undefined" &&
       (self.crypto || self.msCrypto)
@@ -4178,7 +4148,7 @@
     };
     var HeaderPanel = function (_a) {
         var children = _a.children, _b = _a.center, center = _b === void 0 ? false : _b, _c = _a.right, right = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, props = __rest(_a, ["children", "center", "right", "className"]);
-        return (React__default.createElement("div", __assign({ className: "header-panel" + appendClass(center, "header-panel--center") + appendClass(right, " header-panel--right") + appendClass(className) }, props), children));
+        return (React__default.createElement("div", __assign({ className: "header-panel" + appendClass(center, "header-panel--center") + appendClass(right, "header-panel--right") + appendClass(className) }, props), children));
     };
     HeaderPanel.propTypes = {
         children: PropTypes.node.isRequired,
@@ -4487,9 +4457,6 @@
         plain: PropTypes.bool,
     };
 
-    var css_248z$3 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}body.cui .modal .modal__content div.modal__close>a{color:var(--cui-inactive-color)}body.cui .modal .modal__content div.modal__close>a:hover{color:var(--cui-active-color);text-decoration:none}";
-    styleInject(css_248z$3);
-
     var ModalHeader = function (_a) {
         var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
         return (React__default.createElement("div", __assign({ className: "modal__header" + appendClass(className) }, props), children));
@@ -4498,14 +4465,7 @@
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
     };
-    var ModalBody = function (_a) {
-        var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
-        return (React__default.createElement("div", __assign({ className: "modal__body" + appendClass(className) }, props), children));
-    };
-    ModalBody.propTypes = {
-        className: PropTypes.string,
-        children: PropTypes.node.isRequired,
-    };
+
     var ModalFooter = function (_a) {
         var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
         return (React__default.createElement("div", __assign({ className: "modal__footer" + appendClass(className) }, props), children));
@@ -4514,6 +4474,16 @@
         className: PropTypes.string,
         children: PropTypes.node.isRequired,
     };
+
+    var ModalBody = function (_a) {
+        var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
+        return (React__default.createElement("div", __assign({ className: "modal__body" + appendClass(className) }, props), children));
+    };
+    ModalBody.propTypes = {
+        className: PropTypes.string,
+        children: PropTypes.node.isRequired,
+    };
+
     var Modal = function (_a) {
         var _b = _a.size, size = _b === void 0 ? null : _b, _c = _a.autoClose, autoClose = _c === void 0 ? true : _c, _d = _a.animationDuration, animationDuration = _d === void 0 ? 250 : _d, _e = _a.closeIcon, closeIcon = _e === void 0 ? false : _e, _f = _a.title, title = _f === void 0 ? null : _f, _g = _a.closeHandle, closeHandle = _g === void 0 ? null : _g, _h = _a.left, left = _h === void 0 ? false : _h, _j = _a.transitionEvents, transitionEvents = _j === void 0 ? null : _j, _k = _a.dialogProps, dialogProps = _k === void 0 ? null : _k, _l = _a.contentProps, contentProps = _l === void 0 ? null : _l, _m = _a.maximize, maximize = _m === void 0 ? false : _m, children = _a.children, isOpen = _a.isOpen, props = __rest(_a, ["size", "autoClose", "animationDuration", "closeIcon", "title", "closeHandle", "left", "transitionEvents", "dialogProps", "contentProps", "maximize", "children", "isOpen"]);
         var _o = React__default.useState(false), maximized = _o[0], setMaximized = _o[1];
@@ -4564,6 +4534,7 @@
     Modal.Header = ModalHeader;
     Modal.Body = ModalBody;
     Modal.Footer = ModalFooter;
+
     var ConfirmationModal = function (_a) {
         var _b = _a.isOpen, isOpen = _b === void 0 ? false : _b, _c = _a.confirmType, confirmType = _c === void 0 ? "primary" : _c, _d = _a.autoClose, autoClose = _d === void 0 ? true : _d, _e = _a.confirmText, confirmText = _e === void 0 ? "Confirm" : _e, confirmHandle = _a.confirmHandle, closeHandle = _a.closeHandle, prompt = _a.prompt;
         var _f = React__default.useState(false), doing = _f[0], setDoing = _f[1];
@@ -4595,6 +4566,7 @@
         confirmText: PropTypes.string,
         autoClose: PropTypes.bool,
     };
+
     function PromptModal(_a) {
         var _this = this;
         var title = _a.title, question = _a.question, cb = _a.onSave, onClose = _a.onClose, initial = _a.initial, type = _a.type, isOpen = _a.isOpen, hint = _a.hint, validate = _a.validate;
@@ -4653,6 +4625,7 @@
         hint: null,
         validate: null,
     };
+
     var ConfirmationListener = function () {
         var _a = React__default.useState([]), modals = _a[0], setModals = _a[1];
         var addModal = React__default.useCallback(function (modal) {
@@ -4705,6 +4678,7 @@
             return null;
         })));
     };
+
     var confirmation = function (prompt, onConfirm, confirmType, confirmText) {
         if (confirmType === void 0) { confirmType = "primary"; }
         if (confirmText === void 0) { confirmText = "Confirm"; }
@@ -4760,9 +4734,12 @@
         });
     };
 
+    var css_248z$3 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}body.cui .modal .modal__content div.modal__close>a{color:var(--cui-inactive-color)}body.cui .modal .modal__content div.modal__close>a:hover{color:var(--cui-active-color);text-decoration:none}";
+    styleInject(css_248z$3);
+
     var Icon = function (_a) {
         var icon = _a.icon, _b = _a.size, size = _b === void 0 ? null : _b, _c = _a.className, className = _c === void 0 ? null : _c, props = __rest(_a, ["icon", "size", "className"]);
-        return (React__default.createElement("span", __assign({ className: "icon-" + icon + (className ? " " + className : "") + (size ? " icon-size-" + size : "") }, props)));
+        return (React__default.createElement("span", __assign({ className: "icon-" + icon + appendClass(className) + appendClass(size, "icon-size-" + size) }, props)));
     };
     Icon.propTypes = {
         icon: PropTypes.string.isRequired,

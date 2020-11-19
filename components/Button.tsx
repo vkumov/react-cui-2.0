@@ -108,12 +108,13 @@ type ButtonGroupProps = {
   className?: string;
 };
 
-export const ButtonGroup: FC<ButtonGroupProps> = ({
-  square = false,
-  withDivider = false,
-  className = null,
-  ...props
-}) => (
+export const ButtonGroup: FC<
+  ButtonGroupProps &
+    React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLDivElement>,
+      HTMLDivElement
+    >
+> = ({ square = false, withDivider = false, className = null, ...props }) => (
   <div
     className={`btn-group${ac(square, "btn-group--square")}${ac(
       withDivider,

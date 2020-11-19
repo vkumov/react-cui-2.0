@@ -1,5 +1,5 @@
-import { FC, ReactNode } from "react";
-declare type LabelProps = {
+import React, { FC } from "react";
+declare type LabelProps = React.PropsWithChildren<{
     size?: "tiny" | "small" | "default" | "large";
     color?: "primary" | "secondary" | "tertiary" | "success" | "info" | "warning-alt" | "warning" | "danger" | "dark" | "light";
     bordered?: boolean;
@@ -7,9 +7,7 @@ declare type LabelProps = {
     onRemove?: (e: any) => void;
     raised?: boolean;
     className?: string;
-    children: ReactNode;
-    [x: string]: any;
-};
+}> & React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
 declare type LabelTypes = "Primary" | "Secondary" | "Tertiary" | "Success" | "Info" | "WarningAlt" | "Warning" | "Danger" | "Dark" | "Light";
 declare type ILabel = {
     [x in LabelTypes]: FC<LabelProps>;

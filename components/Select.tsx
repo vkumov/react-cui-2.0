@@ -9,16 +9,16 @@ import { InputHelpBlock } from "./InputHelpBlock";
 import { appendClass as ac } from "../utils";
 
 type SelectProps = {
-  id: string;
-  label: string;
-  title: string;
-  prompt: string;
-  multiple: boolean;
-  inline: boolean | "both";
-  up: boolean;
-  disabled: boolean;
-  width: number;
-  compressed: boolean;
+  id?: string;
+  label?: string;
+  title?: string;
+  prompt?: string;
+  multiple?: boolean;
+  inline?: boolean | "both";
+  up?: boolean;
+  disabled?: boolean;
+  width?: number;
+  compressed?: boolean;
   [x: string]: any;
 };
 

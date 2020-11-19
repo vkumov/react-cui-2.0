@@ -1,12 +1,11 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import PropTypes from "prop-types";
 import { appendClass as ac } from "../utils";
 
-type HeaderProps = {
-  children: ReactNode;
+type HeaderProps = React.PropsWithChildren<{
   fluid?: boolean;
-  [x: string]: unknown;
-};
+}> &
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
 
 export const Header: FC<HeaderProps> = ({
   children,
@@ -25,13 +24,12 @@ Header.propTypes = {
   fluid: PropTypes.bool,
 };
 
-type HeaderPanelProps = {
-  children: ReactNode;
+type HeaderPanelProps = React.PropsWithChildren<{
   center?: boolean;
   right?: boolean;
   className?: string;
-  [x: string]: unknown;
-};
+}> &
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export const HeaderPanel: FC<HeaderPanelProps> = ({
   children,
@@ -43,7 +41,7 @@ export const HeaderPanel: FC<HeaderPanelProps> = ({
   <div
     className={`header-panel${ac(center, "header-panel--center")}${ac(
       right,
-      " header-panel--right"
+      "header-panel--right"
     )}${ac(className)}`}
     {...props}
   >
@@ -62,8 +60,7 @@ type HeaderTitleProps = {
   icon?: boolean | string;
   link?: string;
   title: string;
-  [x: string]: unknown;
-};
+} & HeaderPanelProps;
 
 export const HeaderTitle: FC<HeaderTitleProps> = ({
   icon = true,

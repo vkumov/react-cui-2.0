@@ -1,23 +1,18 @@
-import { FC, ReactNode } from "react";
-declare type HeaderProps = {
-    children: ReactNode;
+import React, { FC } from "react";
+declare type HeaderProps = React.PropsWithChildren<{
     fluid?: boolean;
-    [x: string]: unknown;
-};
+}> & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
 export declare const Header: FC<HeaderProps>;
-declare type HeaderPanelProps = {
-    children: ReactNode;
+declare type HeaderPanelProps = React.PropsWithChildren<{
     center?: boolean;
     right?: boolean;
     className?: string;
-    [x: string]: unknown;
-};
+}> & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 export declare const HeaderPanel: FC<HeaderPanelProps>;
 declare type HeaderTitleProps = {
     icon?: boolean | string;
     link?: string;
     title: string;
-    [x: string]: unknown;
-};
+} & HeaderPanelProps;
 export declare const HeaderTitle: FC<HeaderTitleProps>;
 export {};

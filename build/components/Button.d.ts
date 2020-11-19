@@ -30,5 +30,5 @@ declare type ButtonGroupProps = {
     withDivider?: boolean;
     className?: string;
 };
-export declare const ButtonGroup: FC<ButtonGroupProps>;
+export declare const ButtonGroup: FC<ButtonGroupProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>>;
 export {};

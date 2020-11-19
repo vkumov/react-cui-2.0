@@ -1,7 +1,8 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import PropTypes from "prop-types";
+import { appendClass as ac } from "../utils";
 
-type LabelProps = {
+type LabelProps = React.PropsWithChildren<{
   size?: "tiny" | "small" | "default" | "large";
   color?:
     | "primary"
@@ -19,9 +20,11 @@ type LabelProps = {
   onRemove?: (e) => void;
   raised?: boolean;
   className?: string;
-  children: ReactNode;
-  [x: string]: any;
-};
+}> &
+  React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLSpanElement>,
+    HTMLSpanElement
+  >;
 
 type LabelTypes =
   | "Primary"
@@ -50,11 +53,12 @@ export const Label: ILabel & FC<LabelProps> = ({
   ...props
 }) => (
   <span
-    className={`${"label" + ` label--${color}`}${
-      size !== "default" ? ` label--${size}` : ""
-    }${bordered ? " label--bordered" : ""}${raised ? " label--raised" : ""}${
-      className ? ` ${className}` : ""
-    }`}
+    className={`label label--${color}${ac(
+      size !== "default",
+      `label--${size}`
+    )}${ac(bordered, "label--bordered")}${ac(raised, "label--raised")}${ac(
+      className
+    )}`}
     {...props}
   >
     {children}
@@ -84,17 +88,13 @@ Label.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-Label.Primary = ({ color, ...props }) => <Label color="primary" {...props} />;
-Label.Secondary = ({ color, ...props }) => (
-  <Label color="secondary" {...props} />
-);
-Label.Tertiary = ({ color, ...props }) => <Label color="tertiary" {...props} />;
-Label.Success = ({ color, ...props }) => <Label color="success" {...props} />;
-Label.Info = ({ color, ...props }) => <Label color="info" {...props} />;
-Label.WarningAlt = ({ color, ...props }) => (
-  <Label color="warning-alt" {...props} />
-);
-Label.Warning = ({ color, ...props }) => <Label color="warning" {...props} />;
-Label.Danger = ({ color, ...props }) => <Label color="danger" {...props} />;
-Label.Dark = ({ color, ...props }) => <Label color="dark" {...props} />;
-Label.Light = ({ color, ...props }) => <Label color="light" {...props} />;
+Label.Primary = (props) => <Label color="primary" {...props} />;
+Label.Secondary = (props) => <Label color="secondary" {...props} />;
+Label.Tertiary = (props) => <Label color="tertiary" {...props} />;
+Label.Success = (props) => <Label color="success" {...props} />;
+Label.Info = (props) => <Label color="info" {...props} />;
+Label.WarningAlt = (props) => <Label color="warning-alt" {...props} />;
+Label.Warning = (props) => <Label color="warning" {...props} />;
+Label.Danger = (props) => <Label color="danger" {...props} />;
+Label.Dark = (props) => <Label color="dark" {...props} />;
+Label.Light = (props) => <Label color="light" {...props} />;

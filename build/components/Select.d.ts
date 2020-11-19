@@ -2,16 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../css/select.css";
 declare type SelectProps = {
-    id: string;
-    label: string;
-    title: string;
-    prompt: string;
-    multiple: boolean;
-    inline: boolean | "both";
-    up: boolean;
-    disabled: boolean;
-    width: number;
-    compressed: boolean;
+    id?: string;
+    label?: string;
+    title?: string;
+    prompt?: string;
+    multiple?: boolean;
+    inline?: boolean | "both";
+    up?: boolean;
+    disabled?: boolean;
+    width?: number;
+    compressed?: boolean;
     [x: string]: any;
 };
 declare type SelectState = {
