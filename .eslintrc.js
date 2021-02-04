@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-non-null-assertion": "off",
   },
+  plugins: ["@typescript-eslint", "react-hooks"],
   overrides: [
     {
       files: ["**/*.tsx"],

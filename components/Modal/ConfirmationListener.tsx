@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, cloneElement } from "react";
 
 import { Button } from "../Button";
 
@@ -26,7 +26,12 @@ export const ConfirmationListener: FC = () => {
   }, []);
 
   const deleteModal = React.useCallback((id) => {
-    setModals((curr) => curr.filter((m) => m.id !== id));
+    setModals((curr) =>
+      curr.filter((m) => {
+        if (m.id === id && typeof m.onClosed === "function") m.onClosed();
+        return m.id !== id;
+      })
+    );
   }, []);
 
   const closeModal = React.useCallback(
@@ -46,6 +51,47 @@ export const ConfirmationListener: FC = () => {
   return (
     <>
       {modals.map((modal) => {
+        if (modal.modalType === "dynamic")
+          return (
+            <Modal
+              {...modal.modalProps}
+              key={modal.id}
+              isOpen={modal.shown}
+              closeIcon
+              closeHandle={() => closeModal(modal.id)}
+              title={modal.title}
+            >
+              {modal.fullBody ? (
+                typeof modal.fullBody === "function" ? (
+                  modal.fullBody({ close: () => closeModal(modal.id) })
+                ) : (
+                  cloneElement(modal.fullBody, {
+                    close: () => closeModal(modal.id),
+                  })
+                )
+              ) : (
+                <>
+                  <ModalBody>{modal.body}</ModalBody>
+                  <ModalFooter>
+                    {modal.buttons.map((button, idx) => (
+                      <Button
+                        key={idx}
+                        color={button.color || "light"}
+                        onClick={(e) => {
+                          if (typeof button.onClick === "function")
+                            button.onClick(e, () => closeModal(modal.id));
+                          else closeModal(modal.id);
+                        }}
+                      >
+                        {button.text}
+                      </Button>
+                    ))}
+                  </ModalFooter>
+                </>
+              )}
+            </Modal>
+          );
+
         if (modal.modalType === "notification")
           return (
             <Modal

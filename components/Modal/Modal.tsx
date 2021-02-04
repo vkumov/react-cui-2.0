@@ -15,7 +15,7 @@ import { ModalFooter } from "./Footer";
  * Modal
  */
 
-type ModalProps = PropsWithChildren<{
+export type ModalProps = PropsWithChildren<{
   size?: "small" | "default" | "large" | "full" | "fluid";
   closeIcon?: boolean;
   closeHandle?: (e) => void;

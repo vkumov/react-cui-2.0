@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import type { ButtonColor } from "../Button";
-
+import type { ModalProps } from "./Modal";
 import { eventManager, EVENTS } from "../../utils";
 
 export const confirmation = (
@@ -22,20 +22,30 @@ export const confirmation = (
   });
 };
 
-export const notificationModal = (
+type NotificationModal = (
   title: ReactNode,
   body: ReactNode,
-  buttonColor: ButtonColor = "light",
+  buttonColor?: ButtonColor,
+  button?: ReactNode
+) => Promise<void>;
+
+export const notificationModal: NotificationModal = (
+  title,
+  body,
+  buttonColor = "light",
   button = "OK"
-): void => {
+) => {
   if (!title || !body) throw new Error("Title and body must be specified");
 
-  eventManager.emit(EVENTS.SHOW_MODAL, {
-    modalType: "notification",
-    title,
-    body,
-    buttonColor,
-    button,
+  return new Promise((resolve) => {
+    eventManager.emit(EVENTS.SHOW_MODAL, {
+      modalType: "notification",
+      title,
+      body,
+      buttonColor,
+      button,
+      onClosed: resolve,
+    });
   });
 };
 
@@ -71,5 +81,43 @@ export const prompt = (
     question,
     cb,
     hint,
+  });
+};
+
+type CloseHandler = () => void;
+
+interface ModalButton {
+  color?: ButtonColor;
+  text: ReactNode;
+  onClick?: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    close: CloseHandler
+  ) => void;
+}
+
+interface DynamicModalOptions {
+  title: ReactNode;
+  fullBody?: ReactNode;
+  body?: ReactNode;
+  buttons?: ModalButton[];
+  modalProps?: Partial<ModalProps>;
+}
+
+type DynamicModalHandler = (options: DynamicModalOptions) => void;
+
+export const dynamicModal: DynamicModalHandler = ({
+  title,
+  fullBody = null,
+  body = null,
+  buttons = [],
+  modalProps = {},
+}): void => {
+  eventManager.emit(EVENTS.SHOW_MODAL, {
+    modalType: "dynamic",
+    title,
+    fullBody,
+    body,
+    buttons,
+    modalProps,
   });
 };

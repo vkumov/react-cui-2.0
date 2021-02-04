@@ -40,7 +40,10 @@ const SelectChildren = ({ children, handleOptionClick, isSelected }) =>
 
 type EditableSelectProps = {
   field: FieldInputProps<any>;
-  form: FormikProps<any>;
+  form: Pick<
+    FormikProps<any>,
+    "touched" | "errors" | "values" | "setFieldValue" | "setFieldTouched"
+  >;
   compressed?: boolean;
   id?: string;
   title: ReactNode;

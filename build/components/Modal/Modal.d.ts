@@ -5,7 +5,7 @@ import { ModalFooter } from "./Footer";
 /**
  * Modal
  */
-declare type ModalProps = PropsWithChildren<{
+export declare type ModalProps = PropsWithChildren<{
     size?: "small" | "default" | "large" | "full" | "fluid";
     closeIcon?: boolean;
     closeHandle?: (e: any) => void;

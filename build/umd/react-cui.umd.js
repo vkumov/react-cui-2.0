@@ -4571,6 +4571,7 @@
         var _this = this;
         var title = _a.title, question = _a.question, cb = _a.onSave, onClose = _a.onClose, initial = _a.initial, type = _a.type, isOpen = _a.isOpen, hint = _a.hint, validate = _a.validate;
         var _b = React__default.useState(initial), val = _b[0], setVal = _b[1];
+        var _c = React__default.useState(false), doing = _c[0], setDoing = _c[1];
         var onSave = React__default.useCallback(function () { return __awaiter(_this, void 0, void 0, function () {
             var _a;
             return __generator(this, function (_b) {
@@ -4585,8 +4586,12 @@
                     case 2:
                         if (_a)
                             return [2 /*return*/];
+                        setDoing(true);
+                        return [4 /*yield*/, cb(val)];
+                    case 3:
+                        _b.sent();
+                        setDoing(false);
                         onClose();
-                        cb(val);
                         return [2 /*return*/];
                 }
             });
@@ -4604,8 +4609,10 @@
                             React__default.createElement("span", { "data-balloon": hint, "data-balloon-length": "large", "data-balloon-pos": "up" },
                                 React__default.createElement("span", { className: "icon-question-circle qtr-margin-left", style: { cursor: "help" } })))) })),
             React__default.createElement(ModalFooter, null,
-                React__default.createElement(Button, { color: "light", onClick: onClose }, "Close"),
-                React__default.createElement(Button, { color: "primary", onClick: onSave }, "OK"))));
+                React__default.createElement(Button, { color: "light", onClick: onClose, disabled: doing }, "Close"),
+                React__default.createElement(Button, { color: "primary", onClick: onSave, disabled: doing },
+                    "OK",
+                    doing ? (React__default.createElement("span", { className: "icon-animation spin qtr-margin-left" })) : null))));
     }
     PromptModal.propTypes = {
         title: PropTypes.node.isRequired,
@@ -4637,7 +4644,13 @@
             });
         }, []);
         var deleteModal = React__default.useCallback(function (id) {
-            setModals(function (curr) { return curr.filter(function (m) { return m.id !== id; }); });
+            setModals(function (curr) {
+                return curr.filter(function (m) {
+                    if (m.id === id && typeof m.onClosed === "function")
+                        m.onClosed();
+                    return m.id !== id;
+                });
+            });
         }, []);
         var closeModal = React__default.useCallback(function (id) {
             hideModal(id);
@@ -4649,6 +4662,17 @@
         if (!modals.length)
             return null;
         return (React__default.createElement(React__default.Fragment, null, modals.map(function (modal) {
+            if (modal.modalType === "dynamic")
+                return (React__default.createElement(Modal, __assign({}, modal.modalProps, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id); }, title: modal.title }), modal.fullBody ? (typeof modal.fullBody === "function" ? (modal.fullBody({ close: function () { return closeModal(modal.id); } })) : (React.cloneElement(modal.fullBody, {
+                    close: function () { return closeModal(modal.id); },
+                }))) : (React__default.createElement(React__default.Fragment, null,
+                    React__default.createElement(ModalBody, null, modal.body),
+                    React__default.createElement(ModalFooter, null, modal.buttons.map(function (button, idx) { return (React__default.createElement(Button, { key: idx, color: button.color || "light", onClick: function (e) {
+                            if (typeof button.onClick === "function")
+                                button.onClick(e, function () { return closeModal(modal.id); });
+                            else
+                                closeModal(modal.id);
+                        } }, button.text)); }))))));
             if (modal.modalType === "notification")
                 return (React__default.createElement(Modal, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id); }, title: modal.title },
                     React__default.createElement(ModalBody, null, modal.body),
@@ -4699,12 +4723,15 @@
         if (button === void 0) { button = "OK"; }
         if (!title || !body)
             throw new Error("Title and body must be specified");
-        eventManager.emit(EVENTS.SHOW_MODAL, {
-            modalType: "notification",
-            title: title,
-            body: body,
-            buttonColor: buttonColor,
-            button: button,
+        return new Promise(function (resolve) {
+            eventManager.emit(EVENTS.SHOW_MODAL, {
+                modalType: "notification",
+                title: title,
+                body: body,
+                buttonColor: buttonColor,
+                button: button,
+                onClosed: resolve,
+            });
         });
     };
     var prompt = function (title, question, cb, initial, type, hint) {
@@ -4731,6 +4758,17 @@
             question: question,
             cb: cb,
             hint: hint,
+        });
+    };
+    var dynamicModal = function (_a) {
+        var title = _a.title, _b = _a.fullBody, fullBody = _b === void 0 ? null : _b, _c = _a.body, body = _c === void 0 ? null : _c, _d = _a.buttons, buttons = _d === void 0 ? [] : _d, _e = _a.modalProps, modalProps = _e === void 0 ? {} : _e;
+        eventManager.emit(EVENTS.SHOW_MODAL, {
+            modalType: "dynamic",
+            title: title,
+            fullBody: fullBody,
+            body: body,
+            buttons: buttons,
+            modalProps: modalProps,
         });
     };
 
@@ -4907,8 +4945,10 @@
         return args.find(function (el) { return typeof el !== "undefined" && el !== null; });
     };
     var Tab = function (_a) {
-        var _b = _a.active, active = _b === void 0 ? false : _b, _c = _a.className, className = _c === void 0 ? null : _c, children = _a.children;
-        return (React__default.createElement("div", { className: "tab-pane" + appendClass(active, "active") + appendClass(className) }, children));
+        var _b = _a.active, active = _b === void 0 ? false : _b, _c = _a.className, className = _c === void 0 ? null : _c, _d = _a.activeClassName, activeClassName = _d === void 0 ? null : _d, _e = _a.unmountInactive, unmountInactive = _e === void 0 ? false : _e, children = _a.children;
+        if (!active && unmountInactive)
+            return null;
+        return (React__default.createElement("div", { className: "tab-pane" + appendClass(active, "active") + appendClass(active && activeClassName, activeClassName) + appendClass(className) }, children));
     };
     Tab.propTypes = {
         id: tabIdProp.isRequired,
@@ -4945,24 +4985,53 @@
         onTabChange: PropTypes.func.isRequired,
         children: tabsChildrenProp.isRequired,
     };
+    var composeColumnSize = function (columnWidth) {
+        if (typeof columnWidth === "string")
+            return "col-" + columnWidth;
+        return Object.keys(columnWidth)
+            .map(function (k) { return "col-" + k + "-" + columnWidth[k]; })
+            .join(" ");
+    };
+    var ColumnWrap = function (_a) {
+        var columnWidth = _a.columnWidth, className = _a.className, props = __rest(_a, ["columnWidth", "className"]);
+        return (React__default.createElement("div", __assign({ className: "" + composeColumnSize(columnWidth) + appendClass(className) }, props)));
+    };
     var Tabs = function (_a) {
-        var _b = _a.defaultTab, defaultTab = _b === void 0 ? null : _b, _c = _a.tabsClassName, tabsClassName = _c === void 0 ? null : _c, _d = _a.contentClassName, contentClassName = _d === void 0 ? null : _d, _e = _a.center, center = _e === void 0 ? false : _e, _f = _a.right, right = _f === void 0 ? false : _f, _g = _a.justified, justified = _g === void 0 ? false : _g, _h = _a.embossed, embossed = _h === void 0 ? false : _h, _j = _a.bordered, bordered = _j === void 0 ? false : _j, _k = _a.vertical, vertical = _k === void 0 ? false : _k, _l = _a.sticky, sticky = _l === void 0 ? false : _l, _m = _a.inline, inline = _m === void 0 ? false : _m, _o = _a.renderHeader, renderHeader = _o === void 0 ? function (header) { return header; } : _o, _p = _a.renderBody, renderBody = _p === void 0 ? function (body) { return body; } : _p, _q = _a.onTabChange, onTabChange = _q === void 0 ? null : _q, children = _a.children;
-        var _r = React__default.useState(defaultTab || null), openTab = _r[0], setOpenTab = _r[1];
-        var changeTab = React__default.useCallback(function (id) {
-            if (typeof onTabChange === "function")
-                onTabChange(id);
-            setOpenTab(id);
-        }, [onTabChange]);
-        React__default.useEffect(function () { return changeTab(defaultTab); }, [defaultTab, changeTab]);
-        var header = (React__default.createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default.createElement("div", { className: "col-md-3" }) }, renderHeader(React__default.createElement(TabsHeader, { tabsClassName: tabsClassName, center: center, right: right, justified: justified, embossed: embossed, bordered: bordered, vertical: vertical, sticky: sticky, inline: inline, openTab: openTab, onTabChange: changeTab }, children))));
-        var body = (React__default.createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default.createElement("div", { className: "col-md-9" }) }, renderBody(React__default.createElement("div", { className: "tab-content" + (contentClassName ? " " + contentClassName : "") }, React__default.Children.map(children, function (child, idx) {
+        var _b = _a.defaultTab, defaultTab = _b === void 0 ? null : _b, _c = _a.tabsClassName, tabsClassName = _c === void 0 ? null : _c, _d = _a.contentClassName, contentClassName = _d === void 0 ? null : _d, _e = _a.center, center = _e === void 0 ? false : _e, _f = _a.right, right = _f === void 0 ? false : _f, _g = _a.justified, justified = _g === void 0 ? false : _g, _h = _a.embossed, embossed = _h === void 0 ? false : _h, _j = _a.bordered, bordered = _j === void 0 ? false : _j, _k = _a.vertical, vertical = _k === void 0 ? false : _k, _l = _a.sticky, sticky = _l === void 0 ? false : _l, _m = _a.inline, inline = _m === void 0 ? false : _m, _o = _a.renderHeader, renderHeader = _o === void 0 ? function (header) { return header; } : _o, _p = _a.renderBody, renderBody = _p === void 0 ? function (body) { return body; } : _p, _q = _a.onTabChange, onTabChange = _q === void 0 ? null : _q, _r = _a.leftColumn, leftColumn = _r === void 0 ? { columnWidth: 3 } : _r, _s = _a.rightColumn, rightColumn = _s === void 0 ? { columnWidth: 9 } : _s, _t = _a.rowProps, _u = _t === void 0 ? {} : _t, rowClassName = _u.className, rowProps = __rest(_u, ["className"]), _v = _a.beforeTabChange, beforeTabChange = _v === void 0 ? null : _v, children = _a.children;
+        var _w = React__default.useState(defaultTab || null), openTab = _w[0], setOpenTab = _w[1];
+        var changeTab = React__default.useCallback(function (id) { return __awaiter(void 0, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = typeof beforeTabChange === "function";
+                        if (!_a) return [3 /*break*/, 2];
+                        return [4 /*yield*/, beforeTabChange(openTab, id)];
+                    case 1:
+                        _a = !(_b.sent());
+                        _b.label = 2;
+                    case 2:
+                        if (_a)
+                            return [2 /*return*/];
+                        if (typeof onTabChange === "function")
+                            onTabChange(id);
+                        setOpenTab(id);
+                        return [2 /*return*/];
+                }
+            });
+        }); }, [onTabChange, beforeTabChange, openTab]);
+        React__default.useEffect(function () {
+            changeTab(defaultTab);
+        }, [defaultTab]);
+        var header = (React__default.createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default.createElement(ColumnWrap, __assign({}, leftColumn)) }, renderHeader(React__default.createElement(TabsHeader, { tabsClassName: tabsClassName, center: center, right: right, justified: justified, embossed: embossed, bordered: bordered, vertical: vertical, sticky: sticky, inline: inline, openTab: openTab, onTabChange: changeTab }, children))));
+        var body = (React__default.createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default.createElement(ColumnWrap, __assign({}, rightColumn)) }, renderBody(React__default.createElement("div", { className: "tab-content" + (contentClassName ? " " + contentClassName : "") }, React__default.Children.map(children, function (child, idx) {
             return React__default.isValidElement(child)
                 ? React__default.cloneElement(child, {
                     active: isActive(openTab, child.props.id, idx),
                 })
                 : child;
         })))));
-        return (React__default.createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default.createElement("div", { className: "row", style: sticky ? { position: "relative" } : {} }) },
+        return (React__default.createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default.createElement("div", __assign({ className: "row" + appendClass(rowClassName), style: sticky ? { position: "relative" } : {} }, rowProps)) },
             React__default.createElement(DisplayIf, { condition: (vertical && !right) || !vertical }, header),
             body,
             React__default.createElement(DisplayIf, { condition: vertical && right }, header)));
@@ -5453,6 +5522,7 @@
     exports.WithBadge = WithBadge;
     exports.base16Theme = base16Theme;
     exports.confirmation = confirmation;
+    exports.dynamicModal = dynamicModal;
     exports.notification = notificationModal;
     exports.notificationModal = notificationModal;
     exports.prompt = prompt;

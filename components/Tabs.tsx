@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, HTMLProps, ReactNode } from "react";
 import PropTypes from "prop-types";
 
 import { ConditionalWrapper, DisplayIf } from "./Conditional";
@@ -16,17 +16,29 @@ interface TabProps {
   title: ReactNode;
   children: ReactNode;
   className?: string;
+  activeClassName?: string;
+  unmountInactive?: boolean;
 }
 
 export const Tab: FC<TabProps> = ({
   active = false,
   className = null,
+  activeClassName = null,
+  unmountInactive = false,
   children,
-}) => (
-  <div className={`tab-pane${ac(active, "active")}${ac(className)}`}>
-    {children}
-  </div>
-);
+}) => {
+  if (!active && unmountInactive) return null;
+  return (
+    <div
+      className={`tab-pane${ac(active, "active")}${ac(
+        active && activeClassName,
+        activeClassName
+      )}${ac(className)}`}
+    >
+      {children}
+    </div>
+  );
+};
 
 Tab.propTypes = {
   id: tabIdProp.isRequired,
@@ -113,6 +125,19 @@ TabsHeader.propTypes = {
   children: tabsChildrenProp.isRequired,
 };
 
+interface ColumnSizes {
+  sm?: number;
+  md?: number;
+  lg?: number;
+  xl?: number;
+}
+
+type ColumnSize = number | ColumnSizes;
+
+type Column = {
+  columnWidth?: ColumnSize;
+} & React.HTMLProps<HTMLDivElement>;
+
 interface TabsProps {
   children: ReactNode;
   defaultTab?: TabId;
@@ -124,12 +149,34 @@ interface TabsProps {
   embossed?: boolean;
   bordered?: boolean;
   vertical?: boolean;
+  leftColumn?: Column;
+  rightColumn?: Column;
+  rowProps?: HTMLProps<HTMLDivElement>;
   sticky?: boolean;
   inline?: boolean;
   renderHeader?: (header: JSX.Element) => JSX.Element;
   renderBody?: (body: JSX.Element) => JSX.Element;
   onTabChange?: (tab: TabId) => void;
+  beforeTabChange?: (
+    oldTab: TabId,
+    newTab: TabId
+  ) => boolean | Promise<boolean>;
 }
+
+const composeColumnSize = (columnWidth: ColumnSize): string => {
+  if (typeof columnWidth === "string") return `col-${columnWidth}`;
+
+  return Object.keys(columnWidth)
+    .map((k) => `col-${k}-${columnWidth[k]}`)
+    .join(" ");
+};
+
+const ColumnWrap: FC<Column> = ({ columnWidth, className, ...props }) => (
+  <div
+    className={`${composeColumnSize(columnWidth)}${ac(className)}`}
+    {...props}
+  />
+);
 
 export const Tabs: FC<TabsProps> = ({
   defaultTab = null,
@@ -146,23 +193,35 @@ export const Tabs: FC<TabsProps> = ({
   renderHeader = (header) => header,
   renderBody = (body) => body,
   onTabChange = null,
+  leftColumn = { columnWidth: 3 },
+  rightColumn = { columnWidth: 9 },
+  rowProps: { className: rowClassName, ...rowProps } = {},
+  beforeTabChange = null,
   children,
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
   const changeTab = React.useCallback(
-    (id) => {
+    async (id) => {
+      if (
+        typeof beforeTabChange === "function" &&
+        !(await beforeTabChange(openTab, id))
+      )
+        return;
+
       if (typeof onTabChange === "function") onTabChange(id);
       setOpenTab(id);
     },
-    [onTabChange]
+    [onTabChange, beforeTabChange, openTab]
   );
 
-  React.useEffect(() => changeTab(defaultTab), [defaultTab, changeTab]);
+  React.useEffect(() => {
+    changeTab(defaultTab);
+  }, [defaultTab]);
 
   const header = (
     <ConditionalWrapper
       condition={vertical}
-      wrapper={<div className="col-md-3" />}
+      wrapper={<ColumnWrap {...leftColumn} />}
     >
       {renderHeader(
         <TabsHeader
@@ -187,7 +246,7 @@ export const Tabs: FC<TabsProps> = ({
   const body = (
     <ConditionalWrapper
       condition={vertical}
-      wrapper={<div className="col-md-9" />}
+      wrapper={<ColumnWrap {...rightColumn} />}
     >
       {renderBody(
         <div
@@ -211,7 +270,11 @@ export const Tabs: FC<TabsProps> = ({
     <ConditionalWrapper
       condition={vertical}
       wrapper={
-        <div className="row" style={sticky ? { position: "relative" } : {}} />
+        <div
+          className={`row${ac(rowClassName)}`}
+          style={sticky ? { position: "relative" } : {}}
+          {...rowProps}
+        />
       }
     >
       <DisplayIf condition={(vertical && !right) || !vertical}>

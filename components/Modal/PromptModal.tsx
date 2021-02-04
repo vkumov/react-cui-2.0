@@ -37,11 +37,14 @@ export function PromptModal<T extends React.ReactText>({
   validate,
 }: PropsWithChildren<PromptModalProps<T>>): JSX.Element {
   const [val, setVal] = React.useState<T>(initial);
+  const [doing, setDoing] = React.useState(false);
   const onSave = React.useCallback(async () => {
     if (typeof validate === "function" && !(await validate(val))) return;
 
+    setDoing(true);
+    await cb(val);
+    setDoing(false);
     onClose();
-    cb(val);
   }, [onClose, cb, val, validate]);
 
   React.useLayoutEffect(() => setVal(initial), [initial]);
@@ -77,11 +80,14 @@ export function PromptModal<T extends React.ReactText>({
         />
       </ModalBody>
       <ModalFooter>
-        <Button color="light" onClick={onClose}>
+        <Button color="light" onClick={onClose} disabled={doing}>
           Close
         </Button>
-        <Button color="primary" onClick={onSave}>
+        <Button color="primary" onClick={onSave} disabled={doing}>
           OK
+          {doing ? (
+            <span className="icon-animation spin qtr-margin-left" />
+          ) : null}
         </Button>
       </ModalFooter>
     </Modal>
