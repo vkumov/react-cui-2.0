@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import PropTypes from "prop-types";
 import { appendClass as ac } from "../utils";
 
 type HeaderProps = React.PropsWithChildren<{
@@ -18,11 +17,6 @@ export const Header: FC<HeaderProps> = ({
     </div>
   </header>
 );
-
-Header.propTypes = {
-  children: PropTypes.node.isRequired,
-  fluid: PropTypes.bool,
-};
 
 type HeaderPanelProps = React.PropsWithChildren<{
   center?: boolean;
@@ -48,13 +42,6 @@ export const HeaderPanel: FC<HeaderPanelProps> = ({
     {children}
   </div>
 );
-
-HeaderPanel.propTypes = {
-  children: PropTypes.node.isRequired,
-  center: PropTypes.bool,
-  right: PropTypes.bool,
-  className: PropTypes.string,
-};
 
 type HeaderTitleProps = {
   icon?: boolean | string;
@@ -84,10 +71,3 @@ export const HeaderTitle: FC<HeaderTitleProps> = ({
     <div className="header__title">{title}</div>
   </HeaderPanel>
 );
-
-HeaderTitle.propTypes = {
-  icon: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  link: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  className: PropTypes.string,
-};

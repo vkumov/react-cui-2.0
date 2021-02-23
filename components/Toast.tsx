@@ -6,7 +6,7 @@ import {
   UpdateOptions,
   ToastPosition,
 } from "react-toastify";
-import PropTypes from "prop-types";
+
 import "../css/toast.css";
 
 const copyStringToClipboard = (str: React.ReactText): void => {
@@ -165,18 +165,3 @@ export const ToastContainer: FC<ToastContainerProps> = ({
     }}
   />
 );
-
-ToastContainer.propTypes = {
-  position: PropTypes.oneOf([
-    "top-right",
-    "top-center",
-    "top-left",
-    "bottom-right",
-    "bottom-center",
-    "bottom-left",
-  ]),
-  autoClose: PropTypes.number,
-  draggable: PropTypes.bool,
-  hideProgressBar: PropTypes.bool,
-  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};

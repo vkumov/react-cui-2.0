@@ -1,7 +1,6 @@
-import { FC, ReactNode } from "react";
+import { FC, PropsWithChildren } from "react";
 interface SectionProps {
-    children: ReactNode;
     className: string;
 }
-declare const Section: FC<SectionProps>;
+declare const Section: FC<PropsWithChildren<SectionProps>>;
 export { Section };

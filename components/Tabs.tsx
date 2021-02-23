@@ -1,10 +1,8 @@
 import React, { FC, HTMLProps, ReactNode } from "react";
-import PropTypes from "prop-types";
 
 import { ConditionalWrapper, DisplayIf } from "./Conditional";
 import { appendClass as ac } from "../utils";
 
-const tabIdProp = PropTypes.oneOfType([PropTypes.number, PropTypes.string]);
 type TabId = number | string;
 
 const firstDefined = (...args) =>
@@ -39,16 +37,6 @@ export const Tab: FC<TabProps> = ({
     </div>
   );
 };
-
-Tab.propTypes = {
-  id: tabIdProp.isRequired,
-  active: PropTypes.bool,
-  title: PropTypes.node.isRequired,
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-};
-
-const tabsChildrenProp = PropTypes.node;
 
 const isActive = (openTab, id: TabId, idx: number) =>
   openTab === null ? idx === 0 : openTab === firstDefined(id, idx);
@@ -109,21 +97,6 @@ export const TabsHeader: FC<TabsHeaderProps> = ({
     })}
   </ul>
 );
-
-TabsHeader.propTypes = {
-  tabsClassName: PropTypes.string,
-  center: PropTypes.bool,
-  right: PropTypes.bool,
-  justified: PropTypes.bool,
-  embossed: PropTypes.bool,
-  bordered: PropTypes.bool,
-  vertical: PropTypes.bool,
-  sticky: PropTypes.bool,
-  inline: PropTypes.bool,
-  openTab: tabIdProp,
-  onTabChange: PropTypes.func.isRequired,
-  children: tabsChildrenProp.isRequired,
-};
 
 interface ColumnSizes {
   sm?: number;
@@ -284,22 +257,4 @@ export const Tabs: FC<TabsProps> = ({
       <DisplayIf condition={vertical && right}>{header}</DisplayIf>
     </ConditionalWrapper>
   );
-};
-
-Tabs.propTypes = {
-  children: tabsChildrenProp.isRequired,
-  defaultTab: tabIdProp,
-  tabsClassName: PropTypes.string,
-  contentClassName: PropTypes.string,
-  center: PropTypes.bool,
-  right: PropTypes.bool,
-  justified: PropTypes.bool,
-  embossed: PropTypes.bool,
-  bordered: PropTypes.bool,
-  vertical: PropTypes.bool,
-  sticky: PropTypes.bool,
-  inline: PropTypes.bool,
-  renderHeader: PropTypes.func,
-  renderBody: PropTypes.func,
-  onTabChange: PropTypes.func,
 };

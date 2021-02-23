@@ -11,6 +11,8 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/no-non-null-assertion": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
   },
   plugins: ["@typescript-eslint", "react-hooks"],
   overrides: [

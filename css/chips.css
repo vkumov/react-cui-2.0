@@ -29,11 +29,13 @@
 .cui .form-group .chips .input:hover,
 .cui .form-group .chips .input.hover,
 .cui .form-group .chips .input:focus,
-.cui .form-group .chips .input.focus {
+.cui .form-group .chips .input.focus,
+.cui .form-group .chips .input:focus-within {
   border-color: var(--cui-accent-color);
 }
 
 .cui .form-group .chips .input.focus,
+.cui .form-group .chips .input:focus-within,
 .cui .form-group .chips .input:focus {
   box-shadow: 0 0 0 var(--cui-focus-thickness)
     rgba(var(--cui-focus-color), var(--cui-focus-opacity));
@@ -55,11 +57,16 @@
 .cui .form-group .chips .chips-outer {
   overflow: hidden;
   white-space: nowrap;
-  padding-left: var(--cui-form-padding);
+  /* padding-left: var(--cui-form-padding); */
+  padding-left: var(--cui-spacing-qtr);
 }
 
 .cui .form-group .chips .chips-outer > .chips-inner {
   white-space: normal;
+}
+
+.cui .form-group .chips .chips-outer > .chips-inner .label + .label {
+  margin-left: var(--cui-spacing-qtr);
 }
 
 .cui .form-group .chips .input input {

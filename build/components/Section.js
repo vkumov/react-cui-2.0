@@ -1,1 +1,0 @@
-import e from"react";import r from"prop-types";import{a as i}from"../index-74b9c8d0.js";var o=function(r){var o=r.children,s=r.className,a=void 0===s?null:s;return e.createElement("div",{className:"section"+i(a)},o)};o.propTypes={children:r.node.isRequired,className:r.string};export{o as Section};

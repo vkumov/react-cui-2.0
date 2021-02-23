@@ -1,4 +1,4 @@
-import React, { ReactNode, PropsWithChildren } from "react";
+import React, { ReactNode, PropsWithChildren, ChangeEvent } from "react";
 import PropTypes from "prop-types";
 
 import { Input } from "../Input";
@@ -54,12 +54,11 @@ export function PromptModal<T extends React.ReactText>({
       <ModalBody>
         <Input
           type={type}
-          form={{ errors: {}, touched: {}, values: { promptInput: val } }}
-          field={{
-            onChange: (e) => setVal(e.target.value),
-            name: "promptInput",
-            value: val,
-          }}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setVal(e.target.value as T)
+          }
+          name="promptInput"
+          value={val}
           label={
             <>
               {question}

@@ -1,12 +1,11 @@
-import React, { FC, ReactNode } from "react";
-import { FieldInputProps } from "formik";
-interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
+import { FC, HTMLProps, ReactNode } from "react";
+interface RadioProps extends Omit<HTMLProps<HTMLInputElement>, "label"> {
     spacing?: "compressed" | "regular" | "loose" | "nospacing";
     inline?: boolean;
     label?: ReactNode;
     className?: string;
     id: string;
-    field: FieldInputProps<any>;
+    divProps?: HTMLProps<HTMLDivElement>;
 }
 export declare const Radio: FC<RadioProps>;
 interface RadioValue {
@@ -15,6 +14,9 @@ interface RadioValue {
 }
 interface RadiosProps {
     values: RadioValue[];
+    value?: string;
+    onChange?: (value: string) => void;
+    name: string;
 }
 export declare const Radios: FC<RadiosProps>;
 export {};

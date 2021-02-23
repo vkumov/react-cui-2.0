@@ -1,16 +1,22 @@
-import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
-import { Field, FieldInputProps } from "formik";
+import React, {
+  ChangeEvent,
+  FC,
+  HTMLProps,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import { appendClass as ac } from "../utils";
 
-interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface RadioProps extends Omit<HTMLProps<HTMLInputElement>, "label"> {
   spacing?: "compressed" | "regular" | "loose" | "nospacing";
   inline?: boolean;
   label?: ReactNode;
   className?: string;
   id: string;
-  field: FieldInputProps<any>;
+  divProps?: HTMLProps<HTMLDivElement>;
 }
 
 export const Radio: FC<RadioProps> = ({
@@ -18,40 +24,24 @@ export const Radio: FC<RadioProps> = ({
   inline = false,
   label = null,
   className = null,
-  field: { name, value, onChange, onBlur },
   id,
-  ...props
+  divProps = {},
+  ...input
 }) => (
   <div
     className={`form-group${ac(inline, "form-group--inline")}${ac(
       spacing,
       `form-group--${spacing}`
     )}${ac(className)}`}
-    {...props}
+    {...divProps}
   >
     <label className="radio" htmlFor={`${name}.${id}`}>
-      <input
-        type="radio"
-        name={name}
-        value={id}
-        checked={id === value}
-        onChange={onChange}
-        onBlur={onBlur}
-        id={`${name}.${id}`}
-      />
+      <input type="radio" name={input.name} value={id} {...input} />
       <span className="radio__input" />
       {label ? <span className="radio__label">{label}</span> : null}
     </label>
   </div>
 );
-
-Radio.propTypes = {
-  spacing: PropTypes.oneOf(["compressed", "regular", "loose", "nospacing"]),
-  inline: PropTypes.bool,
-  label: PropTypes.node,
-  className: PropTypes.string,
-  id: PropTypes.string.isRequired,
-};
 
 interface RadioValue {
   value: string;
@@ -60,27 +50,48 @@ interface RadioValue {
 
 interface RadiosProps {
   values: RadioValue[];
+  value?: string;
+  onChange?: (value: string) => void;
+  name: string;
 }
 
-export const Radios: FC<RadiosProps> = ({ values, ...props }) => (
-  <>
-    {values.map((v) => (
-      <Field
-        component={Radio}
-        {...props}
-        id={v.value}
-        label={v.label}
-        key={v.value}
-      />
-    ))}
-  </>
-);
+export const Radios: FC<RadiosProps> = ({
+  values,
+  value: initialValue,
+  onChange,
+  name,
+}) => {
+  const [value, setValue] = useState(initialValue);
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
-Radios.propTypes = {
-  values: PropTypes.arrayOf(
-    PropTypes.exact({
-      value: PropTypes.string,
-      label: PropTypes.node,
-    })
-  ),
+  const onRadioChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      e.persist();
+      setValue((curr) => {
+        let v: string;
+        if (e.target.checked) v = e.target.value;
+        else v = curr;
+        if (typeof onChange === "function") onChange(v);
+        return v;
+      });
+    },
+    [onChange]
+  );
+
+  return (
+    <>
+      {values.map((v, idx) => (
+        <Radio
+          id={v.value}
+          label={v.label}
+          key={v.value}
+          name={`${name}.${idx}`}
+          onChange={onRadioChange}
+          checked={value === v.value}
+        />
+      ))}
+    </>
+  );
 };

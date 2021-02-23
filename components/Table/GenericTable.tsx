@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import PropTypes from "prop-types";
 
 import { ConditionalWrapper } from "../Conditional";
 import { appendClass as ac } from "../../utils";
@@ -48,16 +47,3 @@ export const GenericTable: FC<GenericTableProps> = ({
     />
   </ConditionalWrapper>
 );
-
-GenericTable.propTypes = {
-  outerWrap: PropTypes.bool,
-  lined: PropTypes.bool,
-  bordered: PropTypes.bool,
-  striped: PropTypes.bool,
-  selectable: PropTypes.bool,
-  fixed: PropTypes.bool,
-  wrapped: PropTypes.bool,
-  compressed: PropTypes.bool,
-  loose: PropTypes.bool,
-  className: PropTypes.string,
-};

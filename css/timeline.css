@@ -1,0 +1,24 @@
+.cui .timeline.simplified .timeline__content:before {
+    content: none;
+}
+
+.cui .timeline.simplified:before {
+    z-index: 0;
+}
+
+.cui .timeline.simplified .timeline__icon {
+    position: relative;
+    z-index: 1;
+}
+
+.cui .timeline.simplified .timeline__content {
+    background: transparent;
+    padding-left: 0;
+}
+
+.cui .timeline.simplified .timeline__time {
+  display: block;
+  font-size: var(--cui-font-size-sm) !important;
+  margin-bottom: var(--cui-spacing) !important;
+  margin-top: 0 !important;
+}

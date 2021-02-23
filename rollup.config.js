@@ -3,7 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import external from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
-import multiInput from "rollup-plugin-multi-input";
+import multiInput from "@rollup/plugin-multi-entry";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 // import builtins from "rollup-plugin-node-builtins";
@@ -148,7 +148,10 @@ export default [
   },
   ...umd,
   {
-    input: ["components/**/*.tsx", "components/**/*.ts"],
+    input: {
+      include: ["components/**/*.tsx", "components/**/*.ts"],
+      exclude: ["**/*.stories.tsx"],
+    },
     output: [
       {
         format: "esm",

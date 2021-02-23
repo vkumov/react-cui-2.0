@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 
 import { appendClass as ac } from "../../utils";
 
@@ -27,13 +26,5 @@ const Step: FC<StepProps> = ({
     <div className="step__label">{children}</div>
   </div>
 );
-
-Step.propTypes = {
-  icon: PropTypes.node.isRequired,
-  children: PropTypes.node.isRequired,
-  visited: PropTypes.bool,
-  active: PropTypes.bool,
-  className: PropTypes.string,
-};
 
 export default Step;

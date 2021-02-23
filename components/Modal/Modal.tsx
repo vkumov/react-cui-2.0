@@ -15,8 +15,10 @@ import { ModalFooter } from "./Footer";
  * Modal
  */
 
+export type ModalSize = "small" | "default" | "large" | "full" | "fluid";
+
 export type ModalProps = PropsWithChildren<{
-  size?: "small" | "default" | "large" | "full" | "fluid";
+  size?: ModalSize;
   closeIcon?: boolean;
   closeHandle?: (e) => void;
   title?: ReactNode;

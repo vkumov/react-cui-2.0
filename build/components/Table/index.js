@@ -1,1 +1,0 @@
-import"react";import"prop-types";import"../../tslib.es6-633881f1.js";import"../../index-74b9c8d0.js";import"../Conditional.js";import"../Dropdown.js";import"../Pagination.js";export{DefaultTablePagination}from"./DefaultTablePagination.js";export{GenericTable}from"./GenericTable.js";export{default as Table}from"./Table.js";
