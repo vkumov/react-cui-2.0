@@ -105,7 +105,7 @@ interface ColumnSizes {
   xl?: number;
 }
 
-type ColumnSize = number | ColumnSizes;
+type ColumnSize = number | string | ColumnSizes;
 
 type Column = {
   columnWidth?: ColumnSize;
@@ -137,7 +137,8 @@ interface TabsProps {
 }
 
 const composeColumnSize = (columnWidth: ColumnSize): string => {
-  if (typeof columnWidth === "string") return `col-${columnWidth}`;
+  if (typeof columnWidth === "string" || typeof columnWidth === "number")
+    return `col-${columnWidth}`;
 
   return Object.keys(columnWidth)
     .map((k) => `col-${k}-${columnWidth[k]}`)

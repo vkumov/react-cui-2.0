@@ -76,7 +76,7 @@ export const Primary = () => (
       <div className="row">
         <div className="col">
           <div className="subheader">Not editable (default)</div>
-          <ES onChange={(v) => console.log(v)} multi>
+          <ES onChange={(v) => console.log(v)} multi label="Select">
             <optgroup label="Group 1">
               <option value="Gr 1 - Value 1">Value 1</option>
               <option value="Gr 1 - Value 2">Value 2</option>
@@ -89,7 +89,7 @@ export const Primary = () => (
         </div>
         <div className="col">
           <div className="subheader">Editable</div>
-          <ES onChange={(v) => console.log(v)} multi editable>
+          <ES onChange={(v) => console.log(v)} multi editable label="Select">
             <optgroup label="Group 1">
               <option value="Gr 1 - Value 1">Value 1</option>
               <option value="Gr 1 - Value 2">Value 2</option>

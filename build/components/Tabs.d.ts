@@ -31,7 +31,7 @@ interface ColumnSizes {
     lg?: number;
     xl?: number;
 }
-declare type ColumnSize = number | ColumnSizes;
+declare type ColumnSize = number | string | ColumnSizes;
 declare type Column = {
     columnWidth?: ColumnSize;
 } & React.HTMLProps<HTMLDivElement>;

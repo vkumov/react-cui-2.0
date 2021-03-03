@@ -46,7 +46,7 @@ const SelectChildren = ({ children, handleOptionClick, isSelected }) =>
 
 type EditableSelectProps = {
   compressed?: boolean;
-  title?: ReactNode;
+  label?: ReactNode;
   prompt?: string;
   inline?: boolean;
   editable?: boolean;
@@ -60,7 +60,7 @@ type EditableSelectProps = {
 export const EditableSelect = React.forwardRef<
   HTMLDivElement,
   PropsWithChildren<EditableSelectProps> &
-    Omit<HTMLProps<HTMLInputElement>, "type">
+    Omit<HTMLProps<HTMLInputElement>, "type" | "label">
 >(
   (
     {
@@ -69,7 +69,7 @@ export const EditableSelect = React.forwardRef<
       inline = false,
       type = "text",
       children,
-      title = null,
+      label = null,
       error = null,
       onChange = null,
       value: initialValue = undefined,
@@ -145,7 +145,7 @@ export const EditableSelect = React.forwardRef<
         {multi ? (
           <InputChips
             className="select editable"
-            title={title}
+            label={label}
             {...input}
             placeholder={
               !Array.isArray(value) || !value.length
@@ -176,7 +176,7 @@ export const EditableSelect = React.forwardRef<
               }}
               value={value}
             />
-            {title ? <label htmlFor={input.id}>{title}</label> : null}
+            {label ? <label htmlFor={input.id}>{label}</label> : null}
           </div>
         )}
         <div className="dropdown__menu">

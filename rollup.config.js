@@ -7,7 +7,7 @@ import multiInput from "@rollup/plugin-multi-entry";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 // import builtins from "rollup-plugin-node-builtins";
-import replace from "rollup-plugin-replace";
+import replace from "@rollup/plugin-replace";
 import json from "@rollup/plugin-json";
 import alias from "@rollup/plugin-alias";
 import cssImport from "postcss-import";
@@ -89,6 +89,7 @@ const oneUMD = {
     ...plugins,
     replace({
       "process.env.NODE_ENV": JSON.stringify("production"),
+      preventAssignment: true,
     }),
   ],
   external: [

@@ -7,7 +7,7 @@ import {
   ToastPosition,
 } from "react-toastify";
 
-import "../css/toast.css";
+import "../../css/toast.css";
 
 const copyStringToClipboard = (str: React.ReactText): void => {
   // Create new element
@@ -49,7 +49,7 @@ const ToastIcon = ({ type }) => {
 };
 
 type ToastType = "success" | "error" | "warning" | "info" | "none";
-type ToastProps = {
+export type ToastProps = {
   title: ReactNode;
   message: React.ReactText;
   type: ToastType;
@@ -82,7 +82,7 @@ export const Toast: FC<ToastProps> = ({ title, message, type, copyError }) => (
 const Fade = cssTransition({
   enter: "fadeIn",
   exit: "fadeOut",
-  duration: 300,
+  collapseDuration: 300,
 });
 
 type ToastFunction = (
@@ -93,14 +93,14 @@ type ToastFunction = (
   args?: Record<string, unknown>
 ) => React.ReactText;
 
-interface IToast {
+export interface IToast {
   (
     type: ToastType,
     title: ReactNode,
     message: React.ReactText,
-    copyError: boolean,
-    containerId: string,
-    args: Record<string, unknown>
+    copyError?: boolean,
+    containerId?: string,
+    args?: Record<string, unknown>
   ): React.ReactText;
 }
 

@@ -21,7 +21,7 @@ export declare namespace PromptModal {
         question: PropTypes.Validator<PropTypes.ReactNodeLike>;
         onSave: PropTypes.Validator<(...args: any[]) => any>;
         onClose: PropTypes.Requireable<(...args: any[]) => any>;
-        initial: PropTypes.Requireable<React.ReactText>;
+        initial: PropTypes.Requireable<string | number>;
         type: PropTypes.Requireable<string>;
         isOpen: PropTypes.Validator<boolean>;
         hint: PropTypes.Requireable<PropTypes.ReactNodeLike>;
