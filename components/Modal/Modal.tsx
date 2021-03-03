@@ -1,7 +1,6 @@
 import React, { FC, ReactNode, PropsWithChildren } from "react";
 import Transition from "react-transition-group/Transition";
 import ReactModal from "react-modal";
-import PropTypes from "prop-types";
 
 import { ConditionalWrapper, DisplayIf as If } from "../Conditional";
 
@@ -146,21 +145,6 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
       )}
     </Transition>
   );
-};
-
-Modal.propTypes = {
-  size: PropTypes.oneOf(["small", "default", "large", "full", "fluid"]),
-  closeIcon: PropTypes.bool,
-  closeHandle: PropTypes.func,
-  title: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired,
-  autoClose: PropTypes.bool,
-  left: PropTypes.bool,
-  children: PropTypes.node.isRequired,
-  transitionEvents: PropTypes.objectOf(PropTypes.func),
-  dialogProps: PropTypes.shape({}),
-  contentProps: PropTypes.shape({}),
-  maximize: PropTypes.bool,
 };
 
 Modal.Small = (props) => <Modal {...props} size="small" />;

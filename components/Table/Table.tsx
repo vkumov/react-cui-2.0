@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 
 import { GenericTable } from "./GenericTable";
 import { DefaultTablePagination } from "./DefaultTablePagination";
@@ -120,31 +119,4 @@ const Table: FC<TableProps> = ({
   );
 };
 
-const ALLOWED_TABLE_CHILD = ["thead", "tbody"];
-const allowedChild = (type) => ALLOWED_TABLE_CHILD.includes(type);
-
-Table.propTypes = {
-  pagination: PropTypes.elementType,
-  paginationLocation: PropTypes.oneOf([
-    "top-left",
-    "bottom-left",
-    "bottom-right",
-    "top-right",
-  ]),
-  data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.any)),
-  children: (props, propName, componentName) => {
-    const { [propName]: t } = props;
-
-    const err = new Error(
-      `Invalid prop \`${propName}\` supplied to` +
-        ` \`${componentName}\`. Validation failed, should be one of:` +
-        ` ${ALLOWED_TABLE_CHILD.join(", ")}.`
-    );
-    if (Array.isArray(t)) {
-      if (!t.every((ch) => allowedChild(ch.type))) return err;
-    } else if (t && !allowedChild(t.type)) return err;
-    return null;
-  },
-  start: PropTypes.number,
-};
 export default Table;

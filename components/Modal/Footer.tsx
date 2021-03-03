@@ -1,5 +1,4 @@
 import React, { FC, PropsWithChildren } from "react";
-import PropTypes from "prop-types";
 
 import { appendClass as ac } from "../../utils";
 
@@ -20,8 +19,3 @@ export const ModalFooter: FC<ModalFooterProps> = ({
     {children}
   </div>
 );
-
-ModalFooter.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};

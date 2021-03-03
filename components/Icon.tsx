@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import PropTypes from "prop-types";
 import { appendClass as ac } from "../utils";
 
 type IconProps = {
@@ -22,26 +21,5 @@ const Icon: FC<IconProps> = ({
     {...props}
   />
 );
-
-Icon.propTypes = {
-  icon: PropTypes.string.isRequired,
-  size: PropTypes.oneOf([
-    10,
-    12,
-    14,
-    16,
-    18,
-    20,
-    24,
-    28,
-    32,
-    36,
-    48,
-    64,
-    96,
-    128,
-  ]),
-  className: PropTypes.string,
-};
 
 export { Icon };

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 declare type ElementProps = {
     selected?: boolean;
     icon?: string;
@@ -25,18 +25,11 @@ declare type DropdownProps = {
     children: ReactNode;
     up?: boolean;
 };
-declare type DropdownState = {
-    isOpen: boolean;
-};
-declare class Dropdown extends React.Component<DropdownProps, DropdownState> {
-    static Element: React.FC<ElementProps>;
-    static Divider: React.FC<{}>;
-    static Group: React.FC<GroupProps>;
-    static GroupHeader: React.FC<GroupHeaderProps>;
-    node: HTMLElement;
-    constructor(props: DropdownProps);
-    handleClick: (e: any) => void;
-    handleOutsideClick: (e: any) => void;
-    render(): JSX.Element;
+export interface DropdownParts {
+    Element: FC<ElementProps>;
+    Divider: FC;
+    Group: FC<GroupProps>;
+    GroupHeader: FC<GroupHeaderProps>;
 }
+declare const Dropdown: DropdownParts & FC<DropdownProps>;
 export { Dropdown };

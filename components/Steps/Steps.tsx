@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 
 import { appendClass as ac } from "../../utils";
 
@@ -33,14 +32,6 @@ const Steps: StepsSizes & FC<StepsProps> = ({
     {children}
   </div>
 );
-
-Steps.propTypes = {
-  size: PropTypes.oneOf(["dot", "small", "default", "large"]),
-  color: PropTypes.oneOf(["primary", "secondary", "success", "dark"]),
-  vertical: PropTypes.bool,
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};
 
 Steps.Dot = (props) => <Steps {...props} size="dot" />;
 Steps.Small = (props) => <Steps {...props} size="small" />;

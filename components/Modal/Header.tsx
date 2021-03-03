@@ -1,6 +1,4 @@
 import React, { FC, PropsWithChildren } from "react";
-import PropTypes from "prop-types";
-
 import { appendClass as ac } from "../../utils";
 
 /**
@@ -20,8 +18,3 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
     {children}
   </div>
 );
-
-ModalHeader.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};

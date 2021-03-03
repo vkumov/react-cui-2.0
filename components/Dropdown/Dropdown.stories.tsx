@@ -18,19 +18,40 @@ export const Primary = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Structure</h3>
-      <Dropdown header="Dropdown">
-        <Dropdown.Element>Item one</Dropdown.Element>
-        <Dropdown.Element>Item two</Dropdown.Element>
-        <Dropdown.Element selected>Item three</Dropdown.Element>
-        <Dropdown.Divider />
-        <Dropdown.Group>
-          <Dropdown.GroupHeader header="Group" />
-          <Dropdown.Element>Item one</Dropdown.Element>
-          <Dropdown.Element>Item two</Dropdown.Element>
-        </Dropdown.Group>
-        <Dropdown.Element icon="social-facebook">Facebook</Dropdown.Element>
-        <Dropdown.Element icon="social-twitter">Twitter</Dropdown.Element>
-      </Dropdown>
+      <div className="row">
+        <div className="col">
+          <div className="subheader">Stays open when item clicked</div>
+          <Dropdown header="Dropdown">
+            <Dropdown.Element>Item one</Dropdown.Element>
+            <Dropdown.Element>Item two</Dropdown.Element>
+            <Dropdown.Element selected>Item three</Dropdown.Element>
+            <Dropdown.Divider />
+            <Dropdown.Group>
+              <Dropdown.GroupHeader header="Group" />
+              <Dropdown.Element>Item one</Dropdown.Element>
+              <Dropdown.Element>Item two</Dropdown.Element>
+            </Dropdown.Group>
+            <Dropdown.Element icon="social-facebook">Facebook</Dropdown.Element>
+            <Dropdown.Element icon="social-twitter">Twitter</Dropdown.Element>
+          </Dropdown>
+        </div>
+        <div className="col">
+          <div className="subheader">Closes open when item clicked</div>
+          <Dropdown header="Dropdown" alwaysClose>
+            <Dropdown.Element>Item one</Dropdown.Element>
+            <Dropdown.Element>Item two</Dropdown.Element>
+            <Dropdown.Element selected>Item three</Dropdown.Element>
+            <Dropdown.Divider />
+            <Dropdown.Group>
+              <Dropdown.GroupHeader header="Group" />
+              <Dropdown.Element>Item one</Dropdown.Element>
+              <Dropdown.Element>Item two</Dropdown.Element>
+            </Dropdown.Group>
+            <Dropdown.Element icon="social-facebook">Facebook</Dropdown.Element>
+            <Dropdown.Element icon="social-twitter">Twitter</Dropdown.Element>
+          </Dropdown>
+        </div>
+      </div>
     </div>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Type</h3>

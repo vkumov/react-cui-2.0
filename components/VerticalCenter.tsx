@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import PropTypes from "prop-types";
 
 const VerticalCenter: FC = ({ children }) => (
   <div
@@ -11,7 +10,5 @@ const VerticalCenter: FC = ({ children }) => (
     </main>
   </div>
 );
-
-VerticalCenter.propTypes = { children: PropTypes.node.isRequired };
 
 export default VerticalCenter;

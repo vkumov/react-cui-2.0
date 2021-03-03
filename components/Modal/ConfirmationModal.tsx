@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 
 import { Button, ButtonColor } from "../Button";
 
@@ -59,13 +58,4 @@ export const ConfirmationModal: FC<ConfirmationModalProps> = ({
       </ModalFooter>
     </Modal>
   );
-};
-
-ConfirmationModal.propTypes = {
-  isOpen: PropTypes.bool,
-  confirmHandle: PropTypes.func.isRequired,
-  closeHandle: PropTypes.func.isRequired,
-  prompt: PropTypes.node.isRequired,
-  confirmText: PropTypes.string,
-  autoClose: PropTypes.bool,
 };

@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import PropTypes from "prop-types";
 
 type InputHelpBaloonProps = {
   baloon: string;
@@ -15,7 +14,3 @@ export const InputHelpBaloon: FC<InputHelpBaloonProps> = ({ baloon }) => (
     <span className="icon-question-circle" style={{ cursor: "help" }} />
   </span>
 );
-
-InputHelpBaloon.propTypes = {
-  baloon: PropTypes.string.isRequired,
-};

@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "",
   "main": "build/bundle.min.js",
   "module": "build/index.js",
@@ -13,7 +13,6 @@
   "author": "Vitaly Kumov",
   "license": "ISC",
   "peerDependencies": {
-    "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
@@ -28,7 +27,6 @@
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-multi-entry": "^4.0.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@storybook/addon-essentials": "^6.1.20",
     "@storybook/react": "^6.1.20",
@@ -58,7 +56,6 @@
     "postcss": "^8.2.6",
     "postcss-import": "^14.0.0",
     "prettier": "^2.2.1",
-    "prop-types": "^15.7.2",
     "randombytes": "^2.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -67,6 +64,7 @@
     "react-modal": "^3.12.1",
     "rollup": "^2.40.0",
     "rollup-plugin-cleaner": "^1.0.0",
+    "rollup-plugin-multi-input": "^1.2.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",

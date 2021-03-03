@@ -1,6 +1,4 @@
 import React, { ReactNode, PropsWithChildren, ChangeEvent } from "react";
-import PropTypes from "prop-types";
-
 import { Input } from "../Input";
 import { DisplayIf as If } from "../Conditional";
 import { Button } from "../Button";
@@ -92,18 +90,6 @@ export function PromptModal<T extends React.ReactText>({
     </Modal>
   );
 }
-
-PromptModal.propTypes = {
-  title: PropTypes.node.isRequired,
-  question: PropTypes.node.isRequired,
-  onSave: PropTypes.func.isRequired,
-  onClose: PropTypes.func,
-  initial: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  type: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired,
-  hint: PropTypes.node,
-  validate: PropTypes.func,
-};
 
 PromptModal.defaultProps = {
   onClose: null,

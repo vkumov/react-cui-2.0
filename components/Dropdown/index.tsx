@@ -1,4 +1,11 @@
-import React, { FC, ReactNode } from "react";
+import React, {
+  FC,
+  MouseEvent,
+  ReactNode,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 
 import { ConditionalWrapper } from "../Conditional";
 import { appendClass } from "../../utils";
@@ -111,92 +118,91 @@ type DropdownProps = {
   up?: boolean;
 };
 
-type DropdownState = {
-  isOpen: boolean;
+export interface DropdownParts {
+  Element: FC<ElementProps>;
+  Divider: FC;
+  Group: FC<GroupProps>;
+  GroupHeader: FC<GroupHeaderProps>;
+}
+
+const Dropdown: DropdownParts & FC<DropdownProps> = ({
+  openTo = "right",
+  children,
+  type = "button",
+  className = null,
+  header = null,
+  divClassName = null,
+  up = false,
+  onClose = null,
+  onOpen = null,
+  stopPropagation = false,
+  alwaysClose = false,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const divRef = useRef<HTMLDivElement>(undefined);
+
+  // eslint-disable-next-line prefer-const
+  let handleOutsideClick;
+
+  const handleClick = useCallback(
+    (e): void => {
+      if (stopPropagation) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+
+      setIsOpen((current) => {
+        if (!current) {
+          // attach/remove event handler
+          document.addEventListener("click", handleOutsideClick, false);
+        } else {
+          document.removeEventListener("click", handleOutsideClick, false);
+        }
+        const newIsOpen = !current;
+        if (newIsOpen && onOpen) onOpen(e);
+        if (!newIsOpen && onClose) onClose(e);
+        return newIsOpen;
+      });
+    },
+    [stopPropagation, onClose, onOpen]
+  );
+
+  handleOutsideClick = (e: MouseEvent<Node>): void => {
+    // ignore clicks on the component itself
+    if (!(e.target instanceof Node)) return;
+    if (!alwaysClose && divRef.current && divRef.current.contains(e.target))
+      return;
+
+    if (!divRef.current.contains(e.target)) handleClick(e);
+    if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose)
+      handleClick(e);
+  };
+
+  return (
+    <div
+      className={`dropdown${appendClass(
+        ["left", "center"].includes(openTo),
+        `dropdown--${openTo}`
+      )}${appendClass(up, "dropdown--up")}${appendClass(
+        isOpen,
+        "active"
+      )}${appendClass(divClassName)}`}
+      ref={divRef}
+    >
+      <DropdownHeader
+        type={type}
+        handleClick={handleClick}
+        className={className}
+        header={header}
+      />
+      <div className="dropdown__menu">{children}</div>
+    </div>
+  );
 };
 
-class Dropdown extends React.Component<DropdownProps, DropdownState> {
-  static Element = Element;
-  static Divider = Divider;
-  static Group = Group;
-  static GroupHeader = GroupHeader;
-
-  node: HTMLElement;
-
-  constructor(props: DropdownProps) {
-    super(props);
-
-    this.state = {
-      isOpen: false,
-    };
-  }
-
-  handleClick = (e): void => {
-    const { stopPropagation = false, onOpen, onClose } = this.props;
-    if (stopPropagation) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    const { isOpen } = this.state;
-    if (!isOpen) {
-      // attach/remove event handler
-      document.addEventListener("click", this.handleOutsideClick, false);
-    } else {
-      document.removeEventListener("click", this.handleOutsideClick, false);
-    }
-
-    this.setState((prevState) => {
-      const newIsOpen = !prevState.isOpen;
-      if (newIsOpen && onOpen) onOpen(e);
-      if (!newIsOpen && onClose) onClose(e);
-      return { isOpen: newIsOpen };
-    });
-  };
-
-  handleOutsideClick = (e): void => {
-    // ignore clicks on the component itself
-    const { alwaysClose = false } = this.props;
-    if (!alwaysClose && this.node && this.node.contains(e.target)) return;
-
-    this.handleClick(e);
-  };
-
-  render(): JSX.Element {
-    const {
-      openTo = "right",
-      children,
-      type = "button",
-      className = null,
-      header = null,
-      divClassName = null,
-      up = false,
-    } = this.props;
-    const { isOpen } = this.state;
-
-    return (
-      <div
-        className={`dropdown${appendClass(
-          ["left", "center"].includes(openTo),
-          `dropdown--${openTo}`
-        )}${appendClass(up, "dropdown--up")}${appendClass(
-          isOpen,
-          "active"
-        )}${appendClass(divClassName)}`}
-        ref={(node) => {
-          this.node = node;
-        }}
-      >
-        <DropdownHeader
-          type={type}
-          handleClick={this.handleClick}
-          className={className}
-          header={header}
-        />
-        <div className="dropdown__menu">{children}</div>
-      </div>
-    );
-  }
-}
+Dropdown.Divider = Divider;
+Dropdown.Element = Element;
+Dropdown.Group = Group;
+Dropdown.GroupHeader = GroupHeader;
 
 export { Dropdown };

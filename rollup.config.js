@@ -3,7 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import external from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
-import multiInput from "@rollup/plugin-multi-entry";
+import multiInput from "rollup-plugin-multi-input";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 // import builtins from "rollup-plugin-node-builtins";
@@ -39,7 +39,6 @@ const plugins = [
   //   react: Object.keys(react),
   //   "react-dom": Object.keys(reactDom),
   //   "react-is": Object.keys(reactIs),
-  //   "prop-types": Object.keys(propTypes),
   //   "node_modules/scheduler/index.js": [
   //     "unstable_runWithPriority",
   //     "LowPriority",
@@ -70,8 +69,6 @@ const oneUMD = {
         "react-json-tree": "ReactJsonTree",
         "react-modal": "ReactModal",
         "react-sortable-hoc": "SortableHOC",
-        "prop-types": "PropTypes",
-        formik: "formik",
       },
     },
   ],
@@ -99,8 +96,6 @@ const oneUMD = {
     "react-json-tree",
     "react-modal",
     "react-sortable-hoc",
-    "prop-types",
-    "formik",
   ],
 };
 
@@ -138,8 +133,6 @@ export default [
     external: [
       "react",
       "react-dom",
-      "prop-types",
-      "formik",
       "react-modal",
       "react-transition-group",
       "react-json-tree",
@@ -149,10 +142,7 @@ export default [
   },
   ...umd,
   {
-    input: {
-      include: ["components/**/*.tsx", "components/**/*.ts"],
-      exclude: ["**/*.stories.tsx"],
-    },
+    input: ["components/**/*.tsx", "components/**/*.ts"],
     output: [
       {
         format: "esm",
@@ -167,18 +157,18 @@ export default [
           "react-modal": "ReactModal",
           "react-sortable-hoc": "SortableHOC",
           "react-dropzone": "ReactDropzone",
-          "prop-types": "PropTypes",
-          formik: "formik",
           uuid: "uuid",
         },
       },
     ],
-    plugins: [multiInput(), ...plugins, terser()],
+    plugins: [
+      multiInput({ glob: { ignore: ["**.stories.tsx"] } }),
+      ...plugins,
+      terser(),
+    ],
     external: [
       "react",
       "react-dom",
-      "prop-types",
-      "formik",
       "react-modal",
       "react-transition-group",
       "react-json-tree",
