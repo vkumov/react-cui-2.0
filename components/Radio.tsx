@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   FC,
+  forwardRef,
   HTMLProps,
   ReactNode,
   useCallback,
@@ -15,32 +16,37 @@ interface RadioProps extends Omit<HTMLProps<HTMLInputElement>, "label"> {
   inline?: boolean;
   label?: ReactNode;
   className?: string;
-  id: string;
+  id?: string;
   divProps?: HTMLProps<HTMLDivElement>;
 }
 
-export const Radio: FC<RadioProps> = ({
-  spacing = null,
-  inline = false,
-  label = null,
-  className = null,
-  id,
-  divProps = {},
-  ...input
-}) => (
-  <div
-    className={`form-group${ac(inline, "form-group--inline")}${ac(
-      spacing,
-      `form-group--${spacing}`
-    )}${ac(className)}`}
-    {...divProps}
-  >
-    <label className="radio" htmlFor={`${name}.${id}`}>
-      <input type="radio" name={input.name} value={id} {...input} />
-      <span className="radio__input" />
-      {label ? <span className="radio__label">{label}</span> : null}
-    </label>
-  </div>
+export const Radio = forwardRef<HTMLInputElement, RadioProps>(
+  (
+    {
+      spacing = null,
+      inline = false,
+      label = null,
+      className = null,
+      id,
+      divProps = {},
+      ...input
+    },
+    forwardedRef
+  ) => (
+    <div
+      className={`form-group${ac(inline, "form-group--inline")}${ac(
+        spacing,
+        `form-group--${spacing}`
+      )}${ac(className)}`}
+      {...divProps}
+    >
+      <label className="radio" htmlFor={id || input.name}>
+        <input type="radio" id={id} {...input} ref={forwardedRef} />
+        <span className="radio__input" />
+        {label ? <span className="radio__label">{label}</span> : null}
+      </label>
+    </div>
+  )
 );
 
 interface RadioValue {

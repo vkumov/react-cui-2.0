@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 declare type StepsProps = {
     size?: "dot" | "small" | "default" | "large";
     color?: "primary" | "secondary" | "success" | "dark";
@@ -11,5 +11,6 @@ interface StepsSizes {
     Small: FC<StepsProps>;
     Large: FC<StepsProps>;
 }
-declare const Steps: StepsSizes & FC<StepsProps>;
+declare type Steps<P> = P & StepsSizes;
+declare const Steps: React.ForwardRefExoticComponent<StepsProps & React.RefAttributes<HTMLDivElement>>;
 export default Steps;

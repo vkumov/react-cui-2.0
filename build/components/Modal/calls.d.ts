@@ -1,7 +1,11 @@
 import React, { ReactNode } from "react";
 import type { ButtonColor } from "../Button";
 import type { ModalProps } from "./Modal";
-export declare const confirmation: (prompt: ReactNode, onConfirm: () => boolean | Promise<boolean>, confirmType?: ButtonColor, confirmText?: string) => void;
+export declare type DontAskAgain = {
+    show: boolean;
+    text?: ReactNode;
+};
+export declare const confirmation: (prompt: ReactNode, onConfirm: (dontAskAgain?: boolean) => boolean | Promise<boolean>, confirmType?: ButtonColor, confirmText?: string, dontAskAgain?: DontAskAgain) => void;
 declare type NotificationModal = (title: ReactNode, body: ReactNode, buttonColor?: ButtonColor, button?: ReactNode) => Promise<void>;
 export declare const notificationModal: NotificationModal;
 export { notificationModal as notification };
@@ -12,9 +16,15 @@ interface ModalButton {
     text: ReactNode;
     onClick?: (e: React.MouseEvent<HTMLButtonElement>, close: CloseHandler) => void;
 }
+export declare type PropsWithCloseModal<P = {}> = P & {
+    close: () => void;
+};
+declare type FullBodyRender = (props: {
+    close: () => void;
+}) => ReactNode;
 interface DynamicModalOptions {
     title: ReactNode;
-    fullBody?: ReactNode;
+    fullBody?: ReactNode | FullBodyRender;
     body?: ReactNode;
     buttons?: ModalButton[];
     modalProps?: Partial<ModalProps>;

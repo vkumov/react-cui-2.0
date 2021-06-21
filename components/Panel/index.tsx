@@ -1,6 +1,7 @@
 import React, { FC, HTMLProps } from "react";
 
 import { appendClass as ac } from "../../utils";
+import "../../css/panel.css";
 
 type Borders = "top" | "right" | "left" | "bottom";
 
@@ -16,7 +17,8 @@ export interface PanelProps {
     | "warning"
     | "danger"
     | "dark"
-    | "light";
+    | "light"
+    | "lightest";
   padding?: "none" | "compressed" | "default" | "loose";
   bordered?: boolean | Borders | Borders[];
   raised?: boolean;

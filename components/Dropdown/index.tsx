@@ -154,9 +154,9 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
       setIsOpen((current) => {
         if (!current) {
           // attach/remove event handler
-          document.addEventListener("click", handleOutsideClick, false);
+          document.addEventListener("click", handleOutsideClick, true);
         } else {
-          document.removeEventListener("click", handleOutsideClick, false);
+          document.removeEventListener("click", handleOutsideClick, true);
         }
         const newIsOpen = !current;
         if (newIsOpen && onOpen) onOpen(e);
@@ -169,13 +169,18 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
 
   handleOutsideClick = (e: MouseEvent<Node>): void => {
     // ignore clicks on the component itself
-    if (!(e.target instanceof Node)) return;
+    if (!(e.target instanceof Node) || !divRef?.current) return;
     if (!alwaysClose && divRef.current && divRef.current.contains(e.target))
       return;
 
-    if (!divRef.current.contains(e.target)) handleClick(e);
-    if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose)
+    if (!divRef.current.contains(e.target)) {
       handleClick(e);
+      return;
+    }
+    if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose) {
+      handleClick(e);
+      return;
+    }
   };
 
   return (

@@ -5,43 +5,66 @@ import React, {
   ReactNode,
   useEffect,
   useLayoutEffect,
+  MouseEvent,
+  forwardRef,
+  useCallback,
+  useState,
+  useRef,
+  useMemo,
+  isValidElement,
+  ReactElement,
+  ReactHTMLElement,
 } from "react";
+import { useMergeRefs } from "use-callback-ref";
 
 import { InputChips } from "../InputChips";
 import { InputHelpBlock } from "../InputHelpBlock";
 import { appendClass as ac } from "../../utils";
 
+function isOption(
+  element: ReactElement<unknown>
+): element is ReactHTMLElement<HTMLOptionElement> {
+  return element.type === "option";
+}
+
+function isOptGroup(
+  element: ReactElement<unknown>
+): element is ReactHTMLElement<HTMLOptGroupElement> {
+  return element.type === "optgroup";
+}
+
 const SelectChildren = ({ children, handleOptionClick, isSelected }) =>
   React.Children.map(children, (child, idx) => {
-    switch (child.type) {
-      case "option":
-        return (
-          <a
-            key={idx}
-            onClick={(e) => handleOptionClick(e, child.props.value)}
-            className={`${ac(isSelected(child.props.value), "selected")}${ac(
-              child.props.disabled,
-              "disabled"
-            )}`}
+    if (!isValidElement(child)) return child;
+
+    if (isOption(child))
+      return (
+        <a
+          key={idx}
+          onClick={(e) => handleOptionClick(e, child.props.value)}
+          className={`${ac(isSelected(child.props.value), "selected")}${ac(
+            child.props.disabled,
+            "disabled"
+          )}`}
+        >
+          {child.props.children}
+        </a>
+      );
+
+    if (isOptGroup(child))
+      return (
+        <div key={idx} className="dropdown__group">
+          <div className="dropdown__group-header">{child.props.label}</div>
+          <SelectChildren
+            handleOptionClick={handleOptionClick}
+            isSelected={isSelected}
           >
             {child.props.children}
-          </a>
-        );
-      case "optgroup":
-        return (
-          <div key={idx} className="dropdown__group">
-            <div className="dropdown__group-header">{child.props.label}</div>
-            <SelectChildren
-              handleOptionClick={handleOptionClick}
-              isSelected={isSelected}
-            >
-              {child.props.children}
-            </SelectChildren>
-          </div>
-        );
-      default:
-        return child;
-    }
+          </SelectChildren>
+        </div>
+      );
+
+    return child;
   });
 
 type EditableSelectProps = {
@@ -55,9 +78,31 @@ type EditableSelectProps = {
   multi?: boolean;
   onChange?: (value) => void;
   value?: any;
+  displayValues?: boolean;
+  disabled?: boolean;
 };
 
-export const EditableSelect = React.forwardRef<
+type Display = {
+  display: ReactNode;
+  value: any;
+};
+
+const collectDisplays = (children: ReactNode): Display[] => {
+  const t = [];
+  React.Children.forEach(children, (child) => {
+    if (!isValidElement(child)) return null;
+    if (isOption(child)) {
+      t.push({
+        display: child.props.children,
+        value: child.props.value,
+      });
+    }
+    if (isOptGroup(child)) t.push(collectDisplays(child.props.children));
+  });
+  return t.flat();
+};
+
+export const EditableSelect = forwardRef<
   HTMLDivElement,
   PropsWithChildren<EditableSelectProps> &
     Omit<HTMLProps<HTMLInputElement>, "type" | "label">
@@ -75,31 +120,47 @@ export const EditableSelect = React.forwardRef<
       value: initialValue = undefined,
       editable = false,
       multi = false,
-      ref,
+      ref: _unused,
+      displayValues = false,
+      disabled,
+      className,
       ...input
     },
-    innerRef
+    forwardRef
   ) => {
-    const [isOpen, setOpen] = React.useState<boolean>(false);
-    const [node, setNode] = React.useState(undefined);
-    const [value, setValue] = React.useState(initialValue);
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const [value, setValue] = useState(initialValue);
+    const ref = useRef<HTMLDivElement>(undefined);
+
+    const display = useMemo(() => collectDisplays(children), [children]);
 
     // eslint-disable-next-line prefer-const
-    let handleOutsideClick: (e) => void;
+    let handleOutsideClick;
 
-    const handleClick = (newState = true) => {
-      if (newState && !isOpen)
-        document.addEventListener("click", handleOutsideClick, false);
-      else document.removeEventListener("click", handleOutsideClick, false);
+    const handleClick = useCallback(
+      (newState = true) => {
+        if (disabled) return;
+        setOpen((current) => {
+          if (newState && !current) {
+            document.addEventListener("click", handleOutsideClick, true);
+          } else
+            document.removeEventListener("click", handleOutsideClick, true);
 
-      setOpen(newState);
-    };
+          return newState;
+        });
+      },
+      [disabled]
+    );
 
-    handleOutsideClick = (e) => {
-      const n = innerRef || node;
-      if (n && n.contains(e.target)) return;
+    handleOutsideClick = (e: MouseEvent<Node>) => {
+      // ignore clicks on the component itself
+      if (!(e.target instanceof Node) || !ref?.current) return;
+      if (ref.current && ref.current.contains(e.target)) return;
 
-      handleClick(false);
+      if (ref.current && !ref.current.contains(e.target)) {
+        handleClick(false);
+        return;
+      }
     };
 
     const handleOptionClick = (_e, newValue) => {
@@ -139,8 +200,8 @@ export const EditableSelect = React.forwardRef<
         )}${ac(isOpen, "active")}${ac(inline, "form-group--inline")}${ac(
           error,
           "form-group--error"
-        )}`}
-        ref={innerRef || ((n) => setNode(n))}
+        )}${ac(disabled, "disabled")}${ac(className)}`}
+        ref={useMergeRefs([ref, forwardRef])}
       >
         {multi ? (
           <InputChips
@@ -174,7 +235,13 @@ export const EditableSelect = React.forwardRef<
                 e.persist();
                 setValue(e.target.value);
               }}
-              value={value}
+              value={
+                editable
+                  ? value || ""
+                  : !displayValues
+                  ? display?.find((el) => el.value === value)?.display || ""
+                  : value
+              }
             />
             {label ? <label htmlFor={input.id}>{label}</label> : null}
           </div>

@@ -278,10 +278,10 @@
             setIsOpen(function (current) {
                 if (!current) {
                     // attach/remove event handler
-                    document.addEventListener("click", handleOutsideClick, false);
+                    document.addEventListener("click", handleOutsideClick, true);
                 }
                 else {
-                    document.removeEventListener("click", handleOutsideClick, false);
+                    document.removeEventListener("click", handleOutsideClick, true);
                 }
                 var newIsOpen = !current;
                 if (newIsOpen && onOpen)
@@ -293,14 +293,18 @@
         }, [stopPropagation, onClose, onOpen]);
         handleOutsideClick = function (e) {
             // ignore clicks on the component itself
-            if (!(e.target instanceof Node))
+            if (!(e.target instanceof Node) || !(divRef === null || divRef === void 0 ? void 0 : divRef.current))
                 return;
             if (!alwaysClose && divRef.current && divRef.current.contains(e.target))
                 return;
-            if (!divRef.current.contains(e.target))
+            if (!divRef.current.contains(e.target)) {
                 handleClick(e);
-            if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose)
+                return;
+            }
+            if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose) {
                 handleClick(e);
+                return;
+            }
         };
         return (React__default['default'].createElement("div", { className: "dropdown" + appendClass(["left", "center"].includes(openTo), "dropdown--" + openTo) + appendClass(up, "dropdown--up") + appendClass(isOpen, "active") + appendClass(divClassName), ref: divRef },
             React__default['default'].createElement(DropdownHeader$1, { type: type, handleClick: handleClick, className: className, header: header }),
@@ -1939,8 +1943,8 @@
       }
     }
 
-    var css_248z$6 = ".cui .dropzone{border:1px dashed #dfdfdf;cursor:pointer;text-align:center;height:auto;-webkit-tap-highlight-color:rgba(0,0,0,0);color:#58585b;position:relative;background:#fff;box-shadow:none;display:block;margin:0;padding:10px}.cui .dropzone:focus{outline:none;box-shadow:inset 0 0 0 2px rgba(1,124,173,.25)}.cui .dropzone:hover,.dropzone.dropzone-drag-hover{border-color:#049fd9}.cui .dropzone.dropzone--loose{padding:20px}.cui .dropzone.dropzone--compressed{padding:5px}.cui .dropzone:hover .file-drop__icon,.dropzone.dropzone-drag-hover .file-drop__icon{color:#049fd9}.cui .dropzone .dropzone-message .file-drop__icon{font-size:2rem}.cui .dropzone .dropzone-previews .file-drop__filecnt{text-align:left;color:#9e9ea2;margin-top:1.3125rem}.cui .dropzone .file-drop__card{margin-bottom:.625rem}.cui .form-group--error .dropzone{padding-right:40px;border-color:#e2231a}";
-    styleInject(css_248z$6);
+    var css_248z$7 = ".cui .dropzone{border:1px dashed #dfdfdf;cursor:pointer;text-align:center;height:auto;-webkit-tap-highlight-color:rgba(0,0,0,0);color:#58585b;position:relative;background:#fff;box-shadow:none;display:block;margin:0;padding:10px}.cui .dropzone:focus{outline:none;box-shadow:inset 0 0 0 2px rgba(1,124,173,.25)}.cui .dropzone:hover,.dropzone.dropzone-drag-hover{border-color:#049fd9}.cui .dropzone.dropzone--loose{padding:20px}.cui .dropzone.dropzone--compressed{padding:5px}.cui .dropzone:hover .file-drop__icon,.dropzone.dropzone-drag-hover .file-drop__icon{color:#049fd9}.cui .dropzone .dropzone-message .file-drop__icon{font-size:2rem}.cui .dropzone .dropzone-previews .file-drop__filecnt{text-align:left;color:#9e9ea2;margin-top:1.3125rem}.cui .dropzone .file-drop__card{margin-bottom:.625rem}.cui .form-group--error .dropzone{padding-right:40px;border-color:#e2231a}";
+    styleInject(css_248z$7);
 
     var FileCard = function (_a) {
         var file = _a.file, i = _a.i, removeFile = _a.removeFile, inline = _a.inline;
@@ -2075,8 +2079,8 @@
             React__default['default'].createElement(DisplayIf, { condition: withLabel }, label ? (React__default['default'].createElement("div", { className: "progressbar__label" }, label)) : (React__default['default'].createElement("div", { className: "progressbar__label" }, percentage + "%")))));
     };
 
-    var css_248z$5 = ".cui .btn.btn--light{border:1px solid transparent;background:var(--cui-background-alt);color:var(--cui-inactive-color);transition:all .15s ease-in}.cui .btn.btn--light.hover,.cui .btn.btn--light:hover{color:var(--cui-active-color);text-decoration:none;box-shadow:inset 0 0 0 1px var(--cui-accent-color);transition:all .15s ease-in}.cui .btn.btn--light.focus,.cui .btn.btn--light:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity)),inset 0 0 0 1px var(--cui-accent-color);opacity:1;outline:var(--cui-focus-thickness) transparent;outline-offset:1px;outline-width:thin;outline-style:none}.cui .btn.btn--light.disabled,.cui .btn.btn--light[disabled]{background-color:transparent;border:1px dotted var(--cui-inactive-color);color:var(--cui-inactive-color);opacity:1}.cui .btn.btn--light.active,.cui .btn.btn--light.selected,.cui .btn.btn--light:active{background-color:var(--cui-accent-color);box-shadow:inset 0 0 0 1px var(--cui-accent-color);color:var(--cui-color-dark);-webkit-transition:all .25s ease;transition:all .25s ease}.cui .btn-group>.btn.btn--light:active,.cui .btn-group>.btn.btn--light:focus,.cui .btn-group>.btn.btn--light:hover,.cui .btn-group>.dropdown>.btn.btn--light:active,.cui .btn-group>.dropdown>.btn.btn--light:focus,.cui .btn-group>.dropdown>.btn.btn--light:hover{outline:0;box-shadow:inset 0 0 0 1px var(--cui-accent-color)}";
-    styleInject(css_248z$5);
+    var css_248z$6 = ".cui .btn.btn--light{border:1px solid transparent;background:var(--cui-background-alt);color:var(--cui-inactive-color);transition:all .15s ease-in}.cui .btn.btn--light.hover,.cui .btn.btn--light:hover{color:var(--cui-active-color);text-decoration:none;box-shadow:inset 0 0 0 1px var(--cui-accent-color);transition:all .15s ease-in}.cui .btn.btn--light.focus,.cui .btn.btn--light:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity)),inset 0 0 0 1px var(--cui-accent-color);opacity:1;outline:var(--cui-focus-thickness) transparent;outline-offset:1px;outline-width:thin;outline-style:none}.cui .btn.btn--light.disabled,.cui .btn.btn--light[disabled]{background-color:transparent;border:1px dotted var(--cui-inactive-color);color:var(--cui-inactive-color);opacity:1}.cui .btn.btn--light.active,.cui .btn.btn--light.selected,.cui .btn.btn--light:active{background-color:var(--cui-accent-color);box-shadow:inset 0 0 0 1px var(--cui-accent-color);color:var(--cui-color-dark);-webkit-transition:all .25s ease;transition:all .25s ease}.cui .btn-group>.btn.btn--light:active,.cui .btn-group>.btn.btn--light:focus,.cui .btn-group>.btn.btn--light:hover,.cui .btn-group>.dropdown>.btn.btn--light:active,.cui .btn-group>.dropdown>.btn.btn--light:focus,.cui .btn-group>.dropdown>.btn.btn--light:hover{outline:0;box-shadow:inset 0 0 0 1px var(--cui-accent-color)}";
+    styleInject(css_248z$6);
 
     var Button$1 = function (_a) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.color, color = _c === void 0 ? "primary" : _c, _d = _a.wide, wide = _d === void 0 ? false : _d, _e = _a.justified, justified = _e === void 0 ? false : _e, _f = _a.circle, circle = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? null : _g, _h = _a.asLink, asLink = _h === void 0 ? false : _h, _j = _a.style, style = _j === void 0 ? null : _j, _k = _a.selected, selected = _k === void 0 ? false : _k, _l = _a.type, type = _l === void 0 ? null : _l, _m = _a.icon, icon = _m === void 0 ? false : _m, props = __rest(_a, ["size", "color", "wide", "justified", "circle", "className", "asLink", "style", "selected", "type", "icon"]);
@@ -2111,6 +2115,9 @@
     Label.Danger = function (props) { return React__default['default'].createElement(Label, __assign({ color: "danger" }, props)); };
     Label.Dark = function (props) { return React__default['default'].createElement(Label, __assign({ color: "dark" }, props)); };
     Label.Light = function (props) { return React__default['default'].createElement(Label, __assign({ color: "light" }, props)); };
+
+    var css_248z$5 = ".cui .panel.panel--lightest{background-color:var(--cui-background-alt);color:var(--cui-inactive-color)}";
+    styleInject(css_248z$5);
 
     var Panel = React__default['default'].forwardRef(function (_a, ref) {
         var _b = _a.color, color = _b === void 0 ? "plain" : _b, _c = _a.padding, padding = _c === void 0 ? "default" : _c, _d = _a.bordered, bordered = _d === void 0 ? false : _d, _e = _a.raised, raised = _e === void 0 ? false : _e, _f = _a.well, well = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? null : _g, props = __rest(_a, ["color", "padding", "bordered", "raised", "well", "className"]);
@@ -3713,24 +3720,24 @@
                 })))));
     };
 
-    var Checkbox = function (_a) {
+    var Checkbox = React.forwardRef(function (_a, ref) {
         var _b = _a.inline, inline = _b === void 0 ? false : _b, _c = _a.asFormGroup, asFormGroup = _c === void 0 ? true : _c, _d = _a.children, children = _d === void 0 ? null : _d, _e = _a.spacing, spacing = _e === void 0 ? null : _e, input = __rest(_a, ["inline", "asFormGroup", "children", "spacing"]);
         return (React__default['default'].createElement(ConditionalWrapper, { condition: asFormGroup, wrapper: React__default['default'].createElement("div", { className: "form-group" + appendClass(inline, "form-group--inline") + appendClass(spacing && spacing !== "default", "form-group--" + spacing) }) },
             React__default['default'].createElement("label", { className: "checkbox" },
-                React__default['default'].createElement("input", __assign({ type: "checkbox" }, input)),
+                React__default['default'].createElement("input", __assign({ type: "checkbox" }, input, { ref: ref })),
                 React__default['default'].createElement("span", { className: "checkbox__input" }),
                 children ? React__default['default'].createElement("span", { className: "checkbox__label" }, children) : null)));
-    };
+    });
 
-    var Switch = function (_a) {
+    var Switch = React.forwardRef(function (_a, forwardedRef) {
         var _b = _a.left, left = _b === void 0 ? null : _b, _c = _a.right, right = _c === void 0 ? null : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.inline, inline = _e === void 0 ? false : _e, _f = _a.spacing, spacing = _f === void 0 ? null : _f, _g = _a.asFormGroup, asFormGroup = _g === void 0 ? true : _g, _h = _a.className, className = _h === void 0 ? null : _h, _j = _a.id, id = _j === void 0 ? null : _j, _k = _a.style, style = _k === void 0 ? null : _k, input = __rest(_a, ["left", "right", "disabled", "inline", "spacing", "asFormGroup", "className", "id", "style"]);
         return (React__default['default'].createElement(ConditionalWrapper, { condition: asFormGroup, wrapper: React__default['default'].createElement("div", { className: "form-group" + appendClass(inline, "form-group--inline") + appendClass(className) + appendClass(spacing, " form-group--" + spacing), style: style }) },
             React__default['default'].createElement("label", { className: "switch" + (disabled ? " disabled" : ""), htmlFor: id || input.name },
-                React__default['default'].createElement("input", __assign({ type: "checkbox" }, input, { id: id || input.name, checked: input.checked })),
+                React__default['default'].createElement("input", __assign({ type: "checkbox" }, input, { id: id || input.name, checked: input.checked, ref: forwardedRef })),
                 left ? React__default['default'].createElement("span", { className: "switch__label" }, left) : null,
                 React__default['default'].createElement("span", { className: "switch__input" }),
                 right ? React__default['default'].createElement("span", { className: "switch__label" }, right) : null)));
-    };
+    });
 
     var InputHelpBlock = function (_a) {
         var _b = _a.text, text = _b === void 0 ? null : _b;
@@ -3741,19 +3748,19 @@
     var css_248z$3 = ".cui .form-group__text>.labeled>.input-label{height:calc(var(--cui-form-size) - 2px);max-height:calc(var(--cui-form-size) - 2px);padding:var(--cui-form-padding);border:none;border-bottom-right-radius:0;background-color:var(--cui-background-selected)}.cui .form-group__text>.labeled input{border:none!important;border-radius:0!important;height:calc(var(--cui-form-size) - 2px)!important;max-height:calc(var(--cui-form-size) - 2px)!important;min-height:calc(var(--cui-form-size) - 2px)!important;padding:var(--cui-form-padding)!important}.cui .form-group__text>.labeled input:focus{outline:none!important;box-shadow:none!important}.cui .form-group__text>.labeled{border-radius:var(--cui-border-radius);border:var(--cui-border);flex-shrink:0;order:3;transition:all var(--cui-animate-speed) var(--cui-animate-timing-function)!important}.cui .form-group__text>.labeled:focus-within,.cui .form-group__text>.labeled:hover{border-color:var(--cui-accent-color)}.cui .form-group__text>.labeled:focus-within{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity));opacity:1;outline:transparent var(--cui-focus-thickness);outline-offset:1px;outline-width:thin;outline-style:none}.cui .form-group__text>.labeled .dropdown.input-label a{color:var(--cui-form-value-color)}";
     styleInject(css_248z$3);
 
-    var Input = function (_a) {
-        var _b = _a.type, type = _b === void 0 ? "text" : _b, _c = _a.inline, inline = _c === void 0 ? null : _c, _d = _a.helpBlock, helpBlock = _d === void 0 ? true : _d, _e = _a.label, label = _e === void 0 ? null : _e, _f = _a.icon, icon = _f === void 0 ? null : _f, _g = _a.iconClick, iconClick = _g === void 0 ? null : _g, _h = _a.className, className = _h === void 0 ? null : _h, _j = _a.plain, plain = _j === void 0 ? false : _j, _k = _a.inputRef, inputRef = _k === void 0 ? null : _k, _l = _a.horizontal, horizontal = _l === void 0 ? null : _l, _m = _a.horizontalLabelClassName, horizontalLabelClassName = _m === void 0 ? "col-3" : _m, _o = _a.error, error = _o === void 0 ? null : _o, _p = _a.prefix, prefix = _p === void 0 ? null : _p, input = __rest(_a, ["type", "inline", "helpBlock", "label", "icon", "iconClick", "className", "plain", "inputRef", "horizontal", "horizontalLabelClassName", "error", "prefix"]);
+    var Input = React.forwardRef(function (_a, ref) {
+        var _b = _a.type, type = _b === void 0 ? "text" : _b, _c = _a.inline, inline = _c === void 0 ? null : _c, _d = _a.helpBlock, helpBlock = _d === void 0 ? true : _d, _e = _a.label, label = _e === void 0 ? null : _e, _f = _a.icon, icon = _f === void 0 ? null : _f, _g = _a.iconClick, iconClick = _g === void 0 ? null : _g, _h = _a.className, className = _h === void 0 ? null : _h, _j = _a.plain, plain = _j === void 0 ? false : _j, _k = _a.horizontal, horizontal = _k === void 0 ? null : _k, _l = _a.horizontalLabelClassName, horizontalLabelClassName = _l === void 0 ? "col-3" : _l, _m = _a.error, error = _m === void 0 ? null : _m, _o = _a.prefix, prefix = _o === void 0 ? null : _o, input = __rest(_a, ["type", "inline", "helpBlock", "label", "icon", "iconClick", "className", "plain", "horizontal", "horizontalLabelClassName", "error", "prefix"]);
         return (React__default['default'].createElement("div", { className: "form-group" + appendClass(className) + appendClass(error, "form-group--error") + appendClass(inline === "form" || inline === "both", "form-group--inline") + appendClass(inline === "label" || inline === "both", "label--inline") + appendClass(icon, "input--icon") + appendClass(horizontal, "form-group--horizontal") },
             React__default['default'].createElement("div", { className: "form-group__text" },
                 React__default['default'].createElement(ConditionalWrapper, { wrapper: React__default['default'].createElement("div", { className: "flex labeled" }), condition: !!prefix },
                     prefix ? React__default['default'].createElement("div", { className: "input-label" }, prefix) : null,
-                    React__default['default'].createElement("input", __assign({ type: type, ref: inputRef }, input, { className: appendClass(plain, "form-group--plaintext") }))),
+                    React__default['default'].createElement("input", __assign({ type: type, ref: ref }, input, { className: appendClass(plain, "form-group--plaintext") }))),
                 label ? (React__default['default'].createElement("label", { htmlFor: input.id, className: appendClass(horizontal, horizontalLabelClassName) }, label)) : null,
                 icon ? (React__default['default'].createElement("button", { type: "button", className: "link", tabIndex: -1, onClick: iconClick },
                     React__default['default'].createElement("span", { className: "icon-" + icon }))) : null),
             React__default['default'].createElement(DisplayIf, { condition: !inline && helpBlock && !!error },
                 React__default['default'].createElement(InputHelpBlock, { text: error }))));
-    };
+    });
 
     var ModalHeader = function (_a) {
         var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
@@ -4266,10 +4273,19 @@
     Modal.Footer = ModalFooter;
 
     var ConfirmationModal = function (_a) {
-        var _b = _a.isOpen, isOpen = _b === void 0 ? false : _b, _c = _a.confirmType, confirmType = _c === void 0 ? "primary" : _c, _d = _a.autoClose, autoClose = _d === void 0 ? true : _d, _e = _a.confirmText, confirmText = _e === void 0 ? "Confirm" : _e, confirmHandle = _a.confirmHandle, closeHandle = _a.closeHandle, prompt = _a.prompt;
-        var _f = React__default['default'].useState(false), doing = _f[0], setDoing = _f[1];
+        var _b = _a.isOpen, isOpen = _b === void 0 ? false : _b, _c = _a.confirmType, confirmType = _c === void 0 ? "primary" : _c, _d = _a.autoClose, autoClose = _d === void 0 ? true : _d, _e = _a.confirmText, confirmText = _e === void 0 ? "Confirm" : _e, confirmHandle = _a.confirmHandle, closeHandle = _a.closeHandle, prompt = _a.prompt, _f = _a.dontAskAgain, dontAskAgain = _f === void 0 ? { show: false } : _f;
+        var _g = React__default['default'].useState(false), doing = _g[0], setDoing = _g[1];
+        var _h = React__default['default'].useState(false), dontAsk = _h[0], setDontAsk = _h[1];
         return (React__default['default'].createElement(Modal, { isOpen: isOpen, closeIcon: true, closeHandle: closeHandle, autoClose: autoClose, title: "Confirmation" },
-            React__default['default'].createElement(ModalBody, null, prompt),
+            React__default['default'].createElement(ModalBody, null,
+                prompt,
+                (dontAskAgain === null || dontAskAgain === void 0 ? void 0 : dontAskAgain.show) ? (React__default['default'].createElement("div", { className: "form-group" },
+                    React__default['default'].createElement("label", { className: "checkbox" },
+                        React__default['default'].createElement("input", { type: "checkbox", checked: dontAsk, onChange: function (e) {
+                                setDontAsk(e.target.checked);
+                            } }),
+                        React__default['default'].createElement("span", { className: "checkbox__input" }),
+                        React__default['default'].createElement("span", { className: "checkbox__label" }, dontAskAgain.text || "Don't ask again")))) : null),
             React__default['default'].createElement(ModalFooter, null,
                 React__default['default'].createElement(Button$1.Light, { onClick: closeHandle }, "Close"),
                 React__default['default'].createElement(Button$1, { color: confirmType, disabled: doing, onClick: function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -4277,7 +4293,7 @@
                             switch (_a.label) {
                                 case 0:
                                     setDoing(true);
-                                    return [4 /*yield*/, confirmHandle()];
+                                    return [4 /*yield*/, confirmHandle(dontAsk)];
                                 case 1:
                                     if (_a.sent())
                                         setDoing(false);
@@ -4372,7 +4388,7 @@
             return null;
         return (React__default['default'].createElement(React__default['default'].Fragment, null, modals.map(function (modal) {
             if (modal.modalType === "dynamic")
-                return (React__default['default'].createElement(Modal, __assign({}, modal.modalProps, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id); }, title: modal.title }), modal.fullBody ? (typeof modal.fullBody === "function" ? (modal.fullBody({ close: function () { return closeModal(modal.id); } })) : (React.cloneElement(modal.fullBody, {
+                return (React__default['default'].createElement(Modal, __assign({}, modal.modalProps, { key: modal.id, isOpen: modal.shown, closeHandle: function () { return closeModal(modal.id); }, title: modal.title }), modal.fullBody ? (typeof modal.fullBody === "function" ? (modal.fullBody({ close: function () { return closeModal(modal.id); } })) : (React.cloneElement(modal.fullBody, {
                     close: function () { return closeModal(modal.id); },
                 }))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
                     React__default['default'].createElement(ModalBody, null, modal.body),
@@ -4395,11 +4411,11 @@
                 return (React__default['default'].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: modal.initial, type: modal.type, hint: modal.hint }));
             }
             if (modal.modalType === "confirmation")
-                return (React__default['default'].createElement(ConfirmationModal, { key: modal.id, isOpen: modal.shown, prompt: modal.prompt, confirmHandle: function () { return __awaiter(void 0, void 0, void 0, function () {
+                return (React__default['default'].createElement(ConfirmationModal, { key: modal.id, isOpen: modal.shown, prompt: modal.prompt, confirmHandle: function (dontAskAgain) { return __awaiter(void 0, void 0, void 0, function () {
                         var r;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0: return [4 /*yield*/, modal.onConfirm()];
+                                case 0: return [4 /*yield*/, modal.onConfirm(dontAskAgain)];
                                 case 1:
                                     r = _a.sent();
                                     if (r)
@@ -4407,14 +4423,15 @@
                                     return [2 /*return*/, true];
                             }
                         });
-                    }); }, closeHandle: function () { return closeModal(modal.id); }, confirmText: modal.confirmText, confirmType: modal.confirmType }));
+                    }); }, closeHandle: function () { return closeModal(modal.id); }, confirmText: modal.confirmText, confirmType: modal.confirmType, dontAskAgain: modal.dontAskAgain }));
             return null;
         })));
     };
 
-    var confirmation = function (prompt, onConfirm, confirmType, confirmText) {
+    var confirmation = function (prompt, onConfirm, confirmType, confirmText, dontAskAgain) {
         if (confirmType === void 0) { confirmType = "primary"; }
         if (confirmText === void 0) { confirmText = "Confirm"; }
+        if (dontAskAgain === void 0) { dontAskAgain = { show: false }; }
         if (!prompt)
             throw new Error("Prompt must be specified");
         if (!onConfirm || typeof onConfirm !== "function")
@@ -4425,6 +4442,7 @@
             onConfirm: onConfirm,
             confirmText: confirmText,
             confirmType: confirmType,
+            dontAskAgain: dontAskAgain,
         });
     };
     var notificationModal = function (title, body, buttonColor, button) {
@@ -4610,6 +4628,18 @@
             React__default['default'].createElement(Badge, __assign({}, props), badge)));
     };
 
+    /**
+     * a type-safe version of the `usePrevious` hook described here:
+     * @see {@link https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state}
+     */
+    function usePrevious(value) {
+        var ref = React.useRef();
+        React.useEffect(function () {
+            ref.current = value;
+        }, [value]);
+        return ref.current;
+    }
+
     var firstDefined = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -4650,31 +4680,35 @@
     var Tabs = function (_a) {
         var _b = _a.defaultTab, defaultTab = _b === void 0 ? null : _b, _c = _a.tabsClassName, tabsClassName = _c === void 0 ? null : _c, _d = _a.contentClassName, contentClassName = _d === void 0 ? null : _d, _e = _a.center, center = _e === void 0 ? false : _e, _f = _a.right, right = _f === void 0 ? false : _f, _g = _a.justified, justified = _g === void 0 ? false : _g, _h = _a.embossed, embossed = _h === void 0 ? false : _h, _j = _a.bordered, bordered = _j === void 0 ? false : _j, _k = _a.vertical, vertical = _k === void 0 ? false : _k, _l = _a.sticky, sticky = _l === void 0 ? false : _l, _m = _a.inline, inline = _m === void 0 ? false : _m, _o = _a.renderHeader, renderHeader = _o === void 0 ? function (header) { return header; } : _o, _p = _a.renderBody, renderBody = _p === void 0 ? function (body) { return body; } : _p, _q = _a.onTabChange, onTabChange = _q === void 0 ? null : _q, _r = _a.leftColumn, leftColumn = _r === void 0 ? { columnWidth: 3 } : _r, _s = _a.rightColumn, rightColumn = _s === void 0 ? { columnWidth: 9 } : _s, _t = _a.rowProps, _u = _t === void 0 ? {} : _t, rowClassName = _u.className, rowProps = __rest(_u, ["className"]), _v = _a.beforeTabChange, beforeTabChange = _v === void 0 ? null : _v, children = _a.children;
         var _w = React__default['default'].useState(defaultTab || null), openTab = _w[0], setOpenTab = _w[1];
-        var changeTab = React__default['default'].useCallback(function (id) { return __awaiter(void 0, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = typeof beforeTabChange === "function";
-                        if (!_a) return [3 /*break*/, 2];
-                        return [4 /*yield*/, beforeTabChange(openTab, id)];
-                    case 1:
-                        _a = !(_b.sent());
-                        _b.label = 2;
-                    case 2:
-                        if (_a)
-                            return [2 /*return*/];
-                        if (typeof onTabChange === "function")
-                            onTabChange(id);
-                        setOpenTab(id);
-                        return [2 /*return*/];
-                }
-            });
-        }); }, [onTabChange, beforeTabChange, openTab]);
+        var prevTab = usePrevious(openTab);
         React__default['default'].useEffect(function () {
-            changeTab(defaultTab);
+            setOpenTab(defaultTab);
         }, [defaultTab]);
-        var header = (React__default['default'].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default['default'].createElement(ColumnWrap, __assign({}, leftColumn)) }, renderHeader(React__default['default'].createElement(TabsHeader, { tabsClassName: tabsClassName, center: center, right: right, justified: justified, embossed: embossed, bordered: bordered, vertical: vertical, sticky: sticky, inline: inline, openTab: openTab, onTabChange: changeTab }, children))));
+        React__default['default'].useEffect(function () {
+            (function () { return __awaiter(void 0, void 0, void 0, function () {
+                var _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (openTab === prevTab)
+                                return [2 /*return*/];
+                            _a = typeof beforeTabChange === "function";
+                            if (!_a) return [3 /*break*/, 2];
+                            return [4 /*yield*/, beforeTabChange(prevTab, openTab)];
+                        case 1:
+                            _a = !(_b.sent());
+                            _b.label = 2;
+                        case 2:
+                            if (_a)
+                                setOpenTab(prevTab);
+                            if (typeof onTabChange === "function")
+                                onTabChange(openTab);
+                            return [2 /*return*/];
+                    }
+                });
+            }); })();
+        }, [openTab, prevTab]);
+        var header = (React__default['default'].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default['default'].createElement(ColumnWrap, __assign({}, leftColumn)) }, renderHeader(React__default['default'].createElement(TabsHeader, { tabsClassName: tabsClassName, center: center, right: right, justified: justified, embossed: embossed, bordered: bordered, vertical: vertical, sticky: sticky, inline: inline, openTab: openTab, onTabChange: setOpenTab }, children))));
         var body = (React__default['default'].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default['default'].createElement(ColumnWrap, __assign({}, rightColumn)) }, renderBody(React__default['default'].createElement("div", { className: "tab-content" + (contentClassName ? " " + contentClassName : "") }, React__default['default'].Children.map(children, function (child, idx) {
             return React__default['default'].isValidElement(child)
                 ? React__default['default'].cloneElement(child, {
@@ -4723,20 +4757,23 @@
         })));
     };
 
-    var Step = function (_a) {
-        var _b = _a.visited, visited = _b === void 0 ? false : _b, _c = _a.active, active = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, icon = _a.icon, children = _a.children;
-        return (React__default['default'].createElement("div", { className: "step" + appendClass(visited, "visited") + appendClass(active, "active") + appendClass(className) },
-            React__default['default'].createElement("div", { className: "step__icon" }, icon),
+    var Step = React.forwardRef(function (_a, ref) {
+        var _b = _a.visited, visited = _b === void 0 ? false : _b, _c = _a.active, active = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, icon = _a.icon, children = _a.children, consequativeIdx = _a.consequativeIdx;
+        return (React__default['default'].createElement("div", { className: "step" + appendClass(visited, "visited") + appendClass(active, "active") + appendClass(className), ref: ref },
+            React__default['default'].createElement("div", { className: "step__icon" }, icon !== null && icon !== void 0 ? icon : consequativeIdx),
             React__default['default'].createElement("div", { className: "step__label" }, children)));
-    };
+    });
 
-    var Steps = function (_a) {
+    var Steps = React.forwardRef(function (_a, ref) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.color, color = _c === void 0 ? "primary" : _c, _d = _a.vertical, vertical = _d === void 0 ? false : _d, _e = _a.className, className = _e === void 0 ? null : _e, children = _a.children;
-        return (React__default['default'].createElement("div", { className: "steps" + appendClass(size !== "default", "steps--" + size) + " steps--" + color + appendClass(vertical, "steps--vertical") + appendClass(className) }, children));
-    };
-    Steps.Dot = function (props) { return React__default['default'].createElement(Steps, __assign({}, props, { size: "dot" })); };
-    Steps.Small = function (props) { return React__default['default'].createElement(Steps, __assign({}, props, { size: "small" })); };
-    Steps.Large = function (props) { return React__default['default'].createElement(Steps, __assign({}, props, { size: "large" })); };
+        return (React__default['default'].createElement("div", { className: "steps" + appendClass(size !== "default", "steps--" + size) + " steps--" + color + appendClass(vertical, "steps--vertical") + appendClass(className), ref: ref }, React__default['default'].Children.toArray(children)
+            .filter(Boolean)
+            .map(function (child, idx) {
+            return React.isValidElement(child)
+                ? React__default['default'].cloneElement(child, { consequativeIdx: idx + 1 })
+                : child;
+        })));
+    });
 
     var VerticalCenter = function (_a) {
         var children = _a.children;
@@ -4796,14 +4833,14 @@
             disableable && variantIdx < 0 ? null : (React__default['default'].createElement("div", { className: "tabs-wrap panel base-padding-top" }, variants[variantIdx].component))));
     };
 
-    var Radio = function (_a) {
+    var Radio = React.forwardRef(function (_a, forwardedRef) {
         var _b = _a.spacing, spacing = _b === void 0 ? null : _b, _c = _a.inline, inline = _c === void 0 ? false : _c, _d = _a.label, label = _d === void 0 ? null : _d, _e = _a.className, className = _e === void 0 ? null : _e, id = _a.id, _f = _a.divProps, divProps = _f === void 0 ? {} : _f, input = __rest(_a, ["spacing", "inline", "label", "className", "id", "divProps"]);
         return (React__default['default'].createElement("div", __assign({ className: "form-group" + appendClass(inline, "form-group--inline") + appendClass(spacing, "form-group--" + spacing) + appendClass(className) }, divProps),
-            React__default['default'].createElement("label", { className: "radio", htmlFor: name + "." + id },
-                React__default['default'].createElement("input", __assign({ type: "radio", name: input.name, value: id }, input)),
+            React__default['default'].createElement("label", { className: "radio", htmlFor: id || input.name },
+                React__default['default'].createElement("input", __assign({ type: "radio", id: id }, input, { ref: forwardedRef })),
                 React__default['default'].createElement("span", { className: "radio__input" }),
                 label ? React__default['default'].createElement("span", { className: "radio__label" }, label) : null)));
-    };
+    });
     var Radios = function (_a) {
         var values = _a.values, initialValue = _a.value, onChange = _a.onChange, name = _a.name;
         var _b = React.useState(initialValue), value = _b[0], setValue = _b[1];
@@ -4905,41 +4942,156 @@
             error ? React__default['default'].createElement(InputHelpBlock, { text: error }) : null));
     });
 
+    /**
+     * Assigns a value for a given ref, no matter of the ref format
+     * @param {RefObject} ref - a callback function or ref object
+     * @param value - a new value
+     *
+     * @see https://github.com/theKashey/use-callback-ref#assignref
+     * @example
+     * const refObject = useRef();
+     * const refFn = (ref) => {....}
+     *
+     * assignRef(refObject, "refValue");
+     * assignRef(refFn, "refValue");
+     */
+    function assignRef(ref, value) {
+        if (typeof ref === 'function') {
+            ref(value);
+        }
+        else if (ref) {
+            ref.current = value;
+        }
+        return ref;
+    }
+
+    /**
+     * creates a MutableRef with ref change callback
+     * @param initialValue - initial ref value
+     * @param {Function} callback - a callback to run when value changes
+     *
+     * @example
+     * const ref = useCallbackRef(0, (newValue, oldValue) => console.log(oldValue, '->', newValue);
+     * ref.current = 1;
+     * // prints 0 -> 1
+     *
+     * @see https://reactjs.org/docs/hooks-reference.html#useref
+     * @see https://github.com/theKashey/use-callback-ref#usecallbackref---to-replace-reactuseref
+     * @returns {MutableRefObject}
+     */
+    function useCallbackRef(initialValue, callback) {
+        var ref = React.useState(function () { return ({
+            // value
+            value: initialValue,
+            // last callback
+            callback: callback,
+            // "memoized" public interface
+            facade: {
+                get current() {
+                    return ref.value;
+                },
+                set current(value) {
+                    var last = ref.value;
+                    if (last !== value) {
+                        ref.value = value;
+                        ref.callback(value, last);
+                    }
+                }
+            }
+        }); })[0];
+        // update callback
+        ref.callback = callback;
+        return ref.facade;
+    }
+
+    /**
+     * Merges two or more refs together providing a single interface to set their value
+     * @param {RefObject|Ref} refs
+     * @returns {MutableRefObject} - a new ref, which translates all changes to {refs}
+     *
+     * @see {@link mergeRefs} a version without buit-in memoization
+     * @see https://github.com/theKashey/use-callback-ref#usemergerefs
+     * @example
+     * const Component = React.forwardRef((props, ref) => {
+     *   const ownRef = useRef();
+     *   const domRef = useMergeRefs([ref, ownRef]); // 👈 merge together
+     *   return <div ref={domRef}>...</div>
+     * }
+     */
+    function useMergeRefs(refs, defaultValue) {
+        return useCallbackRef(defaultValue, function (newValue) {
+            return refs.forEach(function (ref) { return assignRef(ref, newValue); });
+        });
+    }
+
+    function isOption(element) {
+        return element.type === "option";
+    }
+    function isOptGroup(element) {
+        return element.type === "optgroup";
+    }
     var SelectChildren = function (_a) {
         var children = _a.children, handleOptionClick = _a.handleOptionClick, isSelected = _a.isSelected;
         return React__default['default'].Children.map(children, function (child, idx) {
-            switch (child.type) {
-                case "option":
-                    return (React__default['default'].createElement("a", { key: idx, onClick: function (e) { return handleOptionClick(e, child.props.value); }, className: "" + appendClass(isSelected(child.props.value), "selected") + appendClass(child.props.disabled, "disabled") }, child.props.children));
-                case "optgroup":
-                    return (React__default['default'].createElement("div", { key: idx, className: "dropdown__group" },
-                        React__default['default'].createElement("div", { className: "dropdown__group-header" }, child.props.label),
-                        React__default['default'].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, child.props.children)));
-                default:
-                    return child;
-            }
+            if (!React.isValidElement(child))
+                return child;
+            if (isOption(child))
+                return (React__default['default'].createElement("a", { key: idx, onClick: function (e) { return handleOptionClick(e, child.props.value); }, className: "" + appendClass(isSelected(child.props.value), "selected") + appendClass(child.props.disabled, "disabled") }, child.props.children));
+            if (isOptGroup(child))
+                return (React__default['default'].createElement("div", { key: idx, className: "dropdown__group" },
+                    React__default['default'].createElement("div", { className: "dropdown__group-header" }, child.props.label),
+                    React__default['default'].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, child.props.children)));
+            return child;
         });
     };
-    var EditableSelect = React__default['default'].forwardRef(function (_a, innerRef) {
-        var _b = _a.compressed, compressed = _b === void 0 ? false : _b, _c = _a.prompt, prompt = _c === void 0 ? "Select an option" : _c, _d = _a.inline, inline = _d === void 0 ? false : _d, _f = _a.type, type = _f === void 0 ? "text" : _f, children = _a.children, _g = _a.label, label = _g === void 0 ? null : _g, _h = _a.error, error = _h === void 0 ? null : _h, _j = _a.onChange, onChange = _j === void 0 ? null : _j, _k = _a.value, initialValue = _k === void 0 ? undefined : _k, _l = _a.editable, editable = _l === void 0 ? false : _l, _m = _a.multi, multi = _m === void 0 ? false : _m; _a.ref; var input = __rest(_a, ["compressed", "prompt", "inline", "type", "children", "label", "error", "onChange", "value", "editable", "multi", "ref"]);
-        var _o = React__default['default'].useState(false), isOpen = _o[0], setOpen = _o[1];
-        var _p = React__default['default'].useState(undefined), node = _p[0], setNode = _p[1];
-        var _q = React__default['default'].useState(initialValue), value = _q[0], setValue = _q[1];
+    var collectDisplays = function (children) {
+        var t = [];
+        React__default['default'].Children.forEach(children, function (child) {
+            if (!React.isValidElement(child))
+                return null;
+            if (isOption(child)) {
+                t.push({
+                    display: child.props.children,
+                    value: child.props.value,
+                });
+            }
+            if (isOptGroup(child))
+                t.push(collectDisplays(child.props.children));
+        });
+        return t.flat();
+    };
+    var EditableSelect = React.forwardRef(function (_a, forwardRef) {
+        var _b;
+        var _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.prompt, prompt = _d === void 0 ? "Select an option" : _d, _f = _a.inline, inline = _f === void 0 ? false : _f, _g = _a.type, type = _g === void 0 ? "text" : _g, children = _a.children, _h = _a.label, label = _h === void 0 ? null : _h, _j = _a.error, error = _j === void 0 ? null : _j, _k = _a.onChange, onChange = _k === void 0 ? null : _k, _l = _a.value, initialValue = _l === void 0 ? undefined : _l, _m = _a.editable, editable = _m === void 0 ? false : _m, _o = _a.multi, multi = _o === void 0 ? false : _o; _a.ref; var _p = _a.displayValues, displayValues = _p === void 0 ? false : _p, disabled = _a.disabled, className = _a.className, input = __rest(_a, ["compressed", "prompt", "inline", "type", "children", "label", "error", "onChange", "value", "editable", "multi", "ref", "displayValues", "disabled", "className"]);
+        var _q = React.useState(false), isOpen = _q[0], setOpen = _q[1];
+        var _r = React.useState(initialValue), value = _r[0], setValue = _r[1];
+        var ref = React.useRef(undefined);
+        var display = React.useMemo(function () { return collectDisplays(children); }, [children]);
         // eslint-disable-next-line prefer-const
         var handleOutsideClick;
-        var handleClick = function (newState) {
+        var handleClick = React.useCallback(function (newState) {
             if (newState === void 0) { newState = true; }
-            if (newState && !isOpen)
-                document.addEventListener("click", handleOutsideClick, false);
-            else
-                document.removeEventListener("click", handleOutsideClick, false);
-            setOpen(newState);
-        };
-        handleOutsideClick = function (e) {
-            var n = innerRef || node;
-            if (n && n.contains(e.target))
+            if (disabled)
                 return;
-            handleClick(false);
+            setOpen(function (current) {
+                if (newState && !current) {
+                    document.addEventListener("click", handleOutsideClick, true);
+                }
+                else
+                    document.removeEventListener("click", handleOutsideClick, true);
+                return newState;
+            });
+        }, [disabled]);
+        handleOutsideClick = function (e) {
+            // ignore clicks on the component itself
+            if (!(e.target instanceof Node) || !(ref === null || ref === void 0 ? void 0 : ref.current))
+                return;
+            if (ref.current && ref.current.contains(e.target))
+                return;
+            if (ref.current && !ref.current.contains(e.target)) {
+                handleClick(false);
+                return;
+            }
         };
         var handleOptionClick = function (_e, newValue) {
             if (multi) {
@@ -4970,7 +5122,7 @@
             if (typeof onChange === "function")
                 onChange(value);
         }, [value]);
-        return (React__default['default'].createElement("div", { className: "form-group dropdown" + appendClass(compressed, "input--compressed") + appendClass(isOpen, "active") + appendClass(inline, "form-group--inline") + appendClass(error, "form-group--error"), ref: innerRef || (function (n) { return setNode(n); }) },
+        return (React__default['default'].createElement("div", { className: "form-group dropdown" + appendClass(compressed, "input--compressed") + appendClass(isOpen, "active") + appendClass(inline, "form-group--inline") + appendClass(error, "form-group--error") + appendClass(disabled, "disabled") + appendClass(className), ref: useMergeRefs([ref, forwardRef]) },
             multi ? (React__default['default'].createElement(InputChips, __assign({ className: "select editable", label: label }, input, { placeholder: !Array.isArray(value) || !value.length
                     ? prompt || input.placeholder
                     : "", readOnly: !editable, onClick: function () { return handleClick(true); }, onChange: function (v) { return setValue(v); }, value: value, outerWrap: false }))) : (React__default['default'].createElement("div", { className: "form-group__text select editable", onClick: function () { return handleClick(true); } },
@@ -4979,7 +5131,11 @@
                             return;
                         e.persist();
                         setValue(e.target.value);
-                    }, value: value })),
+                    }, value: editable
+                        ? value || ""
+                        : !displayValues
+                            ? ((_b = display === null || display === void 0 ? void 0 : display.find(function (el) { return el.value === value; })) === null || _b === void 0 ? void 0 : _b.display) || ""
+                            : value })),
                 label ? React__default['default'].createElement("label", { htmlFor: input.id }, label) : null)),
             React__default['default'].createElement("div", { className: "dropdown__menu" },
                 React__default['default'].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, children)),

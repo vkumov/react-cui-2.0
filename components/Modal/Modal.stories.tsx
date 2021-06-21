@@ -141,6 +141,28 @@ export const Calls = () => {
           <div className="col-3">
             <Button
               onClick={() => {
+                setConfResult(null);
+                confirmation(
+                  "Please confirm",
+                  (dontAskAgain) => {
+                    console.log("Don't ask again: ", dontAskAgain);
+                    setConfResult(true);
+                    return true;
+                  },
+                  undefined,
+                  undefined,
+                  { show: true }
+                );
+              }}
+            >
+              Confirmation
+            </Button>
+            <div>with don't ask option</div>
+            {confResult ? <div>Confirmed</div> : null}
+          </div>
+          <div className="col-3">
+            <Button
+              onClick={() => {
                 setPromptResult(null);
                 prompt("Prompt", "Enter value:", (v) => {
                   console.log(v);

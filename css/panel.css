@@ -1,0 +1,4 @@
+.cui .panel.panel--lightest {
+  background-color: var(--cui-background-alt);
+  color: var(--cui-inactive-color);
+}

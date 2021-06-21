@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, forwardRef, isValidElement, ReactNode } from "react";
 
 import { appendClass as ac } from "../../utils";
 
@@ -16,25 +16,35 @@ interface StepsSizes {
   Large: FC<StepsProps>;
 }
 
-const Steps: StepsSizes & FC<StepsProps> = ({
-  size = "default",
-  color = "primary",
-  vertical = false,
-  className = null,
-  children,
-}) => (
-  <div
-    className={`steps${ac(
-      size !== "default",
-      `steps--${size}`
-    )} steps--${color}${ac(vertical, "steps--vertical")}${ac(className)}`}
-  >
-    {children}
-  </div>
-);
+type Steps<P> = P & StepsSizes;
 
-Steps.Dot = (props) => <Steps {...props} size="dot" />;
-Steps.Small = (props) => <Steps {...props} size="small" />;
-Steps.Large = (props) => <Steps {...props} size="large" />;
+const Steps = forwardRef<HTMLDivElement, StepsProps>(
+  (
+    {
+      size = "default",
+      color = "primary",
+      vertical = false,
+      className = null,
+      children,
+    },
+    ref
+  ) => (
+    <div
+      className={`steps${ac(
+        size !== "default",
+        `steps--${size}`
+      )} steps--${color}${ac(vertical, "steps--vertical")}${ac(className)}`}
+      ref={ref}
+    >
+      {React.Children.toArray(children)
+        .filter(Boolean)
+        .map((child, idx) =>
+          isValidElement(child)
+            ? React.cloneElement(child, { consequativeIdx: idx + 1 })
+            : child
+        )}
+    </div>
+  )
+);
 
 export default Steps;

@@ -103,5 +103,11 @@ export const Primary = () => (
         </div>
       </div>
     </div>
+    <div className="section base-margin-top dbl-margin-bottom">
+      <h3 className="display-5">Consequative</h3>
+      <Steps color="primary">
+        {[1, 2, 3, 4, null, 5].map((i) => (i ? <Step>Step {i}</Step> : i))}
+      </Steps>
+    </div>
   </>
 );

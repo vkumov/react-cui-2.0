@@ -2,6 +2,7 @@ import React, { FC, HTMLProps, ReactNode } from "react";
 
 import { ConditionalWrapper, DisplayIf } from "./Conditional";
 import { appendClass as ac } from "../utils";
+import { usePrevious } from "../utils/usePrevious";
 
 type TabId = number | string;
 
@@ -174,23 +175,23 @@ export const Tabs: FC<TabsProps> = ({
   children,
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
-  const changeTab = React.useCallback(
-    async (id) => {
-      if (
-        typeof beforeTabChange === "function" &&
-        !(await beforeTabChange(openTab, id))
-      )
-        return;
-
-      if (typeof onTabChange === "function") onTabChange(id);
-      setOpenTab(id);
-    },
-    [onTabChange, beforeTabChange, openTab]
-  );
+  const prevTab = usePrevious(openTab);
 
   React.useEffect(() => {
-    changeTab(defaultTab);
+    setOpenTab(defaultTab);
   }, [defaultTab]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (openTab === prevTab) return;
+      if (
+        typeof beforeTabChange === "function" &&
+        !(await beforeTabChange(prevTab, openTab))
+      )
+        setOpenTab(prevTab);
+      if (typeof onTabChange === "function") onTabChange(openTab);
+    })();
+  }, [openTab, prevTab]);
 
   const header = (
     <ConditionalWrapper
@@ -209,7 +210,7 @@ export const Tabs: FC<TabsProps> = ({
           sticky={sticky}
           inline={inline}
           openTab={openTab}
-          onTabChange={changeTab}
+          onTabChange={setOpenTab}
         >
           {children}
         </TabsHeader>

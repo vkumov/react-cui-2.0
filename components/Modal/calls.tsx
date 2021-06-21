@@ -3,11 +3,17 @@ import type { ButtonColor } from "../Button";
 import type { ModalProps } from "./Modal";
 import { eventManager, EVENTS } from "../../utils";
 
+export type DontAskAgain = {
+  show: boolean;
+  text?: ReactNode;
+};
+
 export const confirmation = (
   prompt: ReactNode,
-  onConfirm: () => boolean | Promise<boolean>,
+  onConfirm: (dontAskAgain?: boolean) => boolean | Promise<boolean>,
   confirmType: ButtonColor = "primary",
-  confirmText = "Confirm"
+  confirmText = "Confirm",
+  dontAskAgain: DontAskAgain = { show: false }
 ): void => {
   if (!prompt) throw new Error("Prompt must be specified");
   if (!onConfirm || typeof onConfirm !== "function")
@@ -19,6 +25,7 @@ export const confirmation = (
     onConfirm,
     confirmText,
     confirmType,
+    dontAskAgain,
   });
 };
 
@@ -95,9 +102,14 @@ interface ModalButton {
   ) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type PropsWithCloseModal<P = {}> = P & { close: () => void };
+
+type FullBodyRender = (props: { close: () => void }) => ReactNode;
+
 interface DynamicModalOptions {
   title: ReactNode;
-  fullBody?: ReactNode;
+  fullBody?: ReactNode | FullBodyRender;
   body?: ReactNode;
   buttons?: ModalButton[];
   modalProps?: Partial<ModalProps>;

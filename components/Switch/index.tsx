@@ -1,4 +1,4 @@
-import React, { FC, HTMLProps, ReactNode } from "react";
+import React, { FC, forwardRef, HTMLProps, ReactNode } from "react";
 
 import { ConditionalWrapper } from "../Conditional";
 import { appendClass as ac } from "../../utils";
@@ -15,44 +15,50 @@ interface SwitchProps {
   style?: React.CSSProperties;
 }
 
-const Switch: FC<SwitchProps & HTMLProps<HTMLInputElement>> = ({
-  left = null,
-  right = null,
-  disabled = false,
-  inline = false,
-  spacing = null,
-  asFormGroup = true,
-  className = null,
-  id = null,
-  style = null,
-  ...input
-}) => (
-  <ConditionalWrapper
-    condition={asFormGroup}
-    wrapper={
-      <div
-        className={`form-group${ac(inline, "form-group--inline")}${ac(
-          className
-        )}${ac(spacing, ` form-group--${spacing}`)}`}
-        style={style}
-      />
-    }
-  >
-    <label
-      className={`switch${disabled ? " disabled" : ""}`}
-      htmlFor={id || input.name}
+const Switch: FC<SwitchProps & HTMLProps<HTMLInputElement>> = forwardRef(
+  (
+    {
+      left = null,
+      right = null,
+      disabled = false,
+      inline = false,
+      spacing = null,
+      asFormGroup = true,
+      className = null,
+      id = null,
+      style = null,
+      ...input
+    },
+    forwardedRef
+  ) => (
+    <ConditionalWrapper
+      condition={asFormGroup}
+      wrapper={
+        <div
+          className={`form-group${ac(inline, "form-group--inline")}${ac(
+            className
+          )}${ac(spacing, ` form-group--${spacing}`)}`}
+          style={style}
+        />
+      }
     >
-      <input
-        type="checkbox"
-        {...input}
-        id={id || input.name}
-        checked={input.checked}
-      />
-      {left ? <span className="switch__label">{left}</span> : null}
-      <span className="switch__input" />
-      {right ? <span className="switch__label">{right}</span> : null}
-    </label>
-  </ConditionalWrapper>
+      <label
+        className={`switch${disabled ? " disabled" : ""}`}
+        htmlFor={id || input.name}
+      >
+        <input
+          type="checkbox"
+          {...input}
+          id={id || input.name}
+          checked={input.checked}
+          ref={forwardedRef}
+        />
+        {left ? <span className="switch__label">{left}</span> : null}
+        <span className="switch__input" />
+        {right ? <span className="switch__label">{right}</span> : null}
+      </label>
+    </ConditionalWrapper>
+  )
 );
 
 export { Switch };

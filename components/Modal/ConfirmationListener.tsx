@@ -57,7 +57,6 @@ export const ConfirmationListener: FC = () => {
               {...modal.modalProps}
               key={modal.id}
               isOpen={modal.shown}
-              closeIcon
               closeHandle={() => closeModal(modal.id)}
               title={modal.title}
             >
@@ -158,14 +157,15 @@ export const ConfirmationListener: FC = () => {
               key={modal.id}
               isOpen={modal.shown}
               prompt={modal.prompt}
-              confirmHandle={async () => {
-                const r = await modal.onConfirm();
+              confirmHandle={async (dontAskAgain) => {
+                const r = await modal.onConfirm(dontAskAgain);
                 if (r) closeModal(modal.id);
                 return true;
               }}
               closeHandle={() => closeModal(modal.id)}
               confirmText={modal.confirmText}
               confirmType={modal.confirmType}
+              dontAskAgain={modal.dontAskAgain}
             />
           );
 
