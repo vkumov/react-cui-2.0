@@ -3577,11 +3577,11 @@
                     React__default['default'].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/trademarks.html", target: "_blank", rel: "noopener noreferrer" }, "Trademarks")))))); };
 
     var Wrapper$1 = React__default['default'].createElement("div", { className: "responsive-table" });
-    var GenericTable = function (_a) {
+    var GenericTable = React.forwardRef(function (_a, forwardedRef) {
         var _b = _a.outerWrap, outerWrap = _b === void 0 ? true : _b, _c = _a.lined, lined = _c === void 0 ? false : _c, _d = _a.bordered, bordered = _d === void 0 ? false : _d, _e = _a.striped, striped = _e === void 0 ? false : _e, _f = _a.selectable, selectable = _f === void 0 ? false : _f, _g = _a.fixed, fixed = _g === void 0 ? false : _g, _h = _a.wrapped, wrapped = _h === void 0 ? false : _h, _j = _a.compressed, compressed = _j === void 0 ? false : _j, _k = _a.loose, loose = _k === void 0 ? false : _k, _l = _a.className, className = _l === void 0 ? null : _l, props = __rest(_a, ["outerWrap", "lined", "bordered", "striped", "selectable", "fixed", "wrapped", "compressed", "loose", "className"]);
         return (React__default['default'].createElement(ConditionalWrapper, { condition: outerWrap, wrapper: Wrapper$1 },
-            React__default['default'].createElement("table", __assign({ className: "table" + appendClass(lined, "table--lined") + appendClass(bordered, "table--bordered") + appendClass(striped, "table--striped") + appendClass(selectable, "table--selectable") + appendClass(fixed, "table--fixed") + appendClass(wrapped, "table--wrapped") + appendClass(compressed, "table--compressed") + appendClass(loose, "table--loose") + appendClass(className) }, props))));
-    };
+            React__default['default'].createElement("table", __assign({ className: "table" + appendClass(lined, "table--lined") + appendClass(bordered, "table--bordered") + appendClass(striped, "table--striped") + appendClass(selectable, "table--selectable") + appendClass(fixed, "table--fixed") + appendClass(wrapped, "table--wrapped") + appendClass(compressed, "table--compressed") + appendClass(loose, "table--loose") + appendClass(className) }, props, { ref: forwardedRef }))));
+    });
 
     var PaginationContext = React__default['default'].createContext(null);
     var Button = function (_a) {
@@ -3676,7 +3676,7 @@
     };
 
     var asArray = function (v) { return (Array.isArray(v) ? v : [v]); };
-    var Table = function (_a) {
+    var Table = React.forwardRef(function (_a, forwardedRef) {
         var _b = _a.pagination, pagination = _b === void 0 ? DefaultTablePagination : _b, _c = _a.paginationLocation, paginationLocation = _c === void 0 ? "bottom-right" : _c, _d = _a.paginationProps, paginationProps = _d === void 0 ? {
             icons: true,
             firstAndLast: true,
@@ -3704,7 +3704,7 @@
                     onPerPageChange: function (p) { return setPerPage(p); },
                     paginationProps: paginationProps,
                 }))),
-            React__default['default'].createElement(GenericTable, __assign({}, props),
+            React__default['default'].createElement(GenericTable, __assign({}, props, { ref: forwardedRef }),
                 thead,
                 React__default['default'].createElement("tbody", null, data
                     ? data.slice(position, position + perPage).map(function (row, rid) { return (React__default['default'].createElement("tr", { key: rid }, row.map(function (col, cid) { return (React__default['default'].createElement("td", { key: cid }, col)); }))); })
@@ -3718,7 +3718,7 @@
                     perPageUp: true,
                     paginationProps: paginationProps,
                 })))));
-    };
+    });
 
     var Checkbox = React.forwardRef(function (_a, ref) {
         var _b = _a.inline, inline = _b === void 0 ? false : _b, _c = _a.asFormGroup, asFormGroup = _c === void 0 ? true : _c, _d = _a.children, children = _d === void 0 ? null : _d, _e = _a.spacing, spacing = _e === void 0 ? null : _e, input = __rest(_a, ["inline", "asFormGroup", "children", "spacing"]);

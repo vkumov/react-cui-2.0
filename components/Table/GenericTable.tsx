@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React, { forwardRef, HTMLProps } from "react";
 
 import { ConditionalWrapper } from "../Conditional";
 import { appendClass as ac } from "../../utils";
 
 const Wrapper = <div className="responsive-table" />;
 
-type GenericTableProps = {
+export type GenericTableProps = {
   outerWrap?: boolean;
   lined?: boolean;
   bordered?: boolean;
@@ -15,35 +15,40 @@ type GenericTableProps = {
   wrapped?: boolean;
   compressed?: boolean;
   loose?: boolean;
-  className?: string;
-};
+} & HTMLProps<HTMLTableElement>;
 
-export const GenericTable: FC<GenericTableProps> = ({
-  outerWrap = true,
-  lined = false,
-  bordered = false,
-  striped = false,
-  selectable = false,
-  fixed = false,
-  wrapped = false,
-  compressed = false,
-  loose = false,
-  className = null,
-  ...props
-}) => (
-  <ConditionalWrapper condition={outerWrap} wrapper={Wrapper}>
-    <table
-      className={`table${ac(lined, "table--lined")}${ac(
-        bordered,
-        "table--bordered"
-      )}${ac(striped, "table--striped")}${ac(
-        selectable,
-        "table--selectable"
-      )}${ac(fixed, "table--fixed")}${ac(wrapped, "table--wrapped")}${ac(
-        compressed,
-        "table--compressed"
-      )}${ac(loose, "table--loose")}${ac(className)}`}
-      {...props}
-    />
-  </ConditionalWrapper>
+export const GenericTable = forwardRef<HTMLTableElement, GenericTableProps>(
+  (
+    {
+      outerWrap = true,
+      lined = false,
+      bordered = false,
+      striped = false,
+      selectable = false,
+      fixed = false,
+      wrapped = false,
+      compressed = false,
+      loose = false,
+      className = null,
+      ...props
+    },
+    forwardedRef
+  ) => (
+    <ConditionalWrapper condition={outerWrap} wrapper={Wrapper}>
+      <table
+        className={`table${ac(lined, "table--lined")}${ac(
+          bordered,
+          "table--bordered"
+        )}${ac(striped, "table--striped")}${ac(
+          selectable,
+          "table--selectable"
+        )}${ac(fixed, "table--fixed")}${ac(wrapped, "table--wrapped")}${ac(
+          compressed,
+          "table--compressed"
+        )}${ac(loose, "table--loose")}${ac(className)}`}
+        {...props}
+        ref={forwardedRef}
+      />
+    </ConditionalWrapper>
+  )
 );
