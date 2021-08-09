@@ -19,7 +19,7 @@ export const Primary: Story<ToastProps> = (args) => {
       >
         Show toast
       </Button.Primary>
-      <ToastContainer />
+      <ToastContainer autoClose={false} />
     </div>
   );
 };

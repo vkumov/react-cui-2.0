@@ -1,1 +1,0 @@
-import e from"react";import{a as r}from"../index-59462297.js";var a=function(a){var t=a.children,i=a.className,n=void 0===i?null:i;return e.createElement("div",{className:"section"+r(n)},t)};export{a as Section};

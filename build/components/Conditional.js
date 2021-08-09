@@ -1,1 +1,0 @@
-import e from"react";var n=function(n){var r=n.condition,l=n.wrapper,t=n.children;return r?e.cloneElement(l,null,t):e.isValidElement(t)?t:e.createElement(e.Fragment,null,t)},r=function(n){var r=n.condition,l=n.children;return r?e.isValidElement(l)?l:e.createElement(e.Fragment,null,"children"):null};export{n as ConditionalWrapper,r as DisplayIf};

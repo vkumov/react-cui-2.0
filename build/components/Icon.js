@@ -1,1 +1,0 @@
-import{_ as a,a as s}from"../tslib.es6-4bca28b2.js";import e from"react";import{a as i}from"../index-59462297.js";var o=function(o){var r=o.icon,n=o.size,c=void 0===n?null:n,m=o.className,t=void 0===m?null:m,l=a(o,["icon","size","className"]);return e.createElement("span",s({className:"icon-"+r+i(t)+i(c,"icon-size-"+c)},l))};export{o as Icon};
