@@ -1,0 +1,1 @@
+import e from"react";export default function(l){var t=l.children;return e.createElement("div",{className:"content-fluid",style:{display:"flex",minHeight:"100vh",flexDirection:"column"}},e.createElement("main",{style:{display:"flex",flexDirection:"column",flex:1}},t))}

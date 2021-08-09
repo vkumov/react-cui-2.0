@@ -1,0 +1,1 @@
+import a from"react";var e=function(e){var l=e.baloon;return a.createElement("span",{"data-balloon":l,"data-balloon-length":"large","data-balloon-pos":"up",className:"qtr-margin-left"},a.createElement("span",{className:"icon-question-circle",style:{cursor:"help"}}))};export{e as InputHelpBaloon};

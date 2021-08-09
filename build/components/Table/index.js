@@ -1,0 +1,1 @@
+export{GenericTable}from"./GenericTable.js";export{DefaultTablePagination}from"./DefaultTablePagination.js";export{default as Table}from"./Table.js";import"../../tslib.es6-4bca28b2.js";import"react";import"../Conditional.js";import"../../index-59462297.js";import"../Pagination/index.js";import"../Dropdown/index.js";
