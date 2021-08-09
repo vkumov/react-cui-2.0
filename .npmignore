@@ -18,3 +18,7 @@ node_modules
 /ssl
 /config.json
 /public
+/components
+/utils
+/hooks
+/.storybook

@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from "react";
-import { UpdateOptions, ToastPosition } from "react-toastify";
+import { UpdateOptions, ToastContainerProps } from "react-toastify";
 import "../../css/toast.css";
 declare type ToastType = "success" | "error" | "warning" | "info" | "none";
 export declare type ToastProps = {
@@ -21,13 +21,5 @@ interface ToastMethods {
     dismiss: (id?: string | number | undefined) => false | void;
 }
 export declare const toast: IToast & Toasts & ToastMethods;
-declare type ToastContainerProps = {
-    position?: ToastPosition;
-    autoClose?: number;
-    draggable?: boolean;
-    hideProgressBar?: boolean;
-    containerId?: string | number;
-    [x: string]: unknown;
-};
 export declare const ToastContainer: FC<ToastContainerProps>;
 export {};

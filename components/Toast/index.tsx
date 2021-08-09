@@ -1,10 +1,10 @@
 import React, { FC, ReactNode } from "react";
 import {
   toast as _toast,
-  cssTransition,
   ToastContainer as ToastifyContainer,
   UpdateOptions,
-  ToastPosition,
+  ToastContainerProps,
+  Slide,
 } from "react-toastify";
 
 import "../../css/toast.css";
@@ -79,12 +79,6 @@ export const Toast: FC<ToastProps> = ({ title, message, type, copyError }) => (
   </div>
 );
 
-const Fade = cssTransition({
-  enter: "fadeIn",
-  exit: "fadeOut",
-  collapseDuration: 300,
-});
-
 type ToastFunction = (
   title: ReactNode,
   message: React.ReactText,
@@ -134,15 +128,6 @@ toast.none = (...args) => toast("none", ...args);
 toast.update = (...args) => _toast.update(...args);
 toast.dismiss = (...args) => _toast.dismiss(...args);
 
-type ToastContainerProps = {
-  position?: ToastPosition;
-  autoClose?: number;
-  draggable?: boolean;
-  hideProgressBar?: boolean;
-  containerId?: string | number;
-  [x: string]: unknown;
-};
-
 export const ToastContainer: FC<ToastContainerProps> = ({
   position = "bottom-right",
   autoClose = 5000,
@@ -152,7 +137,7 @@ export const ToastContainer: FC<ToastContainerProps> = ({
   ...props
 }) => (
   <ToastifyContainer
-    transition={Fade}
+    transition={Slide}
     position={position}
     autoClose={autoClose}
     draggable={draggable}
