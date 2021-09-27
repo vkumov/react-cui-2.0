@@ -4337,29 +4337,31 @@
                 }
             });
         }); }, [onClose, cb, val, validate]);
-        React__default['default'].useLayoutEffect(function () { return setVal(initial); }, [initial]);
+        React__default['default'].useEffect(function () { return setVal(initial); }, [initial]);
+        var inpRef = React__default['default'].useRef(undefined);
+        React__default['default'].useEffect(function () {
+            if (isOpen && inpRef.current)
+                inpRef.current.focus();
+        }, [isOpen]);
         return (React__default['default'].createElement(Modal, { isOpen: isOpen, closeIcon: true, closeHandle: onClose, title: title },
             React__default['default'].createElement(ModalBody, null,
                 React__default['default'].createElement(Input, { type: type, onChange: function (e) {
                         return setVal(e.target.value);
+                    }, onKeyUp: function (e) {
+                        if (e.key === "Enter") {
+                            onSave();
+                        }
                     }, name: "promptInput", value: val, label: React__default['default'].createElement(React__default['default'].Fragment, null,
                         question,
                         React__default['default'].createElement(DisplayIf, { condition: !!hint && typeof hint === "string" },
                             React__default['default'].createElement("span", { "data-balloon": hint, "data-balloon-length": "large", "data-balloon-pos": "up" },
-                                React__default['default'].createElement("span", { className: "icon-question-circle qtr-margin-left", style: { cursor: "help" } })))) })),
+                                React__default['default'].createElement("span", { className: "icon-question-circle qtr-margin-left", style: { cursor: "help" } })))), ref: inpRef })),
             React__default['default'].createElement(ModalFooter, null,
                 React__default['default'].createElement(Button$1, { color: "light", onClick: onClose, disabled: doing }, "Close"),
                 React__default['default'].createElement(Button$1, { color: "primary", onClick: onSave, disabled: doing },
                     "OK",
                     doing ? (React__default['default'].createElement("span", { className: "icon-animation spin qtr-margin-left" })) : null))));
     }
-    PromptModal.defaultProps = {
-        onClose: null,
-        initial: null,
-        type: "text",
-        hint: null,
-        validate: null,
-    };
 
     var ConfirmationListener = function () {
         var _a = React__default['default'].useState([]), modals = _a[0], setModals = _a[1];
@@ -4464,8 +4466,7 @@
             });
         });
     };
-    var prompt = function (title, question, cb, initial, type, hint) {
-        if (initial === void 0) { initial = ""; }
+    function prompt(title, question, cb, initial, type, hint) {
         if (type === void 0) { type = "text"; }
         if (hint === void 0) { hint = undefined; }
         if (!title || !question)
@@ -4489,7 +4490,7 @@
             cb: cb,
             hint: hint,
         });
-    };
+    }
     var dynamicModal = function (_a) {
         var title = _a.title, _b = _a.fullBody, fullBody = _b === void 0 ? null : _b, _c = _a.body, body = _c === void 0 ? null : _c, _d = _a.buttons, buttons = _d === void 0 ? [] : _d, _e = _a.modalProps, modalProps = _e === void 0 ? {} : _e;
         eventManager$1.emit(EVENTS.SHOW_MODAL, {
@@ -4599,11 +4600,10 @@
     };
     var Accordion = function (_a) {
         var children = _a.children, _b = _a.toggles, toggles = _b === void 0 ? false : _b, _c = _a.bordered, bordered = _c === void 0 ? false : _c;
-        return (React__default['default'].createElement("ul", { className: "accordion" + (bordered ? " accordion--bordered" : "") }, React__default['default'].Children.map(children, function (child, idx) {
+        return (React__default['default'].createElement("ul", { className: "accordion" + (bordered ? " accordion--bordered" : "") }, React__default['default'].Children.map(children, function (child) {
             return React__default['default'].isValidElement(child)
                 ? React__default['default'].cloneElement(child, {
                     toggles: toggles,
-                    key: child.props.key || idx,
                 })
                 : null;
         })));
@@ -5063,9 +5063,9 @@
         });
         return t.flat();
     };
-    var EditableSelect = React.forwardRef(function (_a, forwardRef) {
+    var EditableSelect = React.forwardRef(function (_a, inputRef) {
         var _b;
-        var _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.prompt, prompt = _d === void 0 ? "Select an option" : _d, _f = _a.inline, inline = _f === void 0 ? false : _f, _g = _a.type, type = _g === void 0 ? "text" : _g, children = _a.children, _h = _a.label, label = _h === void 0 ? null : _h, _j = _a.error, error = _j === void 0 ? null : _j, _k = _a.onChange, onChange = _k === void 0 ? null : _k, _l = _a.value, initialValue = _l === void 0 ? undefined : _l, _m = _a.editable, editable = _m === void 0 ? false : _m, _o = _a.multi, multi = _o === void 0 ? false : _o; _a.ref; var _p = _a.displayValues, displayValues = _p === void 0 ? false : _p, disabled = _a.disabled, className = _a.className, input = __rest(_a, ["compressed", "prompt", "inline", "type", "children", "label", "error", "onChange", "value", "editable", "multi", "ref", "displayValues", "disabled", "className"]);
+        var _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.prompt, prompt = _d === void 0 ? "Select an option" : _d, _f = _a.inline, inline = _f === void 0 ? false : _f, _g = _a.type, type = _g === void 0 ? "text" : _g, children = _a.children, _h = _a.label, label = _h === void 0 ? null : _h, _j = _a.error, error = _j === void 0 ? null : _j, _k = _a.onChange, onChange = _k === void 0 ? null : _k, _l = _a.value, initialValue = _l === void 0 ? undefined : _l, _m = _a.editable, editable = _m === void 0 ? false : _m, _o = _a.multi, multi = _o === void 0 ? false : _o, _p = _a.displayValues, displayValues = _p === void 0 ? false : _p, disabled = _a.disabled, className = _a.className, divRef = _a.divRef, input = __rest(_a, ["compressed", "prompt", "inline", "type", "children", "label", "error", "onChange", "value", "editable", "multi", "displayValues", "disabled", "className", "divRef"]);
         var _q = React.useState(false), isOpen = _q[0], setOpen = _q[1];
         var _r = React.useState(initialValue), value = _r[0], setValue = _r[1];
         var ref = React.useRef(undefined);
@@ -5125,10 +5125,10 @@
             if (typeof onChange === "function")
                 onChange(value);
         }, [value]);
-        return (React__default['default'].createElement("div", { className: "form-group dropdown" + appendClass(compressed, "input--compressed") + appendClass(isOpen, "active") + appendClass(inline, "form-group--inline") + appendClass(error, "form-group--error") + appendClass(disabled, "disabled") + appendClass(className), ref: useMergeRefs([ref, forwardRef]) },
+        return (React__default['default'].createElement("div", { className: "form-group dropdown" + appendClass(compressed, "input--compressed") + appendClass(isOpen, "active") + appendClass(inline, "form-group--inline") + appendClass(error, "form-group--error") + appendClass(disabled, "disabled") + appendClass(className), ref: useMergeRefs([ref, divRef]) },
             multi ? (React__default['default'].createElement(InputChips, __assign({ className: "select editable", label: label }, input, { placeholder: !Array.isArray(value) || !value.length
                     ? prompt || input.placeholder
-                    : "", readOnly: !editable, onClick: function () { return handleClick(true); }, onChange: function (v) { return setValue(v); }, value: value, outerWrap: false }))) : (React__default['default'].createElement("div", { className: "form-group__text select editable", onClick: function () { return handleClick(true); } },
+                    : "", readOnly: !editable, onClick: function () { return handleClick(true); }, onChange: function (v) { return setValue(v); }, value: value, outerWrap: false, ref: inputRef }))) : (React__default['default'].createElement("div", { className: "form-group__text select editable", onClick: function () { return handleClick(true); } },
                 React__default['default'].createElement("input", __assign({ type: type, placeholder: prompt || input.placeholder, autoComplete: "off", readOnly: !editable }, input, { onChange: function (e) {
                         if (!editable)
                             return;
@@ -5138,7 +5138,7 @@
                         ? value || ""
                         : !displayValues
                             ? ((_b = display === null || display === void 0 ? void 0 : display.find(function (el) { return el.value === value; })) === null || _b === void 0 ? void 0 : _b.display) || ""
-                            : value })),
+                            : value, ref: inputRef })),
                 label ? React__default['default'].createElement("label", { htmlFor: input.id }, label) : null)),
             React__default['default'].createElement("div", { className: "dropdown__menu" },
                 React__default['default'].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, children)),

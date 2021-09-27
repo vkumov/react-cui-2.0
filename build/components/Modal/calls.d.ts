@@ -1,6 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, ReactText } from "react";
 import type { ButtonColor } from "../Button";
 import type { ModalProps } from "./Modal";
+import { PromptModalProps } from "./PromptModal";
 export declare type DontAskAgain = {
     show: boolean;
     text?: ReactNode;
@@ -9,7 +10,8 @@ export declare const confirmation: (prompt: ReactNode, onConfirm: (dontAskAgain?
 declare type NotificationModal = (title: ReactNode, body: ReactNode, buttonColor?: ButtonColor, button?: ReactNode) => Promise<void>;
 export declare const notificationModal: NotificationModal;
 export { notificationModal as notification };
-export declare const prompt: (title: React.ReactText, question: ReactNode, cb: (value: unknown) => void | Promise<void>, initial?: string, type?: string, hint?: any) => void;
+export declare function prompt<T extends ReactText>(title: React.ReactText, question: ReactNode, cb: (value: T) => void | Promise<void>, initial?: string, type?: string, hint?: ReactNode): void;
+export declare function prompt<T extends ReactText>(title: React.ReactText, question: ReactNode, cb: (value: T) => void | Promise<void>, options?: Pick<PromptModalProps<T>, "initial" | "type" | "hint" | "validate">): void;
 declare type CloseHandler = () => void;
 interface ModalButton {
     color?: ButtonColor;

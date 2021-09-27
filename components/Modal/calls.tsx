@@ -1,7 +1,8 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, ReactText } from "react";
 import type { ButtonColor } from "../Button";
 import type { ModalProps } from "./Modal";
 import { eventManager, EVENTS } from "../../utils";
+import { PromptModalProps } from "./PromptModal";
 
 export type DontAskAgain = {
   show: boolean;
@@ -58,14 +59,32 @@ export const notificationModal: NotificationModal = (
 
 export { notificationModal as notification };
 
-export const prompt = (
+type initialOrOptions<T extends ReactText> =
+  | Pick<PromptModalProps<T>, "initial" | "type" | "hint" | "validate">
+  | string;
+
+export function prompt<T extends ReactText>(
   title: React.ReactText,
   question: ReactNode,
-  cb: (value: unknown) => void | Promise<void>,
-  initial = "",
+  cb: (value: T) => void | Promise<void>,
+  initial?: string,
+  type?: string,
+  hint?: ReactNode
+): void;
+export function prompt<T extends ReactText>(
+  title: React.ReactText,
+  question: ReactNode,
+  cb: (value: T) => void | Promise<void>,
+  options?: Pick<PromptModalProps<T>, "initial" | "type" | "hint" | "validate">
+): void;
+export function prompt<T extends ReactText>(
+  title: React.ReactText,
+  question: ReactNode,
+  cb: (value: T) => void | Promise<void>,
+  initial: initialOrOptions<T>,
   type = "text",
   hint = undefined
-): void => {
+): void {
   if (!title || !question)
     throw new Error("Title and question must be specified");
 
@@ -89,7 +108,7 @@ export const prompt = (
     cb,
     hint,
   });
-};
+}
 
 type CloseHandler = () => void;
 

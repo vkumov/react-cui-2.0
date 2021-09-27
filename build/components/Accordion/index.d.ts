@@ -12,7 +12,7 @@ declare type AccordionProps = {
     bordered?: boolean;
 };
 export interface IAccordion {
-    Element: FC;
+    Element: FC<AccordionElementProps>;
 }
 export declare const Accordion: IAccordion & FC<AccordionProps>;
 export {};

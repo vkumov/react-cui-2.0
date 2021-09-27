@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, PropsWithChildren } from "react";
+import { Props as ReactModalProps } from "react-modal";
 import { ModalHeader } from "./Header";
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
@@ -23,7 +24,7 @@ export declare type ModalProps = PropsWithChildren<{
     dialogProps?: React.ComponentProps<"div">;
     contentProps?: React.ComponentProps<"div">;
     maximize?: boolean;
-}>;
+}> & ReactModalProps;
 declare type ModalSizes = {
     Small: FC<ModalProps>;
     Large: FC<ModalProps>;

@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC, HTMLProps, PropsWithChildren } from "react";
 
 import { appendClass as ac } from "../../utils";
 
@@ -8,7 +8,8 @@ import { appendClass as ac } from "../../utils";
 
 type ModalFooterProps = PropsWithChildren<{
   className?: string;
-}>;
+}> &
+  HTMLProps<HTMLDivElement>;
 
 export const ModalFooter: FC<ModalFooterProps> = ({
   className = null,

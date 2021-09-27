@@ -1,4 +1,9 @@
-import React, { ReactNode, PropsWithChildren, ChangeEvent } from "react";
+import React, {
+  ReactNode,
+  PropsWithChildren,
+  ChangeEvent,
+  KeyboardEvent,
+} from "react";
 import { Input } from "../Input";
 import { DisplayIf as If } from "../Conditional";
 import { Button } from "../Button";
@@ -11,7 +16,7 @@ import { Modal } from "./Modal";
  * Prompt Modal
  */
 
-interface PromptModalProps<T extends React.ReactText> {
+export interface PromptModalProps<T extends React.ReactText> {
   title: ReactNode;
   question: ReactNode;
   onSave: (value: T) => void | Promise<void>;
@@ -45,7 +50,13 @@ export function PromptModal<T extends React.ReactText>({
     onClose();
   }, [onClose, cb, val, validate]);
 
-  React.useLayoutEffect(() => setVal(initial), [initial]);
+  React.useEffect(() => setVal(initial), [initial]);
+
+  const inpRef = React.useRef<HTMLInputElement>(undefined);
+
+  React.useEffect(() => {
+    if (isOpen && inpRef.current) inpRef.current.focus();
+  }, [isOpen]);
 
   return (
     <Modal isOpen={isOpen} closeIcon closeHandle={onClose} title={title}>
@@ -55,6 +66,11 @@ export function PromptModal<T extends React.ReactText>({
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setVal(e.target.value as T)
           }
+          onKeyUp={(e: KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") {
+              onSave();
+            }
+          }}
           name="promptInput"
           value={val}
           label={
@@ -74,6 +90,7 @@ export function PromptModal<T extends React.ReactText>({
               </If>
             </>
           }
+          ref={inpRef}
         />
       </ModalBody>
       <ModalFooter>
@@ -90,11 +107,3 @@ export function PromptModal<T extends React.ReactText>({
     </Modal>
   );
 }
-
-PromptModal.defaultProps = {
-  onClose: null,
-  initial: null,
-  type: "text",
-  hint: null,
-  validate: null,
-};

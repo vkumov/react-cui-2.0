@@ -14,6 +14,7 @@ import React, {
   isValidElement,
   ReactElement,
   ReactHTMLElement,
+  MutableRefObject,
 } from "react";
 import { useMergeRefs } from "use-callback-ref";
 
@@ -80,6 +81,7 @@ type EditableSelectProps = {
   value?: any;
   displayValues?: boolean;
   disabled?: boolean;
+  divRef?: MutableRefObject<HTMLDivElement>;
 };
 
 type Display = {
@@ -103,7 +105,7 @@ const collectDisplays = (children: ReactNode): Display[] => {
 };
 
 export const EditableSelect = forwardRef<
-  HTMLDivElement,
+  HTMLInputElement,
   PropsWithChildren<EditableSelectProps> &
     Omit<HTMLProps<HTMLInputElement>, "type" | "label">
 >(
@@ -120,13 +122,13 @@ export const EditableSelect = forwardRef<
       value: initialValue = undefined,
       editable = false,
       multi = false,
-      ref: _unused,
       displayValues = false,
       disabled,
       className,
+      divRef,
       ...input
     },
-    forwardRef
+    inputRef
   ) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const [value, setValue] = useState(initialValue);
@@ -201,7 +203,7 @@ export const EditableSelect = forwardRef<
           error,
           "form-group--error"
         )}${ac(disabled, "disabled")}${ac(className)}`}
-        ref={useMergeRefs([ref, forwardRef])}
+        ref={useMergeRefs([ref, divRef])}
       >
         {multi ? (
           <InputChips
@@ -218,6 +220,7 @@ export const EditableSelect = forwardRef<
             onChange={(v) => setValue(v)}
             value={value}
             outerWrap={false}
+            ref={inputRef}
           />
         ) : (
           <div
@@ -242,6 +245,7 @@ export const EditableSelect = forwardRef<
                   ? display?.find((el) => el.value === value)?.display || ""
                   : value
               }
+              ref={inputRef}
             />
             {label ? <label htmlFor={input.id}>{label}</label> : null}
           </div>

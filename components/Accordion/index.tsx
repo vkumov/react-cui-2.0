@@ -38,7 +38,7 @@ type AccordionProps = {
 };
 
 export interface IAccordion {
-  Element: FC;
+  Element: FC<AccordionElementProps>;
 }
 
 export const Accordion: IAccordion & FC<AccordionProps> = ({
@@ -48,11 +48,10 @@ export const Accordion: IAccordion & FC<AccordionProps> = ({
 }): JSX.Element => {
   return (
     <ul className={`accordion${bordered ? " accordion--bordered" : ""}`}>
-      {React.Children.map(children, (child, idx) =>
+      {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(child, {
               toggles,
-              key: child.props.key || idx,
             })
           : null
       )}

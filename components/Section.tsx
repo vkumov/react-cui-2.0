@@ -3,7 +3,7 @@ import React, { FC, PropsWithChildren } from "react";
 import { appendClass } from "../utils";
 
 interface SectionProps {
-  className: string;
+  className?: string;
 }
 
 const Section: FC<PropsWithChildren<SectionProps>> = ({

@@ -1,11 +1,15 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "3.2.6",
+  "version": "3.2.15",
   "description": "",
-  "main": "build/bundle.min.js",
-  "module": "build/index.js",
+  "module": "build/bundle.min.js",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rm -rf build && rollup -c",
     "sb": "start-storybook -p 6006 -s ./public",
     "sb:https": "start-storybook -p 6006 --https --ssl-cert ./ssl/cert.pem --ssl-key ./ssl/private.key",
     "sb:export": "build-storybook"

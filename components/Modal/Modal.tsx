@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, PropsWithChildren } from "react";
 import Transition from "react-transition-group/Transition";
-import ReactModal from "react-modal";
+import ReactModal, { Props as ReactModalProps } from "react-modal";
 
 import { ConditionalWrapper, DisplayIf as If } from "../Conditional";
 
@@ -31,7 +31,8 @@ export type ModalProps = PropsWithChildren<{
   dialogProps?: React.ComponentProps<"div">;
   contentProps?: React.ComponentProps<"div">;
   maximize?: boolean;
-}>;
+}> &
+  ReactModalProps;
 
 type ModalSizes = {
   Small: FC<ModalProps>;

@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC, HTMLProps, PropsWithChildren } from "react";
 import { appendClass as ac } from "../../utils";
 
 /**
@@ -7,7 +7,8 @@ import { appendClass as ac } from "../../utils";
 
 type ModalHeaderProps = PropsWithChildren<{
   className?: string;
-}>;
+}> &
+  HTMLProps<HTMLDivElement>;
 
 export const ModalHeader: FC<ModalHeaderProps> = ({
   className = null,
