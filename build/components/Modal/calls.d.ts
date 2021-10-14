@@ -6,7 +6,7 @@ export declare type DontAskAgain = {
     show: boolean;
     text?: ReactNode;
 };
-export declare const confirmation: (prompt: ReactNode, onConfirm: (dontAskAgain?: boolean) => boolean | Promise<boolean>, confirmType?: ButtonColor, confirmText?: string, dontAskAgain?: DontAskAgain) => void;
+export declare function confirmation(prompt: ReactNode, onConfirm: (dontAskAgain?: boolean) => boolean | Promise<boolean>, confirmType?: ButtonColor, confirmText?: string, dontAskAgain?: DontAskAgain): void;
 declare type NotificationModal = (title: ReactNode, body: ReactNode, buttonColor?: ButtonColor, button?: ReactNode) => Promise<void>;
 export declare const notificationModal: NotificationModal;
 export { notificationModal as notification };

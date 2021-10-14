@@ -33,4 +33,5 @@ export * from "./components/InputChips";
 export * from "./components/Select";
 export * from "./components/InputHelpBaloon";
 export * from "./components/InputHelpBlock";
+export * from "./components/VSeparator";
 export * from "./utils/base16Theme";

@@ -9,13 +9,13 @@ export type DontAskAgain = {
   text?: ReactNode;
 };
 
-export const confirmation = (
+export function confirmation(
   prompt: ReactNode,
   onConfirm: (dontAskAgain?: boolean) => boolean | Promise<boolean>,
   confirmType: ButtonColor = "primary",
   confirmText = "Confirm",
   dontAskAgain: DontAskAgain = { show: false }
-): void => {
+): void {
   if (!prompt) throw new Error("Prompt must be specified");
   if (!onConfirm || typeof onConfirm !== "function")
     throw new Error("onConfirm must be specified and must be a function");
@@ -28,7 +28,7 @@ export const confirmation = (
     confirmType,
     dontAskAgain,
   });
-};
+}
 
 type NotificationModal = (
   title: ReactNode,

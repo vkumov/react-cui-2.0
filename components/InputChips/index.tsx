@@ -31,6 +31,12 @@ export type InputChipsProps = {
   value?: string[];
   outerWrap?: boolean;
   onChange?: (newValue: string[]) => void;
+  chipsOutside?: boolean;
+  renderChip?: (params: {
+    onDelete: () => unknown;
+    value: string;
+    idx: number;
+  }) => JSX.Element;
 };
 
 export const InputChips = React.forwardRef<
@@ -55,6 +61,9 @@ export const InputChips = React.forwardRef<
       value: initialValue = null,
       onChange,
       outerWrap = true,
+      chipsOutside = false,
+      renderChip = null,
+      onBlur = null,
       ...input
     },
     ref
@@ -101,7 +110,7 @@ export const InputChips = React.forwardRef<
 
     const handleBlur = useCallback(
       (event) => {
-        if (addOnBlur && event.target && event.target.value) {
+        if (addOnBlur && event.target?.value) {
           const { value } = event.target;
           if (allowRegex && RegExp(allowRegex).test(value)) {
             addValue(value);
@@ -110,9 +119,9 @@ export const InputChips = React.forwardRef<
           }
         }
         event.target.value = "";
-        if (typeof input?.onBlur === "function") input.onBlur(event);
+        if (typeof onBlur === "function") onBlur(event);
       },
-      [addOnBlur, allowRegex, addValue, input]
+      [addOnBlur, allowRegex, addValue, onBlur]
     );
 
     const handleDelete = useCallback(
@@ -151,8 +160,34 @@ export const InputChips = React.forwardRef<
               {baloon ? <InputHelpBaloon baloon={baloon} /> : null}
             </label>
           ) : null}
-          <div className={`input`}>
-            {Array.isArray(value) && value.length ? (
+          {chipsOutside && Array.isArray(value) && value.length ? (
+            <span className="chips-outer qtr-margin-bottom">
+              <span className="chips-inner">
+                {value.map((v, i) =>
+                  renderChip ? (
+                    renderChip({
+                      value: v,
+                      idx: i,
+                      onDelete: () => handleDelete(i),
+                    })
+                  ) : (
+                    <Label
+                      removable
+                      onRemove={() => handleDelete(i)}
+                      color={chipsColor}
+                      size="small"
+                      key={`${v}-${i}`}
+                      className="no-margin-bottom"
+                    >
+                      {v}
+                    </Label>
+                  )
+                )}
+              </span>
+            </span>
+          ) : null}
+          <div className="input">
+            {!chipsOutside && Array.isArray(value) && value.length ? (
               <span className="chips-outer">
                 <span className="chips-inner">
                   {value.map((v, i) => (
