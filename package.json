@@ -13,7 +13,7 @@
     "build": "rm -rf build && rollup -c",
     "sb": "start-storybook -p 6006 -s ./public",
     "sb:https": "start-storybook -p 6006 --https --ssl-cert ./ssl/cert.pem --ssl-key ./ssl/private.key",
-    "sb:export": "build-storybook"
+    "sb:export": "build-storybook -o ./docs"
   },
   "author": "Vitaly Kumov",
   "license": "ISC",

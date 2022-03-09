@@ -22,4 +22,6 @@ node_modules
 /utils
 /hooks
 /.storybook
+/storybook-static
+/docs
 index.ts
