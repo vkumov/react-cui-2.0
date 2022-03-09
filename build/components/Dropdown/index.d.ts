@@ -24,6 +24,7 @@ declare type DropdownProps = {
     divClassName?: string;
     children: ReactNode;
     up?: boolean;
+    isOpen?: boolean;
 };
 export interface DropdownParts {
     Element: FC<ElementProps>;

@@ -159,15 +159,13 @@ const Dropzone: FC<DropzoneProps & ReactDropzoneProps> = ({
   inline,
   label,
   name,
-  value: initialValue,
+  value,
   maxFileSize: customMaxFileSize,
   maxFiles,
   onChange,
   showTotalSelected,
   ...props
 }) => {
-  const [value, setValue] = useState<File[]>(undefined);
-
   const maxFileSize = useMemo(() => {
     if (customMaxFileSize) {
       return bytes.parse(customMaxFileSize);
@@ -180,7 +178,7 @@ const Dropzone: FC<DropzoneProps & ReactDropzoneProps> = ({
     let tmp = "";
     if (loose) tmp = "dropzone--loose";
     if (compressed) tmp = "dropzone--compressed";
-    if (inline && Array.isArray(initialValue) && initialValue.length) {
+    if (inline && Array.isArray(value) && value.length) {
       switch (tmp) {
         case "dropzone--loose":
           tmp = `${tmp} half-padding-bottom`;
@@ -194,7 +192,7 @@ const Dropzone: FC<DropzoneProps & ReactDropzoneProps> = ({
       }
     }
     return tmp;
-  }, [loose, compressed, initialValue, inline]);
+  }, [loose, compressed, value, inline]);
 
   const handleDrop = useCallback(
     (filesToUpload: File[]) => {
@@ -206,20 +204,16 @@ const Dropzone: FC<DropzoneProps & ReactDropzoneProps> = ({
       if (maxFiles && filesToUpload.length > maxFiles)
         filesToUpload = filesToUpload.slice(0, maxFiles);
 
-      setValue(filesToUpload);
+      onChange(filesToUpload);
     },
-    [maxFileSize, maxFiles]
+    [maxFileSize, maxFiles, onChange]
   );
 
-  const removeFile = useCallback((toRemove: number) => {
-    setValue((curr) =>
-      Array.isArray(curr) ? curr.filter((_, idx) => toRemove !== idx) : curr
+  const removeFile = (toRemove: number) => {
+    onChange(
+      Array.isArray(value) ? value.filter((_, idx) => toRemove !== idx) : value
     );
-  }, []);
-
-  useEffect(() => {
-    if (typeof onChange === "function") onChange(value);
-  }, [value]);
+  };
 
   return (
     <div className={`form-group${ac(error, "form-group--error")}`}>

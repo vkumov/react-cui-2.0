@@ -51,7 +51,7 @@ const ToastIcon = ({ type }) => {
 type ToastType = "success" | "error" | "warning" | "info" | "none";
 export type ToastProps = {
   title: ReactNode;
-  message: React.ReactText;
+  message: ReactNode;
   type: ToastType;
   copyError: boolean;
 };
@@ -68,7 +68,13 @@ export const Toast: FC<ToastProps> = ({ title, message, type, copyError }) => (
             <>
               <br />
               <br />
-              <a onClick={() => copyStringToClipboard(message)}>
+              <a
+                onClick={() =>
+                  typeof message === "string" || typeof message === "number"
+                    ? void copyStringToClipboard(message)
+                    : void 0
+                }
+              >
                 Copy to clipboard
               </a>
             </>
@@ -81,7 +87,7 @@ export const Toast: FC<ToastProps> = ({ title, message, type, copyError }) => (
 
 type ToastFunction = (
   title: ReactNode,
-  message: React.ReactText,
+  message: ReactNode,
   copyError?: boolean,
   containerId?: string,
   args?: Record<string, unknown>
@@ -91,7 +97,7 @@ export interface IToast {
   (
     type: ToastType,
     title: ReactNode,
-    message: React.ReactText,
+    message: ReactNode,
     copyError?: boolean,
     containerId?: string,
     args?: Record<string, unknown>

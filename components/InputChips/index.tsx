@@ -3,7 +3,7 @@ import React, {
   ReactNode,
   useState,
   useCallback,
-  useLayoutEffect,
+  useEffect,
 } from "react";
 
 import { ConditionalWrapper } from "../Conditional";
@@ -31,7 +31,9 @@ export type InputChipsProps = {
   value?: string[];
   outerWrap?: boolean;
   onChange?: (newValue: string[]) => void;
+  onChipRemove?: (idx: number) => void;
   chipsOutside?: boolean;
+  noInput?: boolean;
   renderChip?: (params: {
     onDelete: () => unknown;
     value: string;
@@ -39,11 +41,12 @@ export type InputChipsProps = {
   }) => JSX.Element;
 };
 
-export const InputChips = React.forwardRef<
-  HTMLDivElement,
-  InputChipsProps &
-    Omit<HTMLProps<HTMLInputElement>, "id" | "value" | "onChange" | "label">
->(
+export type FullInputChipsProps = InputChipsProps &
+  Omit<HTMLProps<HTMLInputElement>, "id" | "value" | "onChange" | "label">;
+
+const emptyList: string[] = [];
+
+export const InputChips = React.forwardRef<HTMLDivElement, FullInputChipsProps>(
   (
     {
       chipsColor = "light",
@@ -64,14 +67,17 @@ export const InputChips = React.forwardRef<
       chipsOutside = false,
       renderChip = null,
       onBlur = null,
+      onChipRemove = null,
+      onClick,
+      noInput,
       ...input
     },
     ref
   ) => {
-    const [value, setValue] = useState<string[]>([]);
+    const [value, setValue] = useState<string[]>(emptyList);
 
-    useLayoutEffect(() => {
-      setValue((curr) => initialValue || curr || []);
+    useEffect(() => {
+      setValue((curr) => initialValue || curr || emptyList);
     }, [initialValue]);
 
     const addValue = useCallback(
@@ -127,13 +133,19 @@ export const InputChips = React.forwardRef<
     const handleDelete = useCallback(
       (idx) => {
         setValue((curr) => {
-          curr = curr.filter((_v, i) => i !== idx);
-          if (typeof onChange === "function") onChange(curr);
-          return curr;
+          curr.splice(idx, 1);
+          if (typeof onChange === "function") onChange(curr.slice());
+          return curr.slice();
         });
+        if (typeof onChipRemove === "function") onChipRemove(idx);
       },
-      [onChange]
+      [onChange, onChipRemove]
     );
+
+    const showInput =
+      (!maxChips ||
+        (maxChips && Array.isArray(value) && value.length < maxChips)) &&
+      !noInput;
 
     return (
       <ConditionalWrapper
@@ -186,27 +198,41 @@ export const InputChips = React.forwardRef<
               </span>
             </span>
           ) : null}
-          <div className="input">
+          <div
+            className={`input ${ac(!showInput, "dbl-padding-right")}`}
+            onClick={onClick}
+          >
             {!chipsOutside && Array.isArray(value) && value.length ? (
               <span className="chips-outer">
                 <span className="chips-inner">
-                  {value.map((v, i) => (
-                    <Label
-                      removable
-                      onRemove={() => handleDelete(i)}
-                      color={chipsColor}
-                      size="small"
-                      key={`${v}-${i}`}
-                      className="no-margin-bottom"
-                    >
-                      {v}
-                    </Label>
-                  ))}
+                  {value.map((v, i) =>
+                    renderChip ? (
+                      renderChip({
+                        value: v,
+                        idx: i,
+                        onDelete: () => handleDelete(i),
+                      })
+                    ) : (
+                      <Label
+                        removable
+                        onRemove={(e: MouseEvent) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          handleDelete(i);
+                        }}
+                        color={chipsColor}
+                        size="small"
+                        key={`${v}-${i}`}
+                        className="no-margin-bottom"
+                      >
+                        {v}
+                      </Label>
+                    )
+                  )}
                 </span>
               </span>
             ) : null}
-            {!maxChips ||
-            (maxChips && Array.isArray(value) && value.length < maxChips) ? (
+            {showInput ? (
               <input
                 type="text"
                 onKeyDown={handleKeyDown}

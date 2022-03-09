@@ -2,7 +2,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('react-is'), require('react-dom'), require('react-modal')) :
     typeof define === 'function' && define.amd ? define(['exports', 'react', 'react-is', 'react-dom', 'react-modal'], factory) :
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactCUI = {}, global.React, global.ReactIs, global.ReactDOM, global.ReactModal));
-}(this, (function (exports, React, ReactIs, ReactDOM, ReactModal) { 'use strict';
+})(this, (function (exports, React, ReactIs, ReactDOM, ReactModal) { 'use strict';
 
     function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -110,10 +110,14 @@
         return ar;
     }
 
-    function __spreadArray(to, from) {
-        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-            to[j] = from[i];
-        return to;
+    function __spreadArray(to, from, pack) {
+        if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+            if (ar || !(i in from)) {
+                if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+                ar[i] = from[i];
+            }
+        }
+        return to.concat(ar || Array.prototype.slice.call(from));
     }
 
     var classes = function (type, icon) {
@@ -137,7 +141,7 @@
     };
     var Alert = function (_a) {
         var _b = _a.type, type = _b === void 0 ? "info" : _b, children = _a.children, _c = _a.title, title = _c === void 0 ? "" : _c, _d = _a.dismissable, dismissable = _d === void 0 ? false : _d, _e = _a.className, className = _e === void 0 ? null : _e, _f = _a.onDismiss, onDismiss = _f === void 0 ? null : _f, _g = _a.withIcon, withIcon = _g === void 0 ? true : _g, _h = _a.icon, icon = _h === void 0 ? null : _h;
-        var _j = React__default['default'].useState(false), dismissed = _j[0], setDismissed = _j[1];
+        var _j = React__default["default"].useState(false), dismissed = _j[0], setDismissed = _j[1];
         var handleDismiss = function (e) {
             setDismissed(true);
             if (onDismiss)
@@ -146,29 +150,29 @@
         if (dismissed)
             return null;
         var _k = classes(type, icon), alertClass = _k[0], iconClass = _k[1];
-        return (React__default['default'].createElement("div", { className: "alert " + alertClass + " " + (className || "") },
-            withIcon ? React__default['default'].createElement("div", { className: "alert__icon " + iconClass }) : null,
-            React__default['default'].createElement("div", { className: "alert__message" },
-                title && React__default['default'].createElement("h4", null, title),
+        return (React__default["default"].createElement("div", { className: "alert ".concat(alertClass, " ").concat(className || "") },
+            withIcon ? React__default["default"].createElement("div", { className: "alert__icon ".concat(iconClass) }) : null,
+            React__default["default"].createElement("div", { className: "alert__message" },
+                title && React__default["default"].createElement("h4", null, title),
                 children),
-            dismissable && (React__default['default'].createElement("a", { className: "alert__close icon-close", onClick: handleDismiss }))));
+            dismissable && (React__default["default"].createElement("a", { className: "alert__close icon-close", onClick: handleDismiss }))));
     };
-    Alert.Warning = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "warning" }, props)); };
-    Alert.Danger = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "danger" }, props)); };
-    Alert.Error = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "error" }, props)); };
-    Alert.Success = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "success" }, props)); };
-    Alert.Info = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "info" }, props)); };
-    Alert.Dark = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "dark" }, props)); };
-    Alert.Light = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "light" }, props)); };
-    Alert.WarningAlt = function (props) { return React__default['default'].createElement(Alert, __assign({ type: "warning-alt" }, props)); };
+    Alert.Warning = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "warning" }, props)); };
+    Alert.Danger = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "danger" }, props)); };
+    Alert.Error = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "error" }, props)); };
+    Alert.Success = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "success" }, props)); };
+    Alert.Info = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "info" }, props)); };
+    Alert.Dark = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "dark" }, props)); };
+    Alert.Light = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "light" }, props)); };
+    Alert.WarningAlt = function (props) { return React__default["default"].createElement(Alert, __assign({ type: "warning-alt" }, props)); };
 
     var ConditionalWrapper = function (_a) {
         var condition = _a.condition, wrapper = _a.wrapper, children = _a.children;
-        return condition ? (React__default['default'].cloneElement(wrapper, null, children)) : React__default['default'].isValidElement(children) ? (children) : (React__default['default'].createElement(React__default['default'].Fragment, null, children));
+        return condition ? (React__default["default"].cloneElement(wrapper, null, children)) : React__default["default"].isValidElement(children) ? (children) : (React__default["default"].createElement(React__default["default"].Fragment, null, children));
     };
     var DisplayIf = function (_a) {
         var condition = _a.condition, children = _a.children;
-        return condition ? React__default['default'].isValidElement(children) ? children : React__default['default'].createElement(React__default['default'].Fragment, null, "children") : null;
+        return condition ? React__default["default"].isValidElement(children) ? children : React__default["default"].createElement(React__default["default"].Fragment, null, "children") : null;
     };
 
     var eventManager$1 = {
@@ -226,48 +230,52 @@
         if (what === void 0) { what = undefined; }
         if (c) {
             if (typeof what === "function")
-                return " " + what();
-            return " " + (what || c);
+                return " ".concat(what());
+            return " ".concat(what || c);
         }
         return "";
     };
 
     var Element = function (_a) {
         var _b = _a.selected, selected = _b === void 0 ? false : _b, _c = _a.icon, icon = _c === void 0 ? null : _c, children = _a.children, _d = _a.className, className = _d === void 0 ? null : _d, props = __rest(_a, ["selected", "icon", "children", "className"]);
-        return (React__default['default'].createElement("a", __assign({ className: "" + (selected ? "selected" : "") + (className ? " " + className : "") }, props),
-            icon ? React__default['default'].createElement("span", { className: "icon-" + icon }) : null,
-            React__default['default'].createElement(ConditionalWrapper, { condition: Boolean(icon), wrapper: React__default['default'].createElement("span", { className: "qtr-margin-left" }) }, children)));
+        return (React__default["default"].createElement("a", __assign({ className: "".concat(selected ? "selected" : "").concat(className ? " ".concat(className) : "") }, props),
+            icon ? React__default["default"].createElement("span", { className: "icon-".concat(icon) }) : null,
+            React__default["default"].createElement(ConditionalWrapper, { condition: Boolean(icon), wrapper: React__default["default"].createElement("span", { className: "qtr-margin-left" }) }, children)));
     };
-    var Divider = function () { return React__default['default'].createElement("div", { className: "divider" }); };
+    var Divider = function () { return React__default["default"].createElement("div", { className: "divider" }); };
     var Group = function (_a) {
         var children = _a.children;
-        return (React__default['default'].createElement("div", { className: "dropdown__group" }, children));
+        return (React__default["default"].createElement("div", { className: "dropdown__group" }, children));
     };
     var GroupHeader = function (_a) {
         var header = _a.header;
-        return (React__default['default'].createElement("div", { className: "dropdown__group-header" }, header));
+        return (React__default["default"].createElement("div", { className: "dropdown__group-header" }, header));
     };
     var DropdownHeader$1 = function (_a) {
         var type = _a.type, handleClick = _a.handleClick, className = _a.className, header = _a.header;
         switch (type) {
             case "icon":
-                return React__default['default'].createElement("span", { onClick: handleClick, className: className });
+                return React__default["default"].createElement("span", { onClick: handleClick, className: className });
             case "link":
-                return (React__default['default'].createElement("a", { onClick: handleClick, className: className }, header));
+                return (React__default["default"].createElement("a", { onClick: handleClick, className: className }, header));
             case "div":
-                return (React__default['default'].createElement("div", { onClick: handleClick, className: className }, header));
+                return (React__default["default"].createElement("div", { onClick: handleClick, className: className }, header));
             case "button":
-                return (React__default['default'].createElement("button", { type: "button", onClick: handleClick, className: "btn " + className }, header));
+                return (React__default["default"].createElement("button", { type: "button", onClick: handleClick, className: "btn ".concat(className) }, header));
             default:
-                return React__default['default'].isValidElement(header)
-                    ? React__default['default'].cloneElement(header, { onClick: handleClick })
+                return React__default["default"].isValidElement(header)
+                    ? React__default["default"].cloneElement(header, { onClick: handleClick })
                     : null;
         }
     };
     var Dropdown = function (_a) {
-        var _b = _a.openTo, openTo = _b === void 0 ? "right" : _b, children = _a.children, _c = _a.type, type = _c === void 0 ? "button" : _c, _d = _a.className, className = _d === void 0 ? null : _d, _e = _a.header, header = _e === void 0 ? null : _e, _f = _a.divClassName, divClassName = _f === void 0 ? null : _f, _g = _a.up, up = _g === void 0 ? false : _g, _h = _a.onClose, onClose = _h === void 0 ? null : _h, _j = _a.onOpen, onOpen = _j === void 0 ? null : _j, _k = _a.stopPropagation, stopPropagation = _k === void 0 ? false : _k, _l = _a.alwaysClose, alwaysClose = _l === void 0 ? false : _l;
+        var _b = _a.openTo, openTo = _b === void 0 ? "right" : _b, children = _a.children, _c = _a.type, type = _c === void 0 ? "button" : _c, _d = _a.className, className = _d === void 0 ? null : _d, _e = _a.header, header = _e === void 0 ? null : _e, _f = _a.divClassName, divClassName = _f === void 0 ? null : _f, _g = _a.up, up = _g === void 0 ? false : _g, _h = _a.onClose, onClose = _h === void 0 ? null : _h, _j = _a.onOpen, onOpen = _j === void 0 ? null : _j, _k = _a.stopPropagation, stopPropagation = _k === void 0 ? false : _k, _l = _a.alwaysClose, alwaysClose = _l === void 0 ? false : _l, outsideIsOpen = _a.isOpen;
         var _m = React.useState(false), isOpen = _m[0], setIsOpen = _m[1];
         var divRef = React.useRef(undefined);
+        React.useEffect(function () {
+            if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null)
+                setIsOpen(outsideIsOpen);
+        }, [outsideIsOpen]);
         // eslint-disable-next-line prefer-const
         var handleOutsideClick;
         var handleClick = React.useCallback(function (e) {
@@ -306,9 +314,9 @@
                 return;
             }
         };
-        return (React__default['default'].createElement("div", { className: "dropdown" + appendClass(["left", "center"].includes(openTo), "dropdown--" + openTo) + appendClass(up, "dropdown--up") + appendClass(isOpen, "active") + appendClass(divClassName), ref: divRef },
-            React__default['default'].createElement(DropdownHeader$1, { type: type, handleClick: handleClick, className: className, header: header }),
-            React__default['default'].createElement("div", { className: "dropdown__menu" }, children)));
+        return (React__default["default"].createElement("div", { className: "dropdown".concat(appendClass(["left", "center"].includes(openTo), "dropdown--".concat(openTo))).concat(appendClass(up, "dropdown--up")).concat(appendClass(isOpen, "active")).concat(appendClass(divClassName)), ref: divRef },
+            React__default["default"].createElement(DropdownHeader$1, { type: type, handleClick: handleClick, className: className, header: header }),
+            React__default["default"].createElement("div", { className: "dropdown__menu" }, children)));
     };
     Dropdown.Divider = Divider;
     Dropdown.Element = Element;
@@ -320,95 +328,6 @@
     	return fn(module, module.exports), module.exports;
     }
 
-    /*
-    object-assign
-    (c) Sindre Sorhus
-    @license MIT
-    */
-    /* eslint-disable no-unused-vars */
-    var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-    var hasOwnProperty = Object.prototype.hasOwnProperty;
-    var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-    function toObject(val) {
-    	if (val === null || val === undefined) {
-    		throw new TypeError('Object.assign cannot be called with null or undefined');
-    	}
-
-    	return Object(val);
-    }
-
-    function shouldUseNative() {
-    	try {
-    		if (!Object.assign) {
-    			return false;
-    		}
-
-    		// Detect buggy property enumeration order in older V8 versions.
-
-    		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-    		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-    		test1[5] = 'de';
-    		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-    			return false;
-    		}
-
-    		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-    		var test2 = {};
-    		for (var i = 0; i < 10; i++) {
-    			test2['_' + String.fromCharCode(i)] = i;
-    		}
-    		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-    			return test2[n];
-    		});
-    		if (order2.join('') !== '0123456789') {
-    			return false;
-    		}
-
-    		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-    		var test3 = {};
-    		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-    			test3[letter] = letter;
-    		});
-    		if (Object.keys(Object.assign({}, test3)).join('') !==
-    				'abcdefghijklmnopqrst') {
-    			return false;
-    		}
-
-    		return true;
-    	} catch (err) {
-    		// We don't expect any of the above to throw, but better to be safe.
-    		return false;
-    	}
-    }
-
-    shouldUseNative() ? Object.assign : function (target, source) {
-    	var from;
-    	var to = toObject(target);
-    	var symbols;
-
-    	for (var s = 1; s < arguments.length; s++) {
-    		from = Object(arguments[s]);
-
-    		for (var key in from) {
-    			if (hasOwnProperty.call(from, key)) {
-    				to[key] = from[key];
-    			}
-    		}
-
-    		if (getOwnPropertySymbols) {
-    			symbols = getOwnPropertySymbols(from);
-    			for (var i = 0; i < symbols.length; i++) {
-    				if (propIsEnumerable.call(from, symbols[i])) {
-    					to[symbols[i]] = from[symbols[i]];
-    				}
-    			}
-    		}
-    	}
-
-    	return to;
-    };
-
     /**
      * Copyright (c) 2013-present, Facebook, Inc.
      *
@@ -416,24 +335,11 @@
      * LICENSE file in the root directory of this source tree.
      */
 
-    var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+    var ReactPropTypesSecret$1 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
-    var ReactPropTypesSecret_1 = ReactPropTypesSecret;
+    var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
 
-    /**
-     * Copyright (c) 2013-present, Facebook, Inc.
-     *
-     * This source code is licensed under the MIT license found in the
-     * LICENSE file in the root directory of this source tree.
-     */
-
-
-
-
-
-
-
-    Function.call.bind(Object.prototype.hasOwnProperty);
+    var ReactPropTypesSecret = ReactPropTypesSecret_1;
 
     /**
      * Copyright (c) 2013-present, Facebook, Inc.
@@ -450,7 +356,7 @@
 
     var factoryWithThrowingShims = function() {
       function shim(props, propName, componentName, location, propFullName, secret) {
-        if (secret === ReactPropTypesSecret_1) {
+        if (secret === ReactPropTypesSecret) {
           // It is still safe when called from React.
           return;
         }
@@ -468,6 +374,7 @@
       // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
       var ReactPropTypes = {
         array: shim,
+        bigint: shim,
         bool: shim,
         func: shim,
         number: shim,
@@ -496,6 +403,8 @@
       return ReactPropTypes;
     };
 
+    var require$$2 = factoryWithThrowingShims;
+
     /**
      * Copyright (c) 2013-present, Facebook, Inc.
      *
@@ -507,24 +416,93 @@
     {
       // By explicitly using `prop-types` you are opting into new production behavior.
       // http://fb.me/prop-types-in-prod
-      module.exports = factoryWithThrowingShims();
+      module.exports = require$$2();
     }
     });
 
+    var PropTypes = propTypes;
+
     var COMMON_MIME_TYPES = new Map([
-        ['avi', 'video/avi'],
+        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+        ['aac', 'audio/aac'],
+        ['abw', 'application/x-abiword'],
+        ['arc', 'application/x-freearc'],
+        ['avif', 'image/avif'],
+        ['avi', 'video/x-msvideo'],
+        ['azw', 'application/vnd.amazon.ebook'],
+        ['bin', 'application/octet-stream'],
+        ['bmp', 'image/bmp'],
+        ['bz', 'application/x-bzip'],
+        ['bz2', 'application/x-bzip2'],
+        ['cda', 'application/x-cdf'],
+        ['csh', 'application/x-csh'],
+        ['css', 'text/css'],
+        ['csv', 'text/csv'],
+        ['doc', 'application/msword'],
+        ['docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+        ['eot', 'application/vnd.ms-fontobject'],
+        ['epub', 'application/epub+zip'],
+        ['gz', 'application/gzip'],
         ['gif', 'image/gif'],
-        ['ico', 'image/x-icon'],
+        ['htm', 'text/html'],
+        ['html', 'text/html'],
+        ['ico', 'image/vnd.microsoft.icon'],
+        ['ics', 'text/calendar'],
+        ['jar', 'application/java-archive'],
         ['jpeg', 'image/jpeg'],
         ['jpg', 'image/jpeg'],
+        ['js', 'text/javascript'],
+        ['json', 'application/json'],
+        ['jsonld', 'application/ld+json'],
+        ['mid', 'audio/midi'],
+        ['midi', 'audio/midi'],
+        ['mjs', 'text/javascript'],
+        ['mp3', 'audio/mpeg'],
+        ['mp4', 'video/mp4'],
+        ['mpeg', 'video/mpeg'],
+        ['mpkg', 'application/vnd.apple.installer+xml'],
+        ['odp', 'application/vnd.oasis.opendocument.presentation'],
+        ['ods', 'application/vnd.oasis.opendocument.spreadsheet'],
+        ['odt', 'application/vnd.oasis.opendocument.text'],
+        ['oga', 'audio/ogg'],
+        ['ogv', 'video/ogg'],
+        ['ogx', 'application/ogg'],
+        ['opus', 'audio/opus'],
+        ['otf', 'font/otf'],
+        ['png', 'image/png'],
+        ['pdf', 'application/pdf'],
+        ['php', 'application/x-httpd-php'],
+        ['ppt', 'application/vnd.ms-powerpoint'],
+        ['pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+        ['rar', 'application/vnd.rar'],
+        ['rtf', 'application/rtf'],
+        ['sh', 'application/x-sh'],
+        ['svg', 'image/svg+xml'],
+        ['swf', 'application/x-shockwave-flash'],
+        ['tar', 'application/x-tar'],
+        ['tif', 'image/tiff'],
+        ['tiff', 'image/tiff'],
+        ['ts', 'video/mp2t'],
+        ['ttf', 'font/ttf'],
+        ['txt', 'text/plain'],
+        ['vsd', 'application/vnd.visio'],
+        ['wav', 'audio/wav'],
+        ['weba', 'audio/webm'],
+        ['webm', 'video/webm'],
+        ['webp', 'image/webp'],
+        ['woff', 'font/woff'],
+        ['woff2', 'font/woff2'],
+        ['xhtml', 'application/xhtml+xml'],
+        ['xls', 'application/vnd.ms-excel'],
+        ['xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+        ['xml', 'application/xml'],
+        ['xul', 'application/vnd.mozilla.xul+xml'],
+        ['zip', 'application/zip'],
+        ['7z', 'application/x-7z-compressed'],
+        // Others
         ['mkv', 'video/x-matroska'],
         ['mov', 'video/quicktime'],
-        ['mp4', 'video/mp4'],
-        ['pdf', 'application/pdf'],
-        ['png', 'image/png'],
-        ['zip', 'application/zip'],
-        ['doc', 'application/msword'],
-        ['docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+        ['msg', 'application/vnd.ms-outlook']
     ]);
     function toFileWithPath(file, path) {
         var f = withMimeType(file);
@@ -574,30 +552,53 @@
      * Convert a DragEvent's DataTrasfer object to a list of File objects
      * NOTE: If some of the items are folders,
      * everything will be flattened and placed in the same list but the paths will be kept as a {path} property.
+     *
+     * EXPERIMENTAL: A list of https://developer.mozilla.org/en-US/docs/Web/API/FileSystemHandle objects can also be passed as an arg
+     * and a list of File objects will be returned.
+     *
      * @param evt
      */
     function fromEvent(evt) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, isDragEvt(evt) && evt.dataTransfer
-                        ? getDataTransferFiles(evt.dataTransfer, evt.type)
-                        : getInputFiles(evt)];
+                if (isObject(evt) && isDataTransfer(evt)) {
+                    return [2 /*return*/, getDataTransferFiles(evt.dataTransfer, evt.type)];
+                }
+                else if (isChangeEvt(evt)) {
+                    return [2 /*return*/, getInputFiles(evt)];
+                }
+                else if (Array.isArray(evt) && evt.every(function (item) { return 'getFile' in item && typeof item.getFile === 'function'; })) {
+                    return [2 /*return*/, getFsHandleFiles(evt)];
+                }
+                return [2 /*return*/, []];
             });
         });
     }
-    function isDragEvt(value) {
-        return !!value.dataTransfer;
+    function isDataTransfer(value) {
+        return isObject(value.dataTransfer);
+    }
+    function isChangeEvt(value) {
+        return isObject(value) && isObject(value.target);
+    }
+    function isObject(v) {
+        return typeof v === 'object' && v !== null;
     }
     function getInputFiles(evt) {
-        var files = isInput(evt.target)
-            ? evt.target.files
-                ? fromList(evt.target.files)
-                : []
-            : [];
-        return files.map(function (file) { return toFileWithPath(file); });
+        return fromList(evt.target.files).map(function (file) { return toFileWithPath(file); });
     }
-    function isInput(value) {
-        return value !== null;
+    // Ee expect each handle to be https://developer.mozilla.org/en-US/docs/Web/API/FileSystemFileHandle
+    function getFsHandleFiles(handles) {
+        return __awaiter(this, void 0, void 0, function () {
+            var files;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Promise.all(handles.map(function (h) { return h.getFile(); }))];
+                    case 1:
+                        files = _a.sent();
+                        return [2 /*return*/, files.map(function (file) { return toFileWithPath(file); })];
+                }
+            });
+        });
     }
     function getDataTransferFiles(dt, type) {
         return __awaiter(this, void 0, void 0, function () {
@@ -605,6 +606,9 @@
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (dt === null) {
+                            return [2 /*return*/, []];
+                        }
                         if (!dt.items) return [3 /*break*/, 2];
                         items = fromList(dt.items)
                             .filter(function (item) { return item.kind === 'file'; });
@@ -631,6 +635,9 @@
     // https://developer.mozilla.org/en-US/docs/Web/API/FileList
     // https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList
     function fromList(items) {
+        if (items === null) {
+            return [];
+        }
         var files = [];
         // tslint:disable: prefer-for-of
         for (var i = 0; i < items.length; i++) {
@@ -755,6 +762,14 @@
       return true;
     };
 
+    var accepts = _default;
+
+    function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+    function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$1(Object(source), !0).forEach(function (key) { _defineProperty$1(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+    function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
     function _slicedToArray$1(arr, i) { return _arrayWithHoles$1(arr) || _iterableToArrayLimit$1(arr, i) || _unsupportedIterableToArray$1(arr, i) || _nonIterableRest$1(); }
 
     function _nonIterableRest$1() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -763,14 +778,14 @@
 
     function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-    function _iterableToArrayLimit$1(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+    function _iterableToArrayLimit$1(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
     function _arrayWithHoles$1(arr) { if (Array.isArray(arr)) return arr; }
 
     var FILE_INVALID_TYPE = 'file-invalid-type';
     var FILE_TOO_LARGE = 'file-too-large';
     var FILE_TOO_SMALL = 'file-too-small';
-    var TOO_MANY_FILES = 'too-many-files'; // File Errors
+    var TOO_MANY_FILES = 'too-many-files';
 
     var getInvalidTypeRejectionErr = function getInvalidTypeRejectionErr(accept) {
       accept = Array.isArray(accept) && accept.length === 1 ? accept[0] : accept;
@@ -783,13 +798,13 @@
     var getTooLargeRejectionErr = function getTooLargeRejectionErr(maxSize) {
       return {
         code: FILE_TOO_LARGE,
-        message: "File is larger than ".concat(maxSize, " bytes")
+        message: "File is larger than ".concat(maxSize, " ").concat(maxSize === 1 ? 'byte' : 'bytes')
       };
     };
     var getTooSmallRejectionErr = function getTooSmallRejectionErr(minSize) {
       return {
         code: FILE_TOO_SMALL,
-        message: "File is smaller than ".concat(minSize, " bytes")
+        message: "File is smaller than ".concat(minSize, " ").concat(minSize === 1 ? 'byte' : 'bytes')
       };
     };
     var TOO_MANY_FILES_REJECTION = {
@@ -799,7 +814,7 @@
     // that MIME type will always be accepted
 
     function fileAccepted(file, accept) {
-      var isAcceptable = file.type === 'application/x-moz-file' || _default(file, accept);
+      var isAcceptable = file.type === 'application/x-moz-file' || accepts(file, accept);
       return [isAcceptable, isAcceptable ? null : getInvalidTypeRejectionErr(accept)];
     }
     function fileMatchSize(file, minSize, maxSize) {
@@ -911,12 +926,47 @@
         });
       };
     }
+    /**
+     * canUseFileSystemAccessAPI checks if the [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)
+     * is supported by the browser.
+     * @returns {boolean}
+     */
+
+    function canUseFileSystemAccessAPI() {
+      return 'showOpenFilePicker' in window;
+    }
+    /**
+     * filePickerOptionsTypes returns the {types} option for https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker
+     * based on the accept attr (see https://github.com/react-dropzone/attr-accept)
+     * E.g: converts ['image/*', 'text/*'] to {'image/*': [], 'text/*': []}
+     * @param {string|string[]} accept
+     */
+
+    function filePickerOptionsTypes(accept) {
+      accept = typeof accept === 'string' ? accept.split(',') : accept;
+      return [{
+        description: 'everything',
+        // TODO: Need to handle filtering more elegantly than this!
+        accept: Array.isArray(accept) // Accept just MIME types as per spec
+        // NOTE: accept can be https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#unique_file_type_specifiers
+        ? accept.filter(function (item) {
+          return item === 'audio/*' || item === 'video/*' || item === 'image/*' || item === 'text/*' || /\w+\/[-+.\w]+/g.test(item);
+        }).reduce(function (a, b) {
+          return _objectSpread$1(_objectSpread$1({}, a), {}, _defineProperty$1({}, b, []));
+        }, {}) : {}
+      }];
+    }
+
+    var _excluded = ["children"],
+        _excluded2 = ["open"],
+        _excluded3 = ["refKey", "role", "onKeyDown", "onFocus", "onBlur", "onClick", "onDragEnter", "onDragOver", "onDragLeave", "onDrop"],
+        _excluded4 = ["refKey", "onChange", "onClick"];
 
     function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
     function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-    function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+    function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
     function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -928,13 +978,13 @@
 
     function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-    function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+    function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
     function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-    function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+    function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-    function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+    function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
     function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -958,11 +1008,11 @@
 
     var Dropzone$1 = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       var children = _ref.children,
-          params = _objectWithoutProperties(_ref, ["children"]);
+          params = _objectWithoutProperties(_ref, _excluded);
 
       var _useDropzone = useDropzone(params),
           open = _useDropzone.open,
-          props = _objectWithoutProperties(_useDropzone, ["open"]);
+          props = _objectWithoutProperties(_useDropzone, _excluded2);
 
       React.useImperativeHandle(ref, function () {
         return {
@@ -970,7 +1020,7 @@
         };
       }, [open]); // TODO: Figure out why react-styleguidist cannot create docs if we don't return a jsx element
 
-      return /*#__PURE__*/React__default['default'].createElement(React.Fragment, null, children(_objectSpread(_objectSpread({}, props), {}, {
+      return /*#__PURE__*/React__default["default"].createElement(React.Fragment, null, children(_objectSpread(_objectSpread({}, props), {}, {
         open: open
       })));
     });
@@ -988,7 +1038,8 @@
       noKeyboard: false,
       noDrag: false,
       noDragEventsBubbling: false,
-      validator: null
+      validator: null,
+      useFsAccessApi: false
     };
     Dropzone$1.defaultProps = defaultProps;
     Dropzone$1.propTypes = {
@@ -1008,7 +1059,7 @@
        * @param {File[]} params.acceptedFiles Accepted files
        * @param {FileRejection[]} params.fileRejections Rejected files and why they were rejected
        */
-      children: propTypes.func,
+      children: PropTypes.func,
 
       /**
        * Set accepted file types.
@@ -1018,92 +1069,103 @@
        * Windows. In some cases there might not be a mime type set at all.
        * See: https://github.com/react-dropzone/react-dropzone/issues/276
        */
-      accept: propTypes.oneOfType([propTypes.string, propTypes.arrayOf(propTypes.string)]),
+      accept: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 
       /**
        * Allow drag 'n' drop (or selection from the file dialog) of multiple files
        */
-      multiple: propTypes.bool,
+      multiple: PropTypes.bool,
 
       /**
        * If false, allow dropped items to take over the current browser window
        */
-      preventDropOnDocument: propTypes.bool,
+      preventDropOnDocument: PropTypes.bool,
 
       /**
        * If true, disables click to open the native file selection dialog
        */
-      noClick: propTypes.bool,
+      noClick: PropTypes.bool,
 
       /**
        * If true, disables SPACE/ENTER to open the native file selection dialog.
        * Note that it also stops tracking the focus state.
        */
-      noKeyboard: propTypes.bool,
+      noKeyboard: PropTypes.bool,
 
       /**
        * If true, disables drag 'n' drop
        */
-      noDrag: propTypes.bool,
+      noDrag: PropTypes.bool,
 
       /**
        * If true, stops drag event propagation to parents
        */
-      noDragEventsBubbling: propTypes.bool,
+      noDragEventsBubbling: PropTypes.bool,
 
       /**
        * Minimum file size (in bytes)
        */
-      minSize: propTypes.number,
+      minSize: PropTypes.number,
 
       /**
        * Maximum file size (in bytes)
        */
-      maxSize: propTypes.number,
+      maxSize: PropTypes.number,
 
       /**
        * Maximum accepted number of files
        * The default value is 0 which means there is no limitation to how many files are accepted.
        */
-      maxFiles: propTypes.number,
+      maxFiles: PropTypes.number,
 
       /**
        * Enable/disable the dropzone
        */
-      disabled: propTypes.bool,
+      disabled: PropTypes.bool,
 
       /**
        * Use this to provide a custom file aggregator
        *
        * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
        */
-      getFilesFromEvent: propTypes.func,
+      getFilesFromEvent: PropTypes.func,
 
       /**
        * Cb for when closing the file dialog with no selection
        */
-      onFileDialogCancel: propTypes.func,
+      onFileDialogCancel: PropTypes.func,
+
+      /**
+       * Cb for when opening the file dialog
+       */
+      onFileDialogOpen: PropTypes.func,
+
+      /**
+       * Set to true to use the https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API
+       * to open the file picker instead of using an `<input type="file">` click event.
+       */
+      useFsAccessApi: PropTypes.bool,
 
       /**
        * Cb for when the `dragenter` event occurs.
        *
        * @param {DragEvent} event
        */
-      onDragEnter: propTypes.func,
+      onDragEnter: PropTypes.func,
 
       /**
        * Cb for when the `dragleave` event occurs
        *
        * @param {DragEvent} event
        */
-      onDragLeave: propTypes.func,
+      onDragLeave: PropTypes.func,
 
       /**
        * Cb for when the `dragover` event occurs
        *
        * @param {DragEvent} event
        */
-      onDragOver: propTypes.func,
+      onDragOver: PropTypes.func,
 
       /**
        * Cb for when the `drop` event occurs.
@@ -1135,7 +1197,7 @@
        * @param {FileRejection[]} fileRejections
        * @param {(DragEvent|Event)} event A drag event or input change event (if files were selected via the file dialog)
        */
-      onDrop: propTypes.func,
+      onDrop: PropTypes.func,
 
       /**
        * Cb for when the `drop` event occurs.
@@ -1144,7 +1206,7 @@
        * @param {File[]} files
        * @param {(DragEvent|Event)} event
        */
-      onDropAccepted: propTypes.func,
+      onDropAccepted: PropTypes.func,
 
       /**
        * Cb for when the `drop` event occurs.
@@ -1153,15 +1215,16 @@
        * @param {FileRejection[]} fileRejections
        * @param {(DragEvent|Event)} event
        */
-      onDropRejected: propTypes.func,
+      onDropRejected: PropTypes.func,
 
       /**
-       * Custom validation function 
+       * Custom validation function
        * @param {File} file
        * @returns {FileError|FileError[]}
        */
-      validator: propTypes.func
+      validator: PropTypes.func
     };
+    var ReactDropzone = Dropzone$1;
     /**
      * A function that is invoked for the `dragenter`,
      * `dragover` and `dragleave` events.
@@ -1276,6 +1339,9 @@
      * @param {boolean} [props.disabled=false] Enable/disable the dropzone
      * @param {getFilesFromEvent} [props.getFilesFromEvent] Use this to provide a custom file aggregator
      * @param {Function} [props.onFileDialogCancel] Cb for when closing the file dialog with no selection
+     * @param {boolean} [props.useFsAccessApi] Set to true to use the https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API
+     * to open the file picker instead of using an `<input type="file">` click event.
+     * @param {Function} [props.onFileDialogOpen] Cb for when opening the file dialog
      * @param {dragCb} [props.onDragEnter] Cb for when the `dragenter` event occurs.
      * @param {dragCb} [props.onDragLeave] Cb for when the `dragleave` event occurs
      * @param {dragCb} [props.onDragOver] Cb for when the `dragover` event occurs
@@ -1327,6 +1393,8 @@
           onDropAccepted = _defaultProps$options.onDropAccepted,
           onDropRejected = _defaultProps$options.onDropRejected,
           onFileDialogCancel = _defaultProps$options.onFileDialogCancel,
+          onFileDialogOpen = _defaultProps$options.onFileDialogOpen,
+          useFsAccessApi = _defaultProps$options.useFsAccessApi,
           preventDropOnDocument = _defaultProps$options.preventDropOnDocument,
           noClick = _defaultProps$options.noClick,
           noKeyboard = _defaultProps$options.noKeyboard,
@@ -1334,6 +1402,12 @@
           noDragEventsBubbling = _defaultProps$options.noDragEventsBubbling,
           validator = _defaultProps$options.validator;
 
+      var onFileDialogOpenCb = React.useMemo(function () {
+        return typeof onFileDialogOpen === 'function' ? onFileDialogOpen : noop$1;
+      }, [onFileDialogOpen]);
+      var onFileDialogCancelCb = React.useMemo(function () {
+        return typeof onFileDialogCancel === 'function' ? onFileDialogCancel : noop$1;
+      }, [onFileDialogCancel]);
       var rootRef = React.useRef(null);
       var inputRef = React.useRef(null);
 
@@ -1344,17 +1418,7 @@
 
       var isFocused = state.isFocused,
           isFileDialogActive = state.isFileDialogActive,
-          draggedFiles = state.draggedFiles; // Fn for opening the file dialog programmatically
-
-      var openFileDialog = React.useCallback(function () {
-        if (inputRef.current) {
-          dispatch({
-            type: 'openDialog'
-          });
-          inputRef.current.value = null;
-          inputRef.current.click();
-        }
-      }, [dispatch]); // Update file dialog active state when the window is focused on
+          draggedFiles = state.draggedFiles; // Update file dialog active state when the window is focused on
 
       var onWindowFocus = function onWindowFocus() {
         // Execute the timeout only if the file dialog is opened in the browser
@@ -1367,10 +1431,7 @@
                 dispatch({
                   type: 'closeDialog'
                 });
-
-                if (typeof onFileDialogCancel === 'function') {
-                  onFileDialogCancel();
-                }
+                onFileDialogCancelCb();
               }
             }
           }, 300);
@@ -1378,49 +1439,15 @@
       };
 
       React.useEffect(function () {
+        if (useFsAccessApi && canUseFileSystemAccessAPI()) {
+          return function () {};
+        }
+
         window.addEventListener('focus', onWindowFocus, false);
         return function () {
           window.removeEventListener('focus', onWindowFocus, false);
         };
-      }, [inputRef, isFileDialogActive, onFileDialogCancel]); // Cb to open the file dialog when SPACE/ENTER occurs on the dropzone
-
-      var onKeyDownCb = React.useCallback(function (event) {
-        // Ignore keyboard events bubbling up the DOM tree
-        if (!rootRef.current || !rootRef.current.isEqualNode(event.target)) {
-          return;
-        }
-
-        if (event.keyCode === 32 || event.keyCode === 13) {
-          event.preventDefault();
-          openFileDialog();
-        }
-      }, [rootRef, inputRef]); // Update focus state for the dropzone
-
-      var onFocusCb = React.useCallback(function () {
-        dispatch({
-          type: 'focus'
-        });
-      }, []);
-      var onBlurCb = React.useCallback(function () {
-        dispatch({
-          type: 'blur'
-        });
-      }, []); // Cb to open the file dialog when click occurs on the dropzone
-
-      var onClickCb = React.useCallback(function () {
-        if (noClick) {
-          return;
-        } // In IE11/Edge the file-browser dialog is blocking, therefore, use setTimeout()
-        // to ensure React can handle state changes
-        // See: https://github.com/react-dropzone/react-dropzone/issues/450
-
-
-        if (isIeOrEdge()) {
-          setTimeout(openFileDialog, 0);
-        } else {
-          openFileDialog();
-        }
-      }, [inputRef, noClick]);
+      }, [inputRef, isFileDialogActive, onFileDialogCancelCb, useFsAccessApi]);
       var dragTargetsRef = React.useRef([]);
 
       var onDocumentDrop = function onDocumentDrop(event) {
@@ -1523,6 +1550,69 @@
           onDragLeave(event);
         }
       }, [rootRef, onDragLeave, noDragEventsBubbling]);
+      var setFiles = React.useCallback(function (files, event) {
+        var acceptedFiles = [];
+        var fileRejections = [];
+        files.forEach(function (file) {
+          var _fileAccepted = fileAccepted(file, accept),
+              _fileAccepted2 = _slicedToArray(_fileAccepted, 2),
+              accepted = _fileAccepted2[0],
+              acceptError = _fileAccepted2[1];
+
+          var _fileMatchSize = fileMatchSize(file, minSize, maxSize),
+              _fileMatchSize2 = _slicedToArray(_fileMatchSize, 2),
+              sizeMatch = _fileMatchSize2[0],
+              sizeError = _fileMatchSize2[1];
+
+          var customErrors = validator ? validator(file) : null;
+
+          if (accepted && sizeMatch && !customErrors) {
+            acceptedFiles.push(file);
+          } else {
+            var errors = [acceptError, sizeError];
+
+            if (customErrors) {
+              errors = errors.concat(customErrors);
+            }
+
+            fileRejections.push({
+              file: file,
+              errors: errors.filter(function (e) {
+                return e;
+              })
+            });
+          }
+        });
+
+        if (!multiple && acceptedFiles.length > 1 || multiple && maxFiles >= 1 && acceptedFiles.length > maxFiles) {
+          // Reject everything and empty accepted files
+          acceptedFiles.forEach(function (file) {
+            fileRejections.push({
+              file: file,
+              errors: [TOO_MANY_FILES_REJECTION]
+            });
+          });
+          acceptedFiles.splice(0);
+        }
+
+        dispatch({
+          acceptedFiles: acceptedFiles,
+          fileRejections: fileRejections,
+          type: 'setFiles'
+        });
+
+        if (onDrop) {
+          onDrop(acceptedFiles, fileRejections, event);
+        }
+
+        if (fileRejections.length > 0 && onDropRejected) {
+          onDropRejected(fileRejections, event);
+        }
+
+        if (acceptedFiles.length > 0 && onDropAccepted) {
+          onDropAccepted(acceptedFiles, event);
+        }
+      }, [dispatch, multiple, accept, minSize, maxSize, maxFiles, onDrop, onDropAccepted, onDropRejected, validator]);
       var onDropCb = React.useCallback(function (event) {
         event.preventDefault(); // Persist here because we need the event later after getFilesFromEvent() is done
 
@@ -1536,74 +1626,87 @@
               return;
             }
 
-            var acceptedFiles = [];
-            var fileRejections = [];
-            files.forEach(function (file) {
-              var _fileAccepted = fileAccepted(file, accept),
-                  _fileAccepted2 = _slicedToArray(_fileAccepted, 2),
-                  accepted = _fileAccepted2[0],
-                  acceptError = _fileAccepted2[1];
-
-              var _fileMatchSize = fileMatchSize(file, minSize, maxSize),
-                  _fileMatchSize2 = _slicedToArray(_fileMatchSize, 2),
-                  sizeMatch = _fileMatchSize2[0],
-                  sizeError = _fileMatchSize2[1];
-
-              var customErrors = validator ? validator(file) : null;
-
-              if (accepted && sizeMatch && !customErrors) {
-                acceptedFiles.push(file);
-              } else {
-                var errors = [acceptError, sizeError];
-
-                if (customErrors) {
-                  errors = errors.concat(customErrors);
-                }
-
-                fileRejections.push({
-                  file: file,
-                  errors: errors.filter(function (e) {
-                    return e;
-                  })
-                });
-              }
-            });
-
-            if (!multiple && acceptedFiles.length > 1 || multiple && maxFiles >= 1 && acceptedFiles.length > maxFiles) {
-              // Reject everything and empty accepted files
-              acceptedFiles.forEach(function (file) {
-                fileRejections.push({
-                  file: file,
-                  errors: [TOO_MANY_FILES_REJECTION]
-                });
-              });
-              acceptedFiles.splice(0);
-            }
-
-            dispatch({
-              acceptedFiles: acceptedFiles,
-              fileRejections: fileRejections,
-              type: 'setFiles'
-            });
-
-            if (onDrop) {
-              onDrop(acceptedFiles, fileRejections, event);
-            }
-
-            if (fileRejections.length > 0 && onDropRejected) {
-              onDropRejected(fileRejections, event);
-            }
-
-            if (acceptedFiles.length > 0 && onDropAccepted) {
-              onDropAccepted(acceptedFiles, event);
-            }
+            setFiles(files, event);
           });
         }
 
         dispatch({
           type: 'reset'
         });
-      }, [multiple, accept, minSize, maxSize, maxFiles, getFilesFromEvent, onDrop, onDropAccepted, onDropRejected, noDragEventsBubbling, validator]);
+      }, [getFilesFromEvent, setFiles, noDragEventsBubbling]); // Fn for opening the file dialog programmatically
+
+      var openFileDialog = React.useCallback(function () {
+        if (useFsAccessApi && canUseFileSystemAccessAPI()) {
+          dispatch({
+            type: 'openDialog'
+          });
+          onFileDialogOpenCb(); // https://developer.mozilla.org/en-US/docs/Web/API/window/showOpenFilePicker
+
+          var opts = {
+            multiple: multiple,
+            types: filePickerOptionsTypes(accept)
+          };
+          window.showOpenFilePicker(opts).then(function (handles) {
+            return getFilesFromEvent(handles);
+          }).then(function (files) {
+            return setFiles(files, null);
+          }).catch(function (e) {
+            return onFileDialogCancelCb(e);
+          }).finally(function () {
+            return dispatch({
+              type: 'closeDialog'
+            });
+          });
+          return;
+        }
+
+        if (inputRef.current) {
+          dispatch({
+            type: 'openDialog'
+          });
+          onFileDialogOpenCb();
+          inputRef.current.value = null;
+          inputRef.current.click();
+        }
+      }, [dispatch, onFileDialogOpenCb, onFileDialogCancelCb, useFsAccessApi, setFiles, accept, multiple]); // Cb to open the file dialog when SPACE/ENTER occurs on the dropzone
+
+      var onKeyDownCb = React.useCallback(function (event) {
+        // Ignore keyboard events bubbling up the DOM tree
+        if (!rootRef.current || !rootRef.current.isEqualNode(event.target)) {
+          return;
+        }
+
+        if (event.keyCode === 32 || event.keyCode === 13) {
+          event.preventDefault();
+          openFileDialog();
+        }
+      }, [rootRef, inputRef, openFileDialog]); // Update focus state for the dropzone
+
+      var onFocusCb = React.useCallback(function () {
+        dispatch({
+          type: 'focus'
+        });
+      }, []);
+      var onBlurCb = React.useCallback(function () {
+        dispatch({
+          type: 'blur'
+        });
+      }, []); // Cb to open the file dialog when click occurs on the dropzone
+
+      var onClickCb = React.useCallback(function () {
+        if (noClick) {
+          return;
+        } // In IE11/Edge the file-browser dialog is blocking, therefore, use setTimeout()
+        // to ensure React can handle state changes
+        // See: https://github.com/react-dropzone/react-dropzone/issues/450
+
+
+        if (isIeOrEdge()) {
+          setTimeout(openFileDialog, 0);
+        } else {
+          openFileDialog();
+        }
+      }, [inputRef, noClick, openFileDialog]);
 
       var composeHandler = function composeHandler(fn) {
         return disabled ? null : fn;
@@ -1628,6 +1731,7 @@
           var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
               _ref2$refKey = _ref2.refKey,
               refKey = _ref2$refKey === void 0 ? 'ref' : _ref2$refKey,
+              role = _ref2.role,
               onKeyDown = _ref2.onKeyDown,
               onFocus = _ref2.onFocus,
               onBlur = _ref2.onBlur,
@@ -1636,7 +1740,7 @@
               onDragOver = _ref2.onDragOver,
               onDragLeave = _ref2.onDragLeave,
               onDrop = _ref2.onDrop,
-              rest = _objectWithoutProperties(_ref2, ["refKey", "onKeyDown", "onFocus", "onBlur", "onClick", "onDragEnter", "onDragOver", "onDragLeave", "onDrop"]);
+              rest = _objectWithoutProperties(_ref2, _excluded3);
 
           return _objectSpread(_objectSpread(_defineProperty({
             onKeyDown: composeKeyboardHandler(composeEventHandlers(onKeyDown, onKeyDownCb)),
@@ -1646,7 +1750,8 @@
             onDragEnter: composeDragHandler(composeEventHandlers(onDragEnter, onDragEnterCb)),
             onDragOver: composeDragHandler(composeEventHandlers(onDragOver, onDragOverCb)),
             onDragLeave: composeDragHandler(composeEventHandlers(onDragLeave, onDragLeaveCb)),
-            onDrop: composeDragHandler(composeEventHandlers(onDrop, onDropCb))
+            onDrop: composeDragHandler(composeEventHandlers(onDrop, onDropCb)),
+            role: typeof role === 'string' && role !== '' ? role : 'button'
           }, refKey, rootRef), !disabled && !noKeyboard ? {
             tabIndex: 0
           } : {}), rest);
@@ -1662,7 +1767,7 @@
               refKey = _ref3$refKey === void 0 ? 'ref' : _ref3$refKey,
               onChange = _ref3.onChange,
               onClick = _ref3.onClick,
-              rest = _objectWithoutProperties(_ref3, ["refKey", "onChange", "onClick"]);
+              rest = _objectWithoutProperties(_ref3, _excluded4);
 
           var inputProps = _defineProperty({
             accept: accept,
@@ -1716,7 +1821,7 @@
           });
 
         case 'openDialog':
-          return _objectSpread(_objectSpread({}, state), {}, {
+          return _objectSpread(_objectSpread({}, initialState), {}, {
             isFileDialogActive: true
           });
 
@@ -1747,6 +1852,8 @@
           return state;
       }
     }
+
+    function noop$1() {}
 
     /*!
      * bytes
@@ -1865,7 +1972,11 @@
       }
 
       if (thousandsSeparator) {
-        str = str.replace(formatThousandsRegExp, thousandsSeparator);
+        str = str.split('.').map(function (s, i) {
+          return i === 0
+            ? s.replace(formatThousandsRegExp, thousandsSeparator)
+            : s
+        }).join('.');
       }
 
       return str + unitSeparator + unit;
@@ -1906,6 +2017,10 @@
         unit = results[4].toLowerCase();
       }
 
+      if (isNaN(floatValue)) {
+        return null;
+      }
+
       return Math.floor(map[unit] * floatValue);
     }
     bytes_1.format = format_1;
@@ -1938,41 +2053,41 @@
       }
     }
 
-    var css_248z$8 = ".cui .dropzone{border:1px dashed #dfdfdf;cursor:pointer;text-align:center;height:auto;-webkit-tap-highlight-color:rgba(0,0,0,0);color:#58585b;position:relative;background:#fff;box-shadow:none;display:block;margin:0;padding:10px}.cui .dropzone:focus{outline:none;box-shadow:inset 0 0 0 2px rgba(1,124,173,.25)}.cui .dropzone:hover,.dropzone.dropzone-drag-hover{border-color:#049fd9}.cui .dropzone.dropzone--loose{padding:20px}.cui .dropzone.dropzone--compressed{padding:5px}.cui .dropzone:hover .file-drop__icon,.dropzone.dropzone-drag-hover .file-drop__icon{color:#049fd9}.cui .dropzone .dropzone-message .file-drop__icon{font-size:2rem}.cui .dropzone .dropzone-previews .file-drop__filecnt{text-align:left;color:#9e9ea2;margin-top:1.3125rem}.cui .dropzone .file-drop__card{margin-bottom:.625rem}.cui .form-group--error .dropzone{padding-right:40px;border-color:#e2231a}";
+    var css_248z$8 = ".cui .dropzone{-webkit-tap-highlight-color:rgba(0,0,0,0);background:#fff;border:1px dashed #dfdfdf;box-shadow:none;color:#58585b;cursor:pointer;display:block;height:auto;margin:0;padding:10px;position:relative;text-align:center}.cui .dropzone:focus{box-shadow:inset 0 0 0 2px rgba(1,124,173,.25);outline:none}.cui .dropzone:hover,.dropzone.dropzone-drag-hover{border-color:#049fd9}.cui .dropzone.dropzone--loose{padding:20px}.cui .dropzone.dropzone--compressed{padding:5px}.cui .dropzone:hover .file-drop__icon,.dropzone.dropzone-drag-hover .file-drop__icon{color:#049fd9}.cui .dropzone .dropzone-message .file-drop__icon{font-size:2rem}.cui .dropzone .dropzone-previews .file-drop__filecnt{color:#9e9ea2;margin-top:1.3125rem;text-align:left}.cui .dropzone .file-drop__card{margin-bottom:.625rem}.cui .form-group--error .dropzone{border-color:#e2231a;padding-right:40px}";
     styleInject(css_248z$8);
 
     var FileCard = function (_a) {
         var file = _a.file, i = _a.i, removeFile = _a.removeFile, inline = _a.inline;
-        return (React__default['default'].createElement("div", { className: "file-drop__card col-lg-4 col-md-6 col-sm-6", key: i + "-" + file.name },
-            React__default['default'].createElement("div", { className: "panel panel--bordered hover-emboss--small", onClick: function (e) { return e.stopPropagation(); } }, inline ? (React__default['default'].createElement("div", { className: "panel__body flex flex-row" },
-                React__default['default'].createElement("div", { className: "text-left flex-fill", style: { maxWidth: "calc(100% - 20px)" } },
-                    React__default['default'].createElement("div", { className: "text-ellipsis" }, file.name),
-                    React__default['default'].createElement("small", { style: { whiteSpace: "nowrap" } }, bytes_1.format(file.size, { unitSeparator: " " }))),
-                React__default['default'].createElement("a", { className: "link pull-right", onClick: function () { return removeFile(i); } },
-                    React__default['default'].createElement("span", { className: "icon-close", title: "Remove the file." })))) : (React__default['default'].createElement("div", { className: "panel__body" },
-                React__default['default'].createElement("a", { className: "link pull-right", style: { marginRight: "5px" }, onClick: function () { return removeFile(i); } },
-                    React__default['default'].createElement("span", { className: "icon-close", title: "Remove the file." })),
-                React__default['default'].createElement("div", { className: "text-ellipsis half-margin-bottom" }, file.name),
-                React__default['default'].createElement("span", { className: "file-icon text-muted icon-file-o qtr-margin-right" }),
-                React__default['default'].createElement("small", null, bytes_1.format(file.size, { unitSeparator: " " })))))));
+        return (React__default["default"].createElement("div", { className: "file-drop__card col-lg-4 col-md-6 col-sm-6", key: "".concat(i, "-").concat(file.name) },
+            React__default["default"].createElement("div", { className: "panel panel--bordered hover-emboss--small", onClick: function (e) { return e.stopPropagation(); } }, inline ? (React__default["default"].createElement("div", { className: "panel__body flex flex-row" },
+                React__default["default"].createElement("div", { className: "text-left flex-fill", style: { maxWidth: "calc(100% - 20px)" } },
+                    React__default["default"].createElement("div", { className: "text-ellipsis" }, file.name),
+                    React__default["default"].createElement("small", { style: { whiteSpace: "nowrap" } }, bytes_1.format(file.size, { unitSeparator: " " }))),
+                React__default["default"].createElement("a", { className: "link pull-right", onClick: function () { return removeFile(i); } },
+                    React__default["default"].createElement("span", { className: "icon-close", title: "Remove the file." })))) : (React__default["default"].createElement("div", { className: "panel__body" },
+                React__default["default"].createElement("a", { className: "link pull-right", style: { marginRight: "5px" }, onClick: function () { return removeFile(i); } },
+                    React__default["default"].createElement("span", { className: "icon-close", title: "Remove the file." })),
+                React__default["default"].createElement("div", { className: "text-ellipsis half-margin-bottom" }, file.name),
+                React__default["default"].createElement("span", { className: "file-icon text-muted icon-file-o qtr-margin-right" }),
+                React__default["default"].createElement("small", null, bytes_1.format(file.size, { unitSeparator: " " })))))));
     };
     var DropzoneMessage = function (_a) {
         var inline = _a.inline, accept = _a.accept, maxFileSize = _a.maxFileSize;
         if (inline) {
-            return (React__default['default'].createElement("div", { className: "dropzone-message flex flex-row flex-center-vertical" },
-                React__default['default'].createElement("h5", { className: "text-muted text-left flex-fill no-margin" }, "Click Here or Drop Files to Upload"),
-                accept && (React__default['default'].createElement("span", { className: "text-muted text-small half-margin-right" },
+            return (React__default["default"].createElement("div", { className: "dropzone-message flex flex-row flex-center-vertical" },
+                React__default["default"].createElement("h5", { className: "text-muted text-left flex-fill no-margin" }, "Click Here or Drop Files to Upload"),
+                accept && (React__default["default"].createElement("span", { className: "text-muted text-small half-margin-right" },
                     "Allowed files: ",
                     typeof accept === "string" ? accept.split(",").join(", ") : accept)),
-                React__default['default'].createElement("span", { className: "file-drop__icon icon-upload" })));
+                React__default["default"].createElement("span", { className: "file-drop__icon icon-upload" })));
         }
-        return (React__default['default'].createElement("div", { className: "dropzone-message" },
-            React__default['default'].createElement("span", { className: "file-drop__icon icon-upload" }),
-            React__default['default'].createElement("h4", { className: "text-muted" }, "Click Here or Drop Files to Upload"),
-            accept && (React__default['default'].createElement("div", { className: "text-muted" },
+        return (React__default["default"].createElement("div", { className: "dropzone-message" },
+            React__default["default"].createElement("span", { className: "file-drop__icon icon-upload" }),
+            React__default["default"].createElement("h4", { className: "text-muted" }, "Click Here or Drop Files to Upload"),
+            accept && (React__default["default"].createElement("div", { className: "text-muted" },
                 "Allowed files: ",
                 accept.split(",").join(", "))),
-            maxFileSize && (React__default['default'].createElement("div", { className: "text-muted" },
+            maxFileSize && (React__default["default"].createElement("div", { className: "text-muted" },
                 "Max file size: ",
                 bytes_1.format(maxFileSize, { unitSeparator: " " })))));
     };
@@ -1981,16 +2096,15 @@
         if (!Array.isArray(files) || !files.length) {
             return null;
         }
-        return (React__default['default'].createElement("div", { className: "dropzone-previews" },
-            React__default['default'].createElement("div", { className: "file-drop__container container--fluid" },
-                React__default['default'].createElement("div", { className: "row" }, files.map(function (file, i) { return (React__default['default'].createElement(FileCard, { key: i, file: file, i: i, inline: inline, removeFile: removeFile })); }))),
-            showTotalSelected ? (React__default['default'].createElement("div", { className: "file-drop__filecnt" },
+        return (React__default["default"].createElement("div", { className: "dropzone-previews" },
+            React__default["default"].createElement("div", { className: "file-drop__container container--fluid" },
+                React__default["default"].createElement("div", { className: "row" }, files.map(function (file, i) { return (React__default["default"].createElement(FileCard, { key: i, file: file, i: i, inline: inline, removeFile: removeFile })); }))),
+            showTotalSelected ? (React__default["default"].createElement("div", { className: "file-drop__filecnt" },
                 files.length,
                 " selected")) : null));
     };
     var Dropzone = function (_a) {
-        var error = _a.error, loose = _a.loose, compressed = _a.compressed, inline = _a.inline, label = _a.label, name = _a.name, initialValue = _a.value, customMaxFileSize = _a.maxFileSize, maxFiles = _a.maxFiles, onChange = _a.onChange, showTotalSelected = _a.showTotalSelected, props = __rest(_a, ["error", "loose", "compressed", "inline", "label", "name", "value", "maxFileSize", "maxFiles", "onChange", "showTotalSelected"]);
-        var _b = React.useState(undefined), value = _b[0], setValue = _b[1];
+        var error = _a.error, loose = _a.loose, compressed = _a.compressed, inline = _a.inline, label = _a.label, name = _a.name, value = _a.value, customMaxFileSize = _a.maxFileSize, maxFiles = _a.maxFiles, onChange = _a.onChange, showTotalSelected = _a.showTotalSelected, props = __rest(_a, ["error", "loose", "compressed", "inline", "label", "name", "value", "maxFileSize", "maxFiles", "onChange", "showTotalSelected"]);
         var maxFileSize = React.useMemo(function () {
             if (customMaxFileSize) {
                 return bytes_1.parse(customMaxFileSize);
@@ -2005,124 +2119,118 @@
                 tmp = "dropzone--loose";
             if (compressed)
                 tmp = "dropzone--compressed";
-            if (inline && Array.isArray(initialValue) && initialValue.length) {
+            if (inline && Array.isArray(value) && value.length) {
                 switch (tmp) {
                     case "dropzone--loose":
-                        tmp = tmp + " half-padding-bottom";
+                        tmp = "".concat(tmp, " half-padding-bottom");
                         break;
                     case "dropzone--compressed":
-                        tmp = tmp + " no-padding-bottom";
+                        tmp = "".concat(tmp, " no-padding-bottom");
                         break;
                     default:
-                        tmp = tmp + " qtr-padding-bottom";
+                        tmp = "".concat(tmp, " qtr-padding-bottom");
                         break;
                 }
             }
             return tmp;
-        }, [loose, compressed, initialValue, inline]);
+        }, [loose, compressed, value, inline]);
         var handleDrop = React.useCallback(function (filesToUpload) {
             if (maxFileSize)
                 filesToUpload = filesToUpload.filter(function (file) { return file.size <= maxFileSize; });
             if (maxFiles && filesToUpload.length > maxFiles)
                 filesToUpload = filesToUpload.slice(0, maxFiles);
-            setValue(filesToUpload);
-        }, [maxFileSize, maxFiles]);
-        var removeFile = React.useCallback(function (toRemove) {
-            setValue(function (curr) {
-                return Array.isArray(curr) ? curr.filter(function (_, idx) { return toRemove !== idx; }) : curr;
-            });
-        }, []);
-        React.useEffect(function () {
-            if (typeof onChange === "function")
-                onChange(value);
-        }, [value]);
-        return (React__default['default'].createElement("div", { className: "form-group" + appendClass(error, "form-group--error") },
-            React__default['default'].createElement("div", { className: "form-group__text" },
-                label ? React__default['default'].createElement("label", { htmlFor: name }, label) : null,
-                React__default['default'].createElement(Dropzone$1, __assign({}, props, { onDrop: handleDrop, maxSize: maxFileSize }), function (_a) {
+            onChange(filesToUpload);
+        }, [maxFileSize, maxFiles, onChange]);
+        var removeFile = function (toRemove) {
+            onChange(Array.isArray(value) ? value.filter(function (_, idx) { return toRemove !== idx; }) : value);
+        };
+        return (React__default["default"].createElement("div", { className: "form-group".concat(appendClass(error, "form-group--error")) },
+            React__default["default"].createElement("div", { className: "form-group__text" },
+                label ? React__default["default"].createElement("label", { htmlFor: name }, label) : null,
+                React__default["default"].createElement(ReactDropzone, __assign({}, props, { onDrop: handleDrop, maxSize: maxFileSize }), function (_a) {
                     var getRootProps = _a.getRootProps, getInputProps = _a.getInputProps;
-                    return (React__default['default'].createElement("div", __assign({ className: "dropzone " + padding }, getRootProps()),
-                        React__default['default'].createElement("input", __assign({}, getInputProps())),
-                        React__default['default'].createElement(DropzoneFiles, { files: value, showTotalSelected: showTotalSelected, inline: inline, removeFile: removeFile }),
-                        Array.isArray(value) && value.length ? null : (React__default['default'].createElement(DropzoneMessage, { maxFileSize: maxFileSize, inline: inline, accept: props.accept }))));
+                    return (React__default["default"].createElement("div", __assign({ className: "dropzone ".concat(padding) }, getRootProps()),
+                        React__default["default"].createElement("input", __assign({}, getInputProps())),
+                        React__default["default"].createElement(DropzoneFiles, { files: value, showTotalSelected: showTotalSelected, inline: inline, removeFile: removeFile }),
+                        Array.isArray(value) && value.length ? null : (React__default["default"].createElement(DropzoneMessage, { maxFileSize: maxFileSize, inline: inline, accept: props.accept }))));
                 })),
-            error ? (React__default['default'].createElement("div", { className: "help-block text-danger", role: "alert" },
-                React__default['default'].createElement("span", null, error))) : null));
+            error ? (React__default["default"].createElement("div", { className: "help-block text-danger", role: "alert" },
+                React__default["default"].createElement("span", null, error))) : null));
     };
 
     var Spinner = function (_a) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.text, text = _c === void 0 ? null : _c;
-        return (React__default['default'].createElement("div", { className: "flex-center flex-middle", style: { flex: 1 } },
-            React__default['default'].createElement("div", null,
-                React__default['default'].createElement("div", { className: "loader" + (size !== "default" ? " loader--" + size : "") + " flex-center" },
-                    React__default['default'].createElement("div", { className: "wrapper flex flex-center" },
-                        React__default['default'].createElement("div", { className: "wheel" }))),
-                !text ? null : (React__default['default'].createElement("div", { className: "base-margin-top text-center" }, text || "Loading...")))));
+        return (React__default["default"].createElement("div", { className: "flex-center flex-middle", style: { flex: 1 } },
+            React__default["default"].createElement("div", null,
+                React__default["default"].createElement("div", { className: "loader".concat(size !== "default" ? " loader--".concat(size) : "", " flex-center") },
+                    React__default["default"].createElement("div", { className: "wrapper flex flex-center" },
+                        React__default["default"].createElement("div", { className: "wheel" }))),
+                !text ? null : (React__default["default"].createElement("div", { className: "base-margin-top text-center" }, text || "Loading...")))));
     };
     var Dots = function (_a) {
         var _b = _a.color, color = _b === void 0 ? "primary" : _b;
-        return (React__default['default'].createElement("div", { className: "loading-dots" + (color !== "primary" ? " loading-dots--" + color : "") },
-            React__default['default'].createElement("span", null),
-            React__default['default'].createElement("span", null),
-            React__default['default'].createElement("span", null)));
+        return (React__default["default"].createElement("div", { className: "loading-dots".concat(color !== "primary" ? " loading-dots--".concat(color) : "") },
+            React__default["default"].createElement("span", null),
+            React__default["default"].createElement("span", null),
+            React__default["default"].createElement("span", null)));
     };
 
     var Progressbar = function (_a) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.withLabel, withLabel = _c === void 0 ? false : _c, _d = _a.label, label = _d === void 0 ? null : _d, _e = _a.color, color = _e === void 0 ? null : _e, _f = _a.className, className = _f === void 0 ? null : _f, percentage = _a.percentage, props = __rest(_a, ["size", "withLabel", "label", "color", "className", "percentage"]);
-        return (React__default['default'].createElement("div", __assign({ className: "progressbar" + appendClass(size !== "default", "progressbar--" + size) + appendClass(color, "progressbar--" + color) + appendClass(className), "data-percentage": percentage }, props),
-            React__default['default'].createElement("div", { className: "progressbar__fill" }),
-            React__default['default'].createElement(DisplayIf, { condition: withLabel }, label ? (React__default['default'].createElement("div", { className: "progressbar__label" }, label)) : (React__default['default'].createElement("div", { className: "progressbar__label" }, percentage + "%")))));
+        return (React__default["default"].createElement("div", __assign({ className: "progressbar".concat(appendClass(size !== "default", "progressbar--".concat(size))).concat(appendClass(color, "progressbar--".concat(color))).concat(appendClass(className)), "data-percentage": percentage }, props),
+            React__default["default"].createElement("div", { className: "progressbar__fill" }),
+            React__default["default"].createElement(DisplayIf, { condition: withLabel }, label ? (React__default["default"].createElement("div", { className: "progressbar__label" }, label)) : (React__default["default"].createElement("div", { className: "progressbar__label" }, "".concat(percentage, "%"))))));
     };
 
-    var css_248z$7 = ".cui .btn.btn--light{border:1px solid transparent;background:var(--cui-background-alt);color:var(--cui-inactive-color);transition:all .15s ease-in}.cui .btn.btn--light.hover,.cui .btn.btn--light:hover{color:var(--cui-active-color);text-decoration:none;box-shadow:inset 0 0 0 1px var(--cui-accent-color);transition:all .15s ease-in}.cui .btn.btn--light.focus,.cui .btn.btn--light:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity)),inset 0 0 0 1px var(--cui-accent-color);opacity:1;outline:var(--cui-focus-thickness) transparent;outline-offset:1px;outline-width:thin;outline-style:none}.cui .btn.btn--light.disabled,.cui .btn.btn--light[disabled]{background-color:transparent;border:1px dotted var(--cui-inactive-color);color:var(--cui-inactive-color);opacity:1}.cui .btn.btn--light.active,.cui .btn.btn--light.selected,.cui .btn.btn--light:active{background-color:var(--cui-accent-color);box-shadow:inset 0 0 0 1px var(--cui-accent-color);color:var(--cui-color-dark);-webkit-transition:all .25s ease;transition:all .25s ease}.cui .btn-group>.btn.btn--light:active,.cui .btn-group>.btn.btn--light:focus,.cui .btn-group>.btn.btn--light:hover,.cui .btn-group>.dropdown>.btn.btn--light:active,.cui .btn-group>.dropdown>.btn.btn--light:focus,.cui .btn-group>.dropdown>.btn.btn--light:hover{outline:0;box-shadow:inset 0 0 0 1px var(--cui-accent-color)}";
+    var css_248z$7 = ".cui .btn.btn--light{background:var(--cui-background-alt);border:1px solid transparent;color:var(--cui-inactive-color);transition:all .15s ease-in}.cui .btn.btn--light.hover,.cui .btn.btn--light:hover{box-shadow:inset 0 0 0 1px var(--cui-accent-color);color:var(--cui-active-color);text-decoration:none;transition:all .15s ease-in}.cui .btn.btn--light.focus,.cui .btn.btn--light:focus{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity)),inset 0 0 0 1px var(--cui-accent-color);opacity:1;outline:var(--cui-focus-thickness) transparent;outline-offset:1px;outline-style:none;outline-width:thin}.cui .btn.btn--light.disabled,.cui .btn.btn--light[disabled]{background-color:transparent;border:1px dotted var(--cui-inactive-color);color:var(--cui-inactive-color);opacity:1}.cui .btn.btn--light.active,.cui .btn.btn--light.selected,.cui .btn.btn--light:active{background-color:var(--cui-accent-color);box-shadow:inset 0 0 0 1px var(--cui-accent-color);color:var(--cui-color-dark);-webkit-transition:all .25s ease;transition:all .25s ease}.cui .btn-group>.btn.btn--light:active,.cui .btn-group>.btn.btn--light:focus,.cui .btn-group>.btn.btn--light:hover,.cui .btn-group>.dropdown>.btn.btn--light:active,.cui .btn-group>.dropdown>.btn.btn--light:focus,.cui .btn-group>.dropdown>.btn.btn--light:hover{box-shadow:inset 0 0 0 1px var(--cui-accent-color);outline:0}";
     styleInject(css_248z$7);
 
     var Button$1 = function (_a) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.color, color = _c === void 0 ? "primary" : _c, _d = _a.wide, wide = _d === void 0 ? false : _d, _e = _a.justified, justified = _e === void 0 ? false : _e, _f = _a.circle, circle = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? null : _g, _h = _a.asLink, asLink = _h === void 0 ? false : _h, _j = _a.style, style = _j === void 0 ? null : _j, _k = _a.selected, selected = _k === void 0 ? false : _k, _l = _a.type, type = _l === void 0 ? null : _l, _m = _a.icon, icon = _m === void 0 ? false : _m, props = __rest(_a, ["size", "color", "wide", "justified", "circle", "className", "asLink", "style", "selected", "type", "icon"]);
-        return React__default['default'].createElement(asLink ? "a" : "button", __assign(__assign({ className: "btn" + appendClass(size !== "default", "btn--" + size) + " btn--" + color + appendClass(wide, "btn--wide") + appendClass(justified, "btn--justified") + appendClass(icon, "btn--icon") + appendClass(circle, "btn--circle") + appendClass(selected, "selected") + appendClass(className) + appendClass(asLink, "flex-middle flex-center"), style: __assign(__assign({}, (style || {})), (asLink ? { display: "flex" } : {})) }, (asLink ? {} : { type: type || "button" })), props));
+        return React__default["default"].createElement(asLink ? "a" : "button", __assign(__assign({ className: "btn".concat(appendClass(size !== "default", "btn--".concat(size)), " btn--").concat(color).concat(appendClass(wide, "btn--wide")).concat(appendClass(justified, "btn--justified")).concat(appendClass(icon, "btn--icon")).concat(appendClass(circle, "btn--circle")).concat(appendClass(selected, "selected")).concat(appendClass(className)).concat(appendClass(asLink, "flex-middle flex-center")), style: __assign(__assign({}, (style || {})), (asLink ? { display: "flex" } : {})) }, (asLink ? {} : { type: type || "button" })), props));
     };
-    Button$1.Primary = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "primary" })); };
-    Button$1.Secondary = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "secondary" })); };
-    Button$1.Success = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "success" })); };
-    Button$1.Dark = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "dark" })); };
-    Button$1.Ghost = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "ghost" })); };
-    Button$1.Link = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "link" })); };
-    Button$1.Light = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "light" })); };
-    Button$1.Danger = function (props) { return React__default['default'].createElement(Button$1, __assign({}, props, { color: "danger" })); };
+    Button$1.Primary = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "primary" })); };
+    Button$1.Secondary = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "secondary" })); };
+    Button$1.Success = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "success" })); };
+    Button$1.Dark = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "dark" })); };
+    Button$1.Ghost = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "ghost" })); };
+    Button$1.Link = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "link" })); };
+    Button$1.Light = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "light" })); };
+    Button$1.Danger = function (props) { return React__default["default"].createElement(Button$1, __assign({}, props, { color: "danger" })); };
     var ButtonGroup = function (_a) {
         var _b = _a.square, square = _b === void 0 ? false : _b, _c = _a.withDivider, withDivider = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, props = __rest(_a, ["square", "withDivider", "className"]);
-        return (React__default['default'].createElement("div", __assign({ className: "btn-group" + appendClass(square, "btn-group--square") + appendClass(withDivider, " btn-group--divider") + appendClass(className) }, props)));
+        return (React__default["default"].createElement("div", __assign({ className: "btn-group".concat(appendClass(square, "btn-group--square")).concat(appendClass(withDivider, " btn-group--divider")).concat(appendClass(className)) }, props)));
     };
 
     var Label = function (_a) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.color, color = _c === void 0 ? "primary" : _c, _d = _a.bordered, bordered = _d === void 0 ? false : _d, _e = _a.removable, removable = _e === void 0 ? false : _e, _f = _a.onRemove, onRemove = _f === void 0 ? null : _f, _g = _a.raised, raised = _g === void 0 ? false : _g, _h = _a.className, className = _h === void 0 ? null : _h, children = _a.children, props = __rest(_a, ["size", "color", "bordered", "removable", "onRemove", "raised", "className", "children"]);
-        return (React__default['default'].createElement("span", __assign({ className: "label label--" + color + appendClass(size !== "default", "label--" + size) + appendClass(bordered, "label--bordered") + appendClass(raised, "label--raised") + appendClass(className) }, props),
+        return (React__default["default"].createElement("span", __assign({ className: "label label--".concat(color).concat(appendClass(size !== "default", "label--".concat(size))).concat(appendClass(bordered, "label--bordered")).concat(appendClass(raised, "label--raised")).concat(appendClass(className)) }, props),
             children,
-            removable ? React__default['default'].createElement("span", { className: "icon-close", onClick: onRemove }) : null));
+            removable ? React__default["default"].createElement("span", { className: "icon-close", onClick: onRemove }) : null));
     };
-    Label.Primary = function (props) { return React__default['default'].createElement(Label, __assign({ color: "primary" }, props)); };
-    Label.Secondary = function (props) { return React__default['default'].createElement(Label, __assign({ color: "secondary" }, props)); };
-    Label.Tertiary = function (props) { return React__default['default'].createElement(Label, __assign({ color: "tertiary" }, props)); };
-    Label.Success = function (props) { return React__default['default'].createElement(Label, __assign({ color: "success" }, props)); };
-    Label.Info = function (props) { return React__default['default'].createElement(Label, __assign({ color: "info" }, props)); };
-    Label.WarningAlt = function (props) { return React__default['default'].createElement(Label, __assign({ color: "warning-alt" }, props)); };
-    Label.Warning = function (props) { return React__default['default'].createElement(Label, __assign({ color: "warning" }, props)); };
-    Label.Danger = function (props) { return React__default['default'].createElement(Label, __assign({ color: "danger" }, props)); };
-    Label.Dark = function (props) { return React__default['default'].createElement(Label, __assign({ color: "dark" }, props)); };
-    Label.Light = function (props) { return React__default['default'].createElement(Label, __assign({ color: "light" }, props)); };
+    Label.Primary = function (props) { return React__default["default"].createElement(Label, __assign({ color: "primary" }, props)); };
+    Label.Secondary = function (props) { return React__default["default"].createElement(Label, __assign({ color: "secondary" }, props)); };
+    Label.Tertiary = function (props) { return React__default["default"].createElement(Label, __assign({ color: "tertiary" }, props)); };
+    Label.Success = function (props) { return React__default["default"].createElement(Label, __assign({ color: "success" }, props)); };
+    Label.Info = function (props) { return React__default["default"].createElement(Label, __assign({ color: "info" }, props)); };
+    Label.WarningAlt = function (props) { return React__default["default"].createElement(Label, __assign({ color: "warning-alt" }, props)); };
+    Label.Warning = function (props) { return React__default["default"].createElement(Label, __assign({ color: "warning" }, props)); };
+    Label.Danger = function (props) { return React__default["default"].createElement(Label, __assign({ color: "danger" }, props)); };
+    Label.Dark = function (props) { return React__default["default"].createElement(Label, __assign({ color: "dark" }, props)); };
+    Label.Light = function (props) { return React__default["default"].createElement(Label, __assign({ color: "light" }, props)); };
 
     var css_248z$6 = ".cui .panel.panel--lightest{background-color:var(--cui-background-alt);color:var(--cui-inactive-color)}";
     styleInject(css_248z$6);
 
-    var Panel = React__default['default'].forwardRef(function (_a, ref) {
+    var Panel = React__default["default"].forwardRef(function (_a, ref) {
         var _b = _a.color, color = _b === void 0 ? "plain" : _b, _c = _a.padding, padding = _c === void 0 ? "default" : _c, _d = _a.bordered, bordered = _d === void 0 ? false : _d, _e = _a.raised, raised = _e === void 0 ? false : _e, _f = _a.well, well = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? null : _g, props = __rest(_a, ["color", "padding", "bordered", "raised", "well", "className"]);
-        return (React__default['default'].createElement("div", __assign({ className: "panel" + appendClass(color !== "plain", "panel--" + color) + appendClass(padding !== "default", "panel--" + padding) + appendClass(bordered, function () {
+        return (React__default["default"].createElement("div", __assign({ className: "panel".concat(appendClass(color !== "plain", "panel--".concat(color))).concat(appendClass(padding !== "default", "panel--".concat(padding))).concat(appendClass(bordered, function () {
                 if (typeof bordered === "string")
-                    return "panel--bordered-" + bordered;
+                    return "panel--bordered-".concat(bordered);
                 if (Array.isArray(bordered))
-                    return bordered.map(function (b) { return "panel--bordered-" + b; }).join(" ");
+                    return bordered.map(function (b) { return "panel--bordered-".concat(b); }).join(" ");
                 return "panel--bordered";
-            }) + appendClass(raised, "panel--raised") + appendClass(well, "panel--well") + appendClass(className), ref: ref }, props)));
+            })).concat(appendClass(raised, "panel--raised")).concat(appendClass(well, "panel--well")).concat(appendClass(className)), ref: ref }, props)));
     });
 
     function toVal(mix) {
@@ -2343,7 +2451,7 @@
           collapse ? collapseToast(node, done, collapseDuration) : done();
         }
 
-        return React__default['default'].createElement(React__default['default'].Fragment, null, children);
+        return React__default["default"].createElement(React__default["default"].Fragment, null, children);
       };
     }
 
@@ -3426,7 +3534,7 @@
       }
     });
 
-    var css_248z$5 = ".Toastify__toast-container{z-index:9999;-webkit-transform:translateZ(9999px);position:fixed;padding:4px;width:320px;box-sizing:border-box;color:#fff}.Toastify__toast-container--top-left{top:1em;left:1em}.Toastify__toast-container--top-center{top:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--top-right{top:1em;right:1em}.Toastify__toast-container--bottom-left{bottom:1em;left:1em}.Toastify__toast-container--bottom-center{bottom:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--bottom-right{bottom:1em;right:1em}@media only screen and (max-width:480px){.Toastify__toast-container{width:100vw;padding:0;left:0;margin:0}.Toastify__toast-container--top-center,.Toastify__toast-container--top-left,.Toastify__toast-container--top-right{top:0;transform:translateX(0)}.Toastify__toast-container--bottom-center,.Toastify__toast-container--bottom-left,.Toastify__toast-container--bottom-right{bottom:0;transform:translateX(0)}.Toastify__toast-container--rtl{right:0;left:auto}}.Toastify__toast{position:relative;min-height:64px;box-sizing:border-box;margin-bottom:1rem;padding:8px;border-radius:4px;box-shadow:0 1px 10px 0 rgba(0,0,0,.1),0 2px 15px 0 rgba(0,0,0,.05);display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between;max-height:800px;overflow:hidden;font-family:sans-serif;cursor:pointer;direction:ltr}.Toastify__toast--rtl{direction:rtl}.Toastify__toast--dark{background:#121212;color:#fff}.Toastify__toast--default{background:#fff;color:#aaa}.Toastify__toast--info{background:#3498db}.Toastify__toast--success{background:#07bc0c}.Toastify__toast--warning{background:#f1c40f}.Toastify__toast--error{background:#e74c3c}.Toastify__toast-body{margin:auto 0;-ms-flex:1 1 auto;flex:1 1 auto;padding:6px}.Toastify--animate{animation-fill-mode:both;animation-duration:.7s}@media only screen and (max-width:480px){.Toastify__toast{margin-bottom:0;border-radius:0}}.Toastify__close-button{color:#fff;background:transparent;outline:none;border:none;padding:0;cursor:pointer;opacity:.7;transition:.3s ease;-ms-flex-item-align:start;align-self:flex-start}.Toastify__close-button--default{color:#000;opacity:.3}.Toastify__close-button>svg{fill:currentColor;height:16px;width:14px}.Toastify__close-button:focus,.Toastify__close-button:hover{opacity:1}@keyframes Toastify__trackProgress{0%{transform:scaleX(1)}to{transform:scaleX(0)}}.Toastify__progress-bar{position:absolute;bottom:0;left:0;width:100%;height:5px;z-index:9999;opacity:.7;background-color:hsla(0,0%,100%,.7);transform-origin:left}.Toastify__progress-bar--animated{animation:Toastify__trackProgress linear 1 forwards}.Toastify__progress-bar--controlled{transition:transform .2s}.Toastify__progress-bar--rtl{right:0;left:auto;transform-origin:right}.Toastify__progress-bar--default{background:linear-gradient(90deg,#4cd964,#5ac8fa,#007aff,#34aadc,#5856d6,#ff2d55)}.Toastify__progress-bar--dark{background:#bb86fc}@keyframes Toastify__bounceInRight{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(3000px,0,0)}60%{opacity:1;transform:translate3d(-25px,0,0)}75%{transform:translate3d(10px,0,0)}90%{transform:translate3d(-5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutRight{20%{opacity:1;transform:translate3d(-20px,0,0)}to{opacity:0;transform:translate3d(2000px,0,0)}}@keyframes Toastify__bounceInLeft{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(-3000px,0,0)}60%{opacity:1;transform:translate3d(25px,0,0)}75%{transform:translate3d(-10px,0,0)}90%{transform:translate3d(5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutLeft{20%{opacity:1;transform:translate3d(20px,0,0)}to{opacity:0;transform:translate3d(-2000px,0,0)}}@keyframes Toastify__bounceInUp{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,3000px,0)}60%{opacity:1;transform:translate3d(0,-20px,0)}75%{transform:translate3d(0,10px,0)}90%{transform:translate3d(0,-5px,0)}to{transform:translateZ(0)}}@keyframes Toastify__bounceOutUp{20%{transform:translate3d(0,-10px,0)}40%,45%{opacity:1;transform:translate3d(0,20px,0)}to{opacity:0;transform:translate3d(0,-2000px,0)}}@keyframes Toastify__bounceInDown{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,-3000px,0)}60%{opacity:1;transform:translate3d(0,25px,0)}75%{transform:translate3d(0,-10px,0)}90%{transform:translate3d(0,5px,0)}to{transform:none}}@keyframes Toastify__bounceOutDown{20%{transform:translate3d(0,10px,0)}40%,45%{opacity:1;transform:translate3d(0,-20px,0)}to{opacity:0;transform:translate3d(0,2000px,0)}}.Toastify__bounce-enter--bottom-left,.Toastify__bounce-enter--top-left{animation-name:Toastify__bounceInLeft}.Toastify__bounce-enter--bottom-right,.Toastify__bounce-enter--top-right{animation-name:Toastify__bounceInRight}.Toastify__bounce-enter--top-center{animation-name:Toastify__bounceInDown}.Toastify__bounce-enter--bottom-center{animation-name:Toastify__bounceInUp}.Toastify__bounce-exit--bottom-left,.Toastify__bounce-exit--top-left{animation-name:Toastify__bounceOutLeft}.Toastify__bounce-exit--bottom-right,.Toastify__bounce-exit--top-right{animation-name:Toastify__bounceOutRight}.Toastify__bounce-exit--top-center{animation-name:Toastify__bounceOutUp}.Toastify__bounce-exit--bottom-center{animation-name:Toastify__bounceOutDown}@keyframes Toastify__zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}@keyframes Toastify__zoomOut{0%{opacity:1}50%{opacity:0;transform:scale3d(.3,.3,.3)}to{opacity:0}}.Toastify__zoom-enter{animation-name:Toastify__zoomIn}.Toastify__zoom-exit{animation-name:Toastify__zoomOut}@keyframes Toastify__flipIn{0%{transform:perspective(400px) rotateX(90deg);animation-timing-function:ease-in;opacity:0}40%{transform:perspective(400px) rotateX(-20deg);animation-timing-function:ease-in}60%{transform:perspective(400px) rotateX(10deg);opacity:1}80%{transform:perspective(400px) rotateX(-5deg)}to{transform:perspective(400px)}}@keyframes Toastify__flipOut{0%{transform:perspective(400px)}30%{transform:perspective(400px) rotateX(-20deg);opacity:1}to{transform:perspective(400px) rotateX(90deg);opacity:0}}.Toastify__flip-enter{animation-name:Toastify__flipIn}.Toastify__flip-exit{animation-name:Toastify__flipOut}@keyframes Toastify__slideInRight{0%{transform:translate3d(110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInLeft{0%{transform:translate3d(-110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInUp{0%{transform:translate3d(0,110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInDown{0%{transform:translate3d(0,-110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideOutRight{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(110%,0,0)}}@keyframes Toastify__slideOutLeft{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(-110%,0,0)}}@keyframes Toastify__slideOutDown{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(0,500px,0)}}@keyframes Toastify__slideOutUp{0%{transform:translateZ(0)}to{visibility:hidden;transform:translate3d(0,-500px,0)}}.Toastify__slide-enter--bottom-left,.Toastify__slide-enter--top-left{animation-name:Toastify__slideInLeft}.Toastify__slide-enter--bottom-right,.Toastify__slide-enter--top-right{animation-name:Toastify__slideInRight}.Toastify__slide-enter--top-center{animation-name:Toastify__slideInDown}.Toastify__slide-enter--bottom-center{animation-name:Toastify__slideInUp}.Toastify__slide-exit--bottom-left,.Toastify__slide-exit--top-left{animation-name:Toastify__slideOutLeft}.Toastify__slide-exit--bottom-right,.Toastify__slide-exit--top-right{animation-name:Toastify__slideOutRight}.Toastify__slide-exit--top-center{animation-name:Toastify__slideOutUp}.Toastify__slide-exit--bottom-center{animation-name:Toastify__slideOutDown}.cui .Toastify__toast{min-height:unset!important;padding:unset;overflow:unset;font-family:unset;box-shadow:var(--cui-shadow-outset-lg)}.cui .Toastify__toast--default,.cui .Toastify__toast-container{color:unset;background:unset}.cui .Toastify__toast-body{padding:0}.cui .Toastify__toast .toast{box-shadow:unset}";
+    var css_248z$5 = ".Toastify__toast-container{box-sizing:border-box;color:#fff;padding:4px;position:fixed;-webkit-transform:translateZ(9999px);width:320px;z-index:9999}.Toastify__toast-container--top-left{left:1em;top:1em}.Toastify__toast-container--top-center{left:50%;top:1em;transform:translateX(-50%)}.Toastify__toast-container--top-right{right:1em;top:1em}.Toastify__toast-container--bottom-left{bottom:1em;left:1em}.Toastify__toast-container--bottom-center{bottom:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--bottom-right{bottom:1em;right:1em}@media only screen and (max-width:480px){.Toastify__toast-container{left:0;margin:0;padding:0;width:100vw}.Toastify__toast-container--top-center,.Toastify__toast-container--top-left,.Toastify__toast-container--top-right{top:0;transform:translateX(0)}.Toastify__toast-container--bottom-center,.Toastify__toast-container--bottom-left,.Toastify__toast-container--bottom-right{bottom:0;transform:translateX(0)}.Toastify__toast-container--rtl{left:auto;right:0}}.Toastify__toast{-ms-flex-pack:justify;border-radius:4px;box-shadow:0 1px 10px 0 rgba(0,0,0,.1),0 2px 15px 0 rgba(0,0,0,.05);box-sizing:border-box;cursor:pointer;direction:ltr;display:-ms-flexbox;display:flex;font-family:sans-serif;justify-content:space-between;margin-bottom:1rem;max-height:800px;min-height:64px;overflow:hidden;padding:8px;position:relative}.Toastify__toast--rtl{direction:rtl}.Toastify__toast--dark{background:#121212;color:#fff}.Toastify__toast--default{background:#fff;color:#aaa}.Toastify__toast--info{background:#3498db}.Toastify__toast--success{background:#07bc0c}.Toastify__toast--warning{background:#f1c40f}.Toastify__toast--error{background:#e74c3c}.Toastify__toast-body{-ms-flex:1 1 auto;flex:1 1 auto;margin:auto 0;padding:6px}.Toastify--animate{animation-duration:.7s;animation-fill-mode:both}@media only screen and (max-width:480px){.Toastify__toast{border-radius:0;margin-bottom:0}}.Toastify__close-button{-ms-flex-item-align:start;align-self:flex-start;background:transparent;border:none;color:#fff;cursor:pointer;opacity:.7;outline:none;padding:0;transition:.3s ease}.Toastify__close-button--default{color:#000;opacity:.3}.Toastify__close-button>svg{fill:currentColor;height:16px;width:14px}.Toastify__close-button:focus,.Toastify__close-button:hover{opacity:1}@keyframes Toastify__trackProgress{0%{transform:scaleX(1)}to{transform:scaleX(0)}}.Toastify__progress-bar{background-color:hsla(0,0%,100%,.7);bottom:0;height:5px;left:0;opacity:.7;position:absolute;transform-origin:left;width:100%;z-index:9999}.Toastify__progress-bar--animated{animation:Toastify__trackProgress linear 1 forwards}.Toastify__progress-bar--controlled{transition:transform .2s}.Toastify__progress-bar--rtl{left:auto;right:0;transform-origin:right}.Toastify__progress-bar--default{background:linear-gradient(90deg,#4cd964,#5ac8fa,#007aff,#34aadc,#5856d6,#ff2d55)}.Toastify__progress-bar--dark{background:#bb86fc}@keyframes Toastify__bounceInRight{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(3000px,0,0)}60%{opacity:1;transform:translate3d(-25px,0,0)}75%{transform:translate3d(10px,0,0)}90%{transform:translate3d(-5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutRight{20%{opacity:1;transform:translate3d(-20px,0,0)}to{opacity:0;transform:translate3d(2000px,0,0)}}@keyframes Toastify__bounceInLeft{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(-3000px,0,0)}60%{opacity:1;transform:translate3d(25px,0,0)}75%{transform:translate3d(-10px,0,0)}90%{transform:translate3d(5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutLeft{20%{opacity:1;transform:translate3d(20px,0,0)}to{opacity:0;transform:translate3d(-2000px,0,0)}}@keyframes Toastify__bounceInUp{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,3000px,0)}60%{opacity:1;transform:translate3d(0,-20px,0)}75%{transform:translate3d(0,10px,0)}90%{transform:translate3d(0,-5px,0)}to{transform:translateZ(0)}}@keyframes Toastify__bounceOutUp{20%{transform:translate3d(0,-10px,0)}40%,45%{opacity:1;transform:translate3d(0,20px,0)}to{opacity:0;transform:translate3d(0,-2000px,0)}}@keyframes Toastify__bounceInDown{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,-3000px,0)}60%{opacity:1;transform:translate3d(0,25px,0)}75%{transform:translate3d(0,-10px,0)}90%{transform:translate3d(0,5px,0)}to{transform:none}}@keyframes Toastify__bounceOutDown{20%{transform:translate3d(0,10px,0)}40%,45%{opacity:1;transform:translate3d(0,-20px,0)}to{opacity:0;transform:translate3d(0,2000px,0)}}.Toastify__bounce-enter--bottom-left,.Toastify__bounce-enter--top-left{animation-name:Toastify__bounceInLeft}.Toastify__bounce-enter--bottom-right,.Toastify__bounce-enter--top-right{animation-name:Toastify__bounceInRight}.Toastify__bounce-enter--top-center{animation-name:Toastify__bounceInDown}.Toastify__bounce-enter--bottom-center{animation-name:Toastify__bounceInUp}.Toastify__bounce-exit--bottom-left,.Toastify__bounce-exit--top-left{animation-name:Toastify__bounceOutLeft}.Toastify__bounce-exit--bottom-right,.Toastify__bounce-exit--top-right{animation-name:Toastify__bounceOutRight}.Toastify__bounce-exit--top-center{animation-name:Toastify__bounceOutUp}.Toastify__bounce-exit--bottom-center{animation-name:Toastify__bounceOutDown}@keyframes Toastify__zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}@keyframes Toastify__zoomOut{0%{opacity:1}50%{opacity:0;transform:scale3d(.3,.3,.3)}to{opacity:0}}.Toastify__zoom-enter{animation-name:Toastify__zoomIn}.Toastify__zoom-exit{animation-name:Toastify__zoomOut}@keyframes Toastify__flipIn{0%{animation-timing-function:ease-in;opacity:0;transform:perspective(400px) rotateX(90deg)}40%{animation-timing-function:ease-in;transform:perspective(400px) rotateX(-20deg)}60%{opacity:1;transform:perspective(400px) rotateX(10deg)}80%{transform:perspective(400px) rotateX(-5deg)}to{transform:perspective(400px)}}@keyframes Toastify__flipOut{0%{transform:perspective(400px)}30%{opacity:1;transform:perspective(400px) rotateX(-20deg)}to{opacity:0;transform:perspective(400px) rotateX(90deg)}}.Toastify__flip-enter{animation-name:Toastify__flipIn}.Toastify__flip-exit{animation-name:Toastify__flipOut}@keyframes Toastify__slideInRight{0%{transform:translate3d(110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInLeft{0%{transform:translate3d(-110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInUp{0%{transform:translate3d(0,110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInDown{0%{transform:translate3d(0,-110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideOutRight{0%{transform:translateZ(0)}to{transform:translate3d(110%,0,0);visibility:hidden}}@keyframes Toastify__slideOutLeft{0%{transform:translateZ(0)}to{transform:translate3d(-110%,0,0);visibility:hidden}}@keyframes Toastify__slideOutDown{0%{transform:translateZ(0)}to{transform:translate3d(0,500px,0);visibility:hidden}}@keyframes Toastify__slideOutUp{0%{transform:translateZ(0)}to{transform:translate3d(0,-500px,0);visibility:hidden}}.Toastify__slide-enter--bottom-left,.Toastify__slide-enter--top-left{animation-name:Toastify__slideInLeft}.Toastify__slide-enter--bottom-right,.Toastify__slide-enter--top-right{animation-name:Toastify__slideInRight}.Toastify__slide-enter--top-center{animation-name:Toastify__slideInDown}.Toastify__slide-enter--bottom-center{animation-name:Toastify__slideInUp}.Toastify__slide-exit--bottom-left,.Toastify__slide-exit--top-left{animation-name:Toastify__slideOutLeft}.Toastify__slide-exit--bottom-right,.Toastify__slide-exit--top-right{animation-name:Toastify__slideOutRight}.Toastify__slide-exit--top-center{animation-name:Toastify__slideOutUp}.Toastify__slide-exit--bottom-center{animation-name:Toastify__slideOutDown}.cui .Toastify__toast{box-shadow:var(--cui-shadow-outset-lg);font-family:unset;min-height:unset!important;overflow:unset;padding:unset}.cui .Toastify__toast--default,.cui .Toastify__toast-container{background:unset;color:unset}.cui .Toastify__toast-body{padding:0}.cui .Toastify__toast .toast{box-shadow:unset}";
     styleInject(css_248z$5);
 
     var copyStringToClipboard = function (str) {
@@ -3464,61 +3572,65 @@
     };
     var ToastIcon = function (_a) {
         var type = _a.type;
-        return React__default['default'].createElement("div", { className: "toast__icon " + (iconType(type) || "") });
+        return React__default["default"].createElement("div", { className: "toast__icon ".concat(iconType(type) || "") });
     };
     var Toast = function (_a) {
         var title = _a.title, message = _a.message, type = _a.type, copyError = _a.copyError;
-        return (React__default['default'].createElement("div", { className: "toast" },
-            React__default['default'].createElement(ToastIcon, { type: type }),
-            React__default['default'].createElement("div", { className: "toast__body" },
-                title ? React__default['default'].createElement("div", { className: "toast__title" }, title) : null,
-                message ? (React__default['default'].createElement("div", { className: "toast__message" },
+        return (React__default["default"].createElement("div", { className: "toast" },
+            React__default["default"].createElement(ToastIcon, { type: type }),
+            React__default["default"].createElement("div", { className: "toast__body" },
+                title ? React__default["default"].createElement("div", { className: "toast__title" }, title) : null,
+                message ? (React__default["default"].createElement("div", { className: "toast__message" },
                     message,
-                    type === "error" && copyError ? (React__default['default'].createElement(React__default['default'].Fragment, null,
-                        React__default['default'].createElement("br", null),
-                        React__default['default'].createElement("br", null),
-                        React__default['default'].createElement("a", { onClick: function () { return copyStringToClipboard(message); } }, "Copy to clipboard"))) : null)) : null)));
+                    type === "error" && copyError ? (React__default["default"].createElement(React__default["default"].Fragment, null,
+                        React__default["default"].createElement("br", null),
+                        React__default["default"].createElement("br", null),
+                        React__default["default"].createElement("a", { onClick: function () {
+                                return typeof message === "string" || typeof message === "number"
+                                    ? void copyStringToClipboard(message)
+                                    : void 0;
+                            } }, "Copy to clipboard"))) : null)) : null)));
     };
     var toast = function (type, title, message, copyError, containerId, args) {
         if (copyError === void 0) { copyError = true; }
         if (containerId === void 0) { containerId = "_GLOBAL_"; }
         if (args === void 0) { args = {}; }
-        return toast$1(React__default['default'].createElement(Toast, __assign({}, { type: type, title: title, message: message, copyError: copyError })), __assign({ containerId: containerId }, args));
+        return toast$1(React__default["default"].createElement(Toast, __assign({}, { type: type, title: title, message: message, copyError: copyError })), __assign({ containerId: containerId }, args));
     };
     toast.success = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return toast.apply(void 0, __spreadArray(["success"], args));
+        return toast.apply(void 0, __spreadArray(["success"], args, false));
     };
     toast.error = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return toast.apply(void 0, __spreadArray(["error"], args));
+        return toast.apply(void 0, __spreadArray(["error"], args, false));
     };
     toast.warning = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return toast.apply(void 0, __spreadArray(["warning"], args));
+        return toast.apply(void 0, __spreadArray(["warning"], args, false));
     };
     toast.info = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return toast.apply(void 0, __spreadArray(["info"], args));
+        return toast.apply(void 0, __spreadArray(["info"], args, false));
     };
     toast.none = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return toast.apply(void 0, __spreadArray(["none"], args));
+        return toast.apply(void 0, __spreadArray(["none"], args, false));
     };
     toast.update = function () {
         var args = [];
@@ -3536,91 +3648,91 @@
     };
     var ToastContainer = function (_a) {
         var _b = _a.position, position = _b === void 0 ? "bottom-right" : _b, _c = _a.autoClose, autoClose = _c === void 0 ? 5000 : _c, _d = _a.draggable, draggable = _d === void 0 ? false : _d, _e = _a.hideProgressBar, hideProgressBar = _e === void 0 ? true : _e, _f = _a.containerId, containerId = _f === void 0 ? "_GLOBAL_" : _f, props = __rest(_a, ["position", "autoClose", "draggable", "hideProgressBar", "containerId"]);
-        return (React__default['default'].createElement(ToastContainer$1, __assign({ transition: Slide, position: position, autoClose: autoClose, draggable: draggable, hideProgressBar: hideProgressBar, containerId: containerId }, props, { closeButton: false, style: {
+        return (React__default["default"].createElement(ToastContainer$1, __assign({ transition: Slide, position: position, autoClose: autoClose, draggable: draggable, hideProgressBar: hideProgressBar, containerId: containerId }, props, { closeButton: false, style: {
                 width: "unset",
             } })));
     };
 
     var Header = function (_a) {
         var children = _a.children, _b = _a.fluid, fluid = _b === void 0 ? false : _b, props = __rest(_a, ["children", "fluid"]);
-        return (React__default['default'].createElement("header", __assign({ className: "header" }, props),
-            React__default['default'].createElement("div", { className: "container" + (fluid ? "-fluid" : "") },
-                React__default['default'].createElement("div", { className: "header-panels" }, children))));
+        return (React__default["default"].createElement("header", __assign({ className: "header" }, props),
+            React__default["default"].createElement("div", { className: "container".concat(fluid ? "-fluid" : "") },
+                React__default["default"].createElement("div", { className: "header-panels" }, children))));
     };
     var HeaderPanel = function (_a) {
         var children = _a.children, _b = _a.center, center = _b === void 0 ? false : _b, _c = _a.right, right = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, props = __rest(_a, ["children", "center", "right", "className"]);
-        return (React__default['default'].createElement("div", __assign({ className: "header-panel" + appendClass(center, "header-panel--center") + appendClass(right, "header-panel--right") + appendClass(className) }, props), children));
+        return (React__default["default"].createElement("div", __assign({ className: "header-panel".concat(appendClass(center, "header-panel--center")).concat(appendClass(right, "header-panel--right")).concat(appendClass(className)) }, props), children));
     };
     var HeaderTitle = function (_a) {
         var _b = _a.icon, icon = _b === void 0 ? true : _b, _c = _a.link, link = _c === void 0 ? null : _c, title = _a.title, props = __rest(_a, ["icon", "link", "title"]);
-        return (React__default['default'].createElement(HeaderPanel, __assign({}, props),
-            icon ? (React__default['default'].createElement("a", { className: "header__logo", href: link || "http://www.cisco.com", target: "_blank", rel: "noopener noreferrer" },
-                React__default['default'].createElement("span", { className: typeof icon === "string" ? "icon-" + icon : "icon-cisco" }))) : null,
-            React__default['default'].createElement("div", { className: "header__title" }, title)));
+        return (React__default["default"].createElement(HeaderPanel, __assign({}, props),
+            icon ? (React__default["default"].createElement("a", { className: "header__logo", href: link || "http://www.cisco.com", target: "_blank", rel: "noopener noreferrer" },
+                React__default["default"].createElement("span", { className: typeof icon === "string" ? "icon-".concat(icon) : "icon-cisco" }))) : null,
+            React__default["default"].createElement("div", { className: "header__title" }, title)));
     };
 
-    var Footer = function () { return (React__default['default'].createElement("footer", { className: "footer" },
-        React__default['default'].createElement("div", { className: "footer__links" },
-            React__default['default'].createElement("ul", { className: "list list--inline" },
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "http://www.cisco.com/cisco/web/siteassets/contacts/index.html", target: "_blank", rel: "noopener noreferrer" }, "Contacts")),
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "https://secure.opinionlab.com/ccc01/o.asp?id=jBjOhqOJ", target: "_blank", rel: "noopener noreferrer" }, "Feedback")),
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "https://www.cisco.com/c/en/us/about/help.html", target: "_blank", rel: "noopener noreferrer" }, "Help")),
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "http://www.cisco.com/c/en/us/about/sitemap.html", target: "_blank", rel: "noopener noreferrer" }, "Site Map")),
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/terms-conditions.html", target: "_blank", rel: "noopener noreferrer" }, "Terms & Conditions")),
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html", target: "_blank", rel: "noopener noreferrer" }, "Privacy Statement")),
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html#cookies", target: "_blank", rel: "noopener noreferrer" }, "Cookie Policy")),
-                React__default['default'].createElement("li", null,
-                    React__default['default'].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/trademarks.html", target: "_blank", rel: "noopener noreferrer" }, "Trademarks")))))); };
+    var Footer = function () { return (React__default["default"].createElement("footer", { className: "footer" },
+        React__default["default"].createElement("div", { className: "footer__links" },
+            React__default["default"].createElement("ul", { className: "list list--inline" },
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "http://www.cisco.com/cisco/web/siteassets/contacts/index.html", target: "_blank", rel: "noopener noreferrer" }, "Contacts")),
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "https://secure.opinionlab.com/ccc01/o.asp?id=jBjOhqOJ", target: "_blank", rel: "noopener noreferrer" }, "Feedback")),
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "https://www.cisco.com/c/en/us/about/help.html", target: "_blank", rel: "noopener noreferrer" }, "Help")),
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "http://www.cisco.com/c/en/us/about/sitemap.html", target: "_blank", rel: "noopener noreferrer" }, "Site Map")),
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/terms-conditions.html", target: "_blank", rel: "noopener noreferrer" }, "Terms & Conditions")),
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html", target: "_blank", rel: "noopener noreferrer" }, "Privacy Statement")),
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html#cookies", target: "_blank", rel: "noopener noreferrer" }, "Cookie Policy")),
+                React__default["default"].createElement("li", null,
+                    React__default["default"].createElement("a", { href: "https://www.cisco.com/c/en/us/about/legal/trademarks.html", target: "_blank", rel: "noopener noreferrer" }, "Trademarks")))))); };
 
-    var Wrapper$1 = React__default['default'].createElement("div", { className: "responsive-table" });
+    var Wrapper$1 = React__default["default"].createElement("div", { className: "responsive-table" });
     var GenericTable = React.forwardRef(function (_a, forwardedRef) {
         var _b = _a.outerWrap, outerWrap = _b === void 0 ? true : _b, _c = _a.lined, lined = _c === void 0 ? false : _c, _d = _a.bordered, bordered = _d === void 0 ? false : _d, _e = _a.striped, striped = _e === void 0 ? false : _e, _f = _a.selectable, selectable = _f === void 0 ? false : _f, _g = _a.fixed, fixed = _g === void 0 ? false : _g, _h = _a.wrapped, wrapped = _h === void 0 ? false : _h, _j = _a.compressed, compressed = _j === void 0 ? false : _j, _k = _a.loose, loose = _k === void 0 ? false : _k, _l = _a.className, className = _l === void 0 ? null : _l, props = __rest(_a, ["outerWrap", "lined", "bordered", "striped", "selectable", "fixed", "wrapped", "compressed", "loose", "className"]);
-        return (React__default['default'].createElement(ConditionalWrapper, { condition: outerWrap, wrapper: Wrapper$1 },
-            React__default['default'].createElement("table", __assign({ className: "table" + appendClass(lined, "table--lined") + appendClass(bordered, "table--bordered") + appendClass(striped, "table--striped") + appendClass(selectable, "table--selectable") + appendClass(fixed, "table--fixed") + appendClass(wrapped, "table--wrapped") + appendClass(compressed, "table--compressed") + appendClass(loose, "table--loose") + appendClass(className) }, props, { ref: forwardedRef }))));
+        return (React__default["default"].createElement(ConditionalWrapper, { condition: outerWrap, wrapper: Wrapper$1 },
+            React__default["default"].createElement("table", __assign({ className: "table".concat(appendClass(lined, "table--lined")).concat(appendClass(bordered, "table--bordered")).concat(appendClass(striped, "table--striped")).concat(appendClass(selectable, "table--selectable")).concat(appendClass(fixed, "table--fixed")).concat(appendClass(wrapped, "table--wrapped")).concat(appendClass(compressed, "table--compressed")).concat(appendClass(loose, "table--loose")).concat(appendClass(className)) }, props, { ref: forwardedRef }))));
     });
 
-    var PaginationContext = React__default['default'].createContext(null);
+    var PaginationContext = React__default["default"].createContext(null);
     var Button = function (_a) {
         var content = _a.content, position = _a.position, _b = _a.active, active = _b === void 0 ? false : _b, _c = _a.disabled, disabled = _c === void 0 ? false : _c;
-        return (React__default['default'].createElement(PaginationContext.Consumer, null, function (_a) {
+        return (React__default["default"].createElement(PaginationContext.Consumer, null, function (_a) {
             var changePage = _a.changePage;
-            return (React__default['default'].createElement("li", { className: active ? "active" : "" },
-                React__default['default'].createElement("a", { className: disabled ? "disabled" : "", onClick: function (e) { return changePage(e, position); } }, content)));
+            return (React__default["default"].createElement("li", { className: active ? "active" : "" },
+                React__default["default"].createElement("a", { className: disabled ? "disabled" : "", onClick: function (e) { return changePage(e, position); } }, content)));
         }));
     };
     var FirstPrev = function () {
-        var _a = React__default['default'].useContext(PaginationContext), perPage = _a.perPage, firstAndLast = _a.firstAndLast, position = _a.position, icons = _a.icons, prev = _a.prev, beginAt = _a.beginAt;
+        var _a = React__default["default"].useContext(PaginationContext), perPage = _a.perPage, firstAndLast = _a.firstAndLast, position = _a.position, icons = _a.icons, prev = _a.prev, beginAt = _a.beginAt;
         var disabled = position < perPage + beginAt;
         var r = [];
         if (icons && firstAndLast)
-            r.push(React__default['default'].createElement(Button, { content: React__default['default'].createElement("span", { className: "icon-chevron-left-double" }), disabled: disabled, key: "first-page", position: beginAt }));
-        r.push(React__default['default'].createElement(Button, { content: icons ? React__default['default'].createElement("span", { className: "icon-chevron-left" }) : prev, disabled: disabled, key: "previous-page", position: position - perPage }));
-        return React__default['default'].createElement(React__default['default'].Fragment, null, r);
+            r.push(React__default["default"].createElement(Button, { content: React__default["default"].createElement("span", { className: "icon-chevron-left-double" }), disabled: disabled, key: "first-page", position: beginAt }));
+        r.push(React__default["default"].createElement(Button, { content: icons ? React__default["default"].createElement("span", { className: "icon-chevron-left" }) : prev, disabled: disabled, key: "previous-page", position: position - perPage }));
+        return React__default["default"].createElement(React__default["default"].Fragment, null, r);
     };
     var NextLast = function () {
-        var _a = React__default['default'].useContext(PaginationContext), beginAt = _a.beginAt, perPage = _a.perPage, total = _a.total, firstAndLast = _a.firstAndLast, position = _a.position, icons = _a.icons, next = _a.next;
+        var _a = React__default["default"].useContext(PaginationContext), beginAt = _a.beginAt, perPage = _a.perPage, total = _a.total, firstAndLast = _a.firstAndLast, position = _a.position, icons = _a.icons, next = _a.next;
         var pages = Math.floor(total / perPage) + 1;
         var disabled = position > total - perPage + beginAt;
         var r = [];
-        r.push(React__default['default'].createElement(Button, { content: icons ? React__default['default'].createElement("span", { className: "icon-chevron-right" }) : next, disabled: disabled, key: "next-page", position: position + perPage }));
+        r.push(React__default["default"].createElement(Button, { content: icons ? React__default["default"].createElement("span", { className: "icon-chevron-right" }) : next, disabled: disabled, key: "next-page", position: position + perPage }));
         if (icons && firstAndLast)
-            r.push(React__default['default'].createElement(Button, { content: React__default['default'].createElement("span", { className: "icon-chevron-right-double" }), disabled: disabled, key: "last-page", position: (pages - 1) * perPage + beginAt }));
-        return React__default['default'].createElement(React__default['default'].Fragment, null, r);
+            r.push(React__default["default"].createElement(Button, { content: React__default["default"].createElement("span", { className: "icon-chevron-right-double" }), disabled: disabled, key: "last-page", position: (pages - 1) * perPage + beginAt }));
+        return React__default["default"].createElement(React__default["default"].Fragment, null, r);
     };
     var Pages = function (_a) {
         var start = _a.start, finish = _a.finish;
-        return (React__default['default'].createElement(PaginationContext.Consumer, null, function (_a) {
+        return (React__default["default"].createElement(PaginationContext.Consumer, null, function (_a) {
             var perPage = _a.perPage, active = _a.active, beginAt = _a.beginAt;
-            return __spreadArray([], Array(finish - start + 1)).map(function (v, i) {
+            return __spreadArray([], Array(finish - start + 1), true).map(function (v, i) {
                 var current = start + i;
-                return (React__default['default'].createElement(Button, { active: active === current, content: "" + current, key: current + "-page", position: (current - 1) * perPage + beginAt }));
+                return (React__default["default"].createElement(Button, { active: active === current, content: "".concat(current), key: "".concat(current, "-page"), position: (current - 1) * perPage + beginAt }));
             });
         }));
     };
@@ -3632,7 +3744,7 @@
             if (typeof onPageChange === "function")
                 onPageChange(e, newPosition);
         };
-        return (React__default['default'].createElement(PaginationContext.Provider, { value: {
+        return (React__default["default"].createElement(PaginationContext.Provider, { value: {
                 active: active,
                 beginAt: beginAt,
                 changePage: changePage,
@@ -3644,38 +3756,38 @@
                 prev: prev,
                 total: total,
             } },
-            React__default['default'].createElement("ul", __assign({ className: "pagination" + (size !== "default" ? " pagination--" + size : "") + (rounded ? " pagination--rounded" : "") + (className ? " " + className : "") }, rest),
-                React__default['default'].createElement(FirstPrev, null),
-                active < 4 || pages === 4 ? (React__default['default'].createElement(React__default['default'].Fragment, null,
-                    React__default['default'].createElement(Pages, { start: 1, finish: Math.min(pages, 4) }),
-                    pages > 4 ? (React__default['default'].createElement(React__default['default'].Fragment, null,
-                        React__default['default'].createElement("li", null,
-                            React__default['default'].createElement("span", { className: "icon-more" })),
-                        React__default['default'].createElement(Button, { content: pages, key: pages + "-page", position: (pages - 1) * perPage + beginAt }))) : null)) : (React__default['default'].createElement(React__default['default'].Fragment, null,
-                    React__default['default'].createElement(Button, { active: active === beginAt, content: "1", key: "1-page", position: beginAt }),
-                    React__default['default'].createElement("li", null,
-                        React__default['default'].createElement("span", { className: "icon-more" })),
-                    active < pages - 2 ? (React__default['default'].createElement(React__default['default'].Fragment, null,
-                        React__default['default'].createElement(Pages, { start: active - 1, finish: active + 1 }),
-                        React__default['default'].createElement("li", null,
-                            React__default['default'].createElement("span", { className: "icon-more" })),
-                        React__default['default'].createElement(Button, { active: active === pages, content: pages, key: pages + "-page", position: (pages - 1) * perPage + beginAt }))) : (React__default['default'].createElement(Pages, { start: pages - 3, finish: pages })))),
-                React__default['default'].createElement(NextLast, null))));
+            React__default["default"].createElement("ul", __assign({ className: "pagination".concat(size !== "default" ? " pagination--".concat(size) : "").concat(rounded ? " pagination--rounded" : "").concat(className ? " ".concat(className) : "") }, rest),
+                React__default["default"].createElement(FirstPrev, null),
+                active < 4 || pages === 4 ? (React__default["default"].createElement(React__default["default"].Fragment, null,
+                    React__default["default"].createElement(Pages, { start: 1, finish: Math.min(pages, 4) }),
+                    pages > 4 ? (React__default["default"].createElement(React__default["default"].Fragment, null,
+                        React__default["default"].createElement("li", null,
+                            React__default["default"].createElement("span", { className: "icon-more" })),
+                        React__default["default"].createElement(Button, { content: pages, key: "".concat(pages, "-page"), position: (pages - 1) * perPage + beginAt }))) : null)) : (React__default["default"].createElement(React__default["default"].Fragment, null,
+                    React__default["default"].createElement(Button, { active: active === beginAt, content: "1", key: "1-page", position: beginAt }),
+                    React__default["default"].createElement("li", null,
+                        React__default["default"].createElement("span", { className: "icon-more" })),
+                    active < pages - 2 ? (React__default["default"].createElement(React__default["default"].Fragment, null,
+                        React__default["default"].createElement(Pages, { start: active - 1, finish: active + 1 }),
+                        React__default["default"].createElement("li", null,
+                            React__default["default"].createElement("span", { className: "icon-more" })),
+                        React__default["default"].createElement(Button, { active: active === pages, content: pages, key: "".concat(pages, "-page"), position: (pages - 1) * perPage + beginAt }))) : (React__default["default"].createElement(Pages, { start: pages - 3, finish: pages })))),
+                React__default["default"].createElement(NextLast, null))));
     };
 
     var DefaultTablePagination = function (_a) {
         var _b = _a.perPageUp, perPageUp = _b === void 0 ? false : _b, _c = _a.paginationProps, paginationProps = _c === void 0 ? {} : _c, total = _a.total, position = _a.position, onPageChange = _a.onPageChange, onPerPageChange = _a.onPerPageChange;
-        var _d = React__default['default'].useState(50), perPage = _d[0], setPerPage = _d[1];
-        React__default['default'].useEffect(function () {
+        var _d = React__default["default"].useState(50), perPage = _d[0], setPerPage = _d[1];
+        React__default["default"].useEffect(function () {
             if (typeof onPerPageChange === "function")
                 onPerPageChange(perPage);
         }, [perPage, onPerPageChange]);
-        return (React__default['default'].createElement("div", { className: "flex-middle" },
-            React__default['default'].createElement("span", { className: "qtr-margin-right" }, "Page:"),
-            React__default['default'].createElement(Pagination, __assign({ firstAndLast: true, icons: true, perPage: perPage, total: total, position: position, onPageChange: onPageChange, beginAt: 0, className: "no-margin-top" }, paginationProps)),
-            React__default['default'].createElement("span", { className: "text-muted qtr-margin-left qtr-margin-right" }, "|"),
-            React__default['default'].createElement("span", { className: "qtr-margin-right" }, "Per page:"),
-            React__default['default'].createElement(Dropdown, { type: "link", header: perPage, openTo: "left", alwaysClose: true, up: perPageUp }, [10, 25, 50, 100, 250, 500].map(function (v) { return (React__default['default'].createElement(Dropdown.Element, { onClick: function () { return setPerPage(v); }, key: v, selected: v === perPage }, v)); }))));
+        return (React__default["default"].createElement("div", { className: "flex-middle" },
+            React__default["default"].createElement("span", { className: "qtr-margin-right" }, "Page:"),
+            React__default["default"].createElement(Pagination, __assign({ firstAndLast: true, icons: true, perPage: perPage, total: total, position: position, onPageChange: onPageChange, beginAt: 0, className: "no-margin-top" }, paginationProps)),
+            React__default["default"].createElement("span", { className: "text-muted qtr-margin-left qtr-margin-right" }, "|"),
+            React__default["default"].createElement("span", { className: "qtr-margin-right" }, "Per page:"),
+            React__default["default"].createElement(Dropdown, { type: "link", header: perPage, openTo: "left", alwaysClose: true, up: perPageUp }, [10, 25, 50, 100, 250, 500].map(function (v) { return (React__default["default"].createElement(Dropdown.Element, { onClick: function () { return setPerPage(v); }, key: v, selected: v === perPage }, v)); }))));
     };
 
     var asArray = function (v) { return (Array.isArray(v) ? v : [v]); };
@@ -3684,36 +3796,36 @@
             icons: true,
             firstAndLast: true,
         } : _d, _e = _a.data, data = _e === void 0 ? null : _e, _f = _a.children, children = _f === void 0 ? null : _f, _g = _a.start, start = _g === void 0 ? 1 : _g, props = __rest(_a, ["pagination", "paginationLocation", "paginationProps", "data", "children", "start"]);
-        var _h = React__default['default'].useState(typeof start === "number" ? start : 0), position = _h[0], setPosition = _h[1];
-        var _j = React__default['default'].useState(50), perPage = _j[0], setPerPage = _j[1];
-        var tbody = React__default['default'].useMemo(function () {
+        var _h = React__default["default"].useState(typeof start === "number" ? start : 0), position = _h[0], setPosition = _h[1];
+        var _j = React__default["default"].useState(50), perPage = _j[0], setPerPage = _j[1];
+        var tbody = React__default["default"].useMemo(function () {
             return children
                 ? asArray(children).find(function (child) { return child.type === "tbody"; })
                 : null;
         }, [children]);
-        var thead = React__default['default'].useMemo(function () {
+        var thead = React__default["default"].useMemo(function () {
             return children
                 ? asArray(children).find(function (child) { return child.type === "thead"; })
                 : null;
         }, [children]);
-        var total = React__default['default'].useMemo(function () { return (data ? data.length : asArray(tbody.props.children).length) || 0; }, [data, tbody]);
-        React__default['default'].useEffect(function () { return setPosition(0); }, [data, tbody]);
-        return (React__default['default'].createElement(React__default['default'].Fragment, null,
-            React__default['default'].createElement(DisplayIf, { condition: paginationLocation.includes("top-") },
-                React__default['default'].createElement("div", { className: "flex base-margin-bottom" + appendClass(paginationLocation === "top-right", "flex-right") }, React__default['default'].createElement(pagination, {
+        var total = React__default["default"].useMemo(function () { return (data ? data.length : asArray(tbody.props.children).length) || 0; }, [data, tbody]);
+        React__default["default"].useEffect(function () { return setPosition(0); }, [data, tbody]);
+        return (React__default["default"].createElement(React__default["default"].Fragment, null,
+            React__default["default"].createElement(DisplayIf, { condition: paginationLocation.includes("top-") },
+                React__default["default"].createElement("div", { className: "flex base-margin-bottom".concat(appendClass(paginationLocation === "top-right", "flex-right")) }, React__default["default"].createElement(pagination, {
                     total: total,
                     position: position,
                     onPageChange: function (_, p) { return setPosition(p); },
                     onPerPageChange: function (p) { return setPerPage(p); },
                     paginationProps: paginationProps,
                 }))),
-            React__default['default'].createElement(GenericTable, __assign({}, props, { ref: forwardedRef }),
+            React__default["default"].createElement(GenericTable, __assign({}, props, { ref: forwardedRef }),
                 thead,
-                React__default['default'].createElement("tbody", null, data
-                    ? data.slice(position, position + perPage).map(function (row, rid) { return (React__default['default'].createElement("tr", { key: rid }, row.map(function (col, cid) { return (React__default['default'].createElement("td", { key: cid }, col)); }))); })
+                React__default["default"].createElement("tbody", null, data
+                    ? data.slice(position, position + perPage).map(function (row, rid) { return (React__default["default"].createElement("tr", { key: rid }, row.map(function (col, cid) { return (React__default["default"].createElement("td", { key: cid }, col)); }))); })
                     : asArray(tbody.props.children).slice(position, position + perPage))),
-            React__default['default'].createElement(DisplayIf, { condition: paginationLocation.includes("bottom-") },
-                React__default['default'].createElement("div", { className: "flex base-margin-top" + appendClass(paginationLocation === "bottom-right", "flex-right") }, React__default['default'].createElement(pagination, {
+            React__default["default"].createElement(DisplayIf, { condition: paginationLocation.includes("bottom-") },
+                React__default["default"].createElement("div", { className: "flex base-margin-top".concat(appendClass(paginationLocation === "bottom-right", "flex-right")) }, React__default["default"].createElement(pagination, {
                     total: total,
                     position: position,
                     onPageChange: function (_, p) { return setPosition(p); },
@@ -3725,59 +3837,59 @@
 
     var Checkbox = React.forwardRef(function (_a, ref) {
         var _b = _a.inline, inline = _b === void 0 ? false : _b, _c = _a.asFormGroup, asFormGroup = _c === void 0 ? true : _c, _d = _a.children, children = _d === void 0 ? null : _d, _e = _a.spacing, spacing = _e === void 0 ? null : _e, input = __rest(_a, ["inline", "asFormGroup", "children", "spacing"]);
-        return (React__default['default'].createElement(ConditionalWrapper, { condition: asFormGroup, wrapper: React__default['default'].createElement("div", { className: "form-group" + appendClass(inline, "form-group--inline") + appendClass(spacing && spacing !== "default", "form-group--" + spacing) }) },
-            React__default['default'].createElement("label", { className: "checkbox" },
-                React__default['default'].createElement("input", __assign({ type: "checkbox" }, input, { ref: ref })),
-                React__default['default'].createElement("span", { className: "checkbox__input" }),
-                children ? React__default['default'].createElement("span", { className: "checkbox__label" }, children) : null)));
+        return (React__default["default"].createElement(ConditionalWrapper, { condition: asFormGroup, wrapper: React__default["default"].createElement("div", { className: "form-group".concat(appendClass(inline, "form-group--inline")).concat(appendClass(spacing && spacing !== "default", "form-group--".concat(spacing))) }) },
+            React__default["default"].createElement("label", { className: "checkbox" },
+                React__default["default"].createElement("input", __assign({ type: "checkbox" }, input, { ref: ref })),
+                React__default["default"].createElement("span", { className: "checkbox__input" }),
+                children ? React__default["default"].createElement("span", { className: "checkbox__label" }, children) : null)));
     });
 
     var Switch = React.forwardRef(function (_a, forwardedRef) {
         var _b = _a.left, left = _b === void 0 ? null : _b, _c = _a.right, right = _c === void 0 ? null : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.inline, inline = _e === void 0 ? false : _e, _f = _a.spacing, spacing = _f === void 0 ? null : _f, _g = _a.asFormGroup, asFormGroup = _g === void 0 ? true : _g, _h = _a.className, className = _h === void 0 ? null : _h, _j = _a.id, id = _j === void 0 ? null : _j, _k = _a.style, style = _k === void 0 ? null : _k, input = __rest(_a, ["left", "right", "disabled", "inline", "spacing", "asFormGroup", "className", "id", "style"]);
-        return (React__default['default'].createElement(ConditionalWrapper, { condition: asFormGroup, wrapper: React__default['default'].createElement("div", { className: "form-group" + appendClass(inline, "form-group--inline") + appendClass(className) + appendClass(spacing, " form-group--" + spacing), style: style }) },
-            React__default['default'].createElement("label", { className: "switch" + (disabled ? " disabled" : ""), htmlFor: id || input.name },
-                React__default['default'].createElement("input", __assign({ type: "checkbox" }, input, { id: id || input.name, checked: input.checked, ref: forwardedRef })),
-                left ? React__default['default'].createElement("span", { className: "switch__label" }, left) : null,
-                React__default['default'].createElement("span", { className: "switch__input" }),
-                right ? React__default['default'].createElement("span", { className: "switch__label" }, right) : null)));
+        return (React__default["default"].createElement(ConditionalWrapper, { condition: asFormGroup, wrapper: React__default["default"].createElement("div", { className: "form-group".concat(appendClass(inline, "form-group--inline")).concat(appendClass(className)).concat(appendClass(spacing, " form-group--".concat(spacing))), style: style }) },
+            React__default["default"].createElement("label", { className: "switch".concat(disabled ? " disabled" : ""), htmlFor: id || input.name },
+                React__default["default"].createElement("input", __assign({ type: "checkbox" }, input, { id: id || input.name, checked: input.checked, ref: forwardedRef })),
+                left ? React__default["default"].createElement("span", { className: "switch__label" }, left) : null,
+                React__default["default"].createElement("span", { className: "switch__input" }),
+                right ? React__default["default"].createElement("span", { className: "switch__label" }, right) : null)));
     });
 
     var InputHelpBlock = function (_a) {
         var _b = _a.text, text = _b === void 0 ? null : _b;
-        return text && (React__default['default'].createElement("div", { className: "form-group__help", role: "alert" },
-            React__default['default'].createElement("span", null, text)));
+        return text && (React__default["default"].createElement("div", { className: "form-group__help", role: "alert" },
+            React__default["default"].createElement("span", null, text)));
     };
 
-    var css_248z$4 = ".cui .form-group__text>.labeled>.input-label{height:calc(var(--cui-form-size) - 2px);max-height:calc(var(--cui-form-size) - 2px);padding:var(--cui-form-padding);border:none;border-bottom-right-radius:0;background-color:var(--cui-background-selected)}.cui .form-group__text>.labeled input{border:none!important;border-radius:0!important;height:calc(var(--cui-form-size) - 2px)!important;max-height:calc(var(--cui-form-size) - 2px)!important;min-height:calc(var(--cui-form-size) - 2px)!important;padding:var(--cui-form-padding)!important}.cui .form-group__text>.labeled input:focus{outline:none!important;box-shadow:none!important}.cui .form-group__text>.labeled{border-radius:var(--cui-border-radius);border:var(--cui-border);flex-shrink:0;order:3;transition:all var(--cui-animate-speed) var(--cui-animate-timing-function)!important}.cui .form-group__text>.labeled:focus-within,.cui .form-group__text>.labeled:hover{border-color:var(--cui-accent-color)}.cui .form-group__text>.labeled:focus-within{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity));opacity:1;outline:transparent var(--cui-focus-thickness);outline-offset:1px;outline-width:thin;outline-style:none}.cui .form-group__text>.labeled .dropdown.input-label a{color:var(--cui-form-value-color)}";
+    var css_248z$4 = ".cui .form-group__text>.labeled>.input-label{background-color:var(--cui-background-selected);border:none;border-bottom-right-radius:0;height:calc(var(--cui-form-size) - 2px);max-height:calc(var(--cui-form-size) - 2px);padding:var(--cui-form-padding)}.cui .form-group__text>.labeled input{border:none!important;border-radius:0!important;height:calc(var(--cui-form-size) - 2px)!important;max-height:calc(var(--cui-form-size) - 2px)!important;min-height:calc(var(--cui-form-size) - 2px)!important;padding:var(--cui-form-padding)!important}.cui .form-group__text>.labeled input:focus{box-shadow:none!important;outline:none!important}.cui .form-group__text>.labeled{border:var(--cui-border);border-radius:var(--cui-border-radius);flex-shrink:0;order:3;transition:all var(--cui-animate-speed) var(--cui-animate-timing-function)!important}.cui .form-group__text>.labeled:focus-within,.cui .form-group__text>.labeled:hover{border-color:var(--cui-accent-color)}.cui .form-group__text>.labeled:focus-within{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity));opacity:1;outline:transparent var(--cui-focus-thickness);outline-offset:1px;outline-style:none;outline-width:thin}.cui .form-group__text>.labeled .dropdown.input-label a{color:var(--cui-form-value-color)}";
     styleInject(css_248z$4);
 
     var Input = React.forwardRef(function (_a, ref) {
         var _b = _a.type, type = _b === void 0 ? "text" : _b, _c = _a.inline, inline = _c === void 0 ? null : _c, _d = _a.helpBlock, helpBlock = _d === void 0 ? true : _d, _e = _a.label, label = _e === void 0 ? null : _e, _f = _a.icon, icon = _f === void 0 ? null : _f, _g = _a.iconClick, iconClick = _g === void 0 ? null : _g, _h = _a.className, className = _h === void 0 ? null : _h, _j = _a.plain, plain = _j === void 0 ? false : _j, _k = _a.horizontal, horizontal = _k === void 0 ? null : _k, _l = _a.horizontalLabelClassName, horizontalLabelClassName = _l === void 0 ? "col-3" : _l, _m = _a.error, error = _m === void 0 ? null : _m, _o = _a.prefix, prefix = _o === void 0 ? null : _o, input = __rest(_a, ["type", "inline", "helpBlock", "label", "icon", "iconClick", "className", "plain", "horizontal", "horizontalLabelClassName", "error", "prefix"]);
-        return (React__default['default'].createElement("div", { className: "form-group" + appendClass(className) + appendClass(error, "form-group--error") + appendClass(inline === "form" || inline === "both", "form-group--inline") + appendClass(inline === "label" || inline === "both", "label--inline") + appendClass(icon, "input--icon") + appendClass(horizontal, "form-group--horizontal") },
-            React__default['default'].createElement("div", { className: "form-group__text" },
-                React__default['default'].createElement(ConditionalWrapper, { wrapper: React__default['default'].createElement("div", { className: "flex labeled" }), condition: !!prefix },
-                    prefix ? React__default['default'].createElement("div", { className: "input-label" }, prefix) : null,
-                    React__default['default'].createElement("input", __assign({ type: type, ref: ref }, input, { className: appendClass(plain, "form-group--plaintext") }))),
-                label ? (React__default['default'].createElement("label", { htmlFor: input.id, className: appendClass(horizontal, horizontalLabelClassName) }, label)) : null,
-                icon ? (React__default['default'].createElement("button", { type: "button", className: "link", tabIndex: -1, onClick: iconClick },
-                    React__default['default'].createElement("span", { className: "icon-" + icon }))) : null),
-            React__default['default'].createElement(DisplayIf, { condition: !inline && helpBlock && !!error },
-                React__default['default'].createElement(InputHelpBlock, { text: error }))));
+        return (React__default["default"].createElement("div", { className: "form-group".concat(appendClass(className)).concat(appendClass(error, "form-group--error")).concat(appendClass(inline === "form" || inline === "both", "form-group--inline")).concat(appendClass(inline === "label" || inline === "both", "label--inline")).concat(appendClass(icon, "input--icon")).concat(appendClass(horizontal, "form-group--horizontal")) },
+            React__default["default"].createElement("div", { className: "form-group__text" },
+                React__default["default"].createElement(ConditionalWrapper, { wrapper: React__default["default"].createElement("div", { className: "flex labeled" }), condition: !!prefix },
+                    prefix ? React__default["default"].createElement("div", { className: "input-label" }, prefix) : null,
+                    React__default["default"].createElement("input", __assign({ type: type, ref: ref }, input, { className: appendClass(plain, "form-group--plaintext") }))),
+                label ? (React__default["default"].createElement("label", { htmlFor: input.id, className: appendClass(horizontal, horizontalLabelClassName) }, label)) : null,
+                icon ? (React__default["default"].createElement("button", { type: "button", className: "link", tabIndex: -1, onClick: iconClick },
+                    React__default["default"].createElement("span", { className: "icon-".concat(icon) }))) : null),
+            React__default["default"].createElement(DisplayIf, { condition: !inline && helpBlock && !!error },
+                React__default["default"].createElement(InputHelpBlock, { text: error }))));
     });
 
     var ModalHeader = function (_a) {
         var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
-        return (React__default['default'].createElement("div", __assign({ className: "modal__header" + appendClass(className) }, props), children));
+        return (React__default["default"].createElement("div", __assign({ className: "modal__header".concat(appendClass(className)) }, props), children));
     };
 
     var ModalFooter = function (_a) {
         var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
-        return (React__default['default'].createElement("div", __assign({ className: "modal__footer" + appendClass(className) }, props), children));
+        return (React__default["default"].createElement("div", __assign({ className: "modal__footer".concat(appendClass(className)) }, props), children));
     };
 
     var ModalBody = function (_a) {
         var _b = _a.className, className = _b === void 0 ? null : _b, children = _a.children, props = __rest(_a, ["className", "children"]);
-        return (React__default['default'].createElement("div", __assign({ className: "modal__body" + appendClass(className) }, props), children));
+        return (React__default["default"].createElement("div", __assign({ className: "modal__body".concat(appendClass(className)) }, props), children));
     };
 
     function _objectWithoutPropertiesLoose(source, excluded) {
@@ -3814,7 +3926,7 @@
       disabled: false
     };
 
-    var TransitionGroupContext = React__default['default'].createContext(null);
+    var TransitionGroupContext = React__default["default"].createContext(null);
 
     var UNMOUNTED = 'unmounted';
     var EXITED = 'exited';
@@ -4052,7 +4164,7 @@
         var enter = this.props.enter;
         var appearing = this.context ? this.context.isMounting : mounting;
 
-        var _ref2 = this.props.nodeRef ? [appearing] : [ReactDOM__default['default'].findDOMNode(this), appearing],
+        var _ref2 = this.props.nodeRef ? [appearing] : [ReactDOM__default["default"].findDOMNode(this), appearing],
             maybeNode = _ref2[0],
             maybeAppearing = _ref2[1];
 
@@ -4090,7 +4202,7 @@
 
         var exit = this.props.exit;
         var timeouts = this.getTimeouts();
-        var maybeNode = this.props.nodeRef ? undefined : ReactDOM__default['default'].findDOMNode(this); // no exit animation skip right to EXITED
+        var maybeNode = this.props.nodeRef ? undefined : ReactDOM__default["default"].findDOMNode(this); // no exit animation skip right to EXITED
 
         if (!exit || config.disabled) {
           this.safeSetState({
@@ -4154,7 +4266,7 @@
 
       _proto.onTransitionEnd = function onTransitionEnd(timeout, handler) {
         this.setNextCallback(handler);
-        var node = this.props.nodeRef ? this.props.nodeRef.current : ReactDOM__default['default'].findDOMNode(this);
+        var node = this.props.nodeRef ? this.props.nodeRef.current : ReactDOM__default["default"].findDOMNode(this);
         var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
 
         if (!node || doesNotHaveTimeoutOrListener) {
@@ -4204,14 +4316,14 @@
         return (
           /*#__PURE__*/
           // allows for nested Transitions
-          React__default['default'].createElement(TransitionGroupContext.Provider, {
+          React__default["default"].createElement(TransitionGroupContext.Provider, {
             value: null
-          }, typeof children === 'function' ? children(status, childProps) : React__default['default'].cloneElement(React__default['default'].Children.only(children), childProps))
+          }, typeof children === 'function' ? children(status, childProps) : React__default["default"].cloneElement(React__default["default"].Children.only(children), childProps))
         );
       };
 
       return Transition;
-    }(React__default['default'].Component);
+    }(React__default["default"].Component);
 
     Transition.contextType = TransitionGroupContext;
     Transition.propTypes = {}; // Name the function so it is clearer in the documentation
@@ -4240,58 +4352,58 @@
 
     var Modal = function (_a) {
         var _b = _a.size, size = _b === void 0 ? null : _b, _c = _a.autoClose, autoClose = _c === void 0 ? true : _c, _d = _a.animationDuration, animationDuration = _d === void 0 ? 250 : _d, _e = _a.closeIcon, closeIcon = _e === void 0 ? false : _e, _f = _a.title, title = _f === void 0 ? null : _f, _g = _a.closeHandle, closeHandle = _g === void 0 ? null : _g, _h = _a.left, left = _h === void 0 ? false : _h, _j = _a.transitionEvents, transitionEvents = _j === void 0 ? null : _j, _k = _a.dialogProps, dialogProps = _k === void 0 ? null : _k, _l = _a.contentProps, contentProps = _l === void 0 ? null : _l, _m = _a.maximize, maximize = _m === void 0 ? false : _m, children = _a.children, isOpen = _a.isOpen, props = __rest(_a, ["size", "autoClose", "animationDuration", "closeIcon", "title", "closeHandle", "left", "transitionEvents", "dialogProps", "contentProps", "maximize", "children", "isOpen"]);
-        var _o = React__default['default'].useState(false), maximized = _o[0], setMaximized = _o[1];
-        React__default['default'].useEffect(function () { return setMaximized(false); }, [isOpen]);
-        var realSize = React__default['default'].useMemo(function () { return (maximized ? "full" : size); }, [
+        var _o = React__default["default"].useState(false), maximized = _o[0], setMaximized = _o[1];
+        React__default["default"].useEffect(function () { return setMaximized(false); }, [isOpen]);
+        var realSize = React__default["default"].useMemo(function () { return (maximized ? "full" : size); }, [
             maximized,
             size,
         ]);
-        var maximizeCb = React__default['default'].useCallback(function () {
+        var maximizeCb = React__default["default"].useCallback(function () {
             setMaximized(function (curr) { return !curr; });
         }, []);
-        return (React__default['default'].createElement(Transition, __assign({ in: isOpen, mountOnEnter: true, unmountOnExit: true, timeout: animationDuration }, transitionEvents), function (state) { return (React__default['default'].createElement(ReactModal__default['default'], __assign({}, props, { onRequestClose: autoClose && closeHandle ? closeHandle : undefined, overlayClassName: "modal-backdrop", isOpen: ["entering", "entered"].includes(state), className: "modal" + appendClass(realSize, "modal--" + realSize) + appendClass(left, "modal--left"), closeTimeoutMS: typeof animationDuration === "object"
+        return (React__default["default"].createElement(Transition, __assign({ in: isOpen, mountOnEnter: true, unmountOnExit: true, timeout: animationDuration }, transitionEvents), function (state) { return (React__default["default"].createElement(ReactModal__default["default"], __assign({}, props, { onRequestClose: autoClose && closeHandle ? closeHandle : undefined, overlayClassName: "modal-backdrop", isOpen: ["entering", "entered"].includes(state), className: "modal".concat(appendClass(realSize, "modal--".concat(realSize))).concat(appendClass(left, "modal--left")), closeTimeoutMS: typeof animationDuration === "object"
                 ? animationDuration.exit
                 : animationDuration }),
-            React__default['default'].createElement("div", __assign({ className: "modal__dialog" }, dialogProps, { onClick: function (e) { return e.stopPropagation(); } }),
-                React__default['default'].createElement("div", __assign({ className: "modal__content" }, contentProps),
-                    React__default['default'].createElement(DisplayIf, { condition: !!(closeIcon && closeHandle) || maximize },
-                        React__default['default'].createElement(ConditionalWrapper, { condition: !!(closeIcon && closeHandle) && maximize, wrapper: React__default['default'].createElement("div", { className: "modal__close" }) },
-                            React__default['default'].createElement(DisplayIf, { condition: maximize },
-                                React__default['default'].createElement("a", { className: "" + appendClass(!(closeIcon && closeHandle), "modal__close") + appendClass(closeIcon && closeHandle, "qtr-margin-right"), onClick: maximizeCb },
-                                    React__default['default'].createElement("span", { className: maximized ? "icon-minimize" : "icon-maximize" }))),
-                            React__default['default'].createElement(DisplayIf, { condition: !!(closeIcon && closeHandle) },
-                                React__default['default'].createElement("a", { className: !maximize ? "modal__close" : "", onClick: closeHandle },
-                                    React__default['default'].createElement("span", { className: "icon-close" }))))),
-                    React__default['default'].createElement(DisplayIf, { condition: !!title },
-                        React__default['default'].createElement(ModalHeader, null,
-                            React__default['default'].createElement("h1", { className: "modal__title" }, title))),
+            React__default["default"].createElement("div", __assign({ className: "modal__dialog" }, dialogProps, { onClick: function (e) { return e.stopPropagation(); } }),
+                React__default["default"].createElement("div", __assign({ className: "modal__content" }, contentProps),
+                    React__default["default"].createElement(DisplayIf, { condition: !!(closeIcon && closeHandle) || maximize },
+                        React__default["default"].createElement(ConditionalWrapper, { condition: !!(closeIcon && closeHandle) && maximize, wrapper: React__default["default"].createElement("div", { className: "modal__close" }) },
+                            React__default["default"].createElement(DisplayIf, { condition: maximize },
+                                React__default["default"].createElement("a", { className: "".concat(appendClass(!(closeIcon && closeHandle), "modal__close")).concat(appendClass(closeIcon && closeHandle, "qtr-margin-right")), onClick: maximizeCb },
+                                    React__default["default"].createElement("span", { className: maximized ? "icon-minimize" : "icon-maximize" }))),
+                            React__default["default"].createElement(DisplayIf, { condition: !!(closeIcon && closeHandle) },
+                                React__default["default"].createElement("a", { className: !maximize ? "modal__close" : "", onClick: closeHandle },
+                                    React__default["default"].createElement("span", { className: "icon-close" }))))),
+                    React__default["default"].createElement(DisplayIf, { condition: !!title },
+                        React__default["default"].createElement(ModalHeader, null,
+                            React__default["default"].createElement("h1", { className: "modal__title" }, title))),
                     children)))); }));
     };
-    Modal.Small = function (props) { return React__default['default'].createElement(Modal, __assign({}, props, { size: "small" })); };
-    Modal.Large = function (props) { return React__default['default'].createElement(Modal, __assign({}, props, { size: "large" })); };
-    Modal.Full = function (props) { return React__default['default'].createElement(Modal, __assign({}, props, { size: "full" })); };
-    Modal.Fluid = function (props) { return React__default['default'].createElement(Modal, __assign({}, props, { size: "fluid" })); };
+    Modal.Small = function (props) { return React__default["default"].createElement(Modal, __assign({}, props, { size: "small" })); };
+    Modal.Large = function (props) { return React__default["default"].createElement(Modal, __assign({}, props, { size: "large" })); };
+    Modal.Full = function (props) { return React__default["default"].createElement(Modal, __assign({}, props, { size: "full" })); };
+    Modal.Fluid = function (props) { return React__default["default"].createElement(Modal, __assign({}, props, { size: "fluid" })); };
     Modal.Header = ModalHeader;
     Modal.Body = ModalBody;
     Modal.Footer = ModalFooter;
 
     var ConfirmationModal = function (_a) {
         var _b = _a.isOpen, isOpen = _b === void 0 ? false : _b, _c = _a.confirmType, confirmType = _c === void 0 ? "primary" : _c, _d = _a.autoClose, autoClose = _d === void 0 ? true : _d, _e = _a.confirmText, confirmText = _e === void 0 ? "Confirm" : _e, confirmHandle = _a.confirmHandle, closeHandle = _a.closeHandle, prompt = _a.prompt, _f = _a.dontAskAgain, dontAskAgain = _f === void 0 ? { show: false } : _f;
-        var _g = React__default['default'].useState(false), doing = _g[0], setDoing = _g[1];
-        var _h = React__default['default'].useState(false), dontAsk = _h[0], setDontAsk = _h[1];
-        return (React__default['default'].createElement(Modal, { isOpen: isOpen, closeIcon: true, closeHandle: closeHandle, autoClose: autoClose, title: "Confirmation" },
-            React__default['default'].createElement(ModalBody, null,
+        var _g = React__default["default"].useState(false), doing = _g[0], setDoing = _g[1];
+        var _h = React__default["default"].useState(false), dontAsk = _h[0], setDontAsk = _h[1];
+        return (React__default["default"].createElement(Modal, { isOpen: isOpen, closeIcon: true, closeHandle: closeHandle, autoClose: autoClose, title: "Confirmation" },
+            React__default["default"].createElement(ModalBody, null,
                 prompt,
-                (dontAskAgain === null || dontAskAgain === void 0 ? void 0 : dontAskAgain.show) ? (React__default['default'].createElement("div", { className: "form-group" },
-                    React__default['default'].createElement("label", { className: "checkbox" },
-                        React__default['default'].createElement("input", { type: "checkbox", checked: dontAsk, onChange: function (e) {
+                (dontAskAgain === null || dontAskAgain === void 0 ? void 0 : dontAskAgain.show) ? (React__default["default"].createElement("div", { className: "form-group" },
+                    React__default["default"].createElement("label", { className: "checkbox" },
+                        React__default["default"].createElement("input", { type: "checkbox", checked: dontAsk, onChange: function (e) {
                                 setDontAsk(e.target.checked);
                             } }),
-                        React__default['default'].createElement("span", { className: "checkbox__input" }),
-                        React__default['default'].createElement("span", { className: "checkbox__label" }, dontAskAgain.text || "Don't ask again")))) : null),
-            React__default['default'].createElement(ModalFooter, null,
-                React__default['default'].createElement(Button$1.Light, { onClick: closeHandle }, "Close"),
-                React__default['default'].createElement(Button$1, { color: confirmType, disabled: doing, onClick: function () { return __awaiter(void 0, void 0, void 0, function () {
+                        React__default["default"].createElement("span", { className: "checkbox__input" }),
+                        React__default["default"].createElement("span", { className: "checkbox__label" }, dontAskAgain.text || "Don't ask again")))) : null),
+            React__default["default"].createElement(ModalFooter, null,
+                React__default["default"].createElement(Button$1.Light, { onClick: closeHandle }, "Close"),
+                React__default["default"].createElement(Button$1, { color: confirmType, disabled: doing, onClick: function () { return __awaiter(void 0, void 0, void 0, function () {
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
@@ -4305,15 +4417,15 @@
                         });
                     }); } },
                     confirmText,
-                    doing ? (React__default['default'].createElement("span", { className: "icon-animation spin qtr-margin-left" })) : null))));
+                    doing ? (React__default["default"].createElement("span", { className: "icon-animation spin qtr-margin-left" })) : null))));
     };
 
     function PromptModal(_a) {
         var _this = this;
         var title = _a.title, question = _a.question, cb = _a.onSave, onClose = _a.onClose, initial = _a.initial, type = _a.type, isOpen = _a.isOpen, hint = _a.hint, validate = _a.validate;
-        var _b = React__default['default'].useState(initial), val = _b[0], setVal = _b[1];
-        var _c = React__default['default'].useState(false), doing = _c[0], setDoing = _c[1];
-        var onSave = React__default['default'].useCallback(function () { return __awaiter(_this, void 0, void 0, function () {
+        var _b = React__default["default"].useState(initial), val = _b[0], setVal = _b[1];
+        var _c = React__default["default"].useState(false), doing = _c[0], setDoing = _c[1];
+        var onSave = React__default["default"].useCallback(function () { return __awaiter(_this, void 0, void 0, function () {
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -4337,43 +4449,43 @@
                 }
             });
         }); }, [onClose, cb, val, validate]);
-        React__default['default'].useEffect(function () { return setVal(initial); }, [initial]);
-        var inpRef = React__default['default'].useRef(undefined);
-        React__default['default'].useEffect(function () {
+        React__default["default"].useEffect(function () { return setVal(initial); }, [initial]);
+        var inpRef = React__default["default"].useRef(undefined);
+        React__default["default"].useEffect(function () {
             if (isOpen && inpRef.current)
                 inpRef.current.focus();
         }, [isOpen]);
-        return (React__default['default'].createElement(Modal, { isOpen: isOpen, closeIcon: true, closeHandle: onClose, title: title },
-            React__default['default'].createElement(ModalBody, null,
-                React__default['default'].createElement(Input, { type: type, onChange: function (e) {
+        return (React__default["default"].createElement(Modal, { isOpen: isOpen, closeIcon: true, closeHandle: onClose, title: title },
+            React__default["default"].createElement(ModalBody, null,
+                React__default["default"].createElement(Input, { type: type, onChange: function (e) {
                         return setVal(e.target.value);
                     }, onKeyUp: function (e) {
                         if (e.key === "Enter") {
                             onSave();
                         }
-                    }, name: "promptInput", value: val, label: React__default['default'].createElement(React__default['default'].Fragment, null,
+                    }, name: "promptInput", value: val, label: React__default["default"].createElement(React__default["default"].Fragment, null,
                         question,
-                        React__default['default'].createElement(DisplayIf, { condition: !!hint && typeof hint === "string" },
-                            React__default['default'].createElement("span", { "data-balloon": hint, "data-balloon-length": "large", "data-balloon-pos": "up" },
-                                React__default['default'].createElement("span", { className: "icon-question-circle qtr-margin-left", style: { cursor: "help" } })))), ref: inpRef })),
-            React__default['default'].createElement(ModalFooter, null,
-                React__default['default'].createElement(Button$1, { color: "light", onClick: onClose, disabled: doing }, "Close"),
-                React__default['default'].createElement(Button$1, { color: "primary", onClick: onSave, disabled: doing },
+                        React__default["default"].createElement(DisplayIf, { condition: !!hint && typeof hint === "string" },
+                            React__default["default"].createElement("span", { "data-balloon": hint, "data-balloon-length": "large", "data-balloon-pos": "up" },
+                                React__default["default"].createElement("span", { className: "icon-question-circle qtr-margin-left", style: { cursor: "help" } })))), ref: inpRef })),
+            React__default["default"].createElement(ModalFooter, null,
+                React__default["default"].createElement(Button$1, { color: "light", onClick: onClose, disabled: doing }, "Close"),
+                React__default["default"].createElement(Button$1, { color: "primary", onClick: onSave, disabled: doing },
                     "OK",
-                    doing ? (React__default['default'].createElement("span", { className: "icon-animation spin qtr-margin-left" })) : null))));
+                    doing ? (React__default["default"].createElement("span", { className: "icon-animation spin qtr-margin-left" })) : null))));
     }
 
     var ConfirmationListener = function () {
-        var _a = React__default['default'].useState([]), modals = _a[0], setModals = _a[1];
-        var addModal = React__default['default'].useCallback(function (modal) {
-            return setModals(function (curr) { return __spreadArray(__spreadArray([], curr), [__assign({ id: Date.now(), shown: true }, modal)]); });
+        var _a = React__default["default"].useState([]), modals = _a[0], setModals = _a[1];
+        var addModal = React__default["default"].useCallback(function (modal) {
+            return setModals(function (curr) { return __spreadArray(__spreadArray([], curr, true), [__assign({ id: Date.now(), shown: true }, modal)], false); });
         }, []);
-        var hideModal = React__default['default'].useCallback(function (id) {
+        var hideModal = React__default["default"].useCallback(function (id) {
             setModals(function (curr) {
                 return curr.map(function (m) { return (m.id === id ? __assign(__assign({}, m), { shown: false }) : m); });
             });
         }, []);
-        var deleteModal = React__default['default'].useCallback(function (id) {
+        var deleteModal = React__default["default"].useCallback(function (id) {
             setModals(function (curr) {
                 return curr.filter(function (m) {
                     if (m.id === id && typeof m.onClosed === "function")
@@ -4382,41 +4494,41 @@
                 });
             });
         }, []);
-        var closeModal = React__default['default'].useCallback(function (id) {
+        var closeModal = React__default["default"].useCallback(function (id) {
             hideModal(id);
             setTimeout(function () { return deleteModal(id); }, 500);
         }, [hideModal, deleteModal]);
-        React__default['default'].useEffect(function () {
+        React__default["default"].useEffect(function () {
             eventManager$1.on(EVENTS.SHOW_MODAL, function (m) { return addModal(m); });
         }, [addModal]);
         if (!modals.length)
             return null;
-        return (React__default['default'].createElement(React__default['default'].Fragment, null, modals.map(function (modal) {
+        return (React__default["default"].createElement(React__default["default"].Fragment, null, modals.map(function (modal) {
             if (modal.modalType === "dynamic")
-                return (React__default['default'].createElement(Modal, __assign({}, modal.modalProps, { key: modal.id, isOpen: modal.shown, closeHandle: function () { return closeModal(modal.id); }, title: modal.title }), modal.fullBody ? (typeof modal.fullBody === "function" ? (modal.fullBody({ close: function () { return closeModal(modal.id); } })) : (React.cloneElement(modal.fullBody, {
+                return (React__default["default"].createElement(Modal, __assign({}, modal.modalProps, { key: modal.id, isOpen: modal.shown, closeHandle: function () { return closeModal(modal.id); }, title: modal.title }), modal.fullBody ? (typeof modal.fullBody === "function" ? (modal.fullBody({ close: function () { return closeModal(modal.id); } })) : (React.cloneElement(modal.fullBody, {
                     close: function () { return closeModal(modal.id); },
-                }))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
-                    React__default['default'].createElement(ModalBody, null, modal.body),
-                    React__default['default'].createElement(ModalFooter, null, modal.buttons.map(function (button, idx) { return (React__default['default'].createElement(Button$1, { key: idx, color: button.color || "light", onClick: function (e) {
+                }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
+                    React__default["default"].createElement(ModalBody, null, modal.body),
+                    React__default["default"].createElement(ModalFooter, null, modal.buttons.map(function (button, idx) { return (React__default["default"].createElement(Button$1, { key: idx, color: button.color || "light", onClick: function (e) {
                             if (typeof button.onClick === "function")
                                 button.onClick(e, function () { return closeModal(modal.id); });
                             else
                                 closeModal(modal.id);
                         } }, button.text)); }))))));
             if (modal.modalType === "notification")
-                return (React__default['default'].createElement(Modal, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id); }, title: modal.title },
-                    React__default['default'].createElement(ModalBody, null, modal.body),
-                    React__default['default'].createElement(ModalFooter, null,
-                        React__default['default'].createElement(Button$1, { color: modal.buttonColor || "light", onClick: function () { return closeModal(modal.id); } }, modal.button))));
+                return (React__default["default"].createElement(Modal, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id); }, title: modal.title },
+                    React__default["default"].createElement(ModalBody, null, modal.body),
+                    React__default["default"].createElement(ModalFooter, null,
+                        React__default["default"].createElement(Button$1, { color: modal.buttonColor || "light", onClick: function () { return closeModal(modal.id); } }, modal.button))));
             if (modal.modalType === "prompt") {
                 if (typeof modal.options !== "undefined") {
                     var _a = modal.options, _b = _a.initial, initial = _b === void 0 ? "" : _b, _c = _a.type, type = _c === void 0 ? "text" : _c, _d = _a.hint, hint = _d === void 0 ? undefined : _d, _e = _a.validate, validate = _e === void 0 ? undefined : _e;
-                    return (React__default['default'].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: initial, type: type, hint: hint, validate: validate }));
+                    return (React__default["default"].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: initial, type: type, hint: hint, validate: validate }));
                 }
-                return (React__default['default'].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: modal.initial, type: modal.type, hint: modal.hint }));
+                return (React__default["default"].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: modal.initial, type: modal.type, hint: modal.hint }));
             }
             if (modal.modalType === "confirmation")
-                return (React__default['default'].createElement(ConfirmationModal, { key: modal.id, isOpen: modal.shown, prompt: modal.prompt, confirmHandle: function (dontAskAgain) { return __awaiter(void 0, void 0, void 0, function () {
+                return (React__default["default"].createElement(ConfirmationModal, { key: modal.id, isOpen: modal.shown, prompt: modal.prompt, confirmHandle: function (dontAskAgain) { return __awaiter(void 0, void 0, void 0, function () {
                         var r;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
@@ -4443,7 +4555,7 @@
             throw new Error("onConfirm must be specified and must be a function");
         eventManager$1.emit(EVENTS.SHOW_MODAL, {
             modalType: "confirmation",
-            prompt: React__default['default'].createElement("p", null, prompt),
+            prompt: React__default["default"].createElement("p", null, prompt),
             onConfirm: onConfirm,
             confirmText: confirmText,
             confirmType: confirmType,
@@ -4503,12 +4615,12 @@
         });
     };
 
-    var css_248z$3 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:rgba(196,199,204,.65);pointer-events:all;opacity:1;transition:opacity .15s linear;outline:none}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}.cui .modal .modal__content div.modal__close>a{color:var(--cui-inactive-color)}.cui .modal .modal__content div.modal__close>a:hover{color:var(--cui-active-color);text-decoration:none}";
+    var css_248z$3 = "@-webkit-keyframes fade-out{0%{opacity:1}to{opacity:0}}@keyframes fade-out{0%{opacity:1}to{opacity:0}}.cui .modal-backdrop{background:hsla(218,7%,78%,.65);opacity:1;outline:none;pointer-events:all;transition:opacity .15s linear}.cui .ReactModal__Overlay--before-close .modal__dialog{-webkit-animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important;animation:blowdown .3s cubic-bezier(.165,.84,.44,1) forwards,fade-out .25s linear 1!important}.cui .ReactModal__Overlay--before-close{opacity:0!important}.cui .modal .modal__content div.modal__close>a{color:var(--cui-inactive-color)}.cui .modal .modal__content div.modal__close>a:hover{color:var(--cui-active-color);text-decoration:none}";
     styleInject(css_248z$3);
 
     var Icon = function (_a) {
         var icon = _a.icon, _b = _a.size, size = _b === void 0 ? null : _b, _c = _a.className, className = _c === void 0 ? null : _c, props = __rest(_a, ["icon", "size", "className"]);
-        return (React__default['default'].createElement("span", __assign({ className: "icon-" + icon + appendClass(className) + appendClass(size, "icon-size-" + size) }, props)));
+        return (React__default["default"].createElement("span", __assign({ className: "icon-".concat(icon).concat(appendClass(className)).concat(appendClass(size, "icon-size-".concat(size))) }, props)));
     };
 
     /**
@@ -4542,7 +4654,7 @@
         var rootElemRef = React.useRef(null);
         React.useEffect(function setupElement() {
             // Look for existing target dom element to append to
-            var existingParent = document.querySelector("#" + id);
+            var existingParent = document.querySelector("#".concat(id));
             // Parent is either a new root or the existing dom element
             var parentElem = existingParent || createRootElement(id);
             // If there is no existing DOM element, add a new one.
@@ -4591,18 +4703,18 @@
 
     var AccordionElement = function (_a) {
         var children = _a.children, _b = _a.defaultOpen, defaultOpen = _b === void 0 ? false : _b, _c = _a.toggles, toggles = _c === void 0 ? false : _c, title = _a.title;
-        var _d = React__default['default'].useState(defaultOpen), isOpen = _d[0], setIsOpen = _d[1];
-        return (React__default['default'].createElement("li", { className: isOpen ? "active" : "" },
-            React__default['default'].createElement("a", { className: "accordion__title", onClick: function () { return setIsOpen(function (prev) { return !prev; }); } },
-                React__default['default'].createElement("span", null, title),
-                toggles ? (React__default['default'].createElement("span", { className: "accordion__toggle icon-chevron-down" })) : null),
-            React__default['default'].createElement("div", { className: "accordion__content" }, children)));
+        var _d = React__default["default"].useState(defaultOpen), isOpen = _d[0], setIsOpen = _d[1];
+        return (React__default["default"].createElement("li", { className: isOpen ? "active" : "" },
+            React__default["default"].createElement("a", { className: "accordion__title", onClick: function () { return setIsOpen(function (prev) { return !prev; }); } },
+                React__default["default"].createElement("span", null, title),
+                toggles ? (React__default["default"].createElement("span", { className: "accordion__toggle icon-chevron-down" })) : null),
+            React__default["default"].createElement("div", { className: "accordion__content" }, children)));
     };
     var Accordion = function (_a) {
         var children = _a.children, _b = _a.toggles, toggles = _b === void 0 ? false : _b, _c = _a.bordered, bordered = _c === void 0 ? false : _c;
-        return (React__default['default'].createElement("ul", { className: "accordion" + (bordered ? " accordion--bordered" : "") }, React__default['default'].Children.map(children, function (child) {
-            return React__default['default'].isValidElement(child)
-                ? React__default['default'].cloneElement(child, {
+        return (React__default["default"].createElement("ul", { className: "accordion".concat(bordered ? " accordion--bordered" : "") }, React__default["default"].Children.map(children, function (child) {
+            return React__default["default"].isValidElement(child)
+                ? React__default["default"].cloneElement(child, {
                     toggles: toggles,
                 })
                 : null;
@@ -4612,23 +4724,23 @@
 
     var Wrapper = function (_a) {
         var children = _a.children, _b = _a.className, className = _b === void 0 ? null : _b;
-        return (React__default['default'].createElement("span", { className: "badge-wrapper" + appendClass(className) }, children));
+        return (React__default["default"].createElement("span", { className: "badge-wrapper".concat(appendClass(className)) }, children));
     };
     var Badge = function (_a) {
         var _b = _a.color, color = _b === void 0 ? "primary" : _b, _c = _a.size, size = _c === void 0 ? "default" : _c, children = _a.children, _d = _a.className, className = _d === void 0 ? null : _d, props = __rest(_a, ["color", "size", "children", "className"]);
-        return (React__default['default'].createElement("span", __assign({ className: "" + ("badge badge--" + color) + appendClass(size !== "default", "badge--" + size) + appendClass(className) }, props), children));
+        return (React__default["default"].createElement("span", __assign({ className: "".concat("badge badge--".concat(color)).concat(appendClass(size !== "default", "badge--".concat(size))).concat(appendClass(className)) }, props), children));
     };
-    Badge.Dot = function (props) { return React__default['default'].createElement(Badge, __assign({}, props, { size: "dot" })); };
-    Badge.Tiny = function (props) { return React__default['default'].createElement(Badge, __assign({}, props, { size: "tiny" })); };
-    Badge.Small = function (props) { return React__default['default'].createElement(Badge, __assign({}, props, { size: "small" })); };
-    Badge.Default = function (props) { return React__default['default'].createElement(Badge, __assign({}, props, { size: "default" })); };
-    Badge.Large = function (props) { return React__default['default'].createElement(Badge, __assign({}, props, { size: "large" })); };
+    Badge.Dot = function (props) { return React__default["default"].createElement(Badge, __assign({}, props, { size: "dot" })); };
+    Badge.Tiny = function (props) { return React__default["default"].createElement(Badge, __assign({}, props, { size: "tiny" })); };
+    Badge.Small = function (props) { return React__default["default"].createElement(Badge, __assign({}, props, { size: "small" })); };
+    Badge.Default = function (props) { return React__default["default"].createElement(Badge, __assign({}, props, { size: "default" })); };
+    Badge.Large = function (props) { return React__default["default"].createElement(Badge, __assign({}, props, { size: "large" })); };
     Badge.Wrapper = Wrapper;
     var WithBadge = function (_a) {
         var children = _a.children, badge = _a.badge, _b = _a.wrapperClass, wrapperClass = _b === void 0 ? null : _b, props = __rest(_a, ["children", "badge", "wrapperClass"]);
-        return (React__default['default'].createElement(Badge.Wrapper, { className: wrapperClass },
+        return (React__default["default"].createElement(Badge.Wrapper, { className: wrapperClass },
             children,
-            React__default['default'].createElement(Badge, __assign({}, props), badge)));
+            React__default["default"].createElement(Badge, __assign({}, props), badge)));
     };
 
     /**
@@ -4654,40 +4766,40 @@
         var _b = _a.active, active = _b === void 0 ? false : _b, _c = _a.className, className = _c === void 0 ? null : _c, _d = _a.activeClassName, activeClassName = _d === void 0 ? null : _d, _e = _a.unmountInactive, unmountInactive = _e === void 0 ? false : _e, children = _a.children;
         if (!active && unmountInactive)
             return null;
-        return (React__default['default'].createElement("div", { className: "tab-pane" + appendClass(active, "active") + appendClass(active && activeClassName, activeClassName) + appendClass(className) }, children));
+        return (React__default["default"].createElement("div", { className: "tab-pane".concat(appendClass(active, "active")).concat(appendClass(active && activeClassName, activeClassName)).concat(appendClass(className)) }, children));
     };
     var isActive = function (openTab, id, idx) {
         return openTab === null ? idx === 0 : openTab === firstDefined(id, idx);
     };
     var TabsHeader = function (_a) {
         var _b = _a.tabsClassName, tabsClassName = _b === void 0 ? null : _b, _c = _a.center, center = _c === void 0 ? false : _c, _d = _a.right, right = _d === void 0 ? false : _d, _e = _a.justified, justified = _e === void 0 ? false : _e, _f = _a.embossed, embossed = _f === void 0 ? false : _f, _g = _a.bordered, bordered = _g === void 0 ? false : _g, _h = _a.vertical, vertical = _h === void 0 ? false : _h, _j = _a.inline, inline = _j === void 0 ? false : _j, _k = _a.openTab, openTab = _k === void 0 ? null : _k, _l = _a.sticky, sticky = _l === void 0 ? false : _l, onTabChange = _a.onTabChange, children = _a.children;
-        return (React__default['default'].createElement("ul", { className: "tabs" + appendClass(tabsClassName) + appendClass(center, "tabs--centered") + appendClass(right, "tabs--right") + appendClass(justified, "tabs--justified") + appendClass(embossed, "tabs--embossed") + appendClass(bordered, "tabs--bordered") + appendClass(vertical, "tabs--vertical") + appendClass(inline, "tabs--inline"), style: sticky ? { position: "sticky", top: "0" } : {} }, React__default['default'].Children.map(children, function (child, idx) {
-            if (!React__default['default'].isValidElement(child))
+        return (React__default["default"].createElement("ul", { className: "tabs".concat(appendClass(tabsClassName)).concat(appendClass(center, "tabs--centered")).concat(appendClass(right, "tabs--right")).concat(appendClass(justified, "tabs--justified")).concat(appendClass(embossed, "tabs--embossed")).concat(appendClass(bordered, "tabs--bordered")).concat(appendClass(vertical, "tabs--vertical")).concat(appendClass(inline, "tabs--inline")), style: sticky ? { position: "sticky", top: "0" } : {} }, React__default["default"].Children.map(children, function (child, idx) {
+            if (!React__default["default"].isValidElement(child))
                 return child;
             var _a = child.props, id = _a.id, title = _a.title;
-            return (React__default['default'].createElement("li", { className: "tab" + appendClass(isActive(openTab, id, idx), "active"), key: firstDefined(id, idx) },
-                React__default['default'].createElement("a", { onClick: function () { return onTabChange(firstDefined(id, idx)); } }, title)));
+            return (React__default["default"].createElement("li", { className: "tab".concat(appendClass(isActive(openTab, id, idx), "active")), key: firstDefined(id, idx) },
+                React__default["default"].createElement("a", { onClick: function () { return onTabChange(firstDefined(id, idx)); } }, title)));
         })));
     };
     var composeColumnSize = function (columnWidth) {
         if (typeof columnWidth === "string" || typeof columnWidth === "number")
-            return "col-" + columnWidth;
+            return "col-".concat(columnWidth);
         return Object.keys(columnWidth)
-            .map(function (k) { return "col-" + k + "-" + columnWidth[k]; })
+            .map(function (k) { return "col-".concat(k, "-").concat(columnWidth[k]); })
             .join(" ");
     };
     var ColumnWrap = function (_a) {
         var columnWidth = _a.columnWidth, className = _a.className, props = __rest(_a, ["columnWidth", "className"]);
-        return (React__default['default'].createElement("div", __assign({ className: "" + composeColumnSize(columnWidth) + appendClass(className) }, props)));
+        return (React__default["default"].createElement("div", __assign({ className: "".concat(composeColumnSize(columnWidth)).concat(appendClass(className)) }, props)));
     };
     var Tabs = function (_a) {
         var _b = _a.defaultTab, defaultTab = _b === void 0 ? null : _b, _c = _a.tabsClassName, tabsClassName = _c === void 0 ? null : _c, _d = _a.contentClassName, contentClassName = _d === void 0 ? null : _d, _e = _a.center, center = _e === void 0 ? false : _e, _f = _a.right, right = _f === void 0 ? false : _f, _g = _a.justified, justified = _g === void 0 ? false : _g, _h = _a.embossed, embossed = _h === void 0 ? false : _h, _j = _a.bordered, bordered = _j === void 0 ? false : _j, _k = _a.vertical, vertical = _k === void 0 ? false : _k, _l = _a.sticky, sticky = _l === void 0 ? false : _l, _m = _a.inline, inline = _m === void 0 ? false : _m, _o = _a.renderHeader, renderHeader = _o === void 0 ? function (header) { return header; } : _o, _p = _a.renderBody, renderBody = _p === void 0 ? function (body) { return body; } : _p, _q = _a.onTabChange, onTabChange = _q === void 0 ? null : _q, _r = _a.leftColumn, leftColumn = _r === void 0 ? { columnWidth: 3 } : _r, _s = _a.rightColumn, rightColumn = _s === void 0 ? { columnWidth: 9 } : _s, _t = _a.rowProps, _u = _t === void 0 ? {} : _t, rowClassName = _u.className, rowProps = __rest(_u, ["className"]), _v = _a.beforeTabChange, beforeTabChange = _v === void 0 ? null : _v, children = _a.children;
-        var _w = React__default['default'].useState(defaultTab || null), openTab = _w[0], setOpenTab = _w[1];
+        var _w = React__default["default"].useState(defaultTab || null), openTab = _w[0], setOpenTab = _w[1];
         var prevTab = usePrevious(openTab);
-        React__default['default'].useEffect(function () {
+        React__default["default"].useEffect(function () {
             setOpenTab(defaultTab);
         }, [defaultTab]);
-        React__default['default'].useEffect(function () {
+        React__default["default"].useEffect(function () {
             (function () { return __awaiter(void 0, void 0, void 0, function () {
                 var _a;
                 return __generator(this, function (_b) {
@@ -4711,102 +4823,102 @@
                 });
             }); })();
         }, [openTab, prevTab]);
-        var header = (React__default['default'].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default['default'].createElement(ColumnWrap, __assign({}, leftColumn)) }, renderHeader(React__default['default'].createElement(TabsHeader, { tabsClassName: tabsClassName, center: center, right: right, justified: justified, embossed: embossed, bordered: bordered, vertical: vertical, sticky: sticky, inline: inline, openTab: openTab, onTabChange: setOpenTab }, children))));
-        var body = (React__default['default'].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default['default'].createElement(ColumnWrap, __assign({}, rightColumn)) }, renderBody(React__default['default'].createElement("div", { className: "tab-content" + (contentClassName ? " " + contentClassName : "") }, React__default['default'].Children.map(children, function (child, idx) {
-            return React__default['default'].isValidElement(child)
-                ? React__default['default'].cloneElement(child, {
+        var header = (React__default["default"].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default["default"].createElement(ColumnWrap, __assign({}, leftColumn)) }, renderHeader(React__default["default"].createElement(TabsHeader, { tabsClassName: tabsClassName, center: center, right: right, justified: justified, embossed: embossed, bordered: bordered, vertical: vertical, sticky: sticky, inline: inline, openTab: openTab, onTabChange: setOpenTab }, children))));
+        var body = (React__default["default"].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default["default"].createElement(ColumnWrap, __assign({}, rightColumn)) }, renderBody(React__default["default"].createElement("div", { className: "tab-content".concat(contentClassName ? " ".concat(contentClassName) : "") }, React__default["default"].Children.map(children, function (child, idx) {
+            return React__default["default"].isValidElement(child)
+                ? React__default["default"].cloneElement(child, {
                     active: isActive(openTab, child.props.id, idx),
                 })
                 : child;
         })))));
-        return (React__default['default'].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default['default'].createElement("div", __assign({ className: "row" + appendClass(rowClassName), style: sticky ? { position: "relative" } : {} }, rowProps)) },
-            React__default['default'].createElement(DisplayIf, { condition: (vertical && !right) || !vertical }, header),
+        return (React__default["default"].createElement(ConditionalWrapper, { condition: vertical, wrapper: React__default["default"].createElement("div", __assign({ className: "row".concat(appendClass(rowClassName)), style: sticky ? { position: "relative" } : {} }, rowProps)) },
+            React__default["default"].createElement(DisplayIf, { condition: (vertical && !right) || !vertical }, header),
             body,
-            React__default['default'].createElement(DisplayIf, { condition: vertical && right }, header)));
+            React__default["default"].createElement(DisplayIf, { condition: vertical && right }, header)));
     };
 
     var Section = function (_a) {
         var children = _a.children, _b = _a.className, className = _b === void 0 ? null : _b;
-        return React__default['default'].createElement("div", { className: "section" + appendClass(className) }, children);
+        return React__default["default"].createElement("div", { className: "section".concat(appendClass(className)) }, children);
     };
 
     var Display = function (_a) {
         var _b = _a.as, as = _b === void 0 ? "h1" : _b, _c = _a.className, className = _c === void 0 ? null : _c, size = _a.size, props = __rest(_a, ["as", "className", "size"]);
-        return React__default['default'].createElement(as, __assign(__assign({}, props), { className: "display-" + size + appendClass(className) }));
+        return React__default["default"].createElement(as, __assign(__assign({}, props), { className: "display-".concat(size).concat(appendClass(className)) }));
     };
-    var Display0 = function (props) { return (React__default['default'].createElement(Display, __assign({}, props, { size: 0 }))); };
-    var Display1 = function (props) { return (React__default['default'].createElement(Display, __assign({}, props, { size: 1 }))); };
-    var Display2 = function (props) { return (React__default['default'].createElement(Display, __assign({}, props, { size: 2 }))); };
-    var Display3 = function (props) { return (React__default['default'].createElement(Display, __assign({}, props, { size: 3 }))); };
-    var Display4 = function (props) { return (React__default['default'].createElement(Display, __assign({}, props, { size: 4 }))); };
+    var Display0 = function (props) { return (React__default["default"].createElement(Display, __assign({}, props, { size: 0 }))); };
+    var Display1 = function (props) { return (React__default["default"].createElement(Display, __assign({}, props, { size: 1 }))); };
+    var Display2 = function (props) { return (React__default["default"].createElement(Display, __assign({}, props, { size: 2 }))); };
+    var Display3 = function (props) { return (React__default["default"].createElement(Display, __assign({}, props, { size: 3 }))); };
+    var Display4 = function (props) { return (React__default["default"].createElement(Display, __assign({}, props, { size: 4 }))); };
 
     var css_248z$2 = ".cui .timeline.simplified .timeline__content:before{content:none}.cui .timeline.simplified:before{z-index:0}.cui .timeline.simplified .timeline__icon{position:relative;z-index:1}.cui .timeline.simplified .timeline__content{background:transparent;padding-left:0}.cui .timeline.simplified .timeline__time{display:block;font-size:var(--cui-font-size-sm)!important;margin-bottom:var(--cui-spacing)!important;margin-top:0!important}";
     styleInject(css_248z$2);
 
     var TimelineItem = function (_a) {
-        var _b = _a.icon, icon = _b === void 0 ? React__default['default'].createElement(Icon, { icon: "circle" }) : _b, _c = _a.time, time = _c === void 0 ? null : _c, _d = _a.className, className = _d === void 0 ? null : _d, _e = _a.contentClassName, contentClassName = _e === void 0 ? null : _e, _f = _a.simplified, simplified = _f === void 0 ? false : _f, _g = _a.header, header = _g === void 0 ? null : _g, children = _a.children;
-        return (React__default['default'].createElement("div", { className: "timeline__item" + appendClass(className) },
-            React__default['default'].createElement("div", { className: "timeline__icon" }, icon),
-            time && !simplified ? React__default['default'].createElement("div", { className: "timeline__time" }, time) : null,
-            React__default['default'].createElement("div", { className: "timeline__content" + appendClass(contentClassName) },
-                header ? (React.isValidElement(header) ? (header) : (React__default['default'].createElement("div", { className: "timeline__header" }, header))) : null,
-                time && simplified ? React__default['default'].createElement("div", { className: "timeline__time" }, time) : null,
+        var _b = _a.icon, icon = _b === void 0 ? React__default["default"].createElement(Icon, { icon: "circle" }) : _b, _c = _a.time, time = _c === void 0 ? null : _c, _d = _a.className, className = _d === void 0 ? null : _d, _e = _a.contentClassName, contentClassName = _e === void 0 ? null : _e, _f = _a.simplified, simplified = _f === void 0 ? false : _f, _g = _a.header, header = _g === void 0 ? null : _g, children = _a.children;
+        return (React__default["default"].createElement("div", { className: "timeline__item".concat(appendClass(className)) },
+            React__default["default"].createElement("div", { className: "timeline__icon" }, icon),
+            time && !simplified ? React__default["default"].createElement("div", { className: "timeline__time" }, time) : null,
+            React__default["default"].createElement("div", { className: "timeline__content".concat(appendClass(contentClassName)) },
+                header ? (React.isValidElement(header) ? (header) : (React__default["default"].createElement("div", { className: "timeline__header" }, header))) : null,
+                time && simplified ? React__default["default"].createElement("div", { className: "timeline__time" }, time) : null,
                 children)));
     };
     var Timeline = function (_a) {
         var _b = _a.center, center = _b === void 0 ? false : _b, _c = _a.right, right = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, _e = _a.simplified, simplified = _e === void 0 ? false : _e, children = _a.children;
-        return (React__default['default'].createElement("div", { className: "timeline" + appendClass(center, "timeline--centered") + appendClass(right, "timeline--right") + appendClass(simplified, "simplified") + appendClass(className) }, React__default['default'].Children.map(children, function (child) {
+        return (React__default["default"].createElement("div", { className: "timeline".concat(appendClass(center, "timeline--centered")).concat(appendClass(right, "timeline--right")).concat(appendClass(simplified, "simplified")).concat(appendClass(className)) }, React__default["default"].Children.map(children, function (child) {
             return React.isValidElement(child) ? React.cloneElement(child, { simplified: simplified }) : child;
         })));
     };
 
     var Step = React.forwardRef(function (_a, ref) {
         var _b = _a.visited, visited = _b === void 0 ? false : _b, _c = _a.active, active = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? null : _d, icon = _a.icon, children = _a.children, consequativeIdx = _a.consequativeIdx;
-        return (React__default['default'].createElement("div", { className: "step" + appendClass(visited, "visited") + appendClass(active, "active") + appendClass(className), ref: ref },
-            React__default['default'].createElement("div", { className: "step__icon" }, icon !== null && icon !== void 0 ? icon : consequativeIdx),
-            React__default['default'].createElement("div", { className: "step__label" }, children)));
+        return (React__default["default"].createElement("div", { className: "step".concat(appendClass(visited, "visited")).concat(appendClass(active, "active")).concat(appendClass(className)), ref: ref },
+            React__default["default"].createElement("div", { className: "step__icon" }, icon !== null && icon !== void 0 ? icon : consequativeIdx),
+            React__default["default"].createElement("div", { className: "step__label" }, children)));
     });
 
     var Steps = React.forwardRef(function (_a, ref) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.color, color = _c === void 0 ? "primary" : _c, _d = _a.vertical, vertical = _d === void 0 ? false : _d, _e = _a.className, className = _e === void 0 ? null : _e, children = _a.children;
-        return (React__default['default'].createElement("div", { className: "steps" + appendClass(size !== "default", "steps--" + size) + " steps--" + color + appendClass(vertical, "steps--vertical") + appendClass(className), ref: ref }, React__default['default'].Children.toArray(children)
+        return (React__default["default"].createElement("div", { className: "steps".concat(appendClass(size !== "default", "steps--".concat(size)), " steps--").concat(color).concat(appendClass(vertical, "steps--vertical")).concat(appendClass(className)), ref: ref }, React__default["default"].Children.toArray(children)
             .filter(Boolean)
             .map(function (child, idx) {
             return React.isValidElement(child)
-                ? React__default['default'].cloneElement(child, { consequativeIdx: idx + 1 })
+                ? React__default["default"].cloneElement(child, { consequativeIdx: idx + 1 })
                 : child;
         })));
     });
 
     var VerticalCenter = function (_a) {
         var children = _a.children;
-        return (React__default['default'].createElement("div", { className: "content-fluid", style: { display: "flex", minHeight: "100vh", flexDirection: "column" } },
-            React__default['default'].createElement("main", { style: { display: "flex", flexDirection: "column", flex: 1 } }, children)));
+        return (React__default["default"].createElement("div", { className: "content-fluid", style: { display: "flex", minHeight: "100vh", flexDirection: "column" } },
+            React__default["default"].createElement("main", { style: { display: "flex", flexDirection: "column", flex: 1 } }, children)));
     };
 
     var Textarea = function (_a) {
         var _b = _a.label, label = _b === void 0 ? null : _b, _c = _a.textareaClass, textareaClass = _c === void 0 ? null : _c, _d = _a.innerDivClass, innerDivClass = _d === void 0 ? null : _d, _e = _a.className, className = _e === void 0 ? null : _e, _f = _a.id, id = _f === void 0 ? null : _f, _g = _a.inputRef, inputRef = _g === void 0 ? null : _g, _h = _a.inline, inline = _h === void 0 ? false : _h, _j = _a.error, error = _j === void 0 ? null : _j, textarea = __rest(_a, ["label", "textareaClass", "innerDivClass", "className", "id", "inputRef", "inline", "error"]);
-        return (React__default['default'].createElement("div", { className: "form-group" + appendClass(inline, "form-group--inline") + appendClass(className) + appendClass(error, "form-group--error") },
-            React__default['default'].createElement("div", { className: "form-group__text" + appendClass(innerDivClass) },
-                React__default['default'].createElement("textarea", __assign({ className: textareaClass, ref: inputRef }, textarea), textarea.value),
-                label ? React__default['default'].createElement("label", { htmlFor: id }, label) : null),
-            error ? React__default['default'].createElement(InputHelpBlock, { text: error }) : null));
+        return (React__default["default"].createElement("div", { className: "form-group".concat(appendClass(inline, "form-group--inline")).concat(appendClass(className)).concat(appendClass(error, "form-group--error")) },
+            React__default["default"].createElement("div", { className: "form-group__text".concat(appendClass(innerDivClass)) },
+                React__default["default"].createElement("textarea", __assign({ className: textareaClass, ref: inputRef }, textarea), textarea.value),
+                label ? React__default["default"].createElement("label", { htmlFor: id }, label) : null),
+            error ? React__default["default"].createElement(InputHelpBlock, { text: error }) : null));
     };
 
     var DropdownHeader = function (_a) {
         var _b;
         var variants = _a.variants, selectedIdx = _a.selectedIdx, setIdx = _a.setIdx, _c = _a.placeholder, placeholder = _c === void 0 ? "Select" : _c;
-        return (React__default['default'].createElement(Dropdown, { type: "link", header: ((_b = variants[selectedIdx]) === null || _b === void 0 ? void 0 : _b.display) || placeholder, alwaysClose: true, className: "flex-center-vertical", stopPropagation: true }, variants.map(function (v, idx) {
+        return (React__default["default"].createElement(Dropdown, { type: "link", header: ((_b = variants[selectedIdx]) === null || _b === void 0 ? void 0 : _b.display) || placeholder, alwaysClose: true, className: "flex-center-vertical", stopPropagation: true }, variants.map(function (v, idx) {
             var _a;
-            return (React__default['default'].createElement("a", { key: v.variant, onClick: function () { return setIdx(idx); }, className: ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.variant) === v.variant ? "selected" : "" }, v.display));
+            return (React__default["default"].createElement("a", { key: v.variant, onClick: function () { return setIdx(idx); }, className: ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.variant) === v.variant ? "selected" : "" }, v.display));
         })));
     };
     var ListHeader = function (_a) {
         var variants = _a.variants, selectedIdx = _a.selectedIdx, setIdx = _a.setIdx;
-        return (React__default['default'].createElement("ul", { className: "list list--inline divider--vertical" }, variants.map(function (v, idx) {
+        return (React__default["default"].createElement("ul", { className: "list list--inline divider--vertical" }, variants.map(function (v, idx) {
             var _a;
-            return (React__default['default'].createElement("li", { key: v.variant },
-                React__default['default'].createElement(ConditionalWrapper, { condition: ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.variant) !== v.variant, wrapper: React__default['default'].createElement("a", { key: v.variant, onClick: function () { return setIdx(idx); } }) }, v.display)));
+            return (React__default["default"].createElement("li", { key: v.variant },
+                React__default["default"].createElement(ConditionalWrapper, { condition: ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.variant) !== v.variant, wrapper: React__default["default"].createElement("a", { key: v.variant, onClick: function () { return setIdx(idx); } }) }, v.display)));
         })));
     };
     var VariantSelector = function (_a) {
@@ -4824,25 +4936,25 @@
                 onChange(variants[variantIdx]);
         }, [variantIdx]);
         var dd = function (el, t) {
-            return React__default['default'].createElement(el, { className: "secondary-tabs" }, t ? React__default['default'].createElement("span", { className: "half-margin-right" }, t) : null, list ? (React__default['default'].createElement(ListHeader, { variants: variants, selectedIdx: variantIdx, setIdx: setIdx })) : (React__default['default'].createElement(DropdownHeader, { variants: variants, selectedIdx: variantIdx, setIdx: setIdx })));
+            return React__default["default"].createElement(el, { className: "secondary-tabs" }, t ? React__default["default"].createElement("span", { className: "half-margin-right" }, t) : null, list ? (React__default["default"].createElement(ListHeader, { variants: variants, selectedIdx: variantIdx, setIdx: setIdx })) : (React__default["default"].createElement(DropdownHeader, { variants: variants, selectedIdx: variantIdx, setIdx: setIdx })));
         };
-        return (React__default['default'].createElement("div", { className: "form-group" + appendClass(inline, " inline-variants") + appendClass(className) },
-            disableable ? (React__default['default'].createElement("span", { className: "flex-center-vertical" },
-                React__default['default'].createElement("label", { className: "switch", htmlFor: name + ".disableable" },
-                    React__default['default'].createElement("input", { type: "checkbox", onChange: function () { return setIdx(function (p) { return (p >= 0 ? -1 : 0); }); }, checked: variantIdx >= 0, id: name + ".disableable" }),
-                    React__default['default'].createElement("span", { className: "switch__input" }),
-                    React__default['default'].createElement("span", { className: "switch__label" }, title)),
+        return (React__default["default"].createElement("div", { className: "form-group".concat(appendClass(inline, " inline-variants")).concat(appendClass(className)) },
+            disableable ? (React__default["default"].createElement("span", { className: "flex-center-vertical" },
+                React__default["default"].createElement("label", { className: "switch", htmlFor: "".concat(name, ".disableable") },
+                    React__default["default"].createElement("input", { type: "checkbox", onChange: function () { return setIdx(function (p) { return (p >= 0 ? -1 : 0); }); }, checked: variantIdx >= 0, id: "".concat(name, ".disableable") }),
+                    React__default["default"].createElement("span", { className: "switch__input" }),
+                    React__default["default"].createElement("span", { className: "switch__label" }, title)),
                 variantIdx >= 0 ? dd("span", enableTitleAppend) : null)) : (dd("div", title)),
-            disableable && variantIdx < 0 ? null : (React__default['default'].createElement("div", { className: "tabs-wrap panel base-padding-top" }, variants[variantIdx].component))));
+            disableable && variantIdx < 0 ? null : (React__default["default"].createElement("div", { className: "tabs-wrap panel base-padding-top" }, variants[variantIdx].component))));
     };
 
     var Radio = React.forwardRef(function (_a, forwardedRef) {
         var _b = _a.spacing, spacing = _b === void 0 ? null : _b, _c = _a.inline, inline = _c === void 0 ? false : _c, _d = _a.label, label = _d === void 0 ? null : _d, _e = _a.className, className = _e === void 0 ? null : _e, id = _a.id, _f = _a.divProps, divProps = _f === void 0 ? {} : _f, input = __rest(_a, ["spacing", "inline", "label", "className", "id", "divProps"]);
-        return (React__default['default'].createElement("div", __assign({ className: "form-group" + appendClass(inline, "form-group--inline") + appendClass(spacing, "form-group--" + spacing) + appendClass(className) }, divProps),
-            React__default['default'].createElement("label", { className: "radio", htmlFor: id || input.name },
-                React__default['default'].createElement("input", __assign({ type: "radio", id: id }, input, { ref: forwardedRef })),
-                React__default['default'].createElement("span", { className: "radio__input" }),
-                label ? React__default['default'].createElement("span", { className: "radio__label" }, label) : null)));
+        return (React__default["default"].createElement("div", __assign({ className: "form-group".concat(appendClass(inline, "form-group--inline")).concat(appendClass(spacing, "form-group--".concat(spacing))).concat(appendClass(className)) }, divProps),
+            React__default["default"].createElement("label", { className: "radio", htmlFor: id || input.name },
+                React__default["default"].createElement("input", __assign({ type: "radio", id: id }, input, { ref: forwardedRef })),
+                React__default["default"].createElement("span", { className: "radio__input" }),
+                label ? React__default["default"].createElement("span", { className: "radio__label" }, label) : null)));
     });
     var Radios = function (_a) {
         var values = _a.values, initialValue = _a.value, onChange = _a.onChange, name = _a.name;
@@ -4863,23 +4975,24 @@
                 return v;
             });
         }, [onChange]);
-        return (React__default['default'].createElement(React__default['default'].Fragment, null, values.map(function (v, idx) { return (React__default['default'].createElement(Radio, { id: v.value, label: v.label, key: v.value, name: name + "." + idx, onChange: onRadioChange, checked: value === v.value })); })));
+        return (React__default["default"].createElement(React__default["default"].Fragment, null, values.map(function (v, idx) { return (React__default["default"].createElement(Radio, { id: v.value, label: v.label, key: v.value, name: "".concat(name, ".").concat(idx), onChange: onRadioChange, checked: value === v.value })); })));
     };
 
     var InputHelpBaloon = function (_a) {
         var baloon = _a.baloon;
-        return (React__default['default'].createElement("span", { "data-balloon": baloon, "data-balloon-length": "large", "data-balloon-pos": "up", className: "qtr-margin-left" },
-            React__default['default'].createElement("span", { className: "icon-question-circle", style: { cursor: "help" } })));
+        return (React__default["default"].createElement("span", { "data-balloon": baloon, "data-balloon-length": "large", "data-balloon-pos": "up", className: "qtr-margin-left" },
+            React__default["default"].createElement("span", { className: "icon-question-circle", style: { cursor: "help" } })));
     };
 
-    var css_248z$1 = ".cui .form-group .chips .input{-moz-appearance:none;-webkit-appearance:none;background:var(--cui-form-background);border-radius:var(--cui-border-radius);border:var(--cui-border);box-shadow:none;color:var(--cui-form-value-color);flex-shrink:0;flex:1;font-family:var(--cui-font-stack);font-size:var(--cui-font-size);font-weight:var(--cui-form-value-font-weight);height:var(--cui-form-size);line-height:2.4rem;max-height:var(--cui-form-size);min-height:var(--cui-form-size);order:3;padding:var(--cui-form-padding);padding-left:0;transition:all var(--cui-animate-speed) var(--cui-animate-timing-function);align-items:center;box-sizing:border-box;display:flex;position:relative}.cui .form-group .chips .input.focus,.cui .form-group .chips .input.hover,.cui .form-group .chips .input:focus,.cui .form-group .chips .input:focus-within,.cui .form-group .chips .input:hover{border-color:var(--cui-accent-color)}.cui .form-group .chips .input.focus,.cui .form-group .chips .input:focus,.cui .form-group .chips .input:focus-within{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity));opacity:1;outline:transparent var(--cui-focus-thickness);outline-offset:1px;outline-width:thin;outline-style:none}.cui .form-group .chips .input.disabled~label,.cui .form-group .chips .input[disabled]~label{opacity:.5;cursor:not-allowed!important;pointer-events:none!important;z-index:0!important}.cui .form-group .chips .chips-outer{overflow:hidden;white-space:nowrap;padding-left:var(--cui-spacing-qtr)}.cui .form-group .chips .chips-outer>.chips-inner{white-space:normal}.cui .form-group .chips .chips-outer>.chips-inner .label+.label{margin-left:var(--cui-spacing-qtr)}.cui .form-group .chips .input input{border:none;height:calc(var(--cui-form-size) - 2px);max-height:calc(var(--cui-form-size) - 2px);min-height:calc(var(--cui-form-size) - 2px);padding-top:calc(var(--cui-form-padding) - 1px);padding-bottom:calc(var(--cui-form-padding) - 1px);background:transparent}.cui .form-group .chips .input input:focus{box-shadow:unset}.cui .form-group.form-group--error .chips .input{border-color:var(--cui-theme-danger)}";
+    var css_248z$1 = ".cui .form-group .chips .input{align-items:center;-moz-appearance:none;-webkit-appearance:none;background:var(--cui-form-background);border:var(--cui-border);border-radius:var(--cui-border-radius);box-shadow:none;box-sizing:border-box;color:var(--cui-form-value-color);display:flex;flex-shrink:0;flex:1;font-family:var(--cui-font-stack);font-size:var(--cui-font-size);font-weight:var(--cui-form-value-font-weight);height:var(--cui-form-size);line-height:2.4rem;max-height:var(--cui-form-size);min-height:var(--cui-form-size);order:3;padding:var(--cui-form-padding);padding-left:0;position:relative;transition:all var(--cui-animate-speed) var(--cui-animate-timing-function)}.cui .form-group .chips .input.focus,.cui .form-group .chips .input.hover,.cui .form-group .chips .input:focus,.cui .form-group .chips .input:focus-within,.cui .form-group .chips .input:hover{border-color:var(--cui-accent-color)}.cui .form-group .chips .input.focus,.cui .form-group .chips .input:focus,.cui .form-group .chips .input:focus-within{box-shadow:0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color),var(--cui-focus-opacity));opacity:1;outline:transparent var(--cui-focus-thickness);outline-offset:1px;outline-style:none;outline-width:thin}.cui .form-group .chips .input.disabled~label,.cui .form-group .chips .input[disabled]~label{cursor:not-allowed!important;opacity:.5;pointer-events:none!important;z-index:0!important}.cui .form-group .chips .chips-outer{overflow:hidden;padding-left:var(--cui-spacing-qtr);white-space:nowrap}.cui .form-group .chips .chips-outer>.chips-inner{white-space:normal}.cui .form-group .chips .chips-outer>.chips-inner .label+.label{margin-left:var(--cui-spacing-qtr)}.cui .form-group .chips .input input{background:transparent;border:none;height:calc(var(--cui-form-size) - 2px);max-height:calc(var(--cui-form-size) - 2px);min-height:calc(var(--cui-form-size) - 2px);padding-bottom:calc(var(--cui-form-padding) - 1px);padding-top:calc(var(--cui-form-padding) - 1px)}.cui .form-group .chips .input input:focus{box-shadow:unset}.cui .form-group.form-group--error .chips .input{border-color:var(--cui-theme-danger)}";
     styleInject(css_248z$1);
 
-    var InputChips = React__default['default'].forwardRef(function (_a, ref) {
-        var _b = _a.chipsColor, chipsColor = _b === void 0 ? "light" : _b, _c = _a.addOnBlur, addOnBlur = _c === void 0 ? true : _c, _d = _a.delimiters, delimiters = _d === void 0 ? [13] : _d, _e = _a.label, label = _e === void 0 ? null : _e, _f = _a.allowRepeat, allowRepeat = _f === void 0 ? false : _f, _g = _a.allowRegex, allowRegex = _g === void 0 ? null : _g, _h = _a.valueValidator, valueValidator = _h === void 0 ? null : _h, _j = _a.maxChips, maxChips = _j === void 0 ? null : _j, _k = _a.baloon, baloon = _k === void 0 ? null : _k, _l = _a.className, className = _l === void 0 ? null : _l, _m = _a.id, id = _m === void 0 ? null : _m, _o = _a.error, error = _o === void 0 ? null : _o, _p = _a.value, initialValue = _p === void 0 ? null : _p, onChange = _a.onChange, _q = _a.outerWrap, outerWrap = _q === void 0 ? true : _q, _r = _a.chipsOutside, chipsOutside = _r === void 0 ? false : _r, _s = _a.renderChip, renderChip = _s === void 0 ? null : _s, _t = _a.onBlur, onBlur = _t === void 0 ? null : _t, input = __rest(_a, ["chipsColor", "addOnBlur", "delimiters", "label", "allowRepeat", "allowRegex", "valueValidator", "maxChips", "baloon", "className", "id", "error", "value", "onChange", "outerWrap", "chipsOutside", "renderChip", "onBlur"]);
-        var _u = React.useState([]), value = _u[0], setValue = _u[1];
-        React.useLayoutEffect(function () {
-            setValue(function (curr) { return initialValue || curr || []; });
+    var emptyList = [];
+    var InputChips = React__default["default"].forwardRef(function (_a, ref) {
+        var _b = _a.chipsColor, chipsColor = _b === void 0 ? "light" : _b, _c = _a.addOnBlur, addOnBlur = _c === void 0 ? true : _c, _d = _a.delimiters, delimiters = _d === void 0 ? [13] : _d, _e = _a.label, label = _e === void 0 ? null : _e, _f = _a.allowRepeat, allowRepeat = _f === void 0 ? false : _f, _g = _a.allowRegex, allowRegex = _g === void 0 ? null : _g, _h = _a.valueValidator, valueValidator = _h === void 0 ? null : _h, _j = _a.maxChips, maxChips = _j === void 0 ? null : _j, _k = _a.baloon, baloon = _k === void 0 ? null : _k, _l = _a.className, className = _l === void 0 ? null : _l, _m = _a.id, id = _m === void 0 ? null : _m, _o = _a.error, error = _o === void 0 ? null : _o, _p = _a.value, initialValue = _p === void 0 ? null : _p, onChange = _a.onChange, _q = _a.outerWrap, outerWrap = _q === void 0 ? true : _q, _r = _a.chipsOutside, chipsOutside = _r === void 0 ? false : _r, _s = _a.renderChip, renderChip = _s === void 0 ? null : _s, _t = _a.onBlur, onBlur = _t === void 0 ? null : _t, _u = _a.onChipRemove, onChipRemove = _u === void 0 ? null : _u, onClick = _a.onClick, noInput = _a.noInput, input = __rest(_a, ["chipsColor", "addOnBlur", "delimiters", "label", "allowRepeat", "allowRegex", "valueValidator", "maxChips", "baloon", "className", "id", "error", "value", "onChange", "outerWrap", "chipsOutside", "renderChip", "onBlur", "onChipRemove", "onClick", "noInput"]);
+        var _v = React.useState(emptyList), value = _v[0], setValue = _v[1];
+        React.useEffect(function () {
+            setValue(function (curr) { return initialValue || curr || emptyList; });
         }, [initialValue]);
         var addValue = React.useCallback(function (v) {
             if (typeof valueValidator === "function") {
@@ -4927,31 +5040,45 @@
         }, [addOnBlur, allowRegex, addValue, onBlur]);
         var handleDelete = React.useCallback(function (idx) {
             setValue(function (curr) {
-                curr = curr.filter(function (_v, i) { return i !== idx; });
+                curr.splice(idx, 1);
                 if (typeof onChange === "function")
-                    onChange(curr);
-                return curr;
+                    onChange(curr.slice());
+                return curr.slice();
             });
-        }, [onChange]);
-        return (React__default['default'].createElement(ConditionalWrapper, { wrapper: React__default['default'].createElement("div", { className: "form-group" + appendClass(className) + appendClass(error, "form-group--error"), ref: ref }), condition: outerWrap },
-            React__default['default'].createElement("div", { className: "form-group__text chips" + appendClass(!outerWrap && className, className) },
-                label ? (React__default['default'].createElement("label", { htmlFor: id || input.name },
+            if (typeof onChipRemove === "function")
+                onChipRemove(idx);
+        }, [onChange, onChipRemove]);
+        var showInput = (!maxChips ||
+            (maxChips && Array.isArray(value) && value.length < maxChips)) &&
+            !noInput;
+        return (React__default["default"].createElement(ConditionalWrapper, { wrapper: React__default["default"].createElement("div", { className: "form-group".concat(appendClass(className)).concat(appendClass(error, "form-group--error")), ref: ref }), condition: outerWrap },
+            React__default["default"].createElement("div", { className: "form-group__text chips".concat(appendClass(!outerWrap && className, className)) },
+                label ? (React__default["default"].createElement("label", { htmlFor: id || input.name },
                     label,
-                    baloon ? React__default['default'].createElement(InputHelpBaloon, { baloon: baloon }) : null)) : null,
-                chipsOutside && Array.isArray(value) && value.length ? (React__default['default'].createElement("span", { className: "chips-outer qtr-margin-bottom" },
-                    React__default['default'].createElement("span", { className: "chips-inner" }, value.map(function (v, i) {
+                    baloon ? React__default["default"].createElement(InputHelpBaloon, { baloon: baloon }) : null)) : null,
+                chipsOutside && Array.isArray(value) && value.length ? (React__default["default"].createElement("span", { className: "chips-outer qtr-margin-bottom" },
+                    React__default["default"].createElement("span", { className: "chips-inner" }, value.map(function (v, i) {
                         return renderChip ? (renderChip({
                             value: v,
                             idx: i,
                             onDelete: function () { return handleDelete(i); },
-                        })) : (React__default['default'].createElement(Label, { removable: true, onRemove: function () { return handleDelete(i); }, color: chipsColor, size: "small", key: v + "-" + i, className: "no-margin-bottom" }, v));
+                        })) : (React__default["default"].createElement(Label, { removable: true, onRemove: function () { return handleDelete(i); }, color: chipsColor, size: "small", key: "".concat(v, "-").concat(i), className: "no-margin-bottom" }, v));
                     })))) : null,
-                React__default['default'].createElement("div", { className: "input" },
-                    !chipsOutside && Array.isArray(value) && value.length ? (React__default['default'].createElement("span", { className: "chips-outer" },
-                        React__default['default'].createElement("span", { className: "chips-inner" }, value.map(function (v, i) { return (React__default['default'].createElement(Label, { removable: true, onRemove: function () { return handleDelete(i); }, color: chipsColor, size: "small", key: v + "-" + i, className: "no-margin-bottom" }, v)); })))) : null,
-                    !maxChips ||
-                        (maxChips && Array.isArray(value) && value.length < maxChips) ? (React__default['default'].createElement("input", __assign({ type: "text", onKeyDown: handleKeyDown, onBlur: handleBlur, id: id || input.name }, input))) : null)),
-            error ? React__default['default'].createElement(InputHelpBlock, { text: error }) : null));
+                React__default["default"].createElement("div", { className: "input ".concat(appendClass(!showInput, "dbl-padding-right")), onClick: onClick },
+                    !chipsOutside && Array.isArray(value) && value.length ? (React__default["default"].createElement("span", { className: "chips-outer" },
+                        React__default["default"].createElement("span", { className: "chips-inner" }, value.map(function (v, i) {
+                            return renderChip ? (renderChip({
+                                value: v,
+                                idx: i,
+                                onDelete: function () { return handleDelete(i); },
+                            })) : (React__default["default"].createElement(Label, { removable: true, onRemove: function (e) {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    handleDelete(i);
+                                }, color: chipsColor, size: "small", key: "".concat(v, "-").concat(i), className: "no-margin-bottom" }, v));
+                        })))) : null,
+                    showInput ? (React__default["default"].createElement("input", __assign({ type: "text", onKeyDown: handleKeyDown, onBlur: handleBlur, id: id || input.name }, input))) : null)),
+            error ? React__default["default"].createElement(InputHelpBlock, { text: error }) : null));
     });
 
     /**
@@ -5044,21 +5171,21 @@
     }
     var SelectChildren = function (_a) {
         var children = _a.children, handleOptionClick = _a.handleOptionClick, isSelected = _a.isSelected;
-        return React__default['default'].Children.map(children, function (child, idx) {
+        return React__default["default"].Children.map(children, function (child, idx) {
             if (!React.isValidElement(child))
                 return child;
             if (isOption(child))
-                return (React__default['default'].createElement("a", { key: idx, onClick: function (e) { return handleOptionClick(e, child.props.value); }, className: "" + appendClass(isSelected(child.props.value), "selected") + appendClass(child.props.disabled, "disabled") }, child.props.children));
+                return (React__default["default"].createElement("a", { key: idx, onClick: function (e) { return handleOptionClick(e, child.props.value); }, className: "".concat(appendClass(isSelected(child.props.value), "selected")).concat(appendClass(child.props.disabled, "disabled")) }, child.props.children));
             if (isOptGroup(child))
-                return (React__default['default'].createElement("div", { key: idx, className: "dropdown__group" },
-                    React__default['default'].createElement("div", { className: "dropdown__group-header" }, child.props.label),
-                    React__default['default'].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, child.props.children)));
+                return (React__default["default"].createElement("div", { key: idx, className: "dropdown__group" },
+                    React__default["default"].createElement("div", { className: "dropdown__group-header" }, child.props.label),
+                    React__default["default"].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, child.props.children)));
             return child;
         });
     };
     var collectDisplays = function (children) {
         var t = [];
-        React__default['default'].Children.forEach(children, function (child) {
+        React__default["default"].Children.forEach(children, function (child) {
             if (!React.isValidElement(child))
                 return null;
             if (isOption(child)) {
@@ -5074,59 +5201,64 @@
     };
     var EditableSelect = React.forwardRef(function (_a, inputRef) {
         var _b;
-        var _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.prompt, prompt = _d === void 0 ? "Select an option" : _d, _f = _a.inline, inline = _f === void 0 ? false : _f, _g = _a.type, type = _g === void 0 ? "text" : _g, children = _a.children, _h = _a.label, label = _h === void 0 ? null : _h, _j = _a.error, error = _j === void 0 ? null : _j, _k = _a.onChange, onChange = _k === void 0 ? null : _k, _l = _a.value, initialValue = _l === void 0 ? undefined : _l, _m = _a.editable, editable = _m === void 0 ? false : _m, _o = _a.multi, multi = _o === void 0 ? false : _o, _p = _a.displayValues, displayValues = _p === void 0 ? false : _p, disabled = _a.disabled, className = _a.className, divRef = _a.divRef, input = __rest(_a, ["compressed", "prompt", "inline", "type", "children", "label", "error", "onChange", "value", "editable", "multi", "displayValues", "disabled", "className", "divRef"]);
-        var _q = React.useState(false), isOpen = _q[0], setOpen = _q[1];
-        var _r = React.useState(initialValue), value = _r[0], setValue = _r[1];
+        var _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.prompt, prompt = _d === void 0 ? "Select an option" : _d, _f = _a.inline, inline = _f === void 0 ? false : _f, _g = _a.type, type = _g === void 0 ? "text" : _g, children = _a.children, _h = _a.label, label = _h === void 0 ? null : _h, _j = _a.error, error = _j === void 0 ? null : _j, _k = _a.onChange, onChange = _k === void 0 ? null : _k, _l = _a.value, initialValue = _l === void 0 ? undefined : _l, _m = _a.editable, editable = _m === void 0 ? false : _m, _o = _a.multi, multi = _o === void 0 ? false : _o, _p = _a.displayValues, displayValues = _p === void 0 ? false : _p, disabled = _a.disabled, className = _a.className, divRef = _a.divRef, options = _a.options, _q = _a.onSelect, onSelect = _q === void 0 ? null : _q, _r = _a.onDeselect, onDeselect = _r === void 0 ? null : _r, input = __rest(_a, ["compressed", "prompt", "inline", "type", "children", "label", "error", "onChange", "value", "editable", "multi", "displayValues", "disabled", "className", "divRef", "options", "onSelect", "onDeselect"]);
+        var _s = React.useState(false), isOpen = _s[0], setOpen = _s[1];
+        var _t = React.useState(initialValue), value = _t[0], setValue = _t[1];
         var ref = React.useRef(undefined);
         var display = React.useMemo(function () { return collectDisplays(children); }, [children]);
-        // eslint-disable-next-line prefer-const
-        var handleOutsideClick;
         var handleClick = React.useCallback(function (newState) {
             if (newState === void 0) { newState = true; }
             if (disabled)
                 return;
-            setOpen(function (current) {
-                if (newState && !current) {
-                    document.addEventListener("click", handleOutsideClick, true);
-                }
-                else
-                    document.removeEventListener("click", handleOutsideClick, true);
-                return newState;
-            });
+            setOpen(newState);
         }, [disabled]);
-        handleOutsideClick = function (e) {
-            // ignore clicks on the component itself
-            if (!(e.target instanceof Node) || !(ref === null || ref === void 0 ? void 0 : ref.current))
-                return;
-            if (ref.current && ref.current.contains(e.target))
-                return;
-            if (ref.current && !ref.current.contains(e.target)) {
-                handleClick(false);
-                return;
+        React.useEffect(function () {
+            if (isOpen) {
+                var onOutsideClick_1 = function (e) {
+                    // ignore clicks on the component itself
+                    if (!(e.target instanceof Node) || !(ref === null || ref === void 0 ? void 0 : ref.current))
+                        return;
+                    if (ref.current && ref.current.contains(e.target))
+                        return;
+                    if (ref.current && !ref.current.contains(e.target)) {
+                        handleClick(false);
+                    }
+                };
+                document.addEventListener("click", onOutsideClick_1, true);
+                return function () {
+                    return document.removeEventListener("click", onOutsideClick_1, true);
+                };
             }
-        };
-        var handleOptionClick = function (_e, newValue) {
+        }, [isOpen, handleClick]);
+        var handleOptionClick = React.useCallback(function (_e, newValue) {
+            var _a;
             if (multi) {
+                var added_1 = true;
                 setValue(function (curr) {
-                    if (curr === null || curr === void 0 ? void 0 : curr.includes(newValue))
+                    if (curr === null || curr === void 0 ? void 0 : curr.includes(newValue)) {
+                        added_1 = false;
                         return curr.filter(function (v) { return v !== newValue; });
+                    }
                     else
                         return (curr || []).concat(newValue);
                 });
+                var r = (_a = (added_1 ? onSelect : onDeselect)) === null || _a === void 0 ? void 0 : _a.call(undefined, newValue);
+                if (typeof r === "function")
+                    r();
             }
             else {
                 setValue(newValue);
             }
             if (!multi)
                 handleClick(false);
-        };
+        }, [handleClick, multi, onSelect, onDeselect]);
         var isSelected = function (checkValue) {
             return multi ? value === null || value === void 0 ? void 0 : value.includes(checkValue) : value === checkValue;
         };
         React.useEffect(function () {
             setValue(initialValue);
         }, [initialValue]);
-        React.useLayoutEffect(function () {
+        React.useEffect(function () {
             if (multi && initialValue && !Array.isArray(initialValue))
                 throw Error("Value must be an array if multi select is allowed.");
         }, [multi, initialValue]);
@@ -5134,11 +5266,23 @@
             if (typeof onChange === "function")
                 onChange(value);
         }, [value]);
-        return (React__default['default'].createElement("div", { className: "form-group dropdown" + appendClass(compressed, "input--compressed") + appendClass(isOpen, "active") + appendClass(inline, "form-group--inline") + appendClass(error, "form-group--error") + appendClass(disabled, "disabled") + appendClass(className), ref: useMergeRefs([ref, divRef]) },
-            multi ? (React__default['default'].createElement(InputChips, __assign({ className: "select editable", label: label }, input, { placeholder: !Array.isArray(value) || !value.length
-                    ? prompt || input.placeholder
-                    : "", readOnly: !editable, onClick: function () { return handleClick(true); }, onChange: function (v) { return setValue(v); }, value: value, outerWrap: false, ref: inputRef }))) : (React__default['default'].createElement("div", { className: "form-group__text select editable", onClick: function () { return handleClick(true); } },
-                React__default['default'].createElement("input", __assign({ type: type, placeholder: prompt || input.placeholder, autoComplete: "off", readOnly: !editable }, input, { onChange: function (e) {
+        return (React__default["default"].createElement("div", { className: "form-group dropdown".concat(appendClass(compressed, "input--compressed")).concat(appendClass(isOpen, "active")).concat(appendClass(inline, "form-group--inline")).concat(appendClass(error, "form-group--error")).concat(appendClass(disabled, "disabled")).concat(appendClass(className)), ref: useMergeRefs([ref, divRef]) },
+            multi ? (React__default["default"].createElement(InputChips, __assign({ className: "select editable", label: label }, input, { placeholder: !Array.isArray(value) || !value.length
+                    ? input.placeholder || prompt
+                    : "", readOnly: !editable, onClick: function () { return handleClick(true); }, onChange: function () { return void 0; }, onChipRemove: function (idx) {
+                    var val;
+                    setValue(function (curr) {
+                        val = curr[idx];
+                        return curr.filter(function (_v, i) { return i !== idx; });
+                    });
+                    if (typeof onDeselect === "function")
+                        onDeselect(val);
+                }, value: displayValues
+                    ? value
+                    : display
+                        .filter(function (d) { return value === null || value === void 0 ? void 0 : value.includes(d.value); })
+                        .map(function (d) { return d.display; }), noInput: inline && !editable && Array.isArray(value) && value.length > 0, outerWrap: false, ref: inputRef }))) : (React__default["default"].createElement("div", { className: "form-group__text select editable", onClick: function () { return handleClick(true); } },
+                React__default["default"].createElement("input", __assign({ type: type, placeholder: input.placeholder || prompt, autoComplete: "off", readOnly: !editable }, input, { onChange: function (e) {
                         if (!editable)
                             return;
                         e.persist();
@@ -5148,18 +5292,20 @@
                         : !displayValues
                             ? ((_b = display === null || display === void 0 ? void 0 : display.find(function (el) { return el.value === value; })) === null || _b === void 0 ? void 0 : _b.display) || ""
                             : value, ref: inputRef })),
-                label ? React__default['default'].createElement("label", { htmlFor: input.id }, label) : null)),
-            React__default['default'].createElement("div", { className: "dropdown__menu" },
-                React__default['default'].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, children)),
-            error ? React__default['default'].createElement(InputHelpBlock, { text: error }) : null));
+                label ? React__default["default"].createElement("label", { htmlFor: input.id }, label) : null)),
+            React__default["default"].createElement("div", { className: "dropdown__menu" },
+                React__default["default"].createElement(SelectChildren, { handleOptionClick: handleOptionClick, isSelected: isSelected }, options
+                    ? options.map(function (opt, idx) { return (React__default["default"].createElement("option", { key: idx, value: opt.value }, opt.value)); })
+                    : children)),
+            error ? React__default["default"].createElement(InputHelpBlock, { text: error }) : null));
     });
 
-    var css_248z = ".cui .v-separator.v-separator--compressed{padding-left:0;margin-right:0}";
+    var css_248z = ".cui .v-separator.v-separator--compressed{margin-right:0;padding-left:0}";
     styleInject(css_248z);
 
     var VSeparator = React.forwardRef(function (_a, ref) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? "" : _d, props = __rest(_a, ["size", "compressed", "className"]);
-        return (React__default['default'].createElement("div", __assign({ className: "v-separator" + appendClass(size !== "default", "v-separator--" + size) + appendClass(compressed, "v-separator--compressed") + appendClass(className) }, props, { ref: ref })));
+        return (React__default["default"].createElement("div", __assign({ className: "v-separator".concat(appendClass(size !== "default", "v-separator--".concat(size))).concat(appendClass(compressed, "v-separator--compressed")).concat(appendClass(className)) }, props, { ref: ref })));
     });
 
     var base16Theme = {
@@ -5256,4 +5402,4 @@
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));

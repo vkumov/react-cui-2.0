@@ -3,6 +3,7 @@ import React, {
   MouseEvent,
   ReactNode,
   useCallback,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -116,6 +117,7 @@ type DropdownProps = {
   divClassName?: string;
   children: ReactNode;
   up?: boolean;
+  isOpen?: boolean;
 };
 
 export interface DropdownParts {
@@ -137,9 +139,15 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
   onOpen = null,
   stopPropagation = false,
   alwaysClose = false,
+  isOpen: outsideIsOpen,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const divRef = useRef<HTMLDivElement>(undefined);
+
+  useEffect(() => {
+    if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null)
+      setIsOpen(outsideIsOpen);
+  }, [outsideIsOpen]);
 
   // eslint-disable-next-line prefer-const
   let handleOutsideClick;

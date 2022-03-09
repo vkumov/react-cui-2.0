@@ -1,11 +1,8 @@
 import React, {
   ChangeEvent,
-  HTMLProps,
   PropsWithChildren,
   ReactNode,
   useEffect,
-  useLayoutEffect,
-  MouseEvent,
   forwardRef,
   useCallback,
   useState,
@@ -18,7 +15,7 @@ import React, {
 } from "react";
 import { useMergeRefs } from "use-callback-ref";
 
-import { InputChips } from "../InputChips";
+import { FullInputChipsProps, InputChips } from "../InputChips";
 import { InputHelpBlock } from "../InputHelpBlock";
 import { appendClass as ac } from "../../utils";
 
@@ -68,6 +65,11 @@ const SelectChildren = ({ children, handleOptionClick, isSelected }) =>
     return child;
   });
 
+type Option = {
+  label: string;
+  value: string;
+};
+
 type EditableSelectProps = {
   compressed?: boolean;
   label?: ReactNode;
@@ -82,7 +84,13 @@ type EditableSelectProps = {
   displayValues?: boolean;
   disabled?: boolean;
   divRef?: MutableRefObject<HTMLDivElement>;
+  options?: Option[];
+  onSelect?: (value: string) => void | (() => void);
+  onDeselect?: (value: string) => void | (() => void);
 };
+
+type FullEditableSelectProps = PropsWithChildren<EditableSelectProps> &
+  Omit<FullInputChipsProps, "type" | "label" | "onSelect" | "onDeselect">;
 
 type Display = {
   display: ReactNode;
@@ -106,8 +114,7 @@ const collectDisplays = (children: ReactNode): Display[] => {
 
 export const EditableSelect = forwardRef<
   HTMLInputElement,
-  PropsWithChildren<EditableSelectProps> &
-    Omit<HTMLProps<HTMLInputElement>, "type" | "label">
+  FullEditableSelectProps
 >(
   (
     {
@@ -126,6 +133,9 @@ export const EditableSelect = forwardRef<
       disabled,
       className,
       divRef,
+      options,
+      onSelect = null,
+      onDeselect = null,
       ...input
     },
     inputRef
@@ -136,47 +146,51 @@ export const EditableSelect = forwardRef<
 
     const display = useMemo(() => collectDisplays(children), [children]);
 
-    // eslint-disable-next-line prefer-const
-    let handleOutsideClick;
-
     const handleClick = useCallback(
       (newState = true) => {
         if (disabled) return;
-        setOpen((current) => {
-          if (newState && !current) {
-            document.addEventListener("click", handleOutsideClick, true);
-          } else
-            document.removeEventListener("click", handleOutsideClick, true);
-
-          return newState;
-        });
+        setOpen(newState);
       },
       [disabled]
     );
 
-    handleOutsideClick = (e: MouseEvent<Node>) => {
-      // ignore clicks on the component itself
-      if (!(e.target instanceof Node) || !ref?.current) return;
-      if (ref.current && ref.current.contains(e.target)) return;
+    useEffect(() => {
+      if (isOpen) {
+        const onOutsideClick = (e: MouseEvent) => {
+          // ignore clicks on the component itself
+          if (!(e.target instanceof Node) || !ref?.current) return;
+          if (ref.current && ref.current.contains(e.target)) return;
 
-      if (ref.current && !ref.current.contains(e.target)) {
-        handleClick(false);
-        return;
-      }
-    };
+          if (ref.current && !ref.current.contains(e.target)) {
+            handleClick(false);
+          }
+        };
 
-    const handleOptionClick = (_e, newValue) => {
-      if (multi) {
-        setValue((curr) => {
-          if (curr?.includes(newValue))
-            return curr.filter((v) => v !== newValue);
-          else return (curr || []).concat(newValue);
-        });
-      } else {
-        setValue(newValue);
+        document.addEventListener("click", onOutsideClick, true);
+        return () =>
+          document.removeEventListener("click", onOutsideClick, true);
       }
-      if (!multi) handleClick(false);
-    };
+    }, [isOpen, handleClick]);
+
+    const handleOptionClick = useCallback(
+      (_e, newValue) => {
+        if (multi) {
+          let added = true;
+          setValue((curr) => {
+            if (curr?.includes(newValue)) {
+              added = false;
+              return curr.filter((v) => v !== newValue);
+            } else return (curr || []).concat(newValue);
+          });
+          const r = (added ? onSelect : onDeselect)?.call(undefined, newValue);
+          if (typeof r === "function") r();
+        } else {
+          setValue(newValue);
+        }
+        if (!multi) handleClick(false);
+      },
+      [handleClick, multi, onSelect, onDeselect]
+    );
 
     const isSelected = (checkValue) =>
       multi ? value?.includes(checkValue) : value === checkValue;
@@ -185,7 +199,7 @@ export const EditableSelect = forwardRef<
       setValue(initialValue);
     }, [initialValue]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (multi && initialValue && !Array.isArray(initialValue))
         throw Error("Value must be an array if multi select is allowed.");
     }, [multi, initialValue]);
@@ -212,13 +226,30 @@ export const EditableSelect = forwardRef<
             {...input}
             placeholder={
               !Array.isArray(value) || !value.length
-                ? prompt || input.placeholder
+                ? input.placeholder || prompt
                 : ""
             }
             readOnly={!editable}
             onClick={() => handleClick(true)}
-            onChange={(v) => setValue(v)}
-            value={value}
+            onChange={() => void 0}
+            onChipRemove={(idx) => {
+              let val: any;
+              setValue((curr: any[]) => {
+                val = curr[idx];
+                return curr.filter((_v, i) => i !== idx);
+              });
+              if (typeof onDeselect === "function") onDeselect(val);
+            }}
+            value={
+              displayValues
+                ? value
+                : display
+                    .filter((d) => value?.includes(d.value))
+                    .map((d) => d.display)
+            }
+            noInput={
+              inline && !editable && Array.isArray(value) && value.length > 0
+            }
             outerWrap={false}
             ref={inputRef}
           />
@@ -229,7 +260,7 @@ export const EditableSelect = forwardRef<
           >
             <input
               type={type}
-              placeholder={prompt || input.placeholder}
+              placeholder={input.placeholder || prompt}
               autoComplete="off"
               readOnly={!editable}
               {...input}
@@ -255,7 +286,13 @@ export const EditableSelect = forwardRef<
             handleOptionClick={handleOptionClick}
             isSelected={isSelected}
           >
-            {children}
+            {options
+              ? options.map((opt, idx) => (
+                  <option key={idx} value={opt.value}>
+                    {opt.value}
+                  </option>
+                ))
+              : children}
           </SelectChildren>
         </div>
         {error ? <InputHelpBlock text={error} /> : null}
