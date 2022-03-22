@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "3.6.6",
+  "version": "3.6.7",
   "description": "",
   "module": "build/bundle.min.js",
   "main": "build/index.js",

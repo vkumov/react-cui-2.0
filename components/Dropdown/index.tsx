@@ -1,5 +1,6 @@
 import React, {
   FC,
+  HTMLProps,
   MouseEvent,
   ReactNode,
   useCallback,
@@ -15,9 +16,7 @@ type ElementProps = {
   selected?: boolean;
   icon?: string;
   children: ReactNode;
-  className?: string;
-  [x: string]: unknown;
-};
+} & HTMLProps<HTMLAnchorElement>;
 
 const Element: FC<ElementProps> = ({
   selected = false,
@@ -218,4 +217,10 @@ Dropdown.Element = Element;
 Dropdown.Group = Group;
 Dropdown.GroupHeader = GroupHeader;
 
-export { Dropdown };
+export {
+  Dropdown,
+  Element as DropdownElement,
+  Divider as DropdownDivider,
+  Group as DropdownGroup,
+  GroupHeader as DropdownGroupHeader,
+};

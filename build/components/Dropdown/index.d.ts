@@ -1,17 +1,19 @@
-import { FC, ReactNode } from "react";
+import { FC, HTMLProps, ReactNode } from "react";
 declare type ElementProps = {
     selected?: boolean;
     icon?: string;
     children: ReactNode;
-    className?: string;
-    [x: string]: unknown;
-};
+} & HTMLProps<HTMLAnchorElement>;
+declare const Element: FC<ElementProps>;
+declare const Divider: FC;
 declare type GroupProps = {
     children: ReactNode;
 };
+declare const Group: FC<GroupProps>;
 declare type GroupHeaderProps = {
     header: ReactNode;
 };
+declare const GroupHeader: FC<GroupHeaderProps>;
 declare type DropdownProps = {
     type?: "icon" | "link" | "div" | "button" | "custom";
     className?: string;
@@ -33,4 +35,4 @@ export interface DropdownParts {
     GroupHeader: FC<GroupHeaderProps>;
 }
 declare const Dropdown: DropdownParts & FC<DropdownProps>;
-export { Dropdown };
+export { Dropdown, Element as DropdownElement, Divider as DropdownDivider, Group as DropdownGroup, GroupHeader as DropdownGroupHeader, };

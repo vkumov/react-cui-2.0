@@ -65,10 +65,10 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
 }) => {
   const [maximized, setMaximized] = React.useState(false);
   React.useEffect(() => setMaximized(false), [isOpen]);
-  const realSize = React.useMemo(() => (maximized ? "full" : size), [
-    maximized,
-    size,
-  ]);
+  const realSize = React.useMemo(
+    () => (maximized ? "full" : size),
+    [maximized, size]
+  );
 
   const maximizeCb = React.useCallback(() => {
     setMaximized((curr) => !curr);
