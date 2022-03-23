@@ -175,56 +175,350 @@
         return condition ? React__default["default"].isValidElement(children) ? children : React__default["default"].createElement(React__default["default"].Fragment, null, "children") : null;
     };
 
-    var eventManager$1 = {
-        list: new Map(),
-        emitQueue: new Map(),
-        on: function (event, callback) {
-            if (!this.list.has(event))
-                this.list.set(event, []);
-            this.list.get(event).push(callback);
-            return this;
-        },
-        off: function (event) {
-            this.list.delete(event);
-            return this;
-        },
-        cancelEmit: function (event) {
-            var timers = this.emitQueue.get(event);
-            if (timers) {
-                timers.forEach(function (timer) { return clearTimeout(timer); });
-                this.emitQueue.delete(event);
-            }
-            return this;
-        },
-        /**
-         * Enqueue the event at the end of the call stack
-         * Doing so let the user call toast as follow:
-         * toast('1')
-         * toast('2')
-         * toast('3')
-         * Without setTimemout the code above will not work
-         */
-        emit: function (event) {
-            var _this = this;
-            var args = [];
-            for (var _i = 1; _i < arguments.length; _i++) {
-                args[_i - 1] = arguments[_i];
-            }
-            if (this.list.has(event)) {
-                this.list.get(event).forEach(function (callback) {
-                    var timer = setTimeout(function () {
-                        callback.apply(void 0, args);
-                    }, 0);
-                    if (!_this.emitQueue.has(event))
-                        _this.emitQueue.set(event, []);
-                    _this.emitQueue.get(event).push(timer);
-                });
-            }
-        },
+    function createCommonjsModule(fn) {
+      var module = { exports: {} };
+    	return fn(module, module.exports), module.exports;
+    }
+
+    var eventemitter3 = createCommonjsModule(function (module) {
+
+    var has = Object.prototype.hasOwnProperty
+      , prefix = '~';
+
+    /**
+     * Constructor to create a storage for our `EE` objects.
+     * An `Events` instance is a plain object whose properties are event names.
+     *
+     * @constructor
+     * @private
+     */
+    function Events() {}
+
+    //
+    // We try to not inherit from `Object.prototype`. In some engines creating an
+    // instance in this way is faster than calling `Object.create(null)` directly.
+    // If `Object.create(null)` is not supported we prefix the event names with a
+    // character to make sure that the built-in object properties are not
+    // overridden or used as an attack vector.
+    //
+    if (Object.create) {
+      Events.prototype = Object.create(null);
+
+      //
+      // This hack is needed because the `__proto__` property is still inherited in
+      // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.
+      //
+      if (!new Events().__proto__) prefix = false;
+    }
+
+    /**
+     * Representation of a single event listener.
+     *
+     * @param {Function} fn The listener function.
+     * @param {*} context The context to invoke the listener with.
+     * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
+     * @constructor
+     * @private
+     */
+    function EE(fn, context, once) {
+      this.fn = fn;
+      this.context = context;
+      this.once = once || false;
+    }
+
+    /**
+     * Add a listener for a given event.
+     *
+     * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+     * @param {(String|Symbol)} event The event name.
+     * @param {Function} fn The listener function.
+     * @param {*} context The context to invoke the listener with.
+     * @param {Boolean} once Specify if the listener is a one-time listener.
+     * @returns {EventEmitter}
+     * @private
+     */
+    function addListener(emitter, event, fn, context, once) {
+      if (typeof fn !== 'function') {
+        throw new TypeError('The listener must be a function');
+      }
+
+      var listener = new EE(fn, context || emitter, once)
+        , evt = prefix ? prefix + event : event;
+
+      if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
+      else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
+      else emitter._events[evt] = [emitter._events[evt], listener];
+
+      return emitter;
+    }
+
+    /**
+     * Clear event by name.
+     *
+     * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+     * @param {(String|Symbol)} evt The Event name.
+     * @private
+     */
+    function clearEvent(emitter, evt) {
+      if (--emitter._eventsCount === 0) emitter._events = new Events();
+      else delete emitter._events[evt];
+    }
+
+    /**
+     * Minimal `EventEmitter` interface that is molded against the Node.js
+     * `EventEmitter` interface.
+     *
+     * @constructor
+     * @public
+     */
+    function EventEmitter() {
+      this._events = new Events();
+      this._eventsCount = 0;
+    }
+
+    /**
+     * Return an array listing the events for which the emitter has registered
+     * listeners.
+     *
+     * @returns {Array}
+     * @public
+     */
+    EventEmitter.prototype.eventNames = function eventNames() {
+      var names = []
+        , events
+        , name;
+
+      if (this._eventsCount === 0) return names;
+
+      for (name in (events = this._events)) {
+        if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+      }
+
+      if (Object.getOwnPropertySymbols) {
+        return names.concat(Object.getOwnPropertySymbols(events));
+      }
+
+      return names;
     };
-    var EVENTS = {
-        SHOW_MODAL: "showModal",
+
+    /**
+     * Return the listeners registered for a given event.
+     *
+     * @param {(String|Symbol)} event The event name.
+     * @returns {Array} The registered listeners.
+     * @public
+     */
+    EventEmitter.prototype.listeners = function listeners(event) {
+      var evt = prefix ? prefix + event : event
+        , handlers = this._events[evt];
+
+      if (!handlers) return [];
+      if (handlers.fn) return [handlers.fn];
+
+      for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
+        ee[i] = handlers[i].fn;
+      }
+
+      return ee;
     };
+
+    /**
+     * Return the number of listeners listening to a given event.
+     *
+     * @param {(String|Symbol)} event The event name.
+     * @returns {Number} The number of listeners.
+     * @public
+     */
+    EventEmitter.prototype.listenerCount = function listenerCount(event) {
+      var evt = prefix ? prefix + event : event
+        , listeners = this._events[evt];
+
+      if (!listeners) return 0;
+      if (listeners.fn) return 1;
+      return listeners.length;
+    };
+
+    /**
+     * Calls each of the listeners registered for a given event.
+     *
+     * @param {(String|Symbol)} event The event name.
+     * @returns {Boolean} `true` if the event had listeners, else `false`.
+     * @public
+     */
+    EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
+      var evt = prefix ? prefix + event : event;
+
+      if (!this._events[evt]) return false;
+
+      var listeners = this._events[evt]
+        , len = arguments.length
+        , args
+        , i;
+
+      if (listeners.fn) {
+        if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
+
+        switch (len) {
+          case 1: return listeners.fn.call(listeners.context), true;
+          case 2: return listeners.fn.call(listeners.context, a1), true;
+          case 3: return listeners.fn.call(listeners.context, a1, a2), true;
+          case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
+          case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+          case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+        }
+
+        for (i = 1, args = new Array(len -1); i < len; i++) {
+          args[i - 1] = arguments[i];
+        }
+
+        listeners.fn.apply(listeners.context, args);
+      } else {
+        var length = listeners.length
+          , j;
+
+        for (i = 0; i < length; i++) {
+          if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
+
+          switch (len) {
+            case 1: listeners[i].fn.call(listeners[i].context); break;
+            case 2: listeners[i].fn.call(listeners[i].context, a1); break;
+            case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
+            case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
+            default:
+              if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
+                args[j - 1] = arguments[j];
+              }
+
+              listeners[i].fn.apply(listeners[i].context, args);
+          }
+        }
+      }
+
+      return true;
+    };
+
+    /**
+     * Add a listener for a given event.
+     *
+     * @param {(String|Symbol)} event The event name.
+     * @param {Function} fn The listener function.
+     * @param {*} [context=this] The context to invoke the listener with.
+     * @returns {EventEmitter} `this`.
+     * @public
+     */
+    EventEmitter.prototype.on = function on(event, fn, context) {
+      return addListener(this, event, fn, context, false);
+    };
+
+    /**
+     * Add a one-time listener for a given event.
+     *
+     * @param {(String|Symbol)} event The event name.
+     * @param {Function} fn The listener function.
+     * @param {*} [context=this] The context to invoke the listener with.
+     * @returns {EventEmitter} `this`.
+     * @public
+     */
+    EventEmitter.prototype.once = function once(event, fn, context) {
+      return addListener(this, event, fn, context, true);
+    };
+
+    /**
+     * Remove the listeners of a given event.
+     *
+     * @param {(String|Symbol)} event The event name.
+     * @param {Function} fn Only remove the listeners that match this function.
+     * @param {*} context Only remove the listeners that have this context.
+     * @param {Boolean} once Only remove one-time listeners.
+     * @returns {EventEmitter} `this`.
+     * @public
+     */
+    EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
+      var evt = prefix ? prefix + event : event;
+
+      if (!this._events[evt]) return this;
+      if (!fn) {
+        clearEvent(this, evt);
+        return this;
+      }
+
+      var listeners = this._events[evt];
+
+      if (listeners.fn) {
+        if (
+          listeners.fn === fn &&
+          (!once || listeners.once) &&
+          (!context || listeners.context === context)
+        ) {
+          clearEvent(this, evt);
+        }
+      } else {
+        for (var i = 0, events = [], length = listeners.length; i < length; i++) {
+          if (
+            listeners[i].fn !== fn ||
+            (once && !listeners[i].once) ||
+            (context && listeners[i].context !== context)
+          ) {
+            events.push(listeners[i]);
+          }
+        }
+
+        //
+        // Reset the array, or remove it completely if we have no more listeners.
+        //
+        if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
+        else clearEvent(this, evt);
+      }
+
+      return this;
+    };
+
+    /**
+     * Remove all listeners, or those of the specified event.
+     *
+     * @param {(String|Symbol)} [event] The event name.
+     * @returns {EventEmitter} `this`.
+     * @public
+     */
+    EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
+      var evt;
+
+      if (event) {
+        evt = prefix ? prefix + event : event;
+        if (this._events[evt]) clearEvent(this, evt);
+      } else {
+        this._events = new Events();
+        this._eventsCount = 0;
+      }
+
+      return this;
+    };
+
+    //
+    // Alias methods names because people roll like that.
+    //
+    EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+    EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+
+    //
+    // Expose the prefix.
+    //
+    EventEmitter.prefixed = prefix;
+
+    //
+    // Allow `EventEmitter` to be imported as module namespace.
+    //
+    EventEmitter.EventEmitter = EventEmitter;
+
+    //
+    // Expose the module.
+    //
+    {
+      module.exports = EventEmitter;
+    }
+    });
+
+    var eventManager$1 = new eventemitter3();
 
     var appendClass = function (c, what) {
         if (what === void 0) { what = undefined; }
@@ -322,11 +616,6 @@
     Dropdown.Element = Element;
     Dropdown.Group = Group;
     Dropdown.GroupHeader = GroupHeader;
-
-    function createCommonjsModule(fn) {
-      var module = { exports: {} };
-    	return fn(module, module.exports), module.exports;
-    }
 
     /**
      * Copyright (c) 2013-present, Facebook, Inc.
@@ -957,7 +1246,7 @@
       }];
     }
 
-    var _excluded = ["children"],
+    var _excluded$2 = ["children"],
         _excluded2 = ["open"],
         _excluded3 = ["refKey", "role", "onKeyDown", "onFocus", "onBlur", "onClick", "onDragEnter", "onDragOver", "onDragLeave", "onDrop"],
         _excluded4 = ["refKey", "onChange", "onClick"];
@@ -1008,7 +1297,7 @@
 
     var Dropzone$1 = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       var children = _ref.children,
-          params = _objectWithoutProperties(_ref, _excluded);
+          params = _objectWithoutProperties(_ref, _excluded$2);
 
       var _useDropzone = useDropzone(params),
           open = _useDropzone.open,
@@ -1411,7 +1700,7 @@
       var rootRef = React.useRef(null);
       var inputRef = React.useRef(null);
 
-      var _useReducer = React.useReducer(reducer$1, initialState),
+      var _useReducer = React.useReducer(reducer, initialState),
           _useReducer2 = _slicedToArray(_useReducer, 2),
           state = _useReducer2[0],
           dispatch = _useReducer2[1];
@@ -1807,7 +2096,7 @@
       });
     }
 
-    function reducer$1(state, action) {
+    function reducer(state, action) {
       /* istanbul ignore next */
       switch (action.type) {
         case 'focus':
@@ -2158,7 +2447,7 @@
                 React__default["default"].createElement("span", null, error))) : null));
     };
 
-    var Spinner = function (_a) {
+    var Spinner$1 = function (_a) {
         var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.text, text = _c === void 0 ? null : _c;
         return (React__default["default"].createElement("div", { className: "flex-center flex-middle", style: { flex: 1 } },
             React__default["default"].createElement("div", null,
@@ -2346,8 +2635,7 @@
       SUCCESS: 'success',
       WARNING: 'warning',
       ERROR: 'error',
-      DEFAULT: 'default',
-      DARK: 'dark'
+      DEFAULT: 'default'
     };
 
     /**
@@ -2360,11 +2648,11 @@
         duration = 300;
       }
 
-      var height = node.scrollHeight;
-      var style = node.style;
+      var scrollHeight = node.scrollHeight,
+          style = node.style;
       requestAnimationFrame(function () {
         style.minHeight = 'initial';
-        style.height = height + 'px';
+        style.height = scrollHeight + 'px';
         style.transition = "all " + duration + "ms";
         requestAnimationFrame(function () {
           style.height = '0';
@@ -2423,11 +2711,17 @@
           baseClassName.current = node.className;
           node.className += " " + enterClassName;
           node.addEventListener('animationend', onEntered);
+          node.addEventListener('animationcancel', onEntered);
         }
 
-        function onEntered() {
+        function onEntered(e) {
+          if (e.target !== nodeRef.current) return;
           var node = nodeRef.current;
+          node.dispatchEvent(new Event("d"
+          /* ENTRANCE_ANIMATION_END */
+          ));
           node.removeEventListener('animationend', onEntered);
+          node.removeEventListener('animationcancel', onEntered);
 
           if (animationStep.current === 0
           /* Enter */
@@ -2513,67 +2807,36 @@
       }
     };
 
-    /**
-     * `useKeeper` is a helper around `useRef`.
-     *
-     * You don't need to access the `.current`property to get the value
-     * If refresh is set to true. The ref will be updated every render
-     */
-
-    function useKeeper(arg, refresh) {
-      if (refresh === void 0) {
-        refresh = false;
-      }
-
-      var ref = React.useRef(arg);
-      React.useEffect(function () {
-        if (refresh) ref.current = arg;
-      });
-      return ref.current;
-    }
-
-    function reducer(state, action) {
-      switch (action.type) {
-        case 0
-        /* ADD */
-        :
-          return [].concat(state, [action.toastId]).filter(function (id) {
-            return id !== action.staleId;
-          });
-
-        case 1
-        /* REMOVE */
-        :
-          return isToastIdValid(action.toastId) ? state.filter(function (id) {
-            return id !== action.toastId;
-          }) : [];
-      }
-    }
-
+    var _excluded = ["delay", "staleId"];
     function useToastContainer(props) {
       var _useReducer = React.useReducer(function (x) {
         return x + 1;
       }, 0),
           forceUpdate = _useReducer[1];
 
-      var _useReducer2 = React.useReducer(reducer, []),
-          toast = _useReducer2[0],
-          dispatch = _useReducer2[1];
+      var _useState = React.useState([]),
+          toastIds = _useState[0],
+          setToastIds = _useState[1];
 
       var containerRef = React.useRef(null);
-      var toastCount = useKeeper(0);
-      var queue = useKeeper([]);
-      var collection = useKeeper({});
-      var instance = useKeeper({
+      var toastToRender = React.useRef(new Map()).current;
+
+      var isToastActive = function isToastActive(id) {
+        return toastIds.indexOf(id) !== -1;
+      };
+
+      var instance = React.useRef({
         toastKey: 1,
         displayedToast: 0,
+        count: 0,
+        queue: [],
         props: props,
         containerId: null,
         isToastActive: isToastActive,
         getToast: function getToast(id) {
-          return collection[id] || null;
+          return toastToRender.get(id);
         }
-      });
+      }).current;
       React.useEffect(function () {
         instance.containerId = props.containerId;
         eventManager.cancelEmit(3
@@ -2597,43 +2860,38 @@
       }, []);
       React.useEffect(function () {
         instance.isToastActive = isToastActive;
-        instance.displayedToast = toast.length;
+        instance.displayedToast = toastIds.length;
         eventManager.emit(4
         /* Change */
-        , toast.length, props.containerId);
-      }, [toast]);
+        , toastIds.length, props.containerId);
+      }, [toastIds]);
       React.useEffect(function () {
         instance.props = props;
       });
-
-      function isToastActive(id) {
-        return toast.indexOf(id) !== -1;
-      }
 
       function clearWaitingQueue(_ref) {
         var containerId = _ref.containerId;
         var limit = instance.props.limit;
 
         if (limit && (!containerId || instance.containerId === containerId)) {
-          toastCount -= queue.length;
-          queue = [];
+          instance.count -= instance.queue.length;
+          instance.queue = [];
         }
       }
 
       function removeToast(toastId) {
-        dispatch({
-          type: 1
-          /* REMOVE */
-          ,
-          toastId: toastId
+        setToastIds(function (state) {
+          return isToastIdValid(toastId) ? state.filter(function (id) {
+            return id !== toastId;
+          }) : [];
         });
       }
 
       function dequeueToast() {
-        var _queue$shift = queue.shift(),
-            toastContent = _queue$shift.toastContent,
-            toastProps = _queue$shift.toastProps,
-            staleId = _queue$shift.staleId;
+        var _instance$queue$shift = instance.queue.shift(),
+            toastContent = _instance$queue$shift.toastContent,
+            toastProps = _instance$queue$shift.toastProps,
+            staleId = _instance$queue$shift.staleId;
 
         appendToast(toastContent, toastProps, staleId);
       }
@@ -2644,33 +2902,34 @@
        */
 
 
-      function isNotValid(_ref2) {
-        var containerId = _ref2.containerId,
-            toastId = _ref2.toastId,
-            updateId = _ref2.updateId;
-        return !containerRef.current || instance.props.enableMultiContainer && containerId !== instance.props.containerId || collection[toastId] && updateId == null ? true : false;
-      } // this function and all the function called inside needs to rely on ref(`useKeeper`)
+      function isNotValid(options) {
+        return !containerRef.current || instance.props.enableMultiContainer && options.containerId !== instance.props.containerId || toastToRender.has(options.toastId) && options.updateId == null;
+      } // this function and all the function called inside needs to rely on refs
 
 
-      function buildToast(content, _ref3) {
-        var delay = _ref3.delay,
-            staleId = _ref3.staleId,
-            options = _objectWithoutPropertiesLoose$1(_ref3, ["delay", "staleId"]);
+      function buildToast(content, _ref2) {
+        var delay = _ref2.delay,
+            staleId = _ref2.staleId,
+            options = _objectWithoutPropertiesLoose$1(_ref2, _excluded);
 
         if (!canBeRendered(content) || isNotValid(options)) return;
         var toastId = options.toastId,
-            updateId = options.updateId;
+            updateId = options.updateId,
+            data = options.data;
         var props = instance.props;
 
         var closeToast = function closeToast() {
           return removeToast(toastId);
         };
 
-        var isNotAnUpdate = options.updateId == null;
-        if (isNotAnUpdate) toastCount++;
+        var isNotAnUpdate = updateId == null;
+        if (isNotAnUpdate) instance.count++;
         var toastProps = {
           toastId: toastId,
           updateId: updateId,
+          isLoading: options.isLoading,
+          theme: options.theme || props.theme,
+          icon: options.icon != null ? options.icon : props.icon,
           isIn: false,
           key: options.key || instance.toastKey++,
           type: options.type,
@@ -2687,56 +2946,69 @@
           pauseOnHover: isBool(options.pauseOnHover) ? options.pauseOnHover : props.pauseOnHover,
           pauseOnFocusLoss: isBool(options.pauseOnFocusLoss) ? options.pauseOnFocusLoss : props.pauseOnFocusLoss,
           draggable: isBool(options.draggable) ? options.draggable : props.draggable,
-          draggablePercent: isNum(options.draggablePercent) ? options.draggablePercent : props.draggablePercent,
+          draggablePercent: options.draggablePercent || props.draggablePercent,
           draggableDirection: options.draggableDirection || props.draggableDirection,
           closeOnClick: isBool(options.closeOnClick) ? options.closeOnClick : props.closeOnClick,
           progressClassName: parseClassName(options.progressClassName || props.progressClassName),
           progressStyle: options.progressStyle || props.progressStyle,
-          autoClose: getAutoCloseDelay(options.autoClose, props.autoClose),
+          autoClose: options.isLoading ? false : getAutoCloseDelay(options.autoClose, props.autoClose),
           hideProgressBar: isBool(options.hideProgressBar) ? options.hideProgressBar : props.hideProgressBar,
           progress: options.progress,
-          role: isStr(options.role) ? options.role : props.role,
+          role: options.role || props.role,
           deleteToast: function deleteToast() {
-            removeFromCollection(toastId);
+            toastToRender["delete"](toastId);
+            var queueLen = instance.queue.length;
+            instance.count = isToastIdValid(toastId) ? instance.count - 1 : instance.count - instance.displayedToast;
+            if (instance.count < 0) instance.count = 0;
+
+            if (queueLen > 0) {
+              var freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit;
+
+              if (queueLen === 1 || freeSlot === 1) {
+                instance.displayedToast++;
+                dequeueToast();
+              } else {
+                var toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
+                instance.displayedToast = toDequeue;
+
+                for (var i = 0; i < toDequeue; i++) {
+                  dequeueToast();
+                }
+              }
+            } else {
+              forceUpdate();
+            }
           }
         };
         if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
-        if (isFn(options.onClose)) toastProps.onClose = options.onClose; //  tweak for vertical dragging
-
-        if (toastProps.draggableDirection === "y"
-        /* Y */
-        && toastProps.draggablePercent === 80
-        /* DRAGGABLE_PERCENT */
-        ) {
-            toastProps.draggablePercent *= 1.5;
-          }
-
-        var closeButton = props.closeButton;
+        if (isFn(options.onClose)) toastProps.onClose = options.onClose;
+        toastProps.closeButton = props.closeButton;
 
         if (options.closeButton === false || canBeRendered(options.closeButton)) {
-          closeButton = options.closeButton;
+          toastProps.closeButton = options.closeButton;
         } else if (options.closeButton === true) {
-          closeButton = canBeRendered(props.closeButton) ? props.closeButton : true;
+          toastProps.closeButton = canBeRendered(props.closeButton) ? props.closeButton : true;
         }
 
-        toastProps.closeButton = closeButton;
         var toastContent = content;
 
         if (React.isValidElement(content) && !isStr(content.type)) {
           toastContent = React.cloneElement(content, {
             closeToast: closeToast,
-            toastProps: toastProps
+            toastProps: toastProps,
+            data: data
           });
         } else if (isFn(content)) {
           toastContent = content({
             closeToast: closeToast,
-            toastProps: toastProps
+            toastProps: toastProps,
+            data: data
           });
         } // not handling limit + delay by design. Waiting for user feedback first
 
 
-        if (props.limit && props.limit > 0 && toastCount > props.limit && isNotAnUpdate) {
-          queue.push({
+        if (props.limit && props.limit > 0 && instance.count > props.limit && isNotAnUpdate) {
+          instance.queue.push({
             toastContent: toastContent,
             toastProps: toastProps,
             staleId: staleId
@@ -2752,64 +3024,34 @@
 
       function appendToast(content, toastProps, staleId) {
         var toastId = toastProps.toastId;
-        if (staleId) delete collection[staleId];
-        collection[toastId] = {
+        if (staleId) toastToRender["delete"](staleId);
+        toastToRender.set(toastId, {
           content: content,
           props: toastProps
-        };
-        dispatch({
-          type: 0
-          /* ADD */
-          ,
-          toastId: toastId,
-          staleId: staleId
+        });
+        setToastIds(function (state) {
+          return [].concat(state, [toastId]).filter(function (id) {
+            return id !== staleId;
+          });
         });
       }
 
-      function removeFromCollection(toastId) {
-        delete collection[toastId];
-        var queueLen = queue.length;
-        toastCount = isToastIdValid(toastId) ? toastCount - 1 : toastCount - instance.displayedToast;
-        if (toastCount < 0) toastCount = 0;
-
-        if (queueLen > 0) {
-          var freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit;
-
-          if (queueLen === 1 || freeSlot === 1) {
-            instance.displayedToast++;
-            dequeueToast();
-          } else {
-            var toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
-            instance.displayedToast = toDequeue;
-
-            for (var i = 0; i < toDequeue; i++) {
-              dequeueToast();
-            }
-          }
-        } else {
-          forceUpdate();
-        }
-      }
-
       function getToastToRender(cb) {
-        var toastToRender = {};
-        var toastList = props.newestOnTop ? Object.keys(collection).reverse() : Object.keys(collection);
-
-        for (var i = 0; i < toastList.length; i++) {
-          var _toast = collection[toastList[i]];
-          var position = _toast.props.position;
-          toastToRender[position] || (toastToRender[position] = []);
-          toastToRender[position].push(_toast);
-        }
-
-        return Object.keys(toastToRender).map(function (p) {
-          return cb(p, toastToRender[p]);
+        var toRender = new Map();
+        var collection = Array.from(toastToRender.values());
+        if (props.newestOnTop) collection.reverse();
+        collection.forEach(function (toast) {
+          var position = toast.props.position;
+          toRender.has(position) || toRender.set(position, []);
+          toRender.get(position).push(toast);
+        });
+        return Array.from(toRender, function (p) {
+          return cb(p[0], p[1]);
         });
       }
 
       return {
         getToastToRender: getToastToRender,
-        collection: collection,
         containerRef: containerRef,
         isToastActive: isToastActive
       };
@@ -2824,7 +3066,7 @@
     }
 
     function useToast(props) {
-      var _useState = React.useState(true),
+      var _useState = React.useState(false),
           isRunning = _useState[0],
           setIsRunning = _useState[1];
 
@@ -2833,7 +3075,7 @@
           setPreventExitTransition = _useState2[1];
 
       var toastRef = React.useRef(null);
-      var drag = useKeeper({
+      var drag = React.useRef({
         start: 0,
         x: 0,
         y: 0,
@@ -2841,26 +3083,30 @@
         removalDistance: 0,
         canCloseOnClick: true,
         canDrag: false,
-        boundingRect: null
-      });
-      var syncProps = useKeeper(props, true);
+        boundingRect: null,
+        didMove: false
+      }).current;
+      var syncProps = React.useRef(props);
       var autoClose = props.autoClose,
           pauseOnHover = props.pauseOnHover,
           closeToast = props.closeToast,
           onClick = props.onClick,
           closeOnClick = props.closeOnClick;
       React.useEffect(function () {
+        syncProps.current = props;
+      });
+      React.useEffect(function () {
+        if (toastRef.current) toastRef.current.addEventListener("d"
+        /* ENTRANCE_ANIMATION_END */
+        , playToast, {
+          once: true
+        });
         if (isFn(props.onOpen)) props.onOpen(React.isValidElement(props.children) && props.children.props);
         return function () {
-          if (isFn(syncProps.onClose)) syncProps.onClose(React.isValidElement(syncProps.children) && syncProps.children.props);
+          var props = syncProps.current;
+          if (isFn(props.onClose)) props.onClose(React.isValidElement(props.children) && props.children.props);
         };
       }, []);
-      React.useEffect(function () {
-        props.draggable && bindDragEvents();
-        return function () {
-          props.draggable && unbindDragEvents();
-        };
-      }, [props.draggable]);
       React.useEffect(function () {
         props.pauseOnFocusLoss && bindFocusEvents();
         return function () {
@@ -2870,6 +3116,7 @@
 
       function onDragStart(e) {
         if (props.draggable) {
+          bindDragEvents();
           var toast = toastRef.current;
           drag.canCloseOnClick = true;
           drag.canDrag = true;
@@ -2885,7 +3132,9 @@
               drag.removalDistance = toast.offsetWidth * (props.draggablePercent / 100);
             } else {
             drag.start = drag.y;
-            drag.removalDistance = toast.offsetHeight * (props.draggablePercent / 100);
+            drag.removalDistance = toast.offsetHeight * (props.draggablePercent === 80
+            /* DRAGGABLE_PERCENT */
+            ? props.draggablePercent * 1.5 : props.draggablePercent / 100);
           }
         }
       }
@@ -2926,6 +3175,7 @@
       }
 
       function bindDragEvents() {
+        drag.didMove = false;
         document.addEventListener('mousemove', onDragMove);
         document.addEventListener('mouseup', onDragEnd);
         document.addEventListener('touchmove', onDragMove);
@@ -2940,9 +3190,10 @@
       }
 
       function onDragMove(e) {
-        if (drag.canDrag) {
-          e.preventDefault();
-          var toast = toastRef.current;
+        var toast = toastRef.current;
+
+        if (drag.canDrag && toast) {
+          drag.didMove = true;
           if (isRunning) pauseToast();
           drag.x = getX(e);
           drag.y = getY(e);
@@ -2963,9 +3214,10 @@
       }
 
       function onDragEnd() {
+        unbindDragEvents();
         var toast = toastRef.current;
 
-        if (drag.canDrag) {
+        if (drag.canDrag && drag.didMove && toast) {
           drag.canDrag = false;
 
           if (Math.abs(drag.delta) > drag.removalDistance) {
@@ -3012,7 +3264,7 @@
 
     function CloseButton(_ref) {
       var closeToast = _ref.closeToast,
-          type = _ref.type,
+          theme = _ref.theme,
           _ref$ariaLabel = _ref.ariaLabel,
           ariaLabel = _ref$ariaLabel === void 0 ? 'close' : _ref$ariaLabel;
       return React.createElement("button", {
@@ -3020,7 +3272,7 @@
         /* CSS_NAMESPACE */
         + "__close-button " + "Toastify"
         /* CSS_NAMESPACE */
-        + "__close-button--" + type,
+        + "__close-button--" + theme,
         type: "button",
         onClick: function onClick(e) {
           e.stopPropagation();
@@ -3049,7 +3301,8 @@
           controlledProgress = _ref.controlledProgress,
           progress = _ref.progress,
           rtl = _ref.rtl,
-          isIn = _ref.isIn;
+          isIn = _ref.isIn,
+          theme = _ref.theme;
 
       var style = _extends({}, userStyle, {
         animationDuration: delay + "ms",
@@ -3065,6 +3318,8 @@
       + "__progress-bar--controlled" : "Toastify"
       /* CSS_NAMESPACE */
       + "__progress-bar--animated", "Toastify"
+      /* CSS_NAMESPACE */
+      + "__progress-bar-theme--" + theme, "Toastify"
       /* CSS_NAMESPACE */
       + "__progress-bar--" + type, (_cx = {}, _cx["Toastify"
       /* CSS_NAMESPACE */
@@ -3094,8 +3349,63 @@
       hide: false
     };
 
+    var _excluded$1 = ["theme", "type"];
+
+    var Svg = function Svg(_ref) {
+      var theme = _ref.theme,
+          type = _ref.type,
+          rest = _objectWithoutPropertiesLoose$1(_ref, _excluded$1);
+
+      return React.createElement("svg", Object.assign({
+        viewBox: "0 0 24 24",
+        width: "100%",
+        height: "100%",
+        fill: theme === 'colored' ? 'currentColor' : "var(--toastify-icon-color-" + type + ")"
+      }, rest));
+    };
+
+    function Warning(props) {
+      return React.createElement(Svg, Object.assign({}, props), React.createElement("path", {
+        d: "M23.32 17.191L15.438 2.184C14.728.833 13.416 0 11.996 0c-1.42 0-2.733.833-3.443 2.184L.533 17.448a4.744 4.744 0 000 4.368C1.243 23.167 2.555 24 3.975 24h16.05C22.22 24 24 22.044 24 19.632c0-.904-.251-1.746-.68-2.44zm-9.622 1.46c0 1.033-.724 1.823-1.698 1.823s-1.698-.79-1.698-1.822v-.043c0-1.028.724-1.822 1.698-1.822s1.698.79 1.698 1.822v.043zm.039-12.285l-.84 8.06c-.057.581-.408.943-.897.943-.49 0-.84-.367-.896-.942l-.84-8.065c-.057-.624.25-1.095.779-1.095h1.91c.528.005.84.476.784 1.1z"
+      }));
+    }
+
+    function Info(props) {
+      return React.createElement(Svg, Object.assign({}, props), React.createElement("path", {
+        d: "M12 0a12 12 0 1012 12A12.013 12.013 0 0012 0zm.25 5a1.5 1.5 0 11-1.5 1.5 1.5 1.5 0 011.5-1.5zm2.25 13.5h-4a1 1 0 010-2h.75a.25.25 0 00.25-.25v-4.5a.25.25 0 00-.25-.25h-.75a1 1 0 010-2h1a2 2 0 012 2v4.75a.25.25 0 00.25.25h.75a1 1 0 110 2z"
+      }));
+    }
+
+    function Success(props) {
+      return React.createElement(Svg, Object.assign({}, props), React.createElement("path", {
+        d: "M12 0a12 12 0 1012 12A12.014 12.014 0 0012 0zm6.927 8.2l-6.845 9.289a1.011 1.011 0 01-1.43.188l-4.888-3.908a1 1 0 111.25-1.562l4.076 3.261 6.227-8.451a1 1 0 111.61 1.183z"
+      }));
+    }
+
+    function Error$1(props) {
+      return React.createElement(Svg, Object.assign({}, props), React.createElement("path", {
+        d: "M11.983 0a12.206 12.206 0 00-8.51 3.653A11.8 11.8 0 000 12.207 11.779 11.779 0 0011.8 24h.214A12.111 12.111 0 0024 11.791 11.766 11.766 0 0011.983 0zM10.5 16.542a1.476 1.476 0 011.449-1.53h.027a1.527 1.527 0 011.523 1.47 1.475 1.475 0 01-1.449 1.53h-.027a1.529 1.529 0 01-1.523-1.47zM11 12.5v-6a1 1 0 012 0v6a1 1 0 11-2 0z"
+      }));
+    }
+
+    function Spinner() {
+      return React.createElement("div", {
+        className: "Toastify"
+        /* CSS_NAMESPACE */
+        + "__spinner"
+      });
+    }
+
+    var Icons = {
+      info: Info,
+      warning: Warning,
+      success: Success,
+      error: Error$1,
+      spinner: Spinner
+    };
+
     var Toast$1 = function Toast(props) {
-      var _cx;
+      var _cx, _cx2;
 
       var _useToast = useToast(props),
           isRunning = _useToast.isRunning,
@@ -3124,10 +3434,15 @@
           rtl = props.rtl,
           toastId = props.toastId,
           deleteToast = props.deleteToast,
-          isIn = props.isIn;
+          isIn = props.isIn,
+          isLoading = props.isLoading,
+          icon = props.icon,
+          theme = props.theme;
       var defaultClassName = cx("Toastify"
       /* CSS_NAMESPACE */
       + "__toast", "Toastify"
+      /* CSS_NAMESPACE */
+      + "__toast-theme--" + theme, "Toastify"
       /* CSS_NAMESPACE */
       + "__toast--" + type, (_cx = {}, _cx["Toastify"
       /* CSS_NAMESPACE */
@@ -3139,12 +3454,31 @@
         defaultClassName: defaultClassName
       }) : cx(defaultClassName, className);
       var isProgressControlled = !!progress;
+      var maybeIcon = Icons[type];
+      var iconProps = {
+        theme: theme,
+        type: type
+      };
+      var Icon = maybeIcon && maybeIcon(iconProps);
+
+      if (icon === false) {
+        Icon = void 0;
+      } else if (isFn(icon)) {
+        Icon = icon(iconProps);
+      } else if (React.isValidElement(icon)) {
+        Icon = React.cloneElement(icon, iconProps);
+      } else if (isStr(icon)) {
+        Icon = icon;
+      } else if (isLoading) {
+        Icon = Icons.spinner();
+      }
 
       function renderCloseButton(closeButton) {
         if (!closeButton) return;
         var props = {
           closeToast: closeToast,
-          type: type
+          type: type,
+          theme: theme
         };
         if (isFn(closeButton)) return closeButton(props);
         if (React.isValidElement(closeButton)) return React.cloneElement(closeButton, props);
@@ -3172,10 +3506,19 @@
         /* CSS_NAMESPACE */
         + "__toast-body", bodyClassName),
         style: bodyStyle
-      }), children), renderCloseButton(closeButton), (autoClose || isProgressControlled) && React.createElement(ProgressBar, Object.assign({}, updateId && !isProgressControlled ? {
+      }), Icon && React.createElement("div", {
+        className: cx("Toastify"
+        /* CSS_NAMESPACE */
+        + "__toast-icon", (_cx2 = {}, _cx2["Toastify"
+        /* CSS_NAMESPACE */
+        + "--animate-icon " + "Toastify"
+        /* CSS_NAMESPACE */
+        + "__zoom-enter"] = !isLoading, _cx2))
+      }, Icon), React.createElement("div", null, children)), renderCloseButton(closeButton), (autoClose || isProgressControlled) && React.createElement(ProgressBar, Object.assign({}, updateId && !isProgressControlled ? {
         key: "pb-" + updateId
       } : {}, {
         rtl: rtl,
+        theme: theme,
         delay: autoClose,
         isRunning: isRunning,
         isIn: isIn,
@@ -3251,7 +3594,7 @@
         ,
         id: containerId
       }, getToastToRender(function (position, toastList) {
-        var containerStyle = toastList.length === 0 ? _extends({}, style, {
+        var containerStyle = !toastList.length ? _extends({}, style, {
           pointerEvents: 'none'
         }) : _extends({}, style);
         return React.createElement("div", {
@@ -3287,7 +3630,8 @@
       draggableDirection: "x"
       /* X */
       ,
-      role: 'alert'
+      role: 'alert',
+      theme: 'light'
     };
 
     var containers = /*#__PURE__*/new Map();
@@ -3297,16 +3641,8 @@
     var queue = [];
     var lazy = false;
     /**
-     * Check whether any container is currently mounted in the DOM
-     */
-
-    function isAnyContainerMounted() {
-      return containers.size > 0;
-    }
-    /**
      * Get the toast by id, given it's in the DOM, otherwise returns null
      */
-
 
     function getToast(toastId, _ref) {
       var containerId = _ref.containerId;
@@ -3320,7 +3656,7 @@
 
 
     function generateToastId() {
-      return Math.random().toString(36).substr(2, 9);
+      return Math.random().toString(36).substring(2, 9);
     }
     /**
      * Generate a toastId or use the one provided
@@ -3341,7 +3677,7 @@
 
 
     function dispatchToast(content, options) {
-      if (isAnyContainerMounted()) {
+      if (containers.size > 0) {
         eventManager.emit(0
         /* Show */
         , content, options);
@@ -3373,25 +3709,98 @@
       });
     }
 
-    var createToastByType = function createToastByType(type) {
+    function createToastByType(type) {
       return function (content, options) {
         return dispatchToast(content, mergeOptions(type, options));
       };
-    };
+    }
 
-    var toast$1 = function toast(content, options) {
+    function toast$1(content, options) {
       return dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
+    }
+
+    toast$1.loading = function (content, options) {
+      return dispatchToast(content, mergeOptions(TYPE.DEFAULT, _extends({
+        isLoading: true,
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false
+      }, options)));
     };
 
+    function handlePromise(promise, _ref2, options) {
+      var pending = _ref2.pending,
+          error = _ref2.error,
+          success = _ref2.success;
+      var id;
+
+      if (pending) {
+        id = isStr(pending) ? toast$1.loading(pending, options) : toast$1.loading(pending.render, _extends({}, options, pending));
+      }
+
+      var resetParams = {
+        isLoading: null,
+        autoClose: null,
+        closeOnClick: null,
+        closeButton: null,
+        draggable: null
+      };
+
+      var resolver = function resolver(type, input, result) {
+        // Remove the toast if the input has not been provided. This prevents the toast from hanging
+        // in the pending state if a success/error toast has not been provided.
+        if (input == null) {
+          toast$1.dismiss(id);
+          return;
+        }
+
+        var baseParams = _extends({
+          type: type
+        }, resetParams, options, {
+          data: result
+        });
+
+        var params = isStr(input) ? {
+          render: input
+        } : input; // if the id is set we know that it's an update
+
+        if (id) {
+          toast$1.update(id, _extends({}, baseParams, params));
+        } else {
+          // using toast.promise without loading
+          toast$1(params.render, _extends({}, baseParams, params));
+        }
+
+        return result;
+      };
+
+      var p = isFn(promise) ? promise() : promise; //call the resolvers only when needed
+
+      p.then(function (result) {
+        return resolver('success', success, result);
+      })["catch"](function (err) {
+        return resolver('error', error, err);
+      });
+      return p;
+    }
+
+    toast$1.promise = handlePromise;
     toast$1.success = /*#__PURE__*/createToastByType(TYPE.SUCCESS);
     toast$1.info = /*#__PURE__*/createToastByType(TYPE.INFO);
     toast$1.error = /*#__PURE__*/createToastByType(TYPE.ERROR);
     toast$1.warning = /*#__PURE__*/createToastByType(TYPE.WARNING);
-    toast$1.dark = /*#__PURE__*/createToastByType(TYPE.DARK);
     toast$1.warn = toast$1.warning;
+
+    toast$1.dark = function (content, options) {
+      return dispatchToast(content, mergeOptions(TYPE.DEFAULT, _extends({
+        theme: 'dark'
+      }, options)));
+    };
     /**
      * Remove toast programmaticaly
      */
+
 
     toast$1.dismiss = function (id) {
       return eventManager.emit(1
@@ -3464,8 +3873,10 @@
       });
     };
     /**
-     * Track changes. The callback get the number of toast displayed
+     * @deprecated
+     * API will change in the next major release
      *
+     * Track changes. The callback get the number of toast displayed
      */
 
 
@@ -3483,7 +3894,11 @@
       };
     };
     /**
+     * @deprecated
+     * will be removed in the next major release
+     *
      * Configure the ToastContainer when lazy mounted
+     * Prefer ToastContainer over this one
      */
 
 
@@ -3534,26 +3949,35 @@
       }
     });
 
-    var css_248z$5 = ".Toastify__toast-container{box-sizing:border-box;color:#fff;padding:4px;position:fixed;-webkit-transform:translateZ(9999px);width:320px;z-index:9999}.Toastify__toast-container--top-left{left:1em;top:1em}.Toastify__toast-container--top-center{left:50%;top:1em;transform:translateX(-50%)}.Toastify__toast-container--top-right{right:1em;top:1em}.Toastify__toast-container--bottom-left{bottom:1em;left:1em}.Toastify__toast-container--bottom-center{bottom:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--bottom-right{bottom:1em;right:1em}@media only screen and (max-width:480px){.Toastify__toast-container{left:0;margin:0;padding:0;width:100vw}.Toastify__toast-container--top-center,.Toastify__toast-container--top-left,.Toastify__toast-container--top-right{top:0;transform:translateX(0)}.Toastify__toast-container--bottom-center,.Toastify__toast-container--bottom-left,.Toastify__toast-container--bottom-right{bottom:0;transform:translateX(0)}.Toastify__toast-container--rtl{left:auto;right:0}}.Toastify__toast{-ms-flex-pack:justify;border-radius:4px;box-shadow:0 1px 10px 0 rgba(0,0,0,.1),0 2px 15px 0 rgba(0,0,0,.05);box-sizing:border-box;cursor:pointer;direction:ltr;display:-ms-flexbox;display:flex;font-family:sans-serif;justify-content:space-between;margin-bottom:1rem;max-height:800px;min-height:64px;overflow:hidden;padding:8px;position:relative}.Toastify__toast--rtl{direction:rtl}.Toastify__toast--dark{background:#121212;color:#fff}.Toastify__toast--default{background:#fff;color:#aaa}.Toastify__toast--info{background:#3498db}.Toastify__toast--success{background:#07bc0c}.Toastify__toast--warning{background:#f1c40f}.Toastify__toast--error{background:#e74c3c}.Toastify__toast-body{-ms-flex:1 1 auto;flex:1 1 auto;margin:auto 0;padding:6px}.Toastify--animate{animation-duration:.7s;animation-fill-mode:both}@media only screen and (max-width:480px){.Toastify__toast{border-radius:0;margin-bottom:0}}.Toastify__close-button{-ms-flex-item-align:start;align-self:flex-start;background:transparent;border:none;color:#fff;cursor:pointer;opacity:.7;outline:none;padding:0;transition:.3s ease}.Toastify__close-button--default{color:#000;opacity:.3}.Toastify__close-button>svg{fill:currentColor;height:16px;width:14px}.Toastify__close-button:focus,.Toastify__close-button:hover{opacity:1}@keyframes Toastify__trackProgress{0%{transform:scaleX(1)}to{transform:scaleX(0)}}.Toastify__progress-bar{background-color:hsla(0,0%,100%,.7);bottom:0;height:5px;left:0;opacity:.7;position:absolute;transform-origin:left;width:100%;z-index:9999}.Toastify__progress-bar--animated{animation:Toastify__trackProgress linear 1 forwards}.Toastify__progress-bar--controlled{transition:transform .2s}.Toastify__progress-bar--rtl{left:auto;right:0;transform-origin:right}.Toastify__progress-bar--default{background:linear-gradient(90deg,#4cd964,#5ac8fa,#007aff,#34aadc,#5856d6,#ff2d55)}.Toastify__progress-bar--dark{background:#bb86fc}@keyframes Toastify__bounceInRight{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(3000px,0,0)}60%{opacity:1;transform:translate3d(-25px,0,0)}75%{transform:translate3d(10px,0,0)}90%{transform:translate3d(-5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutRight{20%{opacity:1;transform:translate3d(-20px,0,0)}to{opacity:0;transform:translate3d(2000px,0,0)}}@keyframes Toastify__bounceInLeft{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(-3000px,0,0)}60%{opacity:1;transform:translate3d(25px,0,0)}75%{transform:translate3d(-10px,0,0)}90%{transform:translate3d(5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutLeft{20%{opacity:1;transform:translate3d(20px,0,0)}to{opacity:0;transform:translate3d(-2000px,0,0)}}@keyframes Toastify__bounceInUp{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,3000px,0)}60%{opacity:1;transform:translate3d(0,-20px,0)}75%{transform:translate3d(0,10px,0)}90%{transform:translate3d(0,-5px,0)}to{transform:translateZ(0)}}@keyframes Toastify__bounceOutUp{20%{transform:translate3d(0,-10px,0)}40%,45%{opacity:1;transform:translate3d(0,20px,0)}to{opacity:0;transform:translate3d(0,-2000px,0)}}@keyframes Toastify__bounceInDown{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,-3000px,0)}60%{opacity:1;transform:translate3d(0,25px,0)}75%{transform:translate3d(0,-10px,0)}90%{transform:translate3d(0,5px,0)}to{transform:none}}@keyframes Toastify__bounceOutDown{20%{transform:translate3d(0,10px,0)}40%,45%{opacity:1;transform:translate3d(0,-20px,0)}to{opacity:0;transform:translate3d(0,2000px,0)}}.Toastify__bounce-enter--bottom-left,.Toastify__bounce-enter--top-left{animation-name:Toastify__bounceInLeft}.Toastify__bounce-enter--bottom-right,.Toastify__bounce-enter--top-right{animation-name:Toastify__bounceInRight}.Toastify__bounce-enter--top-center{animation-name:Toastify__bounceInDown}.Toastify__bounce-enter--bottom-center{animation-name:Toastify__bounceInUp}.Toastify__bounce-exit--bottom-left,.Toastify__bounce-exit--top-left{animation-name:Toastify__bounceOutLeft}.Toastify__bounce-exit--bottom-right,.Toastify__bounce-exit--top-right{animation-name:Toastify__bounceOutRight}.Toastify__bounce-exit--top-center{animation-name:Toastify__bounceOutUp}.Toastify__bounce-exit--bottom-center{animation-name:Toastify__bounceOutDown}@keyframes Toastify__zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}@keyframes Toastify__zoomOut{0%{opacity:1}50%{opacity:0;transform:scale3d(.3,.3,.3)}to{opacity:0}}.Toastify__zoom-enter{animation-name:Toastify__zoomIn}.Toastify__zoom-exit{animation-name:Toastify__zoomOut}@keyframes Toastify__flipIn{0%{animation-timing-function:ease-in;opacity:0;transform:perspective(400px) rotateX(90deg)}40%{animation-timing-function:ease-in;transform:perspective(400px) rotateX(-20deg)}60%{opacity:1;transform:perspective(400px) rotateX(10deg)}80%{transform:perspective(400px) rotateX(-5deg)}to{transform:perspective(400px)}}@keyframes Toastify__flipOut{0%{transform:perspective(400px)}30%{opacity:1;transform:perspective(400px) rotateX(-20deg)}to{opacity:0;transform:perspective(400px) rotateX(90deg)}}.Toastify__flip-enter{animation-name:Toastify__flipIn}.Toastify__flip-exit{animation-name:Toastify__flipOut}@keyframes Toastify__slideInRight{0%{transform:translate3d(110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInLeft{0%{transform:translate3d(-110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInUp{0%{transform:translate3d(0,110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInDown{0%{transform:translate3d(0,-110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideOutRight{0%{transform:translateZ(0)}to{transform:translate3d(110%,0,0);visibility:hidden}}@keyframes Toastify__slideOutLeft{0%{transform:translateZ(0)}to{transform:translate3d(-110%,0,0);visibility:hidden}}@keyframes Toastify__slideOutDown{0%{transform:translateZ(0)}to{transform:translate3d(0,500px,0);visibility:hidden}}@keyframes Toastify__slideOutUp{0%{transform:translateZ(0)}to{transform:translate3d(0,-500px,0);visibility:hidden}}.Toastify__slide-enter--bottom-left,.Toastify__slide-enter--top-left{animation-name:Toastify__slideInLeft}.Toastify__slide-enter--bottom-right,.Toastify__slide-enter--top-right{animation-name:Toastify__slideInRight}.Toastify__slide-enter--top-center{animation-name:Toastify__slideInDown}.Toastify__slide-enter--bottom-center{animation-name:Toastify__slideInUp}.Toastify__slide-exit--bottom-left,.Toastify__slide-exit--top-left{animation-name:Toastify__slideOutLeft}.Toastify__slide-exit--bottom-right,.Toastify__slide-exit--top-right{animation-name:Toastify__slideOutRight}.Toastify__slide-exit--top-center{animation-name:Toastify__slideOutUp}.Toastify__slide-exit--bottom-center{animation-name:Toastify__slideOutDown}.cui .Toastify__toast{box-shadow:var(--cui-shadow-outset-lg);font-family:unset;min-height:unset!important;overflow:unset;padding:unset}.cui .Toastify__toast--default,.cui .Toastify__toast-container{background:unset;color:unset}.cui .Toastify__toast-body{padding:0}.cui .Toastify__toast .toast{box-shadow:unset}";
+    var css_248z$5 = ":root{--toastify-color-light:#fff;--toastify-color-dark:#121212;--toastify-color-info:#3498db;--toastify-color-success:#07bc0c;--toastify-color-warning:#f1c40f;--toastify-color-error:#e74c3c;--toastify-color-transparent:hsla(0,0%,100%,.7);--toastify-icon-color-info:var(--toastify-color-info);--toastify-icon-color-success:var(--toastify-color-success);--toastify-icon-color-warning:var(--toastify-color-warning);--toastify-icon-color-error:var(--toastify-color-error);--toastify-toast-width:320px;--toastify-toast-background:#fff;--toastify-toast-min-height:64px;--toastify-toast-max-height:800px;--toastify-font-family:sans-serif;--toastify-z-index:9999;--toastify-text-color-light:#757575;--toastify-text-color-dark:#fff;--toastify-text-color-info:#fff;--toastify-text-color-success:#fff;--toastify-text-color-warning:#fff;--toastify-text-color-error:#fff;--toastify-spinner-color:#616161;--toastify-spinner-color-empty-area:#e0e0e0;--toastify-color-progress-light:linear-gradient(90deg,#4cd964,#5ac8fa,#007aff,#34aadc,#5856d6,#ff2d55);--toastify-color-progress-dark:#bb86fc;--toastify-color-progress-info:var(--toastify-color-info);--toastify-color-progress-success:var(--toastify-color-success);--toastify-color-progress-warning:var(--toastify-color-warning);--toastify-color-progress-error:var(--toastify-color-error)}.Toastify__toast-container{box-sizing:border-box;color:#fff;padding:4px;position:fixed;-webkit-transform:translate3d(0,0,var(--toastify-z-index) px);width:var(--toastify-toast-width);z-index:var(--toastify-z-index)}.Toastify__toast-container--top-left{left:1em;top:1em}.Toastify__toast-container--top-center{left:50%;top:1em;transform:translateX(-50%)}.Toastify__toast-container--top-right{right:1em;top:1em}.Toastify__toast-container--bottom-left{bottom:1em;left:1em}.Toastify__toast-container--bottom-center{bottom:1em;left:50%;transform:translateX(-50%)}.Toastify__toast-container--bottom-right{bottom:1em;right:1em}@media only screen and (max-width:480px){.Toastify__toast-container{left:0;margin:0;padding:0;width:100vw}.Toastify__toast-container--top-center,.Toastify__toast-container--top-left,.Toastify__toast-container--top-right{top:0;transform:translateX(0)}.Toastify__toast-container--bottom-center,.Toastify__toast-container--bottom-left,.Toastify__toast-container--bottom-right{bottom:0;transform:translateX(0)}.Toastify__toast-container--rtl{left:auto;right:0}}.Toastify__toast{-ms-flex-pack:justify;border-radius:4px;box-shadow:0 1px 10px 0 rgba(0,0,0,.1),0 2px 15px 0 rgba(0,0,0,.05);box-sizing:border-box;cursor:pointer;direction:ltr;display:-ms-flexbox;display:flex;font-family:var(--toastify-font-family);justify-content:space-between;margin-bottom:1rem;max-height:var(--toastify-toast-max-height);min-height:var(--toastify-toast-min-height);overflow:hidden;padding:8px;position:relative}.Toastify__toast--rtl{direction:rtl}.Toastify__toast-body{-ms-flex-align:center;align-items:center;display:-ms-flexbox;display:flex;-ms-flex:1 1 auto;flex:1 1 auto;margin:auto 0;padding:6px}.Toastify__toast-body>div:last-child{-ms-flex:1;flex:1}.Toastify__toast-icon{-webkit-margin-end:10px;-ms-flex-negative:0;display:-ms-flexbox;display:flex;flex-shrink:0;margin-inline-end:10px;width:20px}.Toastify--animate{animation-duration:.7s;animation-fill-mode:both}.Toastify--animate-icon{animation-duration:.3s;animation-fill-mode:both}@media only screen and (max-width:480px){.Toastify__toast{border-radius:0;margin-bottom:0}}.Toastify__toast-theme--dark{background:var(--toastify-color-dark);color:var(--toastify-text-color-dark)}.Toastify__toast-theme--colored.Toastify__toast--default,.Toastify__toast-theme--light{background:var(--toastify-color-light);color:var(--toastify-text-color-light)}.Toastify__toast-theme--colored.Toastify__toast--info{background:var(--toastify-color-info);color:var(--toastify-text-color-info)}.Toastify__toast-theme--colored.Toastify__toast--success{background:var(--toastify-color-success);color:var(--toastify-text-color-success)}.Toastify__toast-theme--colored.Toastify__toast--warning{background:var(--toastify-color-warning);color:var(--toastify-text-color-warning)}.Toastify__toast-theme--colored.Toastify__toast--error{background:var(--toastify-color-error);color:var(--toastify-text-color-error)}.Toastify__progress-bar-theme--light{background:var(--toastify-color-progress-light)}.Toastify__progress-bar-theme--dark{background:var(--toastify-color-progress-dark)}.Toastify__progress-bar--info{background:var(--toastify-color-progress-info)}.Toastify__progress-bar--success{background:var(--toastify-color-progress-success)}.Toastify__progress-bar--warning{background:var(--toastify-color-progress-warning)}.Toastify__progress-bar--error{background:var(--toastify-color-progress-error)}.Toastify__progress-bar-theme--colored.Toastify__progress-bar--error,.Toastify__progress-bar-theme--colored.Toastify__progress-bar--info,.Toastify__progress-bar-theme--colored.Toastify__progress-bar--success,.Toastify__progress-bar-theme--colored.Toastify__progress-bar--warning{background:var(--toastify-color-transparent)}.Toastify__close-button{-ms-flex-item-align:start;align-self:flex-start;background:transparent;border:none;color:#fff;cursor:pointer;opacity:.7;outline:none;padding:0;transition:.3s ease}.Toastify__close-button--light{color:#000;opacity:.3}.Toastify__close-button>svg{fill:currentColor;height:16px;width:14px}.Toastify__close-button:focus,.Toastify__close-button:hover{opacity:1}@keyframes Toastify__trackProgress{0%{transform:scaleX(1)}to{transform:scaleX(0)}}.Toastify__progress-bar{bottom:0;height:5px;left:0;opacity:.7;position:absolute;transform-origin:left;width:100%;z-index:var(--toastify-z-index)}.Toastify__progress-bar--animated{animation:Toastify__trackProgress linear 1 forwards}.Toastify__progress-bar--controlled{transition:transform .2s}.Toastify__progress-bar--rtl{left:auto;right:0;transform-origin:right}.Toastify__spinner{animation:Toastify__spin .65s linear infinite;border:2px solid;border-color:var(--toastify-spinner-color-empty-area);border-radius:100%;border-right:2px solid var(--toastify-spinner-color);box-sizing:border-box;height:20px;width:20px}@keyframes Toastify__bounceInRight{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(3000px,0,0)}60%{opacity:1;transform:translate3d(-25px,0,0)}75%{transform:translate3d(10px,0,0)}90%{transform:translate3d(-5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutRight{20%{opacity:1;transform:translate3d(-20px,0,0)}to{opacity:0;transform:translate3d(2000px,0,0)}}@keyframes Toastify__bounceInLeft{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(-3000px,0,0)}60%{opacity:1;transform:translate3d(25px,0,0)}75%{transform:translate3d(-10px,0,0)}90%{transform:translate3d(5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutLeft{20%{opacity:1;transform:translate3d(20px,0,0)}to{opacity:0;transform:translate3d(-2000px,0,0)}}@keyframes Toastify__bounceInUp{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,3000px,0)}60%{opacity:1;transform:translate3d(0,-20px,0)}75%{transform:translate3d(0,10px,0)}90%{transform:translate3d(0,-5px,0)}to{transform:translateZ(0)}}@keyframes Toastify__bounceOutUp{20%{transform:translate3d(0,-10px,0)}40%,45%{opacity:1;transform:translate3d(0,20px,0)}to{opacity:0;transform:translate3d(0,-2000px,0)}}@keyframes Toastify__bounceInDown{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,-3000px,0)}60%{opacity:1;transform:translate3d(0,25px,0)}75%{transform:translate3d(0,-10px,0)}90%{transform:translate3d(0,5px,0)}to{transform:none}}@keyframes Toastify__bounceOutDown{20%{transform:translate3d(0,10px,0)}40%,45%{opacity:1;transform:translate3d(0,-20px,0)}to{opacity:0;transform:translate3d(0,2000px,0)}}.Toastify__bounce-enter--bottom-left,.Toastify__bounce-enter--top-left{animation-name:Toastify__bounceInLeft}.Toastify__bounce-enter--bottom-right,.Toastify__bounce-enter--top-right{animation-name:Toastify__bounceInRight}.Toastify__bounce-enter--top-center{animation-name:Toastify__bounceInDown}.Toastify__bounce-enter--bottom-center{animation-name:Toastify__bounceInUp}.Toastify__bounce-exit--bottom-left,.Toastify__bounce-exit--top-left{animation-name:Toastify__bounceOutLeft}.Toastify__bounce-exit--bottom-right,.Toastify__bounce-exit--top-right{animation-name:Toastify__bounceOutRight}.Toastify__bounce-exit--top-center{animation-name:Toastify__bounceOutUp}.Toastify__bounce-exit--bottom-center{animation-name:Toastify__bounceOutDown}@keyframes Toastify__zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}@keyframes Toastify__zoomOut{0%{opacity:1}50%{opacity:0;transform:scale3d(.3,.3,.3)}to{opacity:0}}.Toastify__zoom-enter{animation-name:Toastify__zoomIn}.Toastify__zoom-exit{animation-name:Toastify__zoomOut}@keyframes Toastify__flipIn{0%{animation-timing-function:ease-in;opacity:0;transform:perspective(400px) rotateX(90deg)}40%{animation-timing-function:ease-in;transform:perspective(400px) rotateX(-20deg)}60%{opacity:1;transform:perspective(400px) rotateX(10deg)}80%{transform:perspective(400px) rotateX(-5deg)}to{transform:perspective(400px)}}@keyframes Toastify__flipOut{0%{transform:perspective(400px)}30%{opacity:1;transform:perspective(400px) rotateX(-20deg)}to{opacity:0;transform:perspective(400px) rotateX(90deg)}}.Toastify__flip-enter{animation-name:Toastify__flipIn}.Toastify__flip-exit{animation-name:Toastify__flipOut}@keyframes Toastify__slideInRight{0%{transform:translate3d(110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInLeft{0%{transform:translate3d(-110%,0,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInUp{0%{transform:translate3d(0,110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideInDown{0%{transform:translate3d(0,-110%,0);visibility:visible}to{transform:translateZ(0)}}@keyframes Toastify__slideOutRight{0%{transform:translateZ(0)}to{transform:translate3d(110%,0,0);visibility:hidden}}@keyframes Toastify__slideOutLeft{0%{transform:translateZ(0)}to{transform:translate3d(-110%,0,0);visibility:hidden}}@keyframes Toastify__slideOutDown{0%{transform:translateZ(0)}to{transform:translate3d(0,500px,0);visibility:hidden}}@keyframes Toastify__slideOutUp{0%{transform:translateZ(0)}to{transform:translate3d(0,-500px,0);visibility:hidden}}.Toastify__slide-enter--bottom-left,.Toastify__slide-enter--top-left{animation-name:Toastify__slideInLeft}.Toastify__slide-enter--bottom-right,.Toastify__slide-enter--top-right{animation-name:Toastify__slideInRight}.Toastify__slide-enter--top-center{animation-name:Toastify__slideInDown}.Toastify__slide-enter--bottom-center{animation-name:Toastify__slideInUp}.Toastify__slide-exit--bottom-left,.Toastify__slide-exit--top-left{animation-name:Toastify__slideOutLeft}.Toastify__slide-exit--bottom-right,.Toastify__slide-exit--top-right{animation-name:Toastify__slideOutRight}.Toastify__slide-exit--top-center{animation-name:Toastify__slideOutUp}.Toastify__slide-exit--bottom-center{animation-name:Toastify__slideOutDown}@keyframes Toastify__spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.cui .Toastify__toast{box-shadow:var(--cui-shadow-outset-lg);font-family:unset;min-height:unset!important;overflow:unset;padding:unset}.cui .Toastify__toast--default,.cui .Toastify__toast-container{background:unset;color:unset}.cui .Toastify__toast-body{padding:0}.cui .Toastify__toast .toast{box-shadow:unset}";
     styleInject(css_248z$5);
 
-    var copyStringToClipboard = function (str) {
-        // Create new element
-        var el = document.createElement("textarea");
-        // Set value (string to be copied)
-        el.value = typeof str === "string" ? str : str.toString();
-        // Set non-editable to avoid focus and move outside of view
-        el.setAttribute("readonly", "");
-        el.style["position"] = "absolute";
-        el.style["left"] = "-9999px";
-        document.body.appendChild(el);
-        // Select text inside element
-        el.select();
-        // Copy text to clipboard
-        document.execCommand("copy");
-        // Remove temporary element
-        document.body.removeChild(el);
-    };
+    var copyStringToClipboard = function (str) { return __awaiter(void 0, void 0, void 0, function () {
+        var el;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    str = typeof str === "string" ? str : str.toString();
+                    if (!!(navigator === null || navigator === void 0 ? void 0 : navigator.clipboard)) return [3 /*break*/, 1];
+                    el = document.createElement("textarea");
+                    el.value = str;
+                    el.setAttribute("readonly", "");
+                    el.style.position = "absolute";
+                    el.style.left = "-9999px";
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(el);
+                    return [3 /*break*/, 3];
+                case 1: return [4 /*yield*/, navigator.clipboard.writeText(str)];
+                case 2:
+                    _a.sent();
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+
     var iconType = function (type) {
         switch (type) {
             case "success":
@@ -4354,10 +4778,7 @@
         var _b = _a.size, size = _b === void 0 ? null : _b, _c = _a.autoClose, autoClose = _c === void 0 ? true : _c, _d = _a.animationDuration, animationDuration = _d === void 0 ? 250 : _d, _e = _a.closeIcon, closeIcon = _e === void 0 ? false : _e, _f = _a.title, title = _f === void 0 ? null : _f, _g = _a.closeHandle, closeHandle = _g === void 0 ? null : _g, _h = _a.left, left = _h === void 0 ? false : _h, _j = _a.transitionEvents, transitionEvents = _j === void 0 ? null : _j, _k = _a.dialogProps, dialogProps = _k === void 0 ? null : _k, _l = _a.contentProps, contentProps = _l === void 0 ? null : _l, _m = _a.maximize, maximize = _m === void 0 ? false : _m, children = _a.children, isOpen = _a.isOpen, props = __rest(_a, ["size", "autoClose", "animationDuration", "closeIcon", "title", "closeHandle", "left", "transitionEvents", "dialogProps", "contentProps", "maximize", "children", "isOpen"]);
         var _o = React__default["default"].useState(false), maximized = _o[0], setMaximized = _o[1];
         React__default["default"].useEffect(function () { return setMaximized(false); }, [isOpen]);
-        var realSize = React__default["default"].useMemo(function () { return (maximized ? "full" : size); }, [
-            maximized,
-            size,
-        ]);
+        var realSize = React__default["default"].useMemo(function () { return (maximized ? "full" : size); }, [maximized, size]);
         var maximizeCb = React__default["default"].useCallback(function () {
             setMaximized(function (curr) { return !curr; });
         }, []);
@@ -4494,38 +4915,48 @@
                 });
             });
         }, []);
-        var closeModal = React__default["default"].useCallback(function (id) {
+        var closeModal = React__default["default"].useCallback(function (id, cb) {
             hideModal(id);
             setTimeout(function () { return deleteModal(id); }, 500);
+            if (cb)
+                cb();
         }, [hideModal, deleteModal]);
         React__default["default"].useEffect(function () {
-            eventManager$1.on(EVENTS.SHOW_MODAL, function (m) { return addModal(m); });
+            var cb = function (m) { return addModal(m); };
+            eventManager$1.on("showModal", cb);
+            return function () {
+                eventManager$1.off("showModal", cb);
+            };
         }, [addModal]);
         if (!modals.length)
             return null;
         return (React__default["default"].createElement(React__default["default"].Fragment, null, modals.map(function (modal) {
             if (modal.modalType === "dynamic")
-                return (React__default["default"].createElement(Modal, __assign({}, modal.modalProps, { key: modal.id, isOpen: modal.shown, closeHandle: function () { return closeModal(modal.id); }, title: modal.title }), modal.fullBody ? (typeof modal.fullBody === "function" ? (modal.fullBody({ close: function () { return closeModal(modal.id); } })) : (React.cloneElement(modal.fullBody, {
-                    close: function () { return closeModal(modal.id); },
+                return (React__default["default"].createElement(Modal, __assign({}, modal.modalProps, { key: modal.id, isOpen: modal.shown, closeHandle: function () { return closeModal(modal.id, modal.onModalClose); }, title: modal.title }), modal.fullBody ? (typeof modal.fullBody === "function" ? (modal.fullBody({
+                    close: function () { return closeModal(modal.id, modal.onModalClose); },
+                })) : (React.cloneElement(modal.fullBody, {
+                    close: function () { return closeModal(modal.id, modal.onModalClose); },
                 }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
                     React__default["default"].createElement(ModalBody, null, modal.body),
                     React__default["default"].createElement(ModalFooter, null, modal.buttons.map(function (button, idx) { return (React__default["default"].createElement(Button$1, { key: idx, color: button.color || "light", onClick: function (e) {
                             if (typeof button.onClick === "function")
-                                button.onClick(e, function () { return closeModal(modal.id); });
+                                button.onClick(e, function () {
+                                    return closeModal(modal.id, modal.onModalClose);
+                                });
                             else
-                                closeModal(modal.id);
+                                closeModal(modal.id, modal.onModalClose);
                         } }, button.text)); }))))));
             if (modal.modalType === "notification")
-                return (React__default["default"].createElement(Modal, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id); }, title: modal.title },
+                return (React__default["default"].createElement(Modal, { key: modal.id, isOpen: modal.shown, closeIcon: true, closeHandle: function () { return closeModal(modal.id, modal.onModalClose); }, title: modal.title },
                     React__default["default"].createElement(ModalBody, null, modal.body),
                     React__default["default"].createElement(ModalFooter, null,
-                        React__default["default"].createElement(Button$1, { color: modal.buttonColor || "light", onClick: function () { return closeModal(modal.id); } }, modal.button))));
+                        React__default["default"].createElement(Button$1, { color: modal.buttonColor || "light", onClick: function () { return closeModal(modal.id, modal.onModalClose); } }, modal.button))));
             if (modal.modalType === "prompt") {
                 if (typeof modal.options !== "undefined") {
                     var _a = modal.options, _b = _a.initial, initial = _b === void 0 ? "" : _b, _c = _a.type, type = _c === void 0 ? "text" : _c, _d = _a.hint, hint = _d === void 0 ? undefined : _d, _e = _a.validate, validate = _e === void 0 ? undefined : _e;
-                    return (React__default["default"].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: initial, type: type, hint: hint, validate: validate }));
+                    return (React__default["default"].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id, modal.onModalClose); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: initial, type: type, hint: hint, validate: validate }));
                 }
-                return (React__default["default"].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: modal.initial, type: modal.type, hint: modal.hint }));
+                return (React__default["default"].createElement(PromptModal, { key: modal.id, isOpen: modal.shown, onClose: function () { return closeModal(modal.id, modal.onModalClose); }, onSave: modal.cb, title: modal.title, question: modal.question, initial: modal.initial, type: modal.type, hint: modal.hint }));
             }
             if (modal.modalType === "confirmation")
                 return (React__default["default"].createElement(ConfirmationModal, { key: modal.id, isOpen: modal.shown, prompt: modal.prompt, confirmHandle: function (dontAskAgain) { return __awaiter(void 0, void 0, void 0, function () {
@@ -4536,11 +4967,11 @@
                                 case 1:
                                     r = _a.sent();
                                     if (r)
-                                        closeModal(modal.id);
+                                        closeModal(modal.id, modal.onModalClose);
                                     return [2 /*return*/, true];
                             }
                         });
-                    }); }, closeHandle: function () { return closeModal(modal.id); }, confirmText: modal.confirmText, confirmType: modal.confirmType, dontAskAgain: modal.dontAskAgain }));
+                    }); }, closeHandle: function () { return closeModal(modal.id, modal.onModalClose); }, confirmText: modal.confirmText, confirmType: modal.confirmType, dontAskAgain: modal.dontAskAgain }));
             return null;
         })));
     };
@@ -4553,7 +4984,7 @@
             throw new Error("Prompt must be specified");
         if (!onConfirm || typeof onConfirm !== "function")
             throw new Error("onConfirm must be specified and must be a function");
-        eventManager$1.emit(EVENTS.SHOW_MODAL, {
+        eventManager$1.emit("showModal", {
             modalType: "confirmation",
             prompt: React__default["default"].createElement("p", null, prompt),
             onConfirm: onConfirm,
@@ -4568,7 +4999,7 @@
         if (!title || !body)
             throw new Error("Title and body must be specified");
         return new Promise(function (resolve) {
-            eventManager$1.emit(EVENTS.SHOW_MODAL, {
+            eventManager$1.emit("showModal", {
                 modalType: "notification",
                 title: title,
                 body: body,
@@ -4584,7 +5015,7 @@
         if (!title || !question)
             throw new Error("Title and question must be specified");
         if (typeof initial === "object") {
-            eventManager$1.emit(EVENTS.SHOW_MODAL, {
+            eventManager$1.emit("showModal", {
                 modalType: "prompt",
                 title: title,
                 question: question,
@@ -4593,7 +5024,7 @@
             });
             return;
         }
-        eventManager$1.emit(EVENTS.SHOW_MODAL, {
+        eventManager$1.emit("showModal", {
             modalType: "prompt",
             title: title,
             initial: initial,
@@ -4605,13 +5036,20 @@
     }
     var dynamicModal = function (_a) {
         var title = _a.title, _b = _a.fullBody, fullBody = _b === void 0 ? null : _b, _c = _a.body, body = _c === void 0 ? null : _c, _d = _a.buttons, buttons = _d === void 0 ? [] : _d, _e = _a.modalProps, modalProps = _e === void 0 ? {} : _e;
-        eventManager$1.emit(EVENTS.SHOW_MODAL, {
-            modalType: "dynamic",
-            title: title,
-            fullBody: fullBody,
-            body: body,
-            buttons: buttons,
-            modalProps: modalProps,
+        return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_f) {
+                return [2 /*return*/, new Promise(function (resolve) {
+                        eventManager$1.emit("showModal", {
+                            modalType: "dynamic",
+                            title: title,
+                            fullBody: fullBody,
+                            body: body,
+                            buttons: buttons,
+                            modalProps: modalProps,
+                            onModalClose: resolve,
+                        });
+                    })];
+            });
         });
     };
 
@@ -5375,7 +5813,7 @@
     exports.Radio = Radio;
     exports.Radios = Radios;
     exports.Section = Section;
-    exports.Spinner = Spinner;
+    exports.Spinner = Spinner$1;
     exports.Step = Step;
     exports.Steps = Steps;
     exports.Switch = Switch;

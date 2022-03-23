@@ -9,6 +9,8 @@ import {
   notification,
   confirmation,
   prompt,
+  dynamicModal,
+  PropsWithCloseModal,
 } from "./index";
 import { Button } from "../Button";
 
@@ -16,7 +18,20 @@ export default {
   title: "Modal",
 };
 
-export const Primary = () => {
+const CustomDynamic = ({ close }: PropsWithCloseModal): JSX.Element => {
+  return (
+    <>
+      <ModalBody>
+        Any content goes here! Function can be awaited - check console
+      </ModalBody>
+      <ModalFooter>
+        <Button.Light onClick={close}>OK</Button.Light>
+      </ModalFooter>
+    </>
+  );
+};
+
+export const Primary = (): JSX.Element => {
   React.useEffect(() => {
     ReactModal.setAppElement("body");
   }, []);
@@ -102,7 +117,7 @@ export const Primary = () => {
   );
 };
 
-export const Calls = () => {
+export const Calls = (): JSX.Element => {
   const [confResult, setConfResult] = useState(null);
   const [promptResult, setPromptResult] = useState(null);
 
@@ -173,6 +188,26 @@ export const Calls = () => {
               Prompt
             </Button>
             {promptResult ? <div>Got: {promptResult}</div> : null}
+          </div>
+        </div>
+      </div>
+      <div className="section base-margin-top dbl-margin-bottom">
+        <h3 className="display-5">With custom body</h3>
+        <div className="row">
+          <div className="col-3">
+            <Button
+              onClick={async () => {
+                console.log("Opening dynamic modal");
+                await dynamicModal({
+                  title: "Custom body",
+                  modalProps: { closeIcon: true },
+                  fullBody: (props) => <CustomDynamic {...props} />,
+                });
+                console.log("Dynamic modal closed, awaited");
+              }}
+            >
+              Show modal
+            </Button>
           </div>
         </div>
       </div>

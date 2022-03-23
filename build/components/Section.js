@@ -1,1 +1,1 @@
-import a from"react";import{a as e}from"../index-fb409a55.js";var r=function(r){var t=r.children,c=r.className,n=void 0===c?null:c;return a.createElement("div",{className:"section".concat(e(n))},t)};export{r as Section};
+import e from"react";import{a}from"../index-af0cb17c.js";import"../eventManager-f62d060d.js";var r=function(r){var t=r.children,c=r.className,n=void 0===c?null:c;return e.createElement("div",{className:"section".concat(a(n))},t)};export{r as Section};

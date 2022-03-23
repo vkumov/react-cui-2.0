@@ -31,5 +31,5 @@ interface DynamicModalOptions {
     buttons?: ModalButton[];
     modalProps?: Partial<ModalProps>;
 }
-declare type DynamicModalHandler = (options: DynamicModalOptions) => void;
+declare type DynamicModalHandler = (options: DynamicModalOptions) => Promise<void>;
 export declare const dynamicModal: DynamicModalHandler;

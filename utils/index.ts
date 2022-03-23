@@ -11,4 +11,4 @@ export const appendClass = (
   return "";
 };
 
-export { eventManager, EVENTS } from "./eventManager";
+export { eventManager } from "./eventManager";

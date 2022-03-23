@@ -1,7 +1,7 @@
 import React, { ReactNode, ReactText } from "react";
 import type { ButtonColor } from "../Button";
 import type { ModalProps } from "./Modal";
-import { eventManager, EVENTS } from "../../utils";
+import { eventManager } from "../../utils";
 import { PromptModalProps } from "./PromptModal";
 
 export type DontAskAgain = {
@@ -20,7 +20,7 @@ export function confirmation(
   if (!onConfirm || typeof onConfirm !== "function")
     throw new Error("onConfirm must be specified and must be a function");
 
-  eventManager.emit(EVENTS.SHOW_MODAL, {
+  eventManager.emit("showModal", {
     modalType: "confirmation",
     prompt: <p>{prompt}</p>,
     onConfirm,
@@ -46,7 +46,7 @@ export const notificationModal: NotificationModal = (
   if (!title || !body) throw new Error("Title and body must be specified");
 
   return new Promise((resolve) => {
-    eventManager.emit(EVENTS.SHOW_MODAL, {
+    eventManager.emit("showModal", {
       modalType: "notification",
       title,
       body,
@@ -89,7 +89,7 @@ export function prompt<T extends ReactText>(
     throw new Error("Title and question must be specified");
 
   if (typeof initial === "object") {
-    eventManager.emit(EVENTS.SHOW_MODAL, {
+    eventManager.emit("showModal", {
       modalType: "prompt",
       title,
       question,
@@ -99,7 +99,7 @@ export function prompt<T extends ReactText>(
     return;
   }
 
-  eventManager.emit(EVENTS.SHOW_MODAL, {
+  eventManager.emit("showModal", {
     modalType: "prompt",
     title,
     initial,
@@ -134,21 +134,24 @@ interface DynamicModalOptions {
   modalProps?: Partial<ModalProps>;
 }
 
-type DynamicModalHandler = (options: DynamicModalOptions) => void;
+type DynamicModalHandler = (options: DynamicModalOptions) => Promise<void>;
 
-export const dynamicModal: DynamicModalHandler = ({
+export const dynamicModal: DynamicModalHandler = async ({
   title,
   fullBody = null,
   body = null,
   buttons = [],
   modalProps = {},
-}): void => {
-  eventManager.emit(EVENTS.SHOW_MODAL, {
-    modalType: "dynamic",
-    title,
-    fullBody,
-    body,
-    buttons,
-    modalProps,
+}) => {
+  return new Promise((resolve) => {
+    eventManager.emit("showModal", {
+      modalType: "dynamic",
+      title,
+      fullBody,
+      body,
+      buttons,
+      modalProps,
+      onModalClose: resolve,
+    });
   });
 };

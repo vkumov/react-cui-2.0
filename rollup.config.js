@@ -6,7 +6,6 @@ import postcss from "rollup-plugin-postcss";
 import multiInput from "rollup-plugin-multi-input";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
-// import builtins from "rollup-plugin-node-builtins";
 import replace from "@rollup/plugin-replace";
 import json from "@rollup/plugin-json";
 import alias from "@rollup/plugin-alias";
@@ -66,9 +65,7 @@ const oneUMD = {
         "react-dom": "ReactDOM",
         "react-is": "ReactIs",
         "react-router-dom": "ReactRouterDOM",
-        "react-json-tree": "ReactJsonTree",
         "react-modal": "ReactModal",
-        "react-sortable-hoc": "SortableHOC",
       },
     },
   ],
@@ -89,14 +86,7 @@ const oneUMD = {
       preventAssignment: true,
     }),
   ],
-  external: [
-    "react-dom",
-    "react-is",
-    "react-router-dom",
-    "react-json-tree",
-    "react-modal",
-    "react-sortable-hoc",
-  ],
+  external: ["react-dom", "react-is", "react-router-dom", "react-modal"],
 };
 
 const umd = [
@@ -135,8 +125,6 @@ export default [
       "react-dom",
       "react-modal",
       "react-transition-group",
-      "react-json-tree",
-      "uuid",
       "react-dropzone",
     ],
   },
@@ -153,11 +141,8 @@ export default [
           "react-dom": "ReactDOM",
           "react-is": "ReactIs",
           "react-router-dom": "ReactRouterDOM",
-          "react-json-tree": "ReactJsonTree",
           "react-modal": "ReactModal",
-          "react-sortable-hoc": "SortableHOC",
           "react-dropzone": "ReactDropzone",
-          uuid: "uuid",
         },
       },
     ],
@@ -171,8 +156,6 @@ export default [
       "react-dom",
       "react-modal",
       "react-transition-group",
-      "react-json-tree",
-      "uuid",
       "react-dropzone",
     ],
   },

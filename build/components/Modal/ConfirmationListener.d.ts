@@ -1,3 +1,3 @@
-import { FC } from "react";
-export declare const ConfirmationListener: FC;
+/// <reference types="react" />
+export declare const ConfirmationListener: () => JSX.Element;
 export { ConfirmationListener as DynamicModal };

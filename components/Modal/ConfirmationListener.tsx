@@ -1,8 +1,8 @@
-import React, { FC, cloneElement } from "react";
+import React, { cloneElement } from "react";
 
 import { Button } from "../Button";
 
-import { eventManager, EVENTS } from "../../utils";
+import { eventManager } from "../../utils";
 
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
@@ -10,7 +10,7 @@ import { Modal } from "./Modal";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { PromptModal } from "./PromptModal";
 
-export const ConfirmationListener: FC = () => {
+export const ConfirmationListener = (): JSX.Element => {
   const [modals, setModals] = React.useState([]);
 
   const addModal = React.useCallback(
@@ -35,15 +35,20 @@ export const ConfirmationListener: FC = () => {
   }, []);
 
   const closeModal = React.useCallback(
-    (id) => {
+    (id, cb?: () => unknown) => {
       hideModal(id);
       setTimeout(() => deleteModal(id), 500);
+      if (cb) cb();
     },
     [hideModal, deleteModal]
   );
 
   React.useEffect(() => {
-    eventManager.on(EVENTS.SHOW_MODAL, (m) => addModal(m));
+    const cb = (m) => addModal(m);
+    eventManager.on("showModal", cb);
+    return () => {
+      eventManager.off("showModal", cb);
+    };
   }, [addModal]);
 
   if (!modals.length) return null;
@@ -57,15 +62,17 @@ export const ConfirmationListener: FC = () => {
               {...modal.modalProps}
               key={modal.id}
               isOpen={modal.shown}
-              closeHandle={() => closeModal(modal.id)}
+              closeHandle={() => closeModal(modal.id, modal.onModalClose)}
               title={modal.title}
             >
               {modal.fullBody ? (
                 typeof modal.fullBody === "function" ? (
-                  modal.fullBody({ close: () => closeModal(modal.id) })
+                  modal.fullBody({
+                    close: () => closeModal(modal.id, modal.onModalClose),
+                  })
                 ) : (
                   cloneElement(modal.fullBody, {
-                    close: () => closeModal(modal.id),
+                    close: () => closeModal(modal.id, modal.onModalClose),
                   })
                 )
               ) : (
@@ -78,8 +85,10 @@ export const ConfirmationListener: FC = () => {
                         color={button.color || "light"}
                         onClick={(e) => {
                           if (typeof button.onClick === "function")
-                            button.onClick(e, () => closeModal(modal.id));
-                          else closeModal(modal.id);
+                            button.onClick(e, () =>
+                              closeModal(modal.id, modal.onModalClose)
+                            );
+                          else closeModal(modal.id, modal.onModalClose);
                         }}
                       >
                         {button.text}
@@ -97,14 +106,14 @@ export const ConfirmationListener: FC = () => {
               key={modal.id}
               isOpen={modal.shown}
               closeIcon
-              closeHandle={() => closeModal(modal.id)}
+              closeHandle={() => closeModal(modal.id, modal.onModalClose)}
               title={modal.title}
             >
               <ModalBody>{modal.body}</ModalBody>
               <ModalFooter>
                 <Button
                   color={modal.buttonColor || "light"}
-                  onClick={() => closeModal(modal.id)}
+                  onClick={() => closeModal(modal.id, modal.onModalClose)}
                 >
                   {modal.button}
                 </Button>
@@ -124,7 +133,7 @@ export const ConfirmationListener: FC = () => {
               <PromptModal
                 key={modal.id}
                 isOpen={modal.shown}
-                onClose={() => closeModal(modal.id)}
+                onClose={() => closeModal(modal.id, modal.onModalClose)}
                 onSave={modal.cb}
                 title={modal.title}
                 question={modal.question}
@@ -140,7 +149,7 @@ export const ConfirmationListener: FC = () => {
             <PromptModal
               key={modal.id}
               isOpen={modal.shown}
-              onClose={() => closeModal(modal.id)}
+              onClose={() => closeModal(modal.id, modal.onModalClose)}
               onSave={modal.cb}
               title={modal.title}
               question={modal.question}
@@ -159,10 +168,10 @@ export const ConfirmationListener: FC = () => {
               prompt={modal.prompt}
               confirmHandle={async (dontAskAgain) => {
                 const r = await modal.onConfirm(dontAskAgain);
-                if (r) closeModal(modal.id);
+                if (r) closeModal(modal.id, modal.onModalClose);
                 return true;
               }}
-              closeHandle={() => closeModal(modal.id)}
+              closeHandle={() => closeModal(modal.id, modal.onModalClose)}
               confirmText={modal.confirmText}
               confirmType={modal.confirmType}
               dontAskAgain={modal.dontAskAgain}
