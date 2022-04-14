@@ -26,35 +26,35 @@ export interface PanelProps {
   className?: string;
 }
 
-export const Panel: FC<
-  PanelProps & HTMLProps<HTMLDivElement>
-> = React.forwardRef<HTMLDivElement, PanelProps>(
-  (
-    {
-      color = "plain",
-      padding = "default",
-      bordered = false,
-      raised = false,
-      well = false,
-      className = null,
-      ...props
-    },
-    ref
-  ) => (
-    <div
-      className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
-        padding !== "default",
-        `panel--${padding}`
-      )}${ac(bordered, () => {
-        if (typeof bordered === "string") return `panel--bordered-${bordered}`;
-        if (Array.isArray(bordered))
-          return bordered.map((b) => `panel--bordered-${b}`).join(" ");
-        return "panel--bordered";
-      })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
-        className
-      )}`}
-      ref={ref}
-      {...props}
-    />
-  )
-);
+export const Panel: FC<PanelProps & HTMLProps<HTMLDivElement>> =
+  React.forwardRef<HTMLDivElement, PanelProps>(
+    (
+      {
+        color = "plain",
+        padding = "default",
+        bordered = false,
+        raised = false,
+        well = false,
+        className = null,
+        ...props
+      },
+      ref
+    ) => (
+      <div
+        className={`panel${ac(color !== "plain", `panel--${color}`)}${ac(
+          padding !== "default",
+          `panel--${padding}`
+        )}${ac(bordered, () => {
+          if (typeof bordered === "string")
+            return `panel--bordered-${bordered}`;
+          if (Array.isArray(bordered))
+            return bordered.map((b) => `panel--bordered-${b}`).join(" ");
+          return "panel--bordered";
+        })}${ac(raised, "panel--raised")}${ac(well, "panel--well")}${ac(
+          className
+        )}`}
+        ref={ref}
+        {...props}
+      />
+    )
+  );

@@ -1,1 +1,0 @@
-import{_ as a,a as e}from"../../tslib.es6-a57c95d4.js";import r from"react";import{a as o}from"../../index-af0cb17c.js";import"../../eventManager-f62d060d.js";var s=function(s){var t=s.className,c=void 0===t?null:t,m=s.children,i=a(s,["className","children"]);return r.createElement("div",e({className:"modal__footer".concat(o(c))},i),m)};export{s as ModalFooter};

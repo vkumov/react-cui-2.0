@@ -8,7 +8,7 @@ export default {
   title: "Select",
 };
 
-export const Primary = () => {
+export const Select = () => {
   useLayoutEffect(() => {
     ReactModal.setAppElement("body");
   }, []);

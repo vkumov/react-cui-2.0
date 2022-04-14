@@ -1,9 +1,8 @@
-// import babel from "rollup-plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import external from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
-import multiInput from "rollup-plugin-multi-input";
+import multiInput from "@rollup/plugin-multi-entry";
 import { terser } from "rollup-plugin-terser";
 import cleaner from "rollup-plugin-cleaner";
 import replace from "@rollup/plugin-replace";
@@ -14,36 +13,32 @@ import typescript from "rollup-plugin-typescript2";
 
 import path from "path";
 
-// import * as react from "react";
-// import * as reactDom from "react-dom";
-// import * as reactIs from "react-is";
-// import * as propTypes from "prop-types";
-
 import pkg from "./package.json";
+
+const globalPackages = {
+  react: "React",
+  "react-dom": "ReactDOM",
+  "react-router-dom": "ReactRouterDOM",
+  "react-modal": "ReactModal",
+  "react-dropzone": "ReactDropzone",
+};
+
+const externals = [
+  "react",
+  "react-dom",
+  "react-modal",
+  "react-transition-group",
+  "react-dropzone",
+];
 
 const projectRootDir = path.resolve(__dirname);
 
 const plugins = [
   external(),
-  // babel({
-  //   exclude: "node_modules/**",
-  //   plugins: ["@babel/plugin-proposal-class-properties"],
-  // }),
   resolve({
     extensions: [".mjs", ".js", ".jsx", ".json", ".css"],
     preferBuiltins: true,
   }),
-  // {
-  // namedExports: {
-  //   react: Object.keys(react),
-  //   "react-dom": Object.keys(reactDom),
-  //   "react-is": Object.keys(reactIs),
-  //   "node_modules/scheduler/index.js": [
-  //     "unstable_runWithPriority",
-  //     "LowPriority",
-  //   ],
-  // },
-  // }
   commonjs(),
   typescript({ useTsconfigDeclarationDir: true }),
   postcss({
@@ -60,18 +55,11 @@ const oneUMD = {
       format: "umd",
       sourcemap: false,
       name: "ReactCUI",
-      globals: {
-        react: "React",
-        "react-dom": "ReactDOM",
-        "react-is": "ReactIs",
-        "react-router-dom": "ReactRouterDOM",
-        "react-modal": "ReactModal",
-      },
+      globals: globalPackages,
     },
   ],
   plugins: [
     json(),
-    // builtins(),
     alias({
       entries: [
         {
@@ -86,7 +74,7 @@ const oneUMD = {
       preventAssignment: true,
     }),
   ],
-  external: ["react-dom", "react-is", "react-router-dom", "react-modal"],
+  external: ["react-dom", "react-router-dom", "react-modal"],
 };
 
 const umd = [
@@ -120,43 +108,23 @@ export default [
       ...plugins,
       terser(),
     ],
-    external: [
-      "react",
-      "react-dom",
-      "react-modal",
-      "react-transition-group",
-      "react-dropzone",
-    ],
+    external: externals,
   },
   ...umd,
   {
-    input: ["components/**/*.tsx", "components/**/*.ts"],
+    input: {
+      include: ["components/**/*.tsx", "components/**/*.ts"],
+      exclude: ["**/*.stories.tsx", "**/*.d.ts"],
+    },
     output: [
       {
         format: "esm",
         sourcemap: false,
         dir: "build",
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "react-is": "ReactIs",
-          "react-router-dom": "ReactRouterDOM",
-          "react-modal": "ReactModal",
-          "react-dropzone": "ReactDropzone",
-        },
+        globals: globalPackages,
       },
     ],
-    plugins: [
-      multiInput({ glob: { ignore: ["**.stories.tsx"] } }),
-      ...plugins,
-      terser(),
-    ],
-    external: [
-      "react",
-      "react-dom",
-      "react-modal",
-      "react-transition-group",
-      "react-dropzone",
-    ],
+    plugins: [multiInput(), ...plugins, terser()],
+    external: externals,
   },
 ];

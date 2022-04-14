@@ -34,4 +34,5 @@ export * from "./components/Select";
 export * from "./components/InputHelpBaloon";
 export * from "./components/InputHelpBlock";
 export * from "./components/VSeparator";
+export * from "./components/Slider";
 export * from "./utils/base16Theme";

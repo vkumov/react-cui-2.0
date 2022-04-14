@@ -1,1 +1,0 @@
-import{_ as a,a as e}from"../../tslib.es6-a57c95d4.js";import r from"react";import{a as s}from"../../index-af0cb17c.js";import"../../eventManager-f62d060d.js";var c=function(c){var o=c.className,t=void 0===o?null:o,m=c.children,i=a(c,["className","children"]);return r.createElement("div",e({className:"modal__body".concat(s(t))},i),m)};export{c as ModalBody};
