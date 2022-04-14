@@ -1,3 +1,8 @@
+## 4.0.0
+
+- ➕ new component `Slider`
+- ➕ new component `ReactSelect`
+
 ## 3.7.0
 
 - ➕ awaitable `dynamicModal`
