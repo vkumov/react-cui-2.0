@@ -11,13 +11,17 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "strict": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
     "node_modules",
     "build",
-    "components/**/*.stories.tsx",
-    "components/**/*.test.tsx"
+    "**/*.stories.tsx",
+    "src/components/**/*.test.tsx"
   ]
 }

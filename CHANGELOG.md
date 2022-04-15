@@ -1,3 +1,7 @@
+## 4.1.0
+
+- Refactor code
+
 ## 4.0.0
 
 - ➕ new component `Slider`

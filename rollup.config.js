@@ -1,27 +1,22 @@
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import external from "rollup-plugin-peer-deps-external";
-import postcss from "rollup-plugin-postcss";
-import multiInput from "@rollup/plugin-multi-entry";
-import { terser } from "rollup-plugin-terser";
-import cleaner from "rollup-plugin-cleaner";
-import replace from "@rollup/plugin-replace";
-import json from "@rollup/plugin-json";
-import alias from "@rollup/plugin-alias";
-import cssImport from "postcss-import";
 import typescript from "rollup-plugin-typescript2";
-
+import { terser } from "rollup-plugin-terser";
+import postcss from "rollup-plugin-postcss";
+import cleaner from "rollup-plugin-cleaner";
+import { swc } from "rollup-plugin-swc3";
+import replace from "@rollup/plugin-replace";
+import glob from "fast-glob";
 import path from "path";
 
-import pkg from "./package.json";
+import cssImport from "postcss-import";
+import fs from "fs";
+// import path from "path";
+import { existsSync } from "fs-extra";
 
-const globalPackages = {
-  react: "React",
-  "react-dom": "ReactDOM",
-  "react-router-dom": "ReactRouterDOM",
-  "react-modal": "ReactModal",
-  "react-dropzone": "ReactDropzone",
-};
+import packageJson from "./package.json";
+import { basename } from "path";
 
 const externals = [
   "react",
@@ -31,100 +26,150 @@ const externals = [
   "react-dropzone",
 ];
 
-const projectRootDir = path.resolve(__dirname);
+const minimize = false;
 
 const plugins = [
-  external(),
+  peerDepsExternal({ includeDependencies: true }),
   resolve({
     extensions: [".mjs", ".js", ".jsx", ".json", ".css"],
     preferBuiltins: true,
+    // resolveOnly: (m) => !m.startsWith("src/"),
   }),
-  commonjs(),
-  typescript({ useTsconfigDeclarationDir: true }),
-  postcss({
-    plugins: [cssImport()],
-    minimize: true,
+  commonjs({
+    include: "node_modules/**",
   }),
-];
+  swc({
+    tsconfig: "tsconfig.json",
+    sourceMaps: true,
+  }),
+  minimize && terser(),
+].filter(Boolean);
 
-const oneUMD = {
-  input: "./index.ts",
-  output: [
-    {
-      file: "build/umd/react-cui.umd.js",
-      format: "umd",
-      sourcemap: false,
-      name: "ReactCUI",
-      globals: globalPackages,
-    },
-  ],
-  plugins: [
-    json(),
-    alias({
-      entries: [
-        {
-          find: "crypto",
-          replacement: path.resolve(projectRootDir, "utils/randomBytes.js"),
-        },
-      ],
-    }),
-    ...plugins,
-    replace({
-      "process.env.NODE_ENV": JSON.stringify("production"),
-      preventAssignment: true,
-    }),
-  ],
-  external: ["react-dom", "react-router-dom", "react-modal"],
+const tsDTS = typescript({
+  //   // tsconfig: "./tsconfig.json",
+  useTsconfigDeclarationDir: true,
+  tsconfigOverride: {
+    emitDeclarationOnly: true,
+  },
+});
+
+const ignoreCssPlugin = postcss({
+  plugins: [cssImport()],
+  minimize,
+  extract: false,
+  inject: false,
+});
+
+const getFolders = (entry) => {
+  // get the names of folders and files of the entry directory
+  const dirs = fs.readdirSync(entry);
+  // do not include folders not meant for export and do not process index.ts
+  const dirsWithoutIndex = dirs
+    .filter((name) => name !== "index.ts")
+    // .filter((name) => name !== "utils")
+    // .filter((name) => name !== "hooks")
+    .filter((name) => !name.startsWith("."));
+  // ['Accordion', 'Button'...]
+  return dirsWithoutIndex;
 };
 
-const umd = [
-  oneUMD,
-  {
-    ...oneUMD,
-    output: [{ ...oneUMD.output[0], file: "build/umd/react-cui.umd.min.js" }],
-    plugins: [...oneUMD.plugins, terser()],
-  },
-];
+//loop through your folders and generate a rollup obj per folder
+const folderBuilds = getFolders("./src")
+  .map((folder) => {
+    if (folder === "utils" || folder === "hooks") {
+      const files = glob.sync(`./src/${folder}/*.ts`);
+      return files.map((file) => {
+        const bn = basename(file, ".ts");
+        return {
+          input: `src/${folder}/${bn}.ts`,
+          output: {
+            // ensure file destination is same as where the typings are
+            file: `build/${folder}/${bn}.js`,
+            sourcemap: true,
+            exports: "named",
+            plugins: [replace({ "src/": "../" })],
+          },
+          treeshake: true,
+          plugins,
+          external: externals,
+        };
+      });
+    }
 
+    /**
+     * @type {import('rollup').RollupOptions}
+     **/
+    const ep = {
+      input: `src/${folder}/index.ts`,
+      output: {
+        // ensure file destination is same as where the typings are
+        file: `build/${folder}/index.js`,
+        sourcemap: true,
+        exports: "named",
+        plugins: [replace({ "src/": "../" })],
+      },
+      treeshake: true,
+      plugins: [...plugins, ignoreCssPlugin].filter(Boolean),
+      external: externals,
+    };
+    if (!existsSync(`./src/${folder}/creatable.ts`)) return ep;
+
+    /**
+     * @type {import('rollup').RollupOptions}
+     **/
+    return [
+      ep,
+      {
+        ...ep,
+        input: `src/${folder}/creatable.ts`,
+        output: { ...ep.output, file: `build/${folder}/creatable.js` },
+      },
+    ];
+  })
+  .flat();
+
+/**
+ * @type {import('rollup').RollupOptions}
+ **/
 export default [
   {
-    input: "./index.ts",
+    input: ["src/index.ts"],
     output: [
       {
-        file: pkg.main,
-        format: "cjs",
+        file: packageJson.module,
+        format: "esm",
         sourcemap: true,
-      },
-      {
-        file: pkg.module,
-        format: "es",
-        sourcemap: true,
+        exports: "named",
       },
     ],
+    treeshake: true,
     plugins: [
       cleaner({
         targets: ["./build/"],
       }),
+      postcss({
+        plugins: [cssImport()],
+        minimize,
+        extract: path.resolve(__dirname, "./build/css/styles.css"),
+      }),
+      tsDTS,
       ...plugins,
-      terser(),
     ],
     external: externals,
   },
-  ...umd,
+  ...folderBuilds,
   {
-    input: {
-      include: ["components/**/*.tsx", "components/**/*.ts"],
-      exclude: ["**/*.stories.tsx", "**/*.d.ts"],
-    },
+    input: ["src/index.ts"],
     output: [
       {
-        format: "esm",
-        sourcemap: false,
-        dir: "build",
-        globals: globalPackages,
+        file: packageJson.main,
+        format: "cjs",
+        sourcemap: true,
+        exports: "named",
       },
     ],
-    plugins: [multiInput(), ...plugins, terser()],
+    treeshake: true,
+    plugins: [tsDTS, ignoreCssPlugin, ...plugins],
     external: externals,
   },
 ];
