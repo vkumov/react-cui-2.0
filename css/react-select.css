@@ -160,3 +160,34 @@
   + .label {
   margin-bottom: 2px;
 }
+
+.cui
+  .form-group.form-group--error
+  .react-select-container
+  .react-select__control {
+  border-color: var(--cui-theme-danger);
+}
+
+.cui
+  .form-group.form-group--error
+  .react-select-container
+  .react-select__control:hover,
+.cui
+  .form-group.form-group--error
+  .react-select-container
+  .react-select__control:focus-within {
+  border-color: var(--cui-theme-danger);
+}
+
+.cui
+  .form-group.form-group--error
+  .react-select-container
+  .react-select__control:focus-within {
+  box-shadow: 0 0 0 var(--cui-focus-thickness)
+    rgba(var(--cui-theme-danger-rgb), var(--cui-focus-opacity));
+  opacity: 1;
+  outline: var(--cui-focus-thickness) transparent;
+  outline-offset: 1px;
+  outline-width: thin;
+  outline-style: none;
+}

@@ -1,3 +1,7 @@
+## 4.1.7
+
+- ➕ Error state for react-selects
+
 ## 4.1.0
 
 - Refactor code

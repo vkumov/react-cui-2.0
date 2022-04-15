@@ -3061,13 +3061,14 @@ var MultiValueRemove = function MultiValueRemove(_a) {
     }, props));
 };
 
-var ReactSelect = function ReactSelect(_a) {
-    var _b = _a.label, label = _b === void 0 ? null : _b, className = _a.className, props = __rest(_a, [
+var ReactSelect = /*#__PURE__*/ forwardRef(function(_a, ref) {
+    var _b = _a.label, label = _b === void 0 ? null : _b, className = _a.className, error = _a.error, props = __rest(_a, [
         "label",
-        "className"
+        "className",
+        "error"
     ]);
     return /*#__PURE__*/ React.createElement("div", {
-        className: "form-group".concat(appendClass(className))
+        className: "form-group".concat(appendClass(className)).concat(appendClass(error, "form-group--error"))
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(Select, __assign({
         className: "react-select-container qtr-margin-top",
         classNamePrefix: "react-select",
@@ -3076,16 +3077,21 @@ var ReactSelect = function ReactSelect(_a) {
             MultiValueLabel: MultiValueLabel,
             MultiValueRemove: MultiValueRemove
         }
-    }, props)));
-};
+    }, props, {
+        ref: ref
+    })), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
+        text: error
+    }) : null);
+});
 
-var CreatableReactSelect = function CreatableReactSelect(_a) {
-    var _b = _a.label, label = _b === void 0 ? null : _b, className = _a.className, props = __rest(_a, [
+var CreatableReactSelect = /*#__PURE__*/ forwardRef(function(_a, ref) {
+    var _b = _a.label, label = _b === void 0 ? null : _b, className = _a.className, error = _a.error, props = __rest(_a, [
         "label",
-        "className"
+        "className",
+        "error"
     ]);
     return /*#__PURE__*/ React.createElement("div", {
-        className: "form-group".concat(appendClass(className))
+        className: "form-group".concat(appendClass(className)).concat(appendClass(error, "form-group--error"))
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(CreatableSelect, __assign({
         className: "react-select-container qtr-margin-top",
         classNamePrefix: "react-select",
@@ -3099,8 +3105,12 @@ var CreatableReactSelect = function CreatableReactSelect(_a) {
                 className: "text-bold"
             }, inputValue));
         }
-    }, props)));
-};
+    }, props, {
+        ref: ref
+    })), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
+        text: error
+    }) : null);
+});
 
 var VSeparator = /*#__PURE__*/ forwardRef(function(_a, ref) {
     var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? "" : _d, props = __rest(_a, [

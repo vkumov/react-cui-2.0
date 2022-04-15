@@ -43,6 +43,7 @@ ReactSelect.args = {
   menuIsOpen: undefined,
   closeMenuOnSelect: undefined,
   multiValueColor: "info",
+  error: null,
 };
 
 ReactSelect.argTypes = {
@@ -83,6 +84,7 @@ ReactSelectCreatable.args = {
   menuIsOpen: undefined,
   closeMenuOnSelect: undefined,
   multiValueColor: "info",
+  error: null,
 };
 
 ReactSelectCreatable.argTypes = {
@@ -91,4 +93,5 @@ ReactSelectCreatable.argTypes = {
     control: "inline-radio",
     options: [true, false, undefined],
   },
+  error: { control: "text" },
 };

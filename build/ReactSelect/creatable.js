@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { appendClass } from '../utils';
+import { InputHelpBlock } from '../InputHelp';
 
 function _extends$1() {
     _extends$1 = Object.assign || function(target) {
@@ -103,13 +104,14 @@ function _objectWithoutPropertiesLoose(source, excluded) {
     }
     return target;
 }
-var CreatableReactSelect = function(_param) {
-    var _label = _param.label, label = _label === void 0 ? null : _label, className = _param.className, props = _objectWithoutProperties(_param, [
+var CreatableReactSelect = /*#__PURE__*/ forwardRef(function(_param, ref) {
+    var _label = _param.label, label = _label === void 0 ? null : _label, className = _param.className, error = _param.error, props = _objectWithoutProperties(_param, [
         "label",
-        "className"
+        "className",
+        "error"
     ]);
     return /*#__PURE__*/ React.createElement("div", {
-        className: "form-group".concat(appendClass(className))
+        className: "form-group".concat(appendClass(className)).concat(appendClass(error, "form-group--error"))
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(CreatableSelect, _extends({
         className: "react-select-container qtr-margin-top",
         classNamePrefix: "react-select",
@@ -123,8 +125,12 @@ var CreatableReactSelect = function(_param) {
                 className: "text-bold"
             }, inputValue));
         }
-    }, props)));
-};
+    }, props, {
+        ref: ref
+    })), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
+        text: error
+    }) : null);
+});
 
 export { CreatableReactSelect };
 //# sourceMappingURL=creatable.js.map

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Select from 'react-select';
+import { InputHelpBlock } from '../InputHelp';
 import { appendClass } from '../utils';
 
 function _extends$1() {
@@ -103,13 +104,14 @@ function _objectWithoutPropertiesLoose(source, excluded) {
     }
     return target;
 }
-var ReactSelect = function(_param) {
-    var _label = _param.label, label = _label === void 0 ? null : _label, className = _param.className, props = _objectWithoutProperties(_param, [
+var ReactSelect = /*#__PURE__*/ forwardRef(function(_param, ref) {
+    var _label = _param.label, label = _label === void 0 ? null : _label, className = _param.className, error = _param.error, props = _objectWithoutProperties(_param, [
         "label",
-        "className"
+        "className",
+        "error"
     ]);
     return /*#__PURE__*/ React.createElement("div", {
-        className: "form-group".concat(appendClass(className))
+        className: "form-group".concat(appendClass(className)).concat(appendClass(error, "form-group--error"))
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(Select, _extends({
         className: "react-select-container qtr-margin-top",
         classNamePrefix: "react-select",
@@ -118,8 +120,12 @@ var ReactSelect = function(_param) {
             MultiValueLabel: MultiValueLabel,
             MultiValueRemove: MultiValueRemove
         }
-    }, props)));
-};
+    }, props, {
+        ref: ref
+    })), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
+        text: error
+    }) : null);
+});
 
 export { ReactSelect };
 //# sourceMappingURL=index.js.map

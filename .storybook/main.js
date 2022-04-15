@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  stories: ["../src/components/**/*.stories.tsx"],
+  stories: ["../src/**/*.stories.tsx"],
   staticDirs: ["../public"],
   // Add any Storybook addons you want here: https://storybook.js.org/addons/
   addons: ["@storybook/addon-essentials", "storybook-dark-mode"],
@@ -16,6 +16,7 @@ module.exports = {
       test: /\.(ts|tsx)$/,
       loader: require.resolve("babel-loader"),
       options: {
+        plugins: ["babel-plugin-tsconfig-paths"],
         presets: [["react-app", { flow: false, typescript: true }]],
       },
     });
