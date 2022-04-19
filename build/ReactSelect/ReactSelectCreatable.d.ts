@@ -2,7 +2,13 @@ import React from "react";
 import type { GroupBase } from "react-select/dist/declarations/src/types";
 import { CreatableProps } from "react-select/creatable";
 import "../../css/react-select.css";
-import { CUISelectProps } from "./types";
+import type { ReactNode } from "react";
+import type { LabelColor } from "src/Label";
+declare type CUISelectProps = {
+    label?: ReactNode;
+    multiValueColor?: LabelColor;
+    error?: ReactNode | boolean;
+};
 export declare type CreatableReactSelectProps<Option = unknown, IsMulti extends boolean = boolean, Group extends GroupBase<Option> = GroupBase<Option>> = CreatableProps<Option, IsMulti, Group> & CUISelectProps;
 export declare const CreatableReactSelect: React.ForwardRefExoticComponent<Omit<Pick<import("react-select/dist/declarations/src/Select").Props<unknown, boolean, GroupBase<unknown>>, "aria-errormessage" | "aria-invalid" | "aria-label" | "aria-labelledby" | "ariaLiveMessages" | "autoFocus" | "className" | "classNamePrefix" | "delimiter" | "formatOptionLabel" | "hideSelectedOptions" | "id" | "inputValue" | "inputId" | "instanceId" | "isClearable" | "isOptionSelected" | "menuPortalTarget" | "name" | "onBlur" | "onChange" | "onFocus" | "onInputChange" | "onKeyDown" | "onMenuOpen" | "onMenuClose" | "onMenuScrollToTop" | "onMenuScrollToBottom" | "theme" | "value" | "form"> & Partial<Pick<import("react-select/dist/declarations/src/Select").Props<unknown, boolean, GroupBase<unknown>>, "aria-live" | "backspaceRemovesValue" | "blurInputOnSelect" | "captureMenuScroll" | "closeMenuOnSelect" | "closeMenuOnScroll" | "components" | "controlShouldRenderValue" | "escapeClearsValue" | "filterOption" | "formatGroupLabel" | "getOptionLabel" | "getOptionValue" | "isDisabled" | "isLoading" | "isOptionDisabled" | "isMulti" | "isRtl" | "isSearchable" | "loadingMessage" | "minMenuHeight" | "maxMenuHeight" | "menuIsOpen" | "menuPlacement" | "menuPosition" | "menuShouldBlockScroll" | "menuShouldScrollIntoView" | "noOptionsMessage" | "openMenuOnFocus" | "openMenuOnClick" | "options" | "pageSize" | "placeholder" | "screenReaderStatus" | "styles" | "tabIndex" | "tabSelectsValue">> & Partial<Pick<{
     'aria-live': string;
@@ -85,3 +91,4 @@ export declare const CreatableReactSelect: React.ForwardRefExoticComponent<Omit<
     tabIndex: number;
     tabSelectsValue: boolean;
 }, never>>> & import("react-select/dist/declarations/src/useStateManager").StateManagerAdditionalProps<unknown> & import("react-select/dist/declarations/src/useCreatable").CreatableAdditionalProps<unknown, GroupBase<unknown>> & CUISelectProps & React.RefAttributes<any>>;
+export {};

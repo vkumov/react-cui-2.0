@@ -62,6 +62,29 @@ var MultiValueRemove = function(_param) {
         className: "icon-close"
     }, props));
 };
+var Group = function(_param) {
+    var className = _param.className, children = _param.children, Heading = _param.Heading, headingProps = _param.headingProps, innerProps = _param.innerProps, props = _objectWithoutProperties$1(_param, [
+        "className",
+        "children",
+        "Heading",
+        "headingProps",
+        "innerProps"
+    ]);
+    return /*#__PURE__*/ React.createElement("div", _extends$1({
+        className: "dropdown__group".concat(appendClass(className))
+    }, innerProps), /*#__PURE__*/ React.createElement(Heading, _extends$1({}, props, {
+        id: headingProps.id
+    }), headingProps.data.label), children);
+};
+var GroupHeading = function(_param)  {
+    var className = _param.className, children = _param.children; _objectWithoutProperties$1(_param, [
+        "className",
+        "children"
+    ]);
+    return React.createElement("div", {
+        className: "dropdown__group-header".concat(appendClass(className))
+    }, children);
+};
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -118,7 +141,9 @@ var ReactSelect = /*#__PURE__*/ forwardRef(function(_param, ref) {
         components: {
             MultiValueContainer: MultiValueContainer,
             MultiValueLabel: MultiValueLabel,
-            MultiValueRemove: MultiValueRemove
+            MultiValueRemove: MultiValueRemove,
+            Group: Group,
+            GroupHeading: GroupHeading
         }
     }, props, {
         ref: ref

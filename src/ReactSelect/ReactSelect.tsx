@@ -9,8 +9,18 @@ import {
   MultiValueContainer,
   MultiValueLabel,
   MultiValueRemove,
+  Group,
+  GroupHeading,
 } from "./components";
-import { CUISelectProps } from "./types";
+
+import type { ReactNode } from "react";
+import type { LabelColor } from "src/Label";
+
+type CUISelectProps = {
+  label?: ReactNode;
+  multiValueColor?: LabelColor;
+  error?: ReactNode | boolean;
+};
 
 export type ReactSelectProps = SelectProps & CUISelectProps;
 
@@ -31,6 +41,8 @@ export const ReactSelect = forwardRef<any, ReactSelectProps>(
             MultiValueContainer,
             MultiValueLabel,
             MultiValueRemove,
+            Group,
+            GroupHeading,
           }}
           {...props}
           ref={ref}

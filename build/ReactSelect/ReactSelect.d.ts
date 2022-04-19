@@ -1,7 +1,13 @@
 import React from "react";
 import { Props as SelectProps } from "react-select";
 import "../../css/react-select.css";
-import { CUISelectProps } from "./types";
+import type { ReactNode } from "react";
+import type { LabelColor } from "src/Label";
+declare type CUISelectProps = {
+    label?: ReactNode;
+    multiValueColor?: LabelColor;
+    error?: ReactNode | boolean;
+};
 export declare type ReactSelectProps = SelectProps & CUISelectProps;
 export declare const ReactSelect: React.ForwardRefExoticComponent<Omit<Pick<import("react-select/dist/declarations/src/Select").Props<unknown, boolean, import("react-select").GroupBase<unknown>>, "aria-errormessage" | "aria-invalid" | "aria-label" | "aria-labelledby" | "ariaLiveMessages" | "autoFocus" | "className" | "classNamePrefix" | "delimiter" | "formatOptionLabel" | "hideSelectedOptions" | "id" | "inputValue" | "inputId" | "instanceId" | "isClearable" | "isOptionSelected" | "menuPortalTarget" | "name" | "onBlur" | "onChange" | "onFocus" | "onInputChange" | "onKeyDown" | "onMenuOpen" | "onMenuClose" | "onMenuScrollToTop" | "onMenuScrollToBottom" | "theme" | "value" | "form"> & Partial<Pick<import("react-select/dist/declarations/src/Select").Props<unknown, boolean, import("react-select").GroupBase<unknown>>, "aria-live" | "backspaceRemovesValue" | "blurInputOnSelect" | "captureMenuScroll" | "closeMenuOnSelect" | "closeMenuOnScroll" | "components" | "controlShouldRenderValue" | "escapeClearsValue" | "filterOption" | "formatGroupLabel" | "getOptionLabel" | "getOptionValue" | "isDisabled" | "isLoading" | "isOptionDisabled" | "isMulti" | "isRtl" | "isSearchable" | "loadingMessage" | "minMenuHeight" | "maxMenuHeight" | "menuIsOpen" | "menuPlacement" | "menuPosition" | "menuShouldBlockScroll" | "menuShouldScrollIntoView" | "noOptionsMessage" | "openMenuOnFocus" | "openMenuOnClick" | "options" | "pageSize" | "placeholder" | "screenReaderStatus" | "styles" | "tabIndex" | "tabSelectsValue">> & Partial<Pick<{
     'aria-live': string;
@@ -84,3 +90,4 @@ export declare const ReactSelect: React.ForwardRefExoticComponent<Omit<Pick<impo
     tabIndex: number;
     tabSelectsValue: boolean;
 }, never>>> & import("react-select/dist/declarations/src/useStateManager").StateManagerAdditionalProps<unknown> & CUISelectProps & React.RefAttributes<any>>;
+export {};

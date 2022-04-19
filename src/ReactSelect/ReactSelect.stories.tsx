@@ -15,6 +15,37 @@ const options = [
   { value: "vanilla", label: "Vanilla" },
 ];
 
+const colourOptions = [
+  { value: "ocean", label: "Ocean" },
+  { value: "blue", label: "Blue" },
+  { value: "purple", label: "Purple" },
+  { value: "red", label: "Red" },
+  { value: "orange", label: "Orange" },
+  { value: "yellow", label: "Yellow" },
+  { value: "green", label: "Green" },
+  { value: "forest", label: "Forest" },
+  { value: "slate", label: "Slate" },
+  { value: "silver", label: "Silver" },
+];
+
+const flavourOptions = [
+  { value: "vanilla", label: "Vanilla" },
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "salted-caramel", label: "Salted Caramel" },
+];
+
+const groupedOptions = [
+  {
+    label: "Colours",
+    options: colourOptions,
+  },
+  {
+    label: "Flavours",
+    options: flavourOptions,
+  },
+];
+
 export const ReactSelect: Story<ReactSelectProps> = (args) => {
   return (
     <>
@@ -23,6 +54,14 @@ export const ReactSelect: Story<ReactSelectProps> = (args) => {
         <div className="row">
           <div className="col">
             <Select {...args} />
+          </div>
+        </div>
+      </div>
+      <div className="section base-margin-top dbl-margin-bottom">
+        <h3 className="display-5">CUI React Select Grouped</h3>
+        <div className="row">
+          <div className="col">
+            <Select {...args} options={groupedOptions} />
           </div>
         </div>
       </div>

@@ -191,3 +191,32 @@
   outline-width: thin;
   outline-style: none;
 }
+
+.cui .react-select-container .dropdown__group {
+  border-bottom: var(--cui-border);
+}
+.cui .react-select-container .dropdown__group > .react-select__option {
+  padding-left: calc(var(--cui-spacing) + var(--cui-spacing-qtr));
+}
+
+.cui .react-select-container .dropdown__group .dropdown__group-header {
+  height: var(--cui-dropdown-menu-item-height);
+  line-height: inherit;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: var(--cui-dropdown-menu-item-padding);
+}
+.cui .react-select-container .dropdown__group .dropdown__group-header {
+  font-weight: normal;
+  font-style: italic;
+  letter-spacing: 0.05rem;
+  pointer-events: none;
+  cursor: default;
+}

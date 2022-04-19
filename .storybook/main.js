@@ -5,6 +5,9 @@ module.exports = {
   staticDirs: ["../public"],
   // Add any Storybook addons you want here: https://storybook.js.org/addons/
   addons: ["@storybook/addon-essentials", "storybook-dark-mode"],
+  core: {
+    builder: "webpack5",
+  },
   webpackFinal: async (config) => {
     // config.module.rules.push({
     //   test: /\.css$/,

@@ -1,6 +1,11 @@
+## 4.2.0
+
+- ➕ Groups support for react-select
+- Storybook to webpack5
+
 ## 4.1.7
 
-- ➕ Error state for react-selects
+- ➕ Error state for react-select
 
 ## 4.1.0
 

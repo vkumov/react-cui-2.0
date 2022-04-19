@@ -10,8 +10,18 @@ import {
   MultiValueContainer,
   MultiValueLabel,
   MultiValueRemove,
+  Group,
+  GroupHeading,
 } from "./components";
-import { CUISelectProps } from "./types";
+
+import type { ReactNode } from "react";
+import type { LabelColor } from "src/Label";
+
+type CUISelectProps = {
+  label?: ReactNode;
+  multiValueColor?: LabelColor;
+  error?: ReactNode | boolean;
+};
 
 export type CreatableReactSelectProps<
   Option = unknown,
@@ -36,6 +46,8 @@ export const CreatableReactSelect = forwardRef<any, CreatableReactSelectProps>(
             MultiValueContainer,
             MultiValueLabel,
             MultiValueRemove,
+            Group,
+            GroupHeading,
           }}
           formatCreateLabel={(inputValue: string) => (
             <>
