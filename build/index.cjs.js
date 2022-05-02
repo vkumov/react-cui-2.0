@@ -3155,6 +3155,19 @@ var CreatableReactSelect = /*#__PURE__*/ React.forwardRef(function(_a, ref) {
     }) : null);
 });
 
+var isGrouped = function isGrouped(v) {
+    return "options" in v;
+};
+var findOption = function(value, options) {
+    var found;
+    for(var _i = 0, options_1 = options; _i < options_1.length; _i++){
+        var it = options_1[_i];
+        if (isGrouped(it)) found = findOption(value, it.options);
+        else found = it.value === value ? it : null;
+        if (found) return found;
+    }
+};
+
 var VSeparator = /*#__PURE__*/ React.forwardRef(function(_a, ref) {
     var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? "" : _d, props = __rest(_a, [
         "size",
@@ -3207,6 +3220,8 @@ var base16Theme = {
     base0E: "#626469",
     base0F: "#626469"
 };
+
+var index = {};
 
 exports.Accordion = Accordion;
 exports.AccordionElement = AccordionElement;
@@ -3280,7 +3295,10 @@ exports.VerticalCenter = VerticalCenter;
 exports.WithBadge = WithBadge;
 exports.base16Theme = base16Theme;
 exports.confirmation = confirmation;
+exports["default"] = index;
 exports.dynamicModal = dynamicModal;
+exports.findOption = findOption;
+exports.isGrouped = isGrouped;
 exports.notification = notificationModal;
 exports.notificationModal = notificationModal;
 exports.prompt = prompt;

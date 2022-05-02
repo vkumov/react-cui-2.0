@@ -32,7 +32,10 @@ export * from "./InputChips";
 export * from "./Select";
 export * from "./ReactSelect";
 export * from "./ReactSelect/creatable";
+export * from "./ReactSelect/helpers";
 export * from "./InputHelp";
 export * from "./VSeparator";
 export * from "./Slider";
 export * from "./utils/base16Theme";
+
+export default {};

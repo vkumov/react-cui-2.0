@@ -3139,6 +3139,19 @@ var CreatableReactSelect = /*#__PURE__*/ forwardRef(function(_a, ref) {
     }) : null);
 });
 
+var isGrouped = function isGrouped(v) {
+    return "options" in v;
+};
+var findOption = function(value, options) {
+    var found;
+    for(var _i = 0, options_1 = options; _i < options_1.length; _i++){
+        var it = options_1[_i];
+        if (isGrouped(it)) found = findOption(value, it.options);
+        else found = it.value === value ? it : null;
+        if (found) return found;
+    }
+};
+
 var VSeparator = /*#__PURE__*/ forwardRef(function(_a, ref) {
     var _b = _a.size, size = _b === void 0 ? "default" : _b, _c = _a.compressed, compressed = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? "" : _d, props = __rest(_a, [
         "size",
@@ -3192,5 +3205,7 @@ var base16Theme = {
     base0F: "#626469"
 };
 
-export { Accordion, AccordionElement, Alert, Badge, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, notificationModal as notification, notificationModal, prompt, toast };
+var index = {};
+
+export { Accordion, AccordionElement, Alert, Badge, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, index as default, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
 //# sourceMappingURL=bundle.esm.js.map
