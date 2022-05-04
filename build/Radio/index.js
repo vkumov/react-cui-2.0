@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useEffect, useCallback } from 'react';
-import { appendClass } from '../utils';
+import { appendClass } from '../utils/index.ts';
 
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;

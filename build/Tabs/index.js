@@ -1,7 +1,7 @@
 import React from 'react';
-import { ConditionalWrapper, DisplayIf } from '../Conditional';
-import { appendClass } from '../utils';
-import { usePrevious } from '../hooks/usePrevious';
+import { ConditionalWrapper, DisplayIf } from '../Conditional/index.ts';
+import { appendClass } from '../utils/index.ts';
+import { usePrevious } from '../hooks/usePrevious.ts';
 
 var runtime = {exports: {}};
 

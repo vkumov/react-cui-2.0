@@ -1,6 +1,6 @@
 import React, { isValidElement, cloneElement } from 'react';
-import { Icon } from '../Icon';
-import { appendClass } from '../utils';
+import { Icon } from '../Icon/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 var TimelineItem = function(param) {
     var _icon = param.icon, icon = _icon === void 0 ? /*#__PURE__*/ React.createElement(Icon, {

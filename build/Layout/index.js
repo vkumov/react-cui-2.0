@@ -1,5 +1,5 @@
 import React from 'react';
-import { appendClass } from '../utils';
+import { appendClass } from '../utils/index.ts';
 
 var Footer = function() {
     return /*#__PURE__*/ React.createElement("footer", {

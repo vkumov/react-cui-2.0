@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import Select from 'react-select';
-import { InputHelpBlock } from '../InputHelp';
-import { appendClass } from '../utils';
+import { InputHelpBlock } from '../InputHelp/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 function _extends$1() {
     _extends$1 = Object.assign || function(target) {

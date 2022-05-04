@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import { ConditionalWrapper } from '../Conditional';
-import { appendClass } from '../utils';
-import { Pagination } from '../Pagination';
-import { Dropdown } from '../Dropdown';
+import { ConditionalWrapper } from '../Conditional/index.ts';
+import { appendClass } from '../utils/index.ts';
+import { Pagination } from '../Pagination/index.ts';
+import { Dropdown } from '../Dropdown/index.ts';
 
 function _extends$2() {
     _extends$2 = Object.assign || function(target) {

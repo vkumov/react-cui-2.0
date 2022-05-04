@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ConditionalWrapper } from '../Conditional';
-import { Label } from '../Label';
-import { InputHelpBaloon, InputHelpBlock } from '../InputHelp';
-import { appendClass } from '../utils';
+import { ConditionalWrapper } from '../Conditional/index.ts';
+import { Label } from '../Label/index.ts';
+import { InputHelpBaloon, InputHelpBlock } from '../InputHelp/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;

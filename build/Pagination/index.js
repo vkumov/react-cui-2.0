@@ -1,6 +1,6 @@
 import React from 'react';
 
-var PaginationContext = React.createContext(null);
+var PaginationContext = /*#__PURE__*/ React.createContext(null);
 
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;

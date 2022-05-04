@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import { appendClass } from '../utils';
-import { InputHelpBlock } from '../InputHelp';
+import { appendClass } from '../utils/index.ts';
+import { InputHelpBlock } from '../InputHelp/index.ts';
 
 function _extends$1() {
     _extends$1 = Object.assign || function(target) {

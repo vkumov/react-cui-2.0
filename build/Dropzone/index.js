@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
-import { appendClass } from '../utils';
+import { appendClass } from '../utils/index.ts';
 
 function _extends() {
     _extends = Object.assign || function(target) {

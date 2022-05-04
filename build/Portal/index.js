@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import { usePortal } from '../hooks/usePortal';
+import { usePortal } from '../hooks/usePortal.ts';
 
 /**
  * @example
@@ -9,7 +9,7 @@ import { usePortal } from '../hooks/usePortal';
  */ var Portal = function(param) {
     var id = param.id, children = param.children;
     var target = usePortal(id);
-    return createPortal(children, target);
+    return /*#__PURE__*/ createPortal(children, target);
 };
 
 export { Portal };

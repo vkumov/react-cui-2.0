@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ConditionalWrapper } from '../Conditional';
-import { appendClass } from '../utils';
+import { ConditionalWrapper } from '../Conditional/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;

@@ -1,3 +1,8 @@
+## 4.3.0
+
+- Fix rollup config
+- Default export for CJS
+
 ## 4.2.0
 
 - ➕ Groups support for react-select

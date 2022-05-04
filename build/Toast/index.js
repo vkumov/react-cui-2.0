@@ -1,6 +1,6 @@
 import React from 'react';
 import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
-import { copyStringToClipboard } from '../utils/clipboard';
+import { copyStringToClipboard } from '../utils/clipboard.ts';
 
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;

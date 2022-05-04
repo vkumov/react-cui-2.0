@@ -1,5 +1,5 @@
 import React from 'react';
-import { appendClass } from '../utils';
+import { appendClass } from '../utils/index.ts';
 
 function _defineProperty(obj, key, value) {
     if (key in obj) {

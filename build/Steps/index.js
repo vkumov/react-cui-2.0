@@ -1,5 +1,5 @@
 import React, { forwardRef, isValidElement } from 'react';
-import { appendClass } from '../utils';
+import { appendClass } from '../utils/index.ts';
 
 var Step = /*#__PURE__*/ forwardRef(function(param, ref) {
     var _visited = param.visited, visited = _visited === void 0 ? false : _visited, _active = param.active, active = _active === void 0 ? false : _active, _className = param.className, className = _className === void 0 ? null : _className, icon = param.icon, children = param.children, consequativeIdx = param.consequativeIdx;

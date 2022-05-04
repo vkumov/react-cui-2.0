@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
-import { ConditionalWrapper } from '../Conditional';
-import { appendClass } from '../utils';
+import { ConditionalWrapper } from '../Conditional/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 function _extends() {
     _extends = Object.assign || function(target) {

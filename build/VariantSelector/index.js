@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Dropdown } from '../Dropdown';
-import { ConditionalWrapper } from '../Conditional';
-import { appendClass } from '../utils';
+import { Dropdown } from '../Dropdown/index.ts';
+import { ConditionalWrapper } from '../Conditional/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;

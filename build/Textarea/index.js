@@ -1,6 +1,6 @@
 import React from 'react';
-import { InputHelpBlock } from '../InputHelp';
-import { appendClass } from '../utils';
+import { InputHelpBlock } from '../InputHelp/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 function _extends() {
     _extends = Object.assign || function(target) {

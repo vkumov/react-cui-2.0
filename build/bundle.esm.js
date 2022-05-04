@@ -1062,7 +1062,7 @@ var GenericTable = /*#__PURE__*/ forwardRef(function(_a, forwardedRef) {
     })));
 });
 
-var PaginationContext = React.createContext(null);
+var PaginationContext = /*#__PURE__*/ React.createContext(null);
 
 var Button = function Button(_a1) {
     var content = _a1.content, position = _a1.position, _b = _a1.active, active = _b === void 0 ? false : _b, _c = _a1.disabled, disabled = _c === void 0 ? false : _c;
@@ -2095,7 +2095,7 @@ var Icon = function Icon(_a) {
  */ var Portal = function Portal(_a) {
     var id = _a.id, children = _a.children;
     var target = usePortal(id);
-    return createPortal(children, target);
+    return /*#__PURE__*/ createPortal(children, target);
 };
 
 var Accordion = function Accordion(_a) {

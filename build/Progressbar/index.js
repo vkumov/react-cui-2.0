@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { appendClass } from '../utils';
+import { appendClass } from '../utils/index.ts';
 
 function _extends() {
     _extends = Object.assign || function(target) {

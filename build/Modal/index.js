@@ -1,11 +1,11 @@
 import React, { cloneElement } from 'react';
-import { appendClass } from '../utils';
+import { appendClass } from '../utils/index.ts';
 import Transition from 'react-transition-group/Transition';
 import ReactModal from 'react-modal';
-import { DisplayIf, ConditionalWrapper } from '../Conditional';
-import { Button } from '../Button';
-import { Input } from '../Input';
-import { eventManager } from '../utils/eventManager';
+import { DisplayIf, ConditionalWrapper } from '../Conditional/index.ts';
+import { Button } from '../Button/index.ts';
+import { Input } from '../Input/index.ts';
+import { eventManager } from '../utils/eventManager.ts';
 
 function _extends$4() {
     _extends$4 = Object.assign || function(target) {

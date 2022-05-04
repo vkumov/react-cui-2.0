@@ -6,14 +6,12 @@ import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import cleaner from "rollup-plugin-cleaner";
 import { swc } from "rollup-plugin-swc3";
-import replace from "@rollup/plugin-replace";
+import tsPaths from "rollup-plugin-tsconfig-paths";
 import glob from "fast-glob";
 import path from "path";
 
 import cssImport from "postcss-import";
 import fs from "fs";
-// import path from "path";
-import { existsSync } from "fs-extra";
 
 import packageJson from "./package.json";
 import { basename } from "path";
@@ -25,6 +23,8 @@ const externals = [
   "react-transition-group",
   "react-dropzone",
 ];
+
+const allExternals = [...externals];
 
 const minimize = false;
 
@@ -73,58 +73,38 @@ const getFolders = (entry) => {
   return dirsWithoutIndex;
 };
 
+(function () {
+  getFolders("./src").map((folder) => {
+    const all = glob
+      .sync(`./src/${folder}/*.{ts,tsx}`)
+      .map((f) => path.resolve(f));
+    allExternals.push(...all);
+  });
+  // console.log(allExternals);
+})();
+
 //loop through your folders and generate a rollup obj per folder
 const folderBuilds = getFolders("./src")
   .map((folder) => {
-    if (folder === "utils" || folder === "hooks") {
-      const files = glob.sync(`./src/${folder}/*.ts`);
-      return files.map((file) => {
-        const bn = basename(file, ".ts");
-        return {
-          input: `src/${folder}/${bn}.ts`,
-          output: {
-            // ensure file destination is same as where the typings are
-            file: `build/${folder}/${bn}.js`,
-            sourcemap: true,
-            exports: "named",
-            plugins: [replace({ "src/": "../" })],
-          },
-          treeshake: true,
-          plugins,
-          external: externals,
-        };
-      });
-    }
-
-    /**
-     * @type {import('rollup').RollupOptions}
-     **/
-    const ep = {
-      input: `src/${folder}/index.ts`,
-      output: {
-        // ensure file destination is same as where the typings are
-        file: `build/${folder}/index.js`,
-        sourcemap: true,
-        exports: "named",
-        plugins: [replace({ "src/": "../" })],
-      },
-      treeshake: true,
-      plugins: [...plugins, ignoreCssPlugin].filter(Boolean),
-      external: externals,
-    };
-    if (!existsSync(`./src/${folder}/creatable.ts`)) return ep;
-
-    /**
-     * @type {import('rollup').RollupOptions}
-     **/
-    return [
-      ep,
-      {
-        ...ep,
-        input: `src/${folder}/creatable.ts`,
-        output: { ...ep.output, file: `build/${folder}/creatable.js` },
-      },
-    ];
+    const files = glob.sync(`./src/${folder}/*.ts`);
+    return files.map((file) => {
+      const bn = basename(file, ".ts");
+      return {
+        input: `src/${folder}/${bn}.ts`,
+        output: {
+          // ensure file destination is same as where the typings are
+          file: `build/${folder}/${bn}.js`,
+          sourcemap: true,
+          exports: "named",
+          // plugins: [replace({ "src/": "../" })],
+        },
+        treeshake: true,
+        // plugins,
+        plugins: [tsPaths(), ...plugins, ignoreCssPlugin].filter(Boolean),
+        // external: externals,
+        external: allExternals.filter((f) => !f.includes(`src/${folder}/`)),
+      };
+    });
   })
   .flat();
 

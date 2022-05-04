@@ -1,8 +1,8 @@
 import React, { forwardRef, useState, useRef, useMemo, useCallback, useEffect, isValidElement } from 'react';
 import { useMergeRefs } from 'use-callback-ref';
-import { InputChips } from '../InputChips';
-import { InputHelpBlock } from '../InputHelp';
-import { appendClass } from '../utils';
+import { InputChips } from '../InputChips/index.ts';
+import { InputHelpBlock } from '../InputHelp/index.ts';
+import { appendClass } from '../utils/index.ts';
 
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
