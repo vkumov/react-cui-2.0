@@ -1,8 +1,7 @@
 import React from 'react';
-import { appendClass } from '../utils/index.ts';
+import { appendClass } from '../utils/index.js';
 
-var Footer = function() {
-    return /*#__PURE__*/ React.createElement("footer", {
+const Footer = ()=>/*#__PURE__*/ React.createElement("footer", {
         className: "footer"
     }, /*#__PURE__*/ React.createElement("div", {
         className: "footer__links"
@@ -40,8 +39,8 @@ var Footer = function() {
         href: "https://www.cisco.com/c/en/us/about/legal/trademarks.html",
         target: "_blank",
         rel: "noopener noreferrer"
-    }, "Trademarks")))));
-};
+    }, "Trademarks")))))
+;
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -57,74 +56,29 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-function _objectWithoutProperties(source, excluded) {
-    if (source == null) return {};
-    var target = _objectWithoutPropertiesLoose(source, excluded);
-    var key, i;
-    if (Object.getOwnPropertySymbols) {
-        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-        for(i = 0; i < sourceSymbolKeys.length; i++){
-            key = sourceSymbolKeys[i];
-            if (excluded.indexOf(key) >= 0) continue;
-            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-            target[key] = source[key];
-        }
-    }
-    return target;
-}
-function _objectWithoutPropertiesLoose(source, excluded) {
-    if (source == null) return {};
-    var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i;
-    for(i = 0; i < sourceKeys.length; i++){
-        key = sourceKeys[i];
-        if (excluded.indexOf(key) >= 0) continue;
-        target[key] = source[key];
-    }
-    return target;
-}
-var Header = function(_param)  {
-    var children = _param.children, _fluid = _param.fluid, fluid = _fluid === void 0 ? false : _fluid, props = _objectWithoutProperties(_param, [
-        "children",
-        "fluid"
-    ]);
-    return React.createElement("header", _extends({
+const Header = ({ children , fluid =false , ...props })=>/*#__PURE__*/ React.createElement("header", _extends({
         className: "header"
     }, props), /*#__PURE__*/ React.createElement("div", {
-        className: "container".concat(fluid ? "-fluid" : "")
+        className: `container${fluid ? "-fluid" : ""}`
     }, /*#__PURE__*/ React.createElement("div", {
         className: "header-panels"
-    }, children)));
-};
-var HeaderPanel = function(_param)  {
-    var children = _param.children, _center = _param.center, center = _center === void 0 ? false : _center, _right = _param.right, right = _right === void 0 ? false : _right, _className = _param.className, className = _className === void 0 ? null : _className, props = _objectWithoutProperties(_param, [
-        "children",
-        "center",
-        "right",
-        "className"
-    ]);
-    return React.createElement("div", _extends({
-        className: "header-panel".concat(appendClass(center, "header-panel--center")).concat(appendClass(right, "header-panel--right")).concat(appendClass(className))
-    }, props), children);
-};
-var HeaderTitle = function(_param)  {
-    var _icon = _param.icon, icon = _icon === void 0 ? true : _icon, _link = _param.link, link = _link === void 0 ? null : _link, title = _param.title, props = _objectWithoutProperties(_param, [
-        "icon",
-        "link",
-        "title"
-    ]);
-    return React.createElement(HeaderPanel, _extends({}, props), icon ? /*#__PURE__*/ React.createElement("a", {
+    }, children)))
+;
+const HeaderPanel = ({ children , center =false , right =false , className =null , ...props })=>/*#__PURE__*/ React.createElement("div", _extends({
+        className: `header-panel${appendClass(center, "header-panel--center")}${appendClass(right, "header-panel--right")}${appendClass(className)}`
+    }, props), children)
+;
+const HeaderTitle = ({ icon =true , link =null , title , ...props })=>/*#__PURE__*/ React.createElement(HeaderPanel, _extends({}, props), icon ? /*#__PURE__*/ React.createElement("a", {
         className: "header__logo",
         href: link || "http://www.cisco.com",
         target: "_blank",
         rel: "noopener noreferrer"
     }, /*#__PURE__*/ React.createElement("span", {
-        className: typeof icon === "string" ? "icon-".concat(icon) : "icon-cisco"
+        className: typeof icon === "string" ? `icon-${icon}` : "icon-cisco"
     })) : null, /*#__PURE__*/ React.createElement("div", {
         className: "header__title"
-    }, title));
-};
+    }, title))
+;
 
 export { Footer, Header, HeaderPanel, HeaderTitle };
 //# sourceMappingURL=index.js.map

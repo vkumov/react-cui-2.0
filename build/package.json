@@ -1,9 +1,9 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.3.0",
+  "version": "4.3.3",
   "description": "React library for CUI 2.0",
-  "module": "./bundle.esm.js",
-  "main": "./index.cjs.js",
+  "module": "./bundle.mjs",
+  "main": "./index.cjs",
   "types": "./index.d.ts",
   "homepage": "https://www-github.cisco.com/GDE-Content-Engineering/reqact-cui-2.0",
   "author": "Vitaly Kumov",

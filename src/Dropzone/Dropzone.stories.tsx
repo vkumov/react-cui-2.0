@@ -1,22 +1,22 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { Dropzone, DropzoneProps } from "./index";
+import { Dropzone as LibDropzone, DropzoneProps } from "./index";
 
 export default {
-  title: "Dropzone",
-  component: Dropzone,
+  title: "Components/Dropzone",
+  component: LibDropzone,
 } as Meta;
 
-export const Primary: Story<DropzoneProps> = (args) => {
+export const Dropzone: Story<DropzoneProps> = (args) => {
   return (
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Dropzone</h3>
-      <Dropzone {...args} onChange={(v) => console.log(v)} />
+      <LibDropzone {...args} onChange={(v) => console.log(v)} />
     </div>
   );
 };
 
-Primary.args = {
+Dropzone.args = {
   name: "dropzone",
   label: "Select files",
 };

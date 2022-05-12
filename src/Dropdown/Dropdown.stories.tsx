@@ -1,55 +1,69 @@
 import React from "react";
-import { Dropdown } from "./index";
+import { Dropdown as LibDropdown } from "./index";
+import { Story, Meta } from "@storybook/react/types-6-0";
 
 export default {
-  title: "Dropdown",
-  component: Dropdown,
-};
+  title: "Components/Dropdown",
+  component: LibDropdown,
+  subcomponents: {
+    "Dropdown.Element": LibDropdown.Element,
+    "Dropdown.Divider": LibDropdown.Divider,
+    "Dropdown.Group": LibDropdown.Group,
+  },
+} as Meta;
 
 const ThreeItems = () => (
   <>
-    <Dropdown.Element>Item one</Dropdown.Element>
-    <Dropdown.Element>Item two</Dropdown.Element>
-    <Dropdown.Element selected>Item three</Dropdown.Element>
+    <LibDropdown.Element>Item one</LibDropdown.Element>
+    <LibDropdown.Element>Item two</LibDropdown.Element>
+    <LibDropdown.Element selected>Item three</LibDropdown.Element>
   </>
 );
 
-export const Primary = () => (
+export const Dropdown: Story = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Structure</h3>
       <div className="row">
         <div className="col">
           <div className="subheader">Stays open when item clicked</div>
-          <Dropdown header="Dropdown">
-            <Dropdown.Element>Item one</Dropdown.Element>
-            <Dropdown.Element>Item two</Dropdown.Element>
-            <Dropdown.Element selected>Item three</Dropdown.Element>
-            <Dropdown.Divider />
-            <Dropdown.Group>
-              <Dropdown.GroupHeader header="Group" />
-              <Dropdown.Element>Item one</Dropdown.Element>
-              <Dropdown.Element>Item two</Dropdown.Element>
-            </Dropdown.Group>
-            <Dropdown.Element icon="social-facebook">Facebook</Dropdown.Element>
-            <Dropdown.Element icon="social-twitter">Twitter</Dropdown.Element>
-          </Dropdown>
+          <LibDropdown header="Dropdown">
+            <LibDropdown.Element>Item one</LibDropdown.Element>
+            <LibDropdown.Element>Item two</LibDropdown.Element>
+            <LibDropdown.Element selected>Item three</LibDropdown.Element>
+            <LibDropdown.Divider />
+            <LibDropdown.Group>
+              <LibDropdown.GroupHeader header="Group" />
+              <LibDropdown.Element>Item one</LibDropdown.Element>
+              <LibDropdown.Element>Item two</LibDropdown.Element>
+            </LibDropdown.Group>
+            <LibDropdown.Element icon="social-facebook">
+              Facebook
+            </LibDropdown.Element>
+            <LibDropdown.Element icon="social-twitter">
+              Twitter
+            </LibDropdown.Element>
+          </LibDropdown>
         </div>
         <div className="col">
           <div className="subheader">Closes open when item clicked</div>
-          <Dropdown header="Dropdown" alwaysClose>
-            <Dropdown.Element>Item one</Dropdown.Element>
-            <Dropdown.Element>Item two</Dropdown.Element>
-            <Dropdown.Element selected>Item three</Dropdown.Element>
-            <Dropdown.Divider />
-            <Dropdown.Group>
-              <Dropdown.GroupHeader header="Group" />
-              <Dropdown.Element>Item one</Dropdown.Element>
-              <Dropdown.Element>Item two</Dropdown.Element>
-            </Dropdown.Group>
-            <Dropdown.Element icon="social-facebook">Facebook</Dropdown.Element>
-            <Dropdown.Element icon="social-twitter">Twitter</Dropdown.Element>
-          </Dropdown>
+          <LibDropdown header="Dropdown" alwaysClose>
+            <LibDropdown.Element>Item one</LibDropdown.Element>
+            <LibDropdown.Element>Item two</LibDropdown.Element>
+            <LibDropdown.Element selected>Item three</LibDropdown.Element>
+            <LibDropdown.Divider />
+            <LibDropdown.Group>
+              <LibDropdown.GroupHeader header="Group" />
+              <LibDropdown.Element>Item one</LibDropdown.Element>
+              <LibDropdown.Element>Item two</LibDropdown.Element>
+            </LibDropdown.Group>
+            <LibDropdown.Element icon="social-facebook">
+              Facebook
+            </LibDropdown.Element>
+            <LibDropdown.Element icon="social-twitter">
+              Twitter
+            </LibDropdown.Element>
+          </LibDropdown>
         </div>
       </div>
     </div>
@@ -57,24 +71,24 @@ export const Primary = () => (
       <h3 className="display-5">Type</h3>
       <div className="row">
         <div className="col-3">
-          <Dropdown type="button" header="Button">
+          <LibDropdown type="button" header="Button">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
         <div className="col-3">
-          <Dropdown type="div" header="Div">
+          <LibDropdown type="div" header="Div">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
         <div className="col-3">
-          <Dropdown type="link" header="Link">
+          <LibDropdown type="link" header="Link">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
         <div className="col-3">
-          <Dropdown type="icon" header="Icon" className="icon-add-outline">
+          <LibDropdown type="icon" header="Icon" className="icon-add-outline">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
       </div>
     </div>
@@ -82,19 +96,19 @@ export const Primary = () => (
       <h3 className="display-5">Alignment</h3>
       <div className="row">
         <div className="col-4">
-          <Dropdown openTo="right" header="To the right">
+          <LibDropdown openTo="right" header="To the right">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
         <div className="col-4">
-          <Dropdown openTo="center" header="Centered">
+          <LibDropdown openTo="center" header="Centered">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
         <div className="col-4">
-          <Dropdown openTo="left" header="To the left">
+          <LibDropdown openTo="left" header="To the left">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
       </div>
     </div>
@@ -102,14 +116,14 @@ export const Primary = () => (
       <h3 className="display-5">Direction</h3>
       <div className="row">
         <div className="col-4">
-          <Dropdown header="Down">
+          <LibDropdown header="Down">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
         <div className="col-4">
-          <Dropdown up header="Up">
+          <LibDropdown up header="Up">
             <ThreeItems />
-          </Dropdown>
+          </LibDropdown>
         </div>
       </div>
     </div>

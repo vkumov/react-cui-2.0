@@ -1,0 +1,37 @@
+<Meta title="Introduction" />
+
+# React Cisco UI Kit library
+
+You need to download Cisco UI kit and put CSS and font files into folder of your project (`/public/` for example).
+Import `cui-standard.min.css` in your code directly (for NextJS).
+
+Bootstrap code:
+```jsx
+import React, { useEffect } from "react";
+import ReactModal from "react-modal";
+import { Portal, ToastContainer, DynamicModal, } from "@vkumov/react-cui-2.0";
+
+import "../public/css/cui-standard.min.css";
+// importing additional styles
+import "@vkumov/react-cui-2.0/css/styles.css";
+
+const App = () => {
+  useEffect(() => {
+    // for modals to work 
+    ReactModal.setAppElement("body");
+  }, []);
+
+  return <>
+    {/* Your code */}
+    <Portal id="toast-portal">
+      <ToastContainer
+        pauseOnFocusLoss={false}
+        position="top-center"
+        autoClose={2000}
+      />
+    </Portal>
+    {/* for dynamic modals to work */}
+    <DynamicModal />
+  </>
+} 
+```

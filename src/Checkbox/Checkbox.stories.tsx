@@ -1,33 +1,33 @@
 import React from "react";
-import { Checkbox } from "./index";
+import { Checkbox as LibCheckbox } from "./index";
 
 export default {
-  title: "Checkbox",
-  component: Checkbox,
+  title: "Components/Checkbox",
+  component: LibCheckbox,
 };
 
-export const Primary = () => (
+export const Checkbox = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Layout</h3>
       <div className="row">
         <div className="col-3">
           <div className="subheader">Stacked</div>
-          <Checkbox asFormGroup>One</Checkbox>
-          <Checkbox asFormGroup>Two</Checkbox>
-          <Checkbox asFormGroup>Three</Checkbox>
+          <LibCheckbox asFormGroup>One</LibCheckbox>
+          <LibCheckbox asFormGroup>Two</LibCheckbox>
+          <LibCheckbox asFormGroup>Three</LibCheckbox>
         </div>
         <div className="col-3">
           <div className="subheader">Inline</div>
-          <Checkbox asFormGroup inline>
+          <LibCheckbox asFormGroup inline>
             One
-          </Checkbox>
-          <Checkbox asFormGroup inline>
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline>
             Two
-          </Checkbox>
-          <Checkbox asFormGroup inline>
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline>
             Three
-          </Checkbox>
+          </LibCheckbox>
         </div>
       </div>
     </div>
@@ -36,39 +36,39 @@ export const Primary = () => (
       <div className="row">
         <div className="col-3">
           <div className="subheader">Compressed</div>
-          <Checkbox asFormGroup inline spacing="compressed">
+          <LibCheckbox asFormGroup inline spacing="compressed">
             One
-          </Checkbox>
-          <Checkbox asFormGroup inline spacing="compressed">
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline spacing="compressed">
             Two
-          </Checkbox>
-          <Checkbox asFormGroup inline spacing="compressed">
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline spacing="compressed">
             Three
-          </Checkbox>
+          </LibCheckbox>
         </div>
         <div className="col-3">
           <div className="subheader">Default</div>
-          <Checkbox asFormGroup inline>
+          <LibCheckbox asFormGroup inline>
             One
-          </Checkbox>
-          <Checkbox asFormGroup inline>
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline>
             Two
-          </Checkbox>
-          <Checkbox asFormGroup inline>
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline>
             Three
-          </Checkbox>
+          </LibCheckbox>
         </div>
         <div className="col-3">
           <div className="subheader">Loose</div>
-          <Checkbox asFormGroup inline spacing="loose">
+          <LibCheckbox asFormGroup inline spacing="loose">
             One
-          </Checkbox>
-          <Checkbox asFormGroup inline spacing="loose">
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline spacing="loose">
             Two
-          </Checkbox>
-          <Checkbox asFormGroup inline spacing="loose">
+          </LibCheckbox>
+          <LibCheckbox asFormGroup inline spacing="loose">
             Three
-          </Checkbox>
+          </LibCheckbox>
         </div>
       </div>
     </div>

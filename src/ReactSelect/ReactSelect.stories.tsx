@@ -5,7 +5,7 @@ import { ReactSelect as Select, ReactSelectProps } from "./";
 import { CreatableReactSelect, CreatableReactSelectProps } from "./creatable";
 
 export default {
-  title: "Select/React Select",
+  title: "Components/Select/React Select",
   component: Select,
 } as Meta;
 

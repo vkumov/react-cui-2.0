@@ -1,8 +1,9 @@
 import React from "react";
-import { Label, LabelColor } from "./index";
+import { Label as LibLabel, LabelColor } from "./index";
 
 export default {
-  title: "Label",
+  title: "Components/Label",
+  component: LibLabel,
 };
 
 const colors: LabelColor[] = [
@@ -18,37 +19,37 @@ const colors: LabelColor[] = [
   "light",
 ];
 
-export const Primary = () => (
+export const Label = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Size</h3>
-      <Label size="tiny">tiny</Label>&nbsp;
-      <Label size="small">small</Label>&nbsp;
-      <Label>default</Label>&nbsp;
-      <Label size="large">large</Label>
+      <LibLabel size="tiny">tiny</LibLabel>&nbsp;
+      <LibLabel size="small">small</LibLabel>&nbsp;
+      <LibLabel>default</LibLabel>&nbsp;
+      <LibLabel size="large">large</LibLabel>
     </div>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Color</h3>
       {colors.map((clr) => (
-        <Label key={clr} color={clr} className="qtr-margin-right">
+        <LibLabel key={clr} color={clr} className="qtr-margin-right">
           {clr}
-        </Label>
+        </LibLabel>
       ))}
     </div>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Bordered</h3>
       {colors.map((clr) => (
-        <Label key={clr} color={clr} className="qtr-margin-right" bordered>
+        <LibLabel key={clr} color={clr} className="qtr-margin-right" bordered>
           {clr}
-        </Label>
+        </LibLabel>
       ))}
     </div>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Raised</h3>
       {colors.map((clr) => (
-        <Label key={clr} color={clr} className="qtr-margin-right" raised>
+        <LibLabel key={clr} color={clr} className="qtr-margin-right" raised>
           {clr}
-        </Label>
+        </LibLabel>
       ))}
     </div>
   </>

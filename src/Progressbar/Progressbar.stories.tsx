@@ -1,9 +1,11 @@
-import React from "react";
-import { Progressbar, ProgressbarColor } from "./index";
+import React, { ComponentProps } from "react";
+import { Progressbar as LibProgressbar, ProgressbarColor } from "./index";
+import { Story, Meta } from "@storybook/react/types-6-0";
 
 export default {
-  title: "Progressbar",
-};
+  title: "Components/Progressbar",
+  component: LibProgressbar,
+} as Meta;
 
 const colors: ProgressbarColor[] = [
   "primary",
@@ -17,48 +19,27 @@ const colors: ProgressbarColor[] = [
   "dark",
 ];
 
-export const Primary = () => (
+export const Progressbar: Story<ComponentProps<typeof LibProgressbar>> = ({
+  label,
+  ...args
+}) => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Structure</h3>
+      <h3 className="display-5">Progressbar</h3>
       <div className="row">
         <div className="col">
           <div className="subheader">Basic</div>
-          <Progressbar percentage={50} />
+          <LibProgressbar {...args} label={label ? `${label}` : ""} />
         </div>
-        <div className="col">
-          <div className="subheader">With label</div>
-          <Progressbar percentage={50} withLabel />
-        </div>
-      </div>
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Size</h3>
-      <div className="row">
-        <div className="col">
-          <div className="subheader">Small</div>
-          <Progressbar percentage={50} size="small" withLabel />
-        </div>
-        <div className="col">
-          <div className="subheader">Default</div>
-          <Progressbar percentage={75} withLabel />
-        </div>
-        <div className="col">
-          <div className="subheader">Large</div>
-          <Progressbar percentage={25} size="large" withLabel />
-        </div>
-      </div>
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Color</h3>
-      <div className="row">
-        {colors.map((clr) => (
-          <div className="col-3 base-margin-bottom" key={clr}>
-            <div className="subheader">{clr}</div>
-            <Progressbar color={clr} percentage={50} />
-          </div>
-        ))}
       </div>
     </div>
   </>
 );
+
+Progressbar.args = {
+  percentage: 50,
+};
+
+Progressbar.argTypes = {
+  label: { type: "string", description: "Percentage if label not set" },
+};

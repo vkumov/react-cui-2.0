@@ -1,4 +1,4 @@
-var base16Theme = {
+const base16Theme = {
     scheme: "monokai",
     author: "Vitaly Kumov based on Cisco UI kit",
     base00: "var(--cui-background-inactive)",

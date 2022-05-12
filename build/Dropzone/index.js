@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
-import { appendClass } from '../utils/index.ts';
+import { appendClass } from '../utils/index.js';
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -17,43 +17,12 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-function _objectWithoutProperties(source, excluded) {
-    if (source == null) return {};
-    var target = _objectWithoutPropertiesLoose(source, excluded);
-    var key, i;
-    if (Object.getOwnPropertySymbols) {
-        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-        for(i = 0; i < sourceSymbolKeys.length; i++){
-            key = sourceSymbolKeys[i];
-            if (excluded.indexOf(key) >= 0) continue;
-            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-            target[key] = source[key];
-        }
-    }
-    return target;
-}
-function _objectWithoutPropertiesLoose(source, excluded) {
-    if (source == null) return {};
-    var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i;
-    for(i = 0; i < sourceKeys.length; i++){
-        key = sourceKeys[i];
-        if (excluded.indexOf(key) >= 0) continue;
-        target[key] = source[key];
-    }
-    return target;
-}
-var FileCard = function(param) {
-    var file = param.file, i = param.i, removeFile = param.removeFile, inline = param.inline;
-    return /*#__PURE__*/ React.createElement("div", {
+const FileCard = ({ file , i , removeFile , inline  })=>/*#__PURE__*/ React.createElement("div", {
         className: "file-drop__card col-lg-4 col-md-6 col-sm-6",
-        key: "".concat(i, "-").concat(file.name)
+        key: `${i}-${file.name}`
     }, /*#__PURE__*/ React.createElement("div", {
         className: "panel panel--bordered hover-emboss--small",
-        onClick: function(e) {
-            return e.stopPropagation();
-        }
+        onClick: (e)=>e.stopPropagation()
     }, inline ? /*#__PURE__*/ React.createElement("div", {
         className: "panel__body flex flex-row"
     }, /*#__PURE__*/ React.createElement("div", {
@@ -71,9 +40,7 @@ var FileCard = function(param) {
         unitSeparator: " "
     }))), /*#__PURE__*/ React.createElement("a", {
         className: "link pull-right",
-        onClick: function() {
-            return removeFile(i);
-        }
+        onClick: ()=>removeFile(i)
     }, /*#__PURE__*/ React.createElement("span", {
         className: "icon-close",
         title: "Remove the file."
@@ -84,9 +51,7 @@ var FileCard = function(param) {
         style: {
             marginRight: "5px"
         },
-        onClick: function() {
-            return removeFile(i);
-        }
+        onClick: ()=>removeFile(i)
     }, /*#__PURE__*/ React.createElement("span", {
         className: "icon-close",
         title: "Remove the file."
@@ -96,10 +61,9 @@ var FileCard = function(param) {
         className: "file-icon text-muted icon-file-o qtr-margin-right"
     }), /*#__PURE__*/ React.createElement("small", null, bytes.format(file.size, {
         unitSeparator: " "
-    })))));
-};
-var DropzoneMessage = function(param) {
-    var inline = param.inline, accept = param.accept, maxFileSize = param.maxFileSize;
+    })))))
+;
+const DropzoneMessage = ({ inline , accept , maxFileSize  })=>{
     if (inline) {
         return /*#__PURE__*/ React.createElement("div", {
             className: "dropzone-message flex flex-row flex-center-vertical"
@@ -125,8 +89,7 @@ var DropzoneMessage = function(param) {
         unitSeparator: " "
     })));
 };
-var DropzoneFiles = function(param) {
-    var files = param.files, inline = param.inline, showTotalSelected = param.showTotalSelected, removeFile = param.removeFile;
+const DropzoneFiles = ({ files , inline , showTotalSelected , removeFile  })=>{
     if (!Array.isArray(files) || !files.length) {
         return null;
     }
@@ -136,33 +99,19 @@ var DropzoneFiles = function(param) {
         className: "file-drop__container container--fluid"
     }, /*#__PURE__*/ React.createElement("div", {
         className: "row"
-    }, files.map(function(file, i) {
-        return /*#__PURE__*/ React.createElement(FileCard, {
+    }, files.map((file, i)=>/*#__PURE__*/ React.createElement(FileCard, {
             key: i,
             file: file,
             i: i,
             inline: inline,
             removeFile: removeFile
-        });
-    }))), showTotalSelected ? /*#__PURE__*/ React.createElement("div", {
+        })
+    ))), showTotalSelected ? /*#__PURE__*/ React.createElement("div", {
         className: "file-drop__filecnt"
     }, files.length, " selected") : null);
 };
-var Dropzone = function(_param) {
-    var error = _param.error, loose = _param.loose, compressed = _param.compressed, inline = _param.inline, label = _param.label, name = _param.name, value = _param.value, customMaxFileSize = _param.maxFileSize, maxFiles = _param.maxFiles, onChange = _param.onChange, showTotalSelected = _param.showTotalSelected, props = _objectWithoutProperties(_param, [
-        "error",
-        "loose",
-        "compressed",
-        "inline",
-        "label",
-        "name",
-        "value",
-        "maxFileSize",
-        "maxFiles",
-        "onChange",
-        "showTotalSelected"
-    ]);
-    var maxFileSize = useMemo(function() {
+const Dropzone = ({ error , loose , compressed , inline , label , name , value , maxFileSize: customMaxFileSize , maxFiles , onChange , showTotalSelected , ...props })=>{
+    const maxFileSize = useMemo(()=>{
         if (customMaxFileSize) {
             return bytes.parse(customMaxFileSize);
         } else {
@@ -171,20 +120,20 @@ var Dropzone = function(_param) {
     }, [
         customMaxFileSize
     ]);
-    var padding = useMemo(function() {
-        var tmp = "";
+    const padding = useMemo(()=>{
+        let tmp = "";
         if (loose) tmp = "dropzone--loose";
         if (compressed) tmp = "dropzone--compressed";
         if (inline && Array.isArray(value) && value.length) {
             switch(tmp){
                 case "dropzone--loose":
-                    tmp = "".concat(tmp, " half-padding-bottom");
+                    tmp = `${tmp} half-padding-bottom`;
                     break;
                 case "dropzone--compressed":
-                    tmp = "".concat(tmp, " no-padding-bottom");
+                    tmp = `${tmp} no-padding-bottom`;
                     break;
                 default:
-                    tmp = "".concat(tmp, " qtr-padding-bottom");
+                    tmp = `${tmp} qtr-padding-bottom`;
                     break;
             }
         }
@@ -195,10 +144,9 @@ var Dropzone = function(_param) {
         value,
         inline
     ]);
-    var handleDrop = useCallback(function(filesToUpload) {
-        if (maxFileSize) filesToUpload = filesToUpload.filter(function(file) {
-            return file.size <= maxFileSize;
-        });
+    const handleDrop = useCallback((filesToUpload)=>{
+        if (maxFileSize) filesToUpload = filesToUpload.filter((file)=>file.size <= maxFileSize
+        );
         if (maxFiles && filesToUpload.length > maxFiles) filesToUpload = filesToUpload.slice(0, maxFiles);
         onChange(filesToUpload);
     }, [
@@ -206,13 +154,12 @@ var Dropzone = function(_param) {
         maxFiles,
         onChange
     ]);
-    var removeFile = function(toRemove) {
-        onChange(Array.isArray(value) ? value.filter(function(_, idx) {
-            return toRemove !== idx;
-        }) : value);
+    const removeFile = (toRemove)=>{
+        onChange(Array.isArray(value) ? value.filter((_, idx)=>toRemove !== idx
+        ) : value);
     };
     return /*#__PURE__*/ React.createElement("div", {
-        className: "form-group".concat(appendClass(error, "form-group--error"))
+        className: `form-group${appendClass(error, "form-group--error")}`
     }, /*#__PURE__*/ React.createElement("div", {
         className: "form-group__text"
     }, label ? /*#__PURE__*/ React.createElement("label", {
@@ -220,10 +167,8 @@ var Dropzone = function(_param) {
     }, label) : null, /*#__PURE__*/ React.createElement(ReactDropzone, _extends({}, props, {
         onDrop: handleDrop,
         maxSize: maxFileSize
-    }), function(param) {
-        var getRootProps = param.getRootProps, getInputProps = param.getInputProps;
-        return /*#__PURE__*/ React.createElement("div", _extends({
-            className: "dropzone ".concat(padding)
+    }), ({ getRootProps , getInputProps  })=>/*#__PURE__*/ React.createElement("div", _extends({
+            className: `dropzone ${padding}`
         }, getRootProps()), /*#__PURE__*/ React.createElement("input", _extends({}, getInputProps())), /*#__PURE__*/ React.createElement(DropzoneFiles, {
             files: value,
             showTotalSelected: showTotalSelected,
@@ -233,9 +178,9 @@ var Dropzone = function(_param) {
             maxFileSize: maxFileSize,
             inline: inline,
             accept: props.accept
-        }));
-    })), error ? /*#__PURE__*/ React.createElement("div", {
-        className: "help-block text-danger",
+        }))
+    )), error ? /*#__PURE__*/ React.createElement("div", {
+        className: `help-block text-danger`,
         role: "alert"
     }, /*#__PURE__*/ React.createElement("span", null, error)) : null);
 };

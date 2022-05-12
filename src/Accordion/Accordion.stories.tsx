@@ -1,19 +1,19 @@
 import React from "react";
-import { Accordion, AccordionElement } from "./index";
+import { Accordion as LibAccordion, AccordionElement } from "./index";
 
 export default {
-  title: "Accordion",
-  component: Accordion,
+  title: "Components/Accordion",
+  component: LibAccordion,
 };
 
-export const Primary = () => (
+export const Accordion = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Structure</h3>
       <div className="row">
         <div className="col">
           <div className="subheader">Basic</div>
-          <Accordion>
+          <LibAccordion>
             <AccordionElement title="Item 1">
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
@@ -32,11 +32,11 @@ export const Primary = () => (
                 gravida posuere tellus, eu congue nunc.
               </p>
             </AccordionElement>
-          </Accordion>
+          </LibAccordion>
         </div>
         <div className="col">
           <div className="subheader">With Toggles</div>
-          <Accordion toggles>
+          <LibAccordion toggles>
             <AccordionElement title="Item 1">
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
@@ -55,7 +55,7 @@ export const Primary = () => (
                 gravida posuere tellus, eu congue nunc.
               </p>
             </AccordionElement>
-          </Accordion>
+          </LibAccordion>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@ export const Primary = () => (
       <h3 className="display-5">Bordered</h3>
       <div className="row">
         <div className="col-6">
-          <Accordion toggles bordered>
+          <LibAccordion toggles bordered>
             <AccordionElement title="Item 1">
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
@@ -83,7 +83,7 @@ export const Primary = () => (
                 gravida posuere tellus, eu congue nunc.
               </p>
             </AccordionElement>
-          </Accordion>
+          </LibAccordion>
         </div>
       </div>
     </div>

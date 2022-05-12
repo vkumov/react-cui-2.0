@@ -3,11 +3,11 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { Input } from "./index";
 
 export default {
-  title: "Textfield",
+  title: "Components/Textfield/Examples",
   component: Input,
 } as Meta;
 
-export const Examples = () => (
+export const Examples: Story = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Types</h3>
@@ -56,10 +56,6 @@ export const Examples = () => (
         </div>
         <div className="col"></div>
       </div>
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Prefixed</h3>
-      <Input label="URL" prefix="http://" placeholder="mysite.com" />
     </div>
   </>
 );

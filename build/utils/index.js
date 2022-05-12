@@ -1,8 +1,7 @@
-var appendClass = function(c) {
-    var what = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : undefined;
+const appendClass = (c, what = undefined)=>{
     if (c) {
-        if (typeof what === "function") return " ".concat(what());
-        return " ".concat(what || c);
+        if (typeof what === "function") return ` ${what()}`;
+        return ` ${what || c}`;
     }
     return "";
 };

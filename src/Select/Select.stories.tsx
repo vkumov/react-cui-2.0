@@ -5,7 +5,7 @@ import { DynamicModal, dynamicModal, ModalBody, ModalFooter } from "../Modal";
 import { Button } from "../Button";
 
 export default {
-  title: "Select",
+  title: "Components/Select",
 };
 
 export const Select = () => {

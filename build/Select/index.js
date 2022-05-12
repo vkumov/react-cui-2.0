@@ -1,17 +1,9 @@
 import React, { forwardRef, useState, useRef, useMemo, useCallback, useEffect, isValidElement } from 'react';
 import { useMergeRefs } from 'use-callback-ref';
-import { InputChips } from '../InputChips/index.ts';
-import { InputHelpBlock } from '../InputHelp/index.ts';
-import { appendClass } from '../utils/index.ts';
+import { InputChips } from '../InputChips/index.js';
+import { InputHelpBlock } from '../InputHelp/index.js';
+import { appendClass } from '../utils/index.js';
 
-function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-}
 function _extends() {
     _extends = Object.assign || function(target) {
         for(var i = 1; i < arguments.length; i++){
@@ -26,94 +18,19 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-function _instanceof(left, right) {
-    if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) {
-        return !!right[Symbol.hasInstance](left);
-    } else {
-        return left instanceof right;
-    }
-}
-function _iterableToArrayLimit(arr, i) {
-    var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-    if (_i == null) return;
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _s, _e;
-    try {
-        for(_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true){
-            _arr.push(_s.value);
-            if (i && _arr.length === i) break;
-        }
-    } catch (err) {
-        _d = true;
-        _e = err;
-    } finally{
-        try {
-            if (!_n && _i["return"] != null) _i["return"]();
-        } finally{
-            if (_d) throw _e;
-        }
-    }
-    return _arr;
-}
-function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _objectWithoutProperties(source, excluded) {
-    if (source == null) return {};
-    var target = _objectWithoutPropertiesLoose(source, excluded);
-    var key, i;
-    if (Object.getOwnPropertySymbols) {
-        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-        for(i = 0; i < sourceSymbolKeys.length; i++){
-            key = sourceSymbolKeys[i];
-            if (excluded.indexOf(key) >= 0) continue;
-            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-            target[key] = source[key];
-        }
-    }
-    return target;
-}
-function _objectWithoutPropertiesLoose(source, excluded) {
-    if (source == null) return {};
-    var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i;
-    for(i = 0; i < sourceKeys.length; i++){
-        key = sourceKeys[i];
-        if (excluded.indexOf(key) >= 0) continue;
-        target[key] = source[key];
-    }
-    return target;
-}
-function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
-function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
 function isOption(element) {
     return element.type === "option";
 }
 function isOptGroup(element) {
     return element.type === "optgroup";
 }
-var SelectChildren = function(param) {
-    var children = param.children, handleOptionClick = param.handleOptionClick, isSelected = param.isSelected;
-    return React.Children.map(children, function(child, idx) {
+const SelectChildren = ({ children , handleOptionClick , isSelected  })=>React.Children.map(children, (child, idx)=>{
         if (!/*#__PURE__*/ isValidElement(child)) return child;
         if (isOption(child)) return /*#__PURE__*/ React.createElement("a", {
             key: idx,
-            onClick: function(e) {
-                return handleOptionClick(e, child.props.value);
-            },
-            className: "".concat(appendClass(isSelected(child.props.value), "selected")).concat(appendClass(child.props.disabled, "disabled"))
+            onClick: (e)=>handleOptionClick(e, child.props.value)
+            ,
+            className: `${appendClass(isSelected(child.props.value), "selected")}${appendClass(child.props.disabled, "disabled")}`
         }, child.props.children);
         if (isOptGroup(child)) return /*#__PURE__*/ React.createElement("div", {
             key: idx,
@@ -125,11 +42,11 @@ var SelectChildren = function(param) {
             isSelected: isSelected
         }, child.props.children));
         return child;
-    });
-};
-var collectDisplays = function(children) {
-    var t = [];
-    React.Children.forEach(children, function(child) {
+    })
+;
+const collectDisplays = (children)=>{
+    const t = [];
+    React.Children.forEach(children, (child)=>{
         if (!/*#__PURE__*/ isValidElement(child)) return null;
         if (isOption(child)) {
             t.push({
@@ -141,75 +58,51 @@ var collectDisplays = function(children) {
     });
     return t.flat();
 };
-var EditableSelect = /*#__PURE__*/ forwardRef(function(_param, inputRef) {
-    var _compressed = _param.compressed, compressed = _compressed === void 0 ? false : _compressed, _prompt = _param.prompt, prompt = _prompt === void 0 ? "Select an option" : _prompt, _inline = _param.inline, inline = _inline === void 0 ? false : _inline, _type = _param.type, type = _type === void 0 ? "text" : _type, children = _param.children, _label = _param.label, label = _label === void 0 ? null : _label, _error = _param.error, error = _error === void 0 ? null : _error, _onChange = _param.onChange, onChange = _onChange === void 0 ? null : _onChange, tmp = _param.value, initialValue = tmp === void 0 ? undefined : tmp, _editable = _param.editable, editable = _editable === void 0 ? false : _editable, _multi = _param.multi, multi = _multi === void 0 ? false : _multi, _displayValues = _param.displayValues, displayValues = _displayValues === void 0 ? false : _displayValues, disabled = _param.disabled, className = _param.className, divRef = _param.divRef, options = _param.options, _onSelect = _param.onSelect, onSelect = _onSelect === void 0 ? null : _onSelect, _onDeselect = _param.onDeselect, onDeselect = _onDeselect === void 0 ? null : _onDeselect, input = _objectWithoutProperties(_param, [
-        "compressed",
-        "prompt",
-        "inline",
-        "type",
-        "children",
-        "label",
-        "error",
-        "onChange",
-        "value",
-        "editable",
-        "multi",
-        "displayValues",
-        "disabled",
-        "className",
-        "divRef",
-        "options",
-        "onSelect",
-        "onDeselect"
-    ]);
-    var ref4;
-    var ref1 = _slicedToArray(useState(false), 2), isOpen = ref1[0], setOpen = ref1[1];
-    var ref2 = _slicedToArray(useState(initialValue), 2), value = ref2[0], setValue = ref2[1];
-    var ref3 = useRef(undefined);
-    var display = useMemo(function() {
-        return collectDisplays(children);
-    }, [
+const EditableSelect = /*#__PURE__*/ forwardRef(({ compressed =false , prompt ="Select an option" , inline =false , type ="text" , children , label =null , error =null , onChange =null , value: initialValue = undefined , editable =false , multi =false , displayValues =false , disabled , className , divRef , options , onSelect =null , onDeselect =null , ...input }, inputRef)=>{
+    var ref2;
+    const [isOpen, setOpen] = useState(false);
+    const [value, setValue] = useState(initialValue);
+    const ref1 = useRef(undefined);
+    const display = useMemo(()=>collectDisplays(children)
+    , [
         children
     ]);
-    var handleClick = useCallback(function() {
-        var newState = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : true;
+    const handleClick = useCallback((newState = true)=>{
         if (disabled) return;
         setOpen(newState);
     }, [
         disabled
     ]);
-    useEffect(function() {
+    useEffect(()=>{
         if (isOpen) {
-            var onOutsideClick = function(e) {
+            const onOutsideClick = (e)=>{
                 // ignore clicks on the component itself
-                if (!_instanceof(e.target, Node) || !(ref3 === null || ref3 === void 0 ? void 0 : ref3.current)) return;
-                if (ref3.current && ref3.current.contains(e.target)) return;
-                if (ref3.current && !ref3.current.contains(e.target)) {
+                if (!(e.target instanceof Node) || !(ref1 === null || ref1 === void 0 ? void 0 : ref1.current)) return;
+                if (ref1.current && ref1.current.contains(e.target)) return;
+                if (ref1.current && !ref1.current.contains(e.target)) {
                     handleClick(false);
                 }
             };
             document.addEventListener("click", onOutsideClick, true);
-            return function() {
-                return document.removeEventListener("click", onOutsideClick, true);
-            };
+            return ()=>document.removeEventListener("click", onOutsideClick, true)
+            ;
         }
     }, [
         isOpen,
         handleClick
     ]);
-    var handleOptionClick = useCallback(function(_e, newValue) {
+    const handleOptionClick = useCallback((_e, newValue)=>{
         if (multi) {
             var ref;
-            var added = true;
-            setValue(function(curr) {
+            let added = true;
+            setValue((curr)=>{
                 if (curr === null || curr === void 0 ? void 0 : curr.includes(newValue)) {
                     added = false;
-                    return curr.filter(function(v) {
-                        return v !== newValue;
-                    });
+                    return curr.filter((v)=>v !== newValue
+                    );
                 } else return (curr || []).concat(newValue);
             });
-            var r = (ref = added ? onSelect : onDeselect) === null || ref === void 0 ? void 0 : ref.call(undefined, newValue);
+            const r = (ref = added ? onSelect : onDeselect) === null || ref === void 0 ? void 0 : ref.call(undefined, newValue);
             if (typeof r === "function") r();
         } else {
             setValue(newValue);
@@ -221,29 +114,29 @@ var EditableSelect = /*#__PURE__*/ forwardRef(function(_param, inputRef) {
         onSelect,
         onDeselect
     ]);
-    var isSelected = function(checkValue) {
+    const isSelected = (checkValue)=>{
         return multi ? value === null || value === void 0 ? void 0 : value.includes(checkValue) : value === checkValue;
     };
-    useEffect(function() {
+    useEffect(()=>{
         setValue(initialValue);
     }, [
         initialValue
     ]);
-    useEffect(function() {
+    useEffect(()=>{
         if (multi && initialValue && !Array.isArray(initialValue)) throw Error("Value must be an array if multi select is allowed.");
     }, [
         multi,
         initialValue
     ]);
-    useEffect(function() {
+    useEffect(()=>{
         if (typeof onChange === "function") onChange(value);
     }, [
         value
     ]);
     return /*#__PURE__*/ React.createElement("div", {
-        className: "form-group dropdown".concat(appendClass(compressed, "input--compressed")).concat(appendClass(isOpen, "active")).concat(appendClass(inline, "form-group--inline")).concat(appendClass(error, "form-group--error")).concat(appendClass(disabled, "disabled")).concat(appendClass(className)),
+        className: `form-group dropdown${appendClass(compressed, "input--compressed")}${appendClass(isOpen, "active")}${appendClass(inline, "form-group--inline")}${appendClass(error, "form-group--error")}${appendClass(disabled, "disabled")}${appendClass(className)}`,
         ref: useMergeRefs([
-            ref3,
+            ref1,
             divRef
         ])
     }, multi ? /*#__PURE__*/ React.createElement(InputChips, _extends({
@@ -252,49 +145,42 @@ var EditableSelect = /*#__PURE__*/ forwardRef(function(_param, inputRef) {
     }, input, {
         placeholder: !Array.isArray(value) || !value.length ? input.placeholder || prompt : "",
         readOnly: !editable,
-        onClick: function() {
-            return handleClick(true);
-        },
-        onChange: function() {
-            return void 0;
-        },
-        onChipRemove: function(idx) {
-            var val;
-            setValue(function(curr) {
+        onClick: ()=>handleClick(true)
+        ,
+        onChange: ()=>void 0
+        ,
+        onChipRemove: (idx)=>{
+            let val;
+            setValue((curr)=>{
                 val = curr[idx];
-                return curr.filter(function(_v, i) {
-                    return i !== idx;
-                });
+                return curr.filter((_v, i)=>i !== idx
+                );
             });
             if (typeof onDeselect === "function") onDeselect(val);
         },
-        value: displayValues ? value : display.filter(function(d) {
+        value: displayValues ? value : display.filter((d)=>{
             return value === null || value === void 0 ? void 0 : value.includes(d.value);
-        }).map(function(d) {
-            return d.display;
-        }),
+        }).map((d)=>d.display
+        ),
         noInput: inline && !editable && Array.isArray(value) && value.length > 0,
         outerWrap: false,
         ref: inputRef
     })) : /*#__PURE__*/ React.createElement("div", {
         className: "form-group__text select editable",
-        onClick: function() {
-            return handleClick(true);
-        }
+        onClick: ()=>handleClick(true)
     }, /*#__PURE__*/ React.createElement("input", _extends({
         type: type,
         placeholder: input.placeholder || prompt,
         autoComplete: "off",
         readOnly: !editable
     }, input, {
-        onChange: function(e) {
+        onChange: (e)=>{
             if (!editable) return;
             e.persist();
             setValue(e.target.value);
         },
-        value: editable ? value || "" : !displayValues ? ((ref4 = display === null || display === void 0 ? void 0 : display.find(function(el) {
-            return el.value === value;
-        })) === null || ref4 === void 0 ? void 0 : ref4.display) || "" : value,
+        value: editable ? value || "" : !displayValues ? ((ref2 = display === null || display === void 0 ? void 0 : display.find((el)=>el.value === value
+        )) === null || ref2 === void 0 ? void 0 : ref2.display) || "" : value,
         ref: inputRef
     })), label ? /*#__PURE__*/ React.createElement("label", {
         htmlFor: input.id
@@ -303,12 +189,11 @@ var EditableSelect = /*#__PURE__*/ forwardRef(function(_param, inputRef) {
     }, /*#__PURE__*/ React.createElement(SelectChildren, {
         handleOptionClick: handleOptionClick,
         isSelected: isSelected
-    }, options ? options.map(function(opt, idx) {
-        return /*#__PURE__*/ React.createElement("option", {
+    }, options ? options.map((opt, idx)=>/*#__PURE__*/ React.createElement("option", {
             key: idx,
             value: opt.value
-        }, opt.value);
-    }) : children)), error ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
+        }, opt.value)
+    ) : children)), error ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
         text: error
     }) : null);
 });

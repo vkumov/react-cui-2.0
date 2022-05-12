@@ -1,15 +1,16 @@
 import React from "react";
-import { Step, Steps } from "./index";
+import { Step, Steps as LibSteps } from "./index";
 
 export default {
-  title: "Steps",
+  title: "Components/Steps",
+  component: LibSteps,
 };
 
-export const Primary = () => (
+export const Steps = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">State</h3>
-      <Steps>
+      <LibSteps>
         <Step icon={<span className="icon-check" />} visited>
           Visited
         </Step>
@@ -17,14 +18,14 @@ export const Primary = () => (
           Active
         </Step>
         <Step icon="3">Inactive</Step>
-      </Steps>
+      </LibSteps>
     </div>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Color</h3>
       <div className="row">
         <div className="col">
           <div className="subheader text-center">Primary</div>
-          <Steps color="primary">
+          <LibSteps color="primary">
             <Step icon={<span className="icon-check" />} visited>
               Visited
             </Step>
@@ -32,11 +33,11 @@ export const Primary = () => (
               Active
             </Step>
             <Step icon="3">Inactive</Step>
-          </Steps>
+          </LibSteps>
         </div>
         <div className="col">
           <div className="subheader text-center">Secondary</div>
-          <Steps color="secondary">
+          <LibSteps color="secondary">
             <Step icon={<span className="icon-check" />} visited>
               Visited
             </Step>
@@ -44,13 +45,13 @@ export const Primary = () => (
               Active
             </Step>
             <Step icon="3">Inactive</Step>
-          </Steps>
+          </LibSteps>
         </div>
       </div>
       <div className="row">
         <div className="col">
           <div className="subheader text-center">Success</div>
-          <Steps color="success">
+          <LibSteps color="success">
             <Step icon={<span className="icon-check" />} visited>
               Visited
             </Step>
@@ -58,11 +59,11 @@ export const Primary = () => (
               Active
             </Step>
             <Step icon="3">Inactive</Step>
-          </Steps>
+          </LibSteps>
         </div>
         <div className="col">
           <div className="subheader text-center">Dark</div>
-          <Steps color="dark">
+          <LibSteps color="dark">
             <Step icon={<span className="icon-check" />} visited>
               Visited
             </Step>
@@ -70,7 +71,7 @@ export const Primary = () => (
               Active
             </Step>
             <Step icon="3">Inactive</Step>
-          </Steps>
+          </LibSteps>
         </div>
       </div>
     </div>
@@ -79,7 +80,7 @@ export const Primary = () => (
       <div className="row">
         <div className="col">
           <div className="subheader text-center">Default</div>
-          <Steps color="primary">
+          <LibSteps color="primary">
             <Step icon={<span className="icon-check" />} visited>
               Visited
             </Step>
@@ -87,11 +88,11 @@ export const Primary = () => (
               Active
             </Step>
             <Step icon="3">Inactive</Step>
-          </Steps>
+          </LibSteps>
         </div>
         <div className="col">
           <div className="subheader text-center">Vertical</div>
-          <Steps color="primary" vertical>
+          <LibSteps color="primary" vertical>
             <Step icon={<span className="icon-check" />} visited>
               Visited
             </Step>
@@ -99,17 +100,17 @@ export const Primary = () => (
               Active
             </Step>
             <Step icon="3">Inactive</Step>
-          </Steps>
+          </LibSteps>
         </div>
       </div>
     </div>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Consequative</h3>
-      <Steps color="primary">
+      <LibSteps color="primary">
         {[1, 2, 3, 4, null, 5].map((i) =>
           i ? <Step key={i}>Step {i}</Step> : i
         )}
-      </Steps>
+      </LibSteps>
     </div>
   </>
 );

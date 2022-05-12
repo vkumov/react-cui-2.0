@@ -1,10 +1,32 @@
-const path = require("path");
+/// <reference types="node" />
 
-module.exports = {
-  stories: ["../src/**/*.stories.tsx"],
+/**
+ * @type {import('@storybook/react/types').StorybookConfig}
+ **/
+const config = {
+  stories: [
+    { directory: "../stories/", files: "**/*.stories.@(js|ts|tsx|mdx)" },
+    {
+      directory: "../src/",
+      files: "**/*.stories.tsx",
+      titlePrefix: "Components",
+    },
+  ],
   staticDirs: ["../public"],
   // Add any Storybook addons you want here: https://storybook.js.org/addons/
-  addons: ["@storybook/addon-essentials", "storybook-dark-mode"],
+  addons: [
+    {
+      name: "@storybook/addon-docs",
+      options: {
+        transcludeMarkdown: true,
+        // needed if you use addon-docs in conjunction
+        // with addon-storysource
+        sourceLoaderOptions: null,
+      },
+    },
+    "@storybook/addon-essentials",
+    "storybook-dark-mode",
+  ],
   core: {
     builder: "webpack5",
   },
@@ -28,3 +50,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = config;

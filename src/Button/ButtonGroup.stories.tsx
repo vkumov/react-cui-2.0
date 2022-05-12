@@ -3,7 +3,7 @@ import { Story, Meta } from "@storybook/react/types-6-0";
 import { ButtonGroup as BG, ButtonGroupProps, Button } from "./index";
 
 export default {
-  title: "Button/Button Group",
+  title: "Components/Button/Button Group",
   component: BG,
 } as Meta;
 

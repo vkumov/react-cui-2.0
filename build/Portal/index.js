@@ -1,14 +1,13 @@
 import { createPortal } from 'react-dom';
-import { usePortal } from '../hooks/usePortal.ts';
+import { usePortal } from '../hooks/usePortal.js';
 
 /**
  * @example
  * <Portal>
  *   <p>Thinking with portals</p>
  * </Portal>
- */ var Portal = function(param) {
-    var id = param.id, children = param.children;
-    var target = usePortal(id);
+ */ const Portal = ({ id , children  })=>{
+    const target = usePortal(id);
     return /*#__PURE__*/ createPortal(children, target);
 };
 

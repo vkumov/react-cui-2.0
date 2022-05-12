@@ -6,7 +6,8 @@ import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import cleaner from "rollup-plugin-cleaner";
 import { swc } from "rollup-plugin-swc3";
-import tsPaths from "rollup-plugin-tsconfig-paths";
+// import tsPaths from "rollup-plugin-tsconfig-paths";
+import tsPaths from "rollup-plugin-typescript-paths";
 import glob from "fast-glob";
 import path from "path";
 
@@ -33,7 +34,10 @@ const plugins = [
   resolve({
     extensions: [".mjs", ".js", ".jsx", ".json", ".css"],
     preferBuiltins: true,
-    // resolveOnly: (m) => !m.startsWith("src/"),
+    // resolveOnly: (m) => {
+    //   // console.log(m);
+    //   return !m.startsWith("src");
+    // },
   }),
   commonjs({
     include: "node_modules/**",
@@ -75,10 +79,13 @@ const getFolders = (entry) => {
 
 (function () {
   getFolders("./src").map((folder) => {
-    const all = glob
-      .sync(`./src/${folder}/*.{ts,tsx}`)
-      .map((f) => path.resolve(f));
-    allExternals.push(...all);
+    const all = glob.sync(`./src/${folder}/*.{ts,tsx}`).map((f) => {
+      const resolved = path.resolve(f);
+      const ext = path.extname(resolved);
+      const jsd = resolved.replace(ext, ".js");
+      return [resolved, jsd];
+    });
+    allExternals.push(...all.flat());
   });
   // console.log(allExternals);
 })();
@@ -100,7 +107,12 @@ const folderBuilds = getFolders("./src")
         },
         treeshake: true,
         // plugins,
-        plugins: [tsPaths(), ...plugins, ignoreCssPlugin].filter(Boolean),
+        plugins: [
+          // tsPaths({ preserveExtensions: false }),
+          tsPaths(),
+          ...plugins,
+          ignoreCssPlugin,
+        ].filter(Boolean),
         // external: externals,
         external: allExternals.filter((f) => !f.includes(`src/${folder}/`)),
       };

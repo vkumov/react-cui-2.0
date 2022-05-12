@@ -1,21 +1,20 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { InputChips, InputChipsProps } from "./index";
-import { LabelColor } from "../Label";
+import { InputChips as LibInputChips, InputChipsProps } from "./index";
 
 export default {
-  title: "Input Chips",
-  component: InputChips,
-};
+  title: "Components/Textfield/Input Chips",
+  component: LibInputChips,
+} as Meta;
 
-export const Primary: Story<InputChipsProps> = (args) => (
+export const InputChips: Story<InputChipsProps> = (args) => (
   <div className="section base-margin-top dbl-margin-bottom">
     <h3 className="display-5">Chips</h3>
-    <InputChips {...args} />
+    <LibInputChips {...args} />
   </div>
 );
 
-Primary.args = {
+InputChips.args = {
   label: "Enter value",
   value: ["one", "two", "three"],
 };

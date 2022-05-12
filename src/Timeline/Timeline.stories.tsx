@@ -1,22 +1,23 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { Timeline, TimelineItem, TimelineProps } from "./index";
+import { Timeline as TL, TimelineItem, TimelineProps } from "./index";
 
 import { Button } from "../Button";
 
 export default {
-  title: "Timeline",
-  component: Timeline,
+  title: "Components/Timeline",
+  component: TL,
+  subcomponents: { TimelineItem },
 } as Meta;
 
-export const Primary: Story<TimelineProps & { icons: boolean }> = ({
+export const Timeline: Story<TimelineProps & { icons: boolean }> = ({
   icons,
   ...args
 }) => {
   return (
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Timeline</h3>
-      <Timeline {...args}>
+      <TL {...args}>
         <TimelineItem
           time="March 21, 2019"
           header="First event"
@@ -62,11 +63,11 @@ export const Primary: Story<TimelineProps & { icons: boolean }> = ({
           pulvinar accumsan leo, quis egestas quam luctus non. Aenean vulputate
           ullamcorper velit eu hendrerit
         </TimelineItem>
-      </Timeline>
+      </TL>
     </div>
   );
 };
 
-Primary.args = {
+Timeline.args = {
   icons: false,
 };

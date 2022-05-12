@@ -37,5 +37,3 @@ export * from "./InputHelp";
 export * from "./VSeparator";
 export * from "./Slider";
 export * from "./utils/base16Theme";
-declare const _default: {};
-export default _default;

@@ -1,22 +1,22 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { Pagination, PaginationProps } from "./index";
+import { Pagination as LibPagination, PaginationProps } from "./index";
 
 export default {
-  title: "Pagination",
-  component: Pagination,
+  title: "Components/Pagination",
+  component: LibPagination,
 } as Meta;
 
-export const Primary: Story<PaginationProps> = (args) => {
+export const Pagination: Story<PaginationProps> = (args) => {
   return (
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Pagination</h3>
-      <Pagination {...args} />
+      <LibPagination {...args} />
     </div>
   );
 };
 
-Primary.args = {
+Pagination.args = {
   total: 50,
   position: 6,
 };

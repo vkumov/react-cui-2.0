@@ -1,14 +1,6 @@
 import React, { forwardRef, useState, useEffect, useCallback } from 'react';
-import { appendClass } from '../utils/index.ts';
+import { appendClass } from '../utils/index.js';
 
-function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-}
 function _extends() {
     _extends = Object.assign || function(target) {
         for(var i = 1; i < arguments.length; i++){
@@ -23,82 +15,8 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-function _iterableToArrayLimit(arr, i) {
-    var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-    if (_i == null) return;
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _s, _e;
-    try {
-        for(_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true){
-            _arr.push(_s.value);
-            if (i && _arr.length === i) break;
-        }
-    } catch (err) {
-        _d = true;
-        _e = err;
-    } finally{
-        try {
-            if (!_n && _i["return"] != null) _i["return"]();
-        } finally{
-            if (_d) throw _e;
-        }
-    }
-    return _arr;
-}
-function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _objectWithoutProperties(source, excluded) {
-    if (source == null) return {};
-    var target = _objectWithoutPropertiesLoose(source, excluded);
-    var key, i;
-    if (Object.getOwnPropertySymbols) {
-        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-        for(i = 0; i < sourceSymbolKeys.length; i++){
-            key = sourceSymbolKeys[i];
-            if (excluded.indexOf(key) >= 0) continue;
-            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-            target[key] = source[key];
-        }
-    }
-    return target;
-}
-function _objectWithoutPropertiesLoose(source, excluded) {
-    if (source == null) return {};
-    var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i;
-    for(i = 0; i < sourceKeys.length; i++){
-        key = sourceKeys[i];
-        if (excluded.indexOf(key) >= 0) continue;
-        target[key] = source[key];
-    }
-    return target;
-}
-function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
-function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-var Radio = /*#__PURE__*/ forwardRef(function(_param, forwardedRef)  {
-    var _spacing = _param.spacing, spacing = _spacing === void 0 ? null : _spacing, _inline = _param.inline, inline = _inline === void 0 ? false : _inline, _label = _param.label, label = _label === void 0 ? null : _label, _className = _param.className, className = _className === void 0 ? null : _className, id = _param.id, _divProps = _param.divProps, divProps = _divProps === void 0 ? {} : _divProps, input = _objectWithoutProperties(_param, [
-        "spacing",
-        "inline",
-        "label",
-        "className",
-        "id",
-        "divProps"
-    ]);
-    return React.createElement("div", _extends({
-        className: "form-group".concat(appendClass(inline, "form-group--inline")).concat(appendClass(spacing, "form-group--".concat(spacing))).concat(appendClass(className))
+const Radio = /*#__PURE__*/ forwardRef(({ spacing =null , inline =false , label =null , className =null , id , divProps ={} , ...input }, forwardedRef)=>/*#__PURE__*/ React.createElement("div", _extends({
+        className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(spacing, `form-group--${spacing}`)}${appendClass(className)}`
     }, divProps), /*#__PURE__*/ React.createElement("label", {
         className: "radio",
         htmlFor: id || input.name
@@ -111,20 +29,19 @@ var Radio = /*#__PURE__*/ forwardRef(function(_param, forwardedRef)  {
         className: "radio__input"
     }), label ? /*#__PURE__*/ React.createElement("span", {
         className: "radio__label"
-    }, label) : null));
-});
-var Radios = function(param) {
-    var values = param.values, initialValue = param.value, onChange = param.onChange, name = param.name;
-    var ref = _slicedToArray(useState(initialValue), 2), value = ref[0], setValue = ref[1];
-    useEffect(function() {
+    }, label) : null))
+);
+const Radios = ({ values , value: initialValue , onChange , name ,  })=>{
+    const [value, setValue] = useState(initialValue);
+    useEffect(()=>{
         setValue(initialValue);
     }, [
         initialValue
     ]);
-    var onRadioChange = useCallback(function(e) {
+    const onRadioChange = useCallback((e)=>{
         e.persist();
-        setValue(function(curr) {
-            var v;
+        setValue((curr)=>{
+            let v;
             if (e.target.checked) v = e.target.value;
             else v = curr;
             if (typeof onChange === "function") onChange(v);
@@ -133,16 +50,15 @@ var Radios = function(param) {
     }, [
         onChange
     ]);
-    return /*#__PURE__*/ React.createElement(React.Fragment, null, values.map(function(v, idx) {
-        return /*#__PURE__*/ React.createElement(Radio, {
+    return /*#__PURE__*/ React.createElement(React.Fragment, null, values.map((v, idx)=>/*#__PURE__*/ React.createElement(Radio, {
             id: v.value,
             label: v.label,
             key: v.value,
-            name: "".concat(name, ".").concat(idx),
+            name: `${name}.${idx}`,
             onChange: onRadioChange,
             checked: value === v.value
-        });
-    }));
+        })
+    ));
 };
 
 export { Radio, Radios };

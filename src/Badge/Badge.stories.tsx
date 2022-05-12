@@ -1,8 +1,8 @@
 import React from "react";
-import { BadgeColor, WithBadge, Badge } from "./index";
+import { BadgeColor, WithBadge } from "./index";
 
 export default {
-  title: "Badge",
+  title: "Components/Badge",
 };
 
 const colors: BadgeColor[] = [
@@ -18,7 +18,7 @@ const colors: BadgeColor[] = [
   "light",
 ];
 
-export const Primary = () => (
+export const Badge = () => (
   <>
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Color</h3>
