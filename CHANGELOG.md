@@ -1,3 +1,7 @@
+## 4.5.0
+
+- Added blockquote
+
 ## 4.4.0
 
 - Added loading toasts
