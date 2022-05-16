@@ -1,3 +1,10 @@
+## 4.4.0
+
+- Added loading toasts
+- Added Kbd component
+- Added bordered toasts
+- Added different shadows for toasts
+
 ## 4.3.0
 
 - Fix rollup config

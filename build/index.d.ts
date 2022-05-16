@@ -37,3 +37,4 @@ export * from "./InputHelp";
 export * from "./VSeparator";
 export * from "./Slider";
 export * from "./utils/base16Theme";
+export * from "./Kbd";

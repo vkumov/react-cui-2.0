@@ -1,9 +1,12 @@
 import React, { FC, ReactNode } from "react";
-import { toast as _toast, UpdateOptions } from "react-toastify";
+import { toast as _toast, ToastOptions, UpdateOptions } from "react-toastify";
+import { appendClass } from "src/utils";
 
 import { copyStringToClipboard } from "src/utils/clipboard";
 
-const iconType = (type: string): string => {
+type ToastType = "success" | "error" | "warning" | "info" | "loading" | "none";
+
+const iconType = (type: ToastType): string => {
   switch (type) {
     case "success":
       return "text-success icon-check-outline";
@@ -13,6 +16,8 @@ const iconType = (type: string): string => {
       return "text-warning icon-warning-outline";
     case "info":
       return "text-info icon-info-outline";
+    case "loading":
+      return "text-muted icon-spinner spin";
     case "none":
       return null;
     default:
@@ -21,19 +26,29 @@ const iconType = (type: string): string => {
 };
 
 const ToastIcon = ({ type }) => {
-  return <div className={`toast__icon ${iconType(type) || ""}`} />;
+  return type ? (
+    <div className="toast__icon">
+      <span className={iconType(type)} />
+    </div>
+  ) : null;
 };
 
-type ToastType = "success" | "error" | "warning" | "info" | "none";
 export type ToastProps = {
   title: ReactNode;
   message: ReactNode;
   type: ToastType;
-  copyError: boolean;
+  copyError?: boolean;
+  bordered?: boolean;
 };
 
-export const Toast: FC<ToastProps> = ({ title, message, type, copyError }) => (
-  <div className="toast">
+export const Toast: FC<ToastProps> = ({
+  title,
+  message,
+  type,
+  copyError = false,
+  bordered = false,
+}) => (
+  <div className={`toast${appendClass(bordered, "toast--bordered")}`}>
     <ToastIcon type={type} />
     <div className="toast__body">
       {title ? <div className="toast__title">{title}</div> : null}
@@ -76,7 +91,7 @@ export interface IToast {
     message: ReactNode,
     copyError?: boolean,
     containerId?: string,
-    args?: Record<string, unknown>
+    args?: Partial<ToastOptions>
   ): React.ReactText;
 }
 
@@ -85,7 +100,11 @@ type Toasts = {
 };
 
 interface ToastMethods {
-  update: (toastId: React.ReactText, options?: UpdateOptions) => void;
+  update: (
+    toastId: React.ReactText,
+    updates: ToastProps,
+    options?: UpdateOptions
+  ) => void;
   dismiss: (id?: string | number | undefined) => false | void;
 }
 
@@ -96,16 +115,25 @@ export const toast: IToast & Toasts & ToastMethods = (
   copyError = true,
   containerId = "_GLOBAL_",
   args = {}
-): React.ReactText =>
-  _toast(<Toast {...{ type, title, message, copyError }} />, {
+): React.ReactText => {
+  if (type === "loading") {
+    args.autoClose ??= false;
+  }
+
+  return _toast(() => <Toast {...{ type, title, message, copyError }} />, {
     containerId,
     ...args,
   });
+};
 
 toast.success = (...args) => toast("success", ...args);
 toast.error = (...args) => toast("error", ...args);
 toast.warning = (...args) => toast("warning", ...args);
 toast.info = (...args) => toast("info", ...args);
+toast.loading = (...args) => toast("loading", ...args);
 toast.none = (...args) => toast("none", ...args);
-toast.update = (...args) => _toast.update(...args);
+toast.update = (toastId, updates, options) => {
+  options.render = <Toast {...updates} />;
+  _toast.update(toastId, options);
+};
 toast.dismiss = (...args) => _toast.dismiss(...args);

@@ -1,0 +1,21 @@
+.cui .kbd {
+  border-width: 1px 1px 3px;
+  border-radius: 4px;
+  border-color: rgb(222, 226, 230);
+  border-style: solid;
+  padding-left: 5px;
+  background-color: rgb(248, 249, 250);
+  margin-left: var(--cui-spacing-qtr);
+  margin-right: var(--cui-spacing-qtr);
+  color: var(--cui-color-dark);
+  font-family: var(--cui-font-mono-stack);
+  font-size: var(--cui-font-size-sm);
+  line-height: 1.4;
+  padding: 2px 5px;
+}
+
+.cui[data-theme="dark"] .kbd {
+  background-color: rgb(55, 58, 64);
+  border-color: rgb(16, 17, 19);
+  color: rgb(193, 194, 197);
+}

@@ -8,6 +8,14 @@
     box-shadow: var(--cui-shadow-outset-lg);
 }
 
+.cui .Toastify__toast.toast--shadow-md {
+    box-shadow: var(--cui-shadow-outset);
+}
+
+.cui .Toastify__toast.toast--shadow-sm {
+    box-shadow: var(--cui-shadow-outset-sm);
+}
+
 .cui .Toastify__toast-container {
     color: unset;
     background: unset;
@@ -24,4 +32,8 @@
 
 .cui .Toastify__toast .toast {
     box-shadow: unset;
+}
+
+.cui .toast.toast--bordered, .cui .toast--bordered .toast {
+    border: var(--cui-border);
 }

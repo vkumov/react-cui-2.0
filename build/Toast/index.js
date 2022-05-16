@@ -1,5 +1,6 @@
 import React from 'react';
 import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
+import { appendClass } from '../utils/index.js';
 import { copyStringToClipboard } from '../utils/clipboard.js';
 
 function _extends$1() {
@@ -16,6 +17,7 @@ function _extends$1() {
     };
     return _extends$1.apply(this, arguments);
 }
+var _args;
 const iconType = (type)=>{
     switch(type){
         case "success":
@@ -26,6 +28,8 @@ const iconType = (type)=>{
             return "text-warning icon-warning-outline";
         case "info":
             return "text-info icon-info-outline";
+        case "loading":
+            return "text-muted icon-spinner spin";
         case "none":
             return null;
         default:
@@ -33,12 +37,14 @@ const iconType = (type)=>{
     }
 };
 const ToastIcon = ({ type  })=>{
-    return /*#__PURE__*/ React.createElement("div", {
-        className: `toast__icon ${iconType(type) || ""}`
-    });
+    return type ? /*#__PURE__*/ React.createElement("div", {
+        className: "toast__icon"
+    }, /*#__PURE__*/ React.createElement("span", {
+        className: iconType(type)
+    })) : null;
 };
-const Toast = ({ title , message , type , copyError  })=>/*#__PURE__*/ React.createElement("div", {
-        className: "toast"
+const Toast = ({ title , message , type , copyError =false , bordered =false ,  })=>/*#__PURE__*/ React.createElement("div", {
+        className: `toast${appendClass(bordered, "toast--bordered")}`
     }, /*#__PURE__*/ React.createElement(ToastIcon, {
         type: type
     }), /*#__PURE__*/ React.createElement("div", {
@@ -51,16 +57,26 @@ const Toast = ({ title , message , type , copyError  })=>/*#__PURE__*/ React.cre
         onClick: ()=>typeof message === "string" || typeof message === "number" ? void copyStringToClipboard(message) : void 0
     }, "Copy to clipboard")) : null) : null))
 ;
-const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>toast$1(/*#__PURE__*/ React.createElement(Toast, _extends$1({}, {
-        type,
-        title,
-        message,
-        copyError
-    })), {
+const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>{
+    if (type === "loading") {
+        var _autoClose;
+        (_autoClose = (_args = args).autoClose) !== null && _autoClose !== void 0 ? _autoClose : _args.autoClose = false;
+    }
+    return toast$1((toastProps)=>{
+        console.log({
+            toastProps
+        });
+        return /*#__PURE__*/ React.createElement(Toast, _extends$1({}, {
+            type,
+            title,
+            message,
+            copyError
+        }));
+    }, {
         containerId,
         ...args
-    })
-;
+    });
+};
 toast.success = (...args)=>toast("success", ...args)
 ;
 toast.error = (...args)=>toast("error", ...args)
@@ -69,10 +85,14 @@ toast.warning = (...args)=>toast("warning", ...args)
 ;
 toast.info = (...args)=>toast("info", ...args)
 ;
+toast.loading = (...args)=>toast("loading", ...args)
+;
 toast.none = (...args)=>toast("none", ...args)
 ;
-toast.update = (...args)=>toast$1.update(...args)
-;
+toast.update = (toastId, updates, options)=>{
+    options.render = /*#__PURE__*/ React.createElement(Toast, _extends$1({}, updates));
+    toast$1.update(toastId, options);
+};
 toast.dismiss = (...args)=>toast$1.dismiss(...args)
 ;
 

@@ -611,6 +611,8 @@ const iconType = (type)=>{
             return "text-warning icon-warning-outline";
         case "info":
             return "text-info icon-info-outline";
+        case "loading":
+            return "text-muted icon-spinner spin";
         case "none":
             return null;
         default:
@@ -618,12 +620,14 @@ const iconType = (type)=>{
     }
 };
 const ToastIcon = ({ type  })=>{
-    return /*#__PURE__*/ React.createElement("div", {
-        className: `toast__icon ${iconType(type) || ""}`
-    });
+    return type ? /*#__PURE__*/ React.createElement("div", {
+        className: "toast__icon"
+    }, /*#__PURE__*/ React.createElement("span", {
+        className: iconType(type)
+    })) : null;
 };
-const Toast = ({ title , message , type , copyError  })=>/*#__PURE__*/ React.createElement("div", {
-        className: "toast"
+const Toast = ({ title , message , type , copyError =false , bordered =false ,  })=>/*#__PURE__*/ React.createElement("div", {
+        className: `toast${appendClass(bordered, "toast--bordered")}`
     }, /*#__PURE__*/ React.createElement(ToastIcon, {
         type: type
     }), /*#__PURE__*/ React.createElement("div", {
@@ -636,18 +640,28 @@ const Toast = ({ title , message , type , copyError  })=>/*#__PURE__*/ React.cre
         onClick: ()=>typeof message === "string" || typeof message === "number" ? void copyStringToClipboard(message) : void 0
     }, "Copy to clipboard")) : null) : null))
 ;
-const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>toast$1(/*#__PURE__*/ React.createElement(Toast, {
-        ...{
-            type,
-            title,
-            message,
-            copyError
-        }
-    }), {
+const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>{
+    var _a;
+    if (type === "loading") {
+        (_a = args.autoClose) !== null && _a !== void 0 ? _a : args.autoClose = false;
+    }
+    return toast$1((toastProps)=>{
+        console.log({
+            toastProps
+        });
+        return /*#__PURE__*/ React.createElement(Toast, {
+            ...{
+                type,
+                title,
+                message,
+                copyError
+            }
+        });
+    }, {
         containerId,
         ...args
-    })
-;
+    });
+};
 toast.success = (...args)=>toast("success", ...args)
 ;
 toast.error = (...args)=>toast("error", ...args)
@@ -656,10 +670,16 @@ toast.warning = (...args)=>toast("warning", ...args)
 ;
 toast.info = (...args)=>toast("info", ...args)
 ;
+toast.loading = (...args)=>toast("loading", ...args)
+;
 toast.none = (...args)=>toast("none", ...args)
 ;
-toast.update = (...args)=>toast$1.update(...args)
-;
+toast.update = (toastId, updates, options)=>{
+    options.render = /*#__PURE__*/ React.createElement(Toast, {
+        ...updates
+    });
+    toast$1.update(toastId, options);
+};
 toast.dismiss = (...args)=>toast$1.dismiss(...args)
 ;
 
@@ -2446,5 +2466,11 @@ const base16Theme = {
     base0F: "#626469"
 };
 
-export { Accordion, AccordionElement, Alert, Badge, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
+const Kbd = /*#__PURE__*/ forwardRef(({ children  }, ref)=>/*#__PURE__*/ React.createElement("span", {
+        className: "kbd",
+        ref: ref
+    }, children)
+);
+
+export { Accordion, AccordionElement, Alert, Badge, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
 //# sourceMappingURL=bundle.mjs.map

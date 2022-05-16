@@ -627,6 +627,8 @@ const iconType = (type)=>{
             return "text-warning icon-warning-outline";
         case "info":
             return "text-info icon-info-outline";
+        case "loading":
+            return "text-muted icon-spinner spin";
         case "none":
             return null;
         default:
@@ -634,12 +636,14 @@ const iconType = (type)=>{
     }
 };
 const ToastIcon = ({ type  })=>{
-    return /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: `toast__icon ${iconType(type) || ""}`
-    });
+    return type ? /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "toast__icon"
+    }, /*#__PURE__*/ React__default["default"].createElement("span", {
+        className: iconType(type)
+    })) : null;
 };
-const Toast = ({ title , message , type , copyError  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
-        className: "toast"
+const Toast = ({ title , message , type , copyError =false , bordered =false ,  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `toast${appendClass(bordered, "toast--bordered")}`
     }, /*#__PURE__*/ React__default["default"].createElement(ToastIcon, {
         type: type
     }), /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -652,18 +656,28 @@ const Toast = ({ title , message , type , copyError  })=>/*#__PURE__*/ React__de
         onClick: ()=>typeof message === "string" || typeof message === "number" ? void copyStringToClipboard(message) : void 0
     }, "Copy to clipboard")) : null) : null))
 ;
-const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>reactToastify.toast(/*#__PURE__*/ React__default["default"].createElement(Toast, {
-        ...{
-            type,
-            title,
-            message,
-            copyError
-        }
-    }), {
+const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>{
+    var _a;
+    if (type === "loading") {
+        (_a = args.autoClose) !== null && _a !== void 0 ? _a : args.autoClose = false;
+    }
+    return reactToastify.toast((toastProps)=>{
+        console.log({
+            toastProps
+        });
+        return /*#__PURE__*/ React__default["default"].createElement(Toast, {
+            ...{
+                type,
+                title,
+                message,
+                copyError
+            }
+        });
+    }, {
         containerId,
         ...args
-    })
-;
+    });
+};
 toast.success = (...args)=>toast("success", ...args)
 ;
 toast.error = (...args)=>toast("error", ...args)
@@ -672,10 +686,16 @@ toast.warning = (...args)=>toast("warning", ...args)
 ;
 toast.info = (...args)=>toast("info", ...args)
 ;
+toast.loading = (...args)=>toast("loading", ...args)
+;
 toast.none = (...args)=>toast("none", ...args)
 ;
-toast.update = (...args)=>reactToastify.toast.update(...args)
-;
+toast.update = (toastId, updates, options)=>{
+    options.render = /*#__PURE__*/ React__default["default"].createElement(Toast, {
+        ...updates
+    });
+    reactToastify.toast.update(toastId, options);
+};
 toast.dismiss = (...args)=>reactToastify.toast.dismiss(...args)
 ;
 
@@ -2462,6 +2482,12 @@ const base16Theme = {
     base0F: "#626469"
 };
 
+const Kbd = /*#__PURE__*/ React.forwardRef(({ children  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("span", {
+        className: "kbd",
+        ref: ref
+    }, children)
+);
+
 exports.Accordion = Accordion;
 exports.AccordionElement = AccordionElement;
 exports.Alert = Alert;
@@ -2500,6 +2526,7 @@ exports.Input = Input;
 exports.InputChips = InputChips;
 exports.InputHelpBaloon = InputHelpBaloon;
 exports.InputHelpBlock = InputHelpBlock;
+exports.Kbd = Kbd;
 exports.Label = Label;
 exports.Modal = Modal;
 exports.ModalBody = ModalBody;

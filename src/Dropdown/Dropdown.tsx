@@ -9,55 +9,8 @@ import React, {
   useState,
 } from "react";
 
-import { ConditionalWrapper } from "src/Conditional";
 import { appendClass } from "src/utils";
-
-type ElementProps = {
-  selected?: boolean;
-  icon?: string;
-  children: ReactNode;
-} & HTMLProps<HTMLAnchorElement>;
-
-const Element: FC<ElementProps> = ({
-  selected = false,
-  icon = null,
-  children,
-  className = null,
-  ...props
-}) => (
-  <a
-    className={`${selected ? "selected" : ""}${
-      className ? ` ${className}` : ""
-    }`}
-    {...props}
-  >
-    {icon ? <span className={`icon-${icon}`} /> : null}
-    <ConditionalWrapper
-      condition={Boolean(icon)}
-      wrapper={<span className="qtr-margin-left" />}
-    >
-      {children}
-    </ConditionalWrapper>
-  </a>
-);
-
-const Divider: FC = () => <div className="divider" />;
-
-type GroupProps = {
-  children: ReactNode;
-};
-
-const Group: FC<GroupProps> = ({ children }) => (
-  <div className="dropdown__group">{children}</div>
-);
-
-type GroupHeaderProps = {
-  header: ReactNode;
-};
-
-const GroupHeader: FC<GroupHeaderProps> = ({ header }) => (
-  <div className="dropdown__group-header">{header}</div>
-);
+import { Divider, Element, Group, GroupHeader, Menu } from "./Menu";
 
 type DropdownHeaderProps = {
   type: string;
@@ -104,8 +57,10 @@ const DropdownHeader: FC<DropdownHeaderProps> = ({
   }
 };
 
+type DropdownType = "icon" | "link" | "div" | "button" | "custom";
+
 type DropdownProps = {
-  type?: "icon" | "link" | "div" | "button" | "custom";
+  type?: DropdownType;
   className?: string;
   header?: ReactNode;
   openTo?: "left" | "right" | "center";
@@ -117,13 +72,14 @@ type DropdownProps = {
   children: ReactNode;
   up?: boolean;
   isOpen?: boolean;
-};
+} & HTMLProps<HTMLDivElement>;
 
 export interface DropdownParts {
-  Element: FC<ElementProps>;
-  Divider: FC;
-  Group: FC<GroupProps>;
-  GroupHeader: FC<GroupHeaderProps>;
+  Element: typeof Element;
+  Divider: typeof Divider;
+  Group: typeof Group;
+  GroupHeader: typeof GroupHeader;
+  Menu: typeof Menu;
 }
 
 const Dropdown: DropdownParts & FC<DropdownProps> = ({
@@ -139,6 +95,7 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
   stopPropagation = false,
   alwaysClose = false,
   isOpen: outsideIsOpen,
+  ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const divRef = useRef<HTMLDivElement>(undefined);
@@ -200,6 +157,7 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
         "active"
       )}${appendClass(divClassName)}`}
       ref={divRef}
+      {...props}
     >
       <DropdownHeader
         type={type}
@@ -207,7 +165,7 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
         className={className}
         header={header}
       />
-      <div className="dropdown__menu">{children}</div>
+      <Menu>{children}</Menu>
     </div>
   );
 };
@@ -216,6 +174,7 @@ Dropdown.Divider = Divider;
 Dropdown.Element = Element;
 Dropdown.Group = Group;
 Dropdown.GroupHeader = GroupHeader;
+Dropdown.Menu = Menu;
 
 export {
   Dropdown,

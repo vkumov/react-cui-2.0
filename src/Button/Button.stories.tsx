@@ -4,7 +4,7 @@ import { Button as Btn, ButtonProps } from "./index";
 
 export default {
   title: "Components/Button",
-  // component: Btn,
+  component: Btn,
 } as Meta;
 
 export const Button: Story<ButtonProps> = (args) => (
