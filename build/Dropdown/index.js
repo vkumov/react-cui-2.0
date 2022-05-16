@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ConditionalWrapper } from '../Conditional/index.js';
+import React, { forwardRef, useState, useRef, useEffect, useCallback } from 'react';
 import { appendClass } from '../utils/index.js';
+import { ConditionalWrapper } from '../Conditional/index.js';
 
-function _extends() {
-    _extends = Object.assign || function(target) {
+function _extends$1() {
+    _extends$1 = Object.assign || function(target) {
         for(var i = 1; i < arguments.length; i++){
             var source = arguments[i];
             for(var key in source){
@@ -14,9 +14,9 @@ function _extends() {
         }
         return target;
     };
-    return _extends.apply(this, arguments);
+    return _extends$1.apply(this, arguments);
 }
-const Element = ({ selected =false , icon =null , children , className =null , ...props })=>/*#__PURE__*/ React.createElement("a", _extends({
+const Element = ({ selected =false , icon =null , children , className =null , ...props })=>/*#__PURE__*/ React.createElement("a", _extends$1({
         className: `${selected ? "selected" : ""}${className ? ` ${className}` : ""}`
     }, props), icon ? /*#__PURE__*/ React.createElement("span", {
         className: `icon-${icon}`
@@ -39,6 +39,28 @@ const GroupHeader = ({ header  })=>/*#__PURE__*/ React.createElement("div", {
         className: "dropdown__group-header"
     }, header)
 ;
+const Menu = /*#__PURE__*/ forwardRef(({ children , className , ...props }, ref)=>{
+    return /*#__PURE__*/ React.createElement("div", _extends$1({
+        className: `dropdown__menu${appendClass(className)}`
+    }, props, {
+        ref: ref
+    }), children);
+});
+
+function _extends() {
+    _extends = Object.assign || function(target) {
+        for(var i = 1; i < arguments.length; i++){
+            var source = arguments[i];
+            for(var key in source){
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+        return target;
+    };
+    return _extends.apply(this, arguments);
+}
 const DropdownHeader = ({ type , handleClick , className , header ,  })=>{
     switch(type){
         case "icon":
@@ -68,7 +90,7 @@ const DropdownHeader = ({ type , handleClick , className , header ,  })=>{
             }) : null;
     }
 };
-const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen ,  })=>{
+const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen , ...props })=>{
     const [isOpen, setIsOpen] = useState(false);
     const divRef = useRef(undefined);
     useEffect(()=>{
@@ -113,25 +135,24 @@ const Dropdown = ({ openTo ="right" , children , type ="button" , className =nul
             return;
         }
     };
-    return /*#__PURE__*/ React.createElement("div", {
+    return /*#__PURE__*/ React.createElement("div", _extends({
         className: `dropdown${appendClass([
             "left",
             "center"
         ].includes(openTo), `dropdown--${openTo}`)}${appendClass(up, "dropdown--up")}${appendClass(isOpen, "active")}${appendClass(divClassName)}`,
         ref: divRef
-    }, /*#__PURE__*/ React.createElement(DropdownHeader, {
+    }, props), /*#__PURE__*/ React.createElement(DropdownHeader, {
         type: type,
         handleClick: handleClick,
         className: className,
         header: header
-    }), /*#__PURE__*/ React.createElement("div", {
-        className: "dropdown__menu"
-    }, children));
+    }), /*#__PURE__*/ React.createElement(Menu, null, children));
 };
 Dropdown.Divider = Divider;
 Dropdown.Element = Element;
 Dropdown.Group = Group;
 Dropdown.GroupHeader = GroupHeader;
+Dropdown.Menu = Menu;
 
-export { Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group as DropdownGroup, GroupHeader as DropdownGroupHeader };
+export { Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group as DropdownGroup, GroupHeader as DropdownGroupHeader, Menu };
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,5 @@
 import React from 'react';
-import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
+import { toast as toast$1, Slide, ToastContainer as ToastContainer$1 } from 'react-toastify';
 import { appendClass } from '../utils/index.js';
 import { copyStringToClipboard } from '../utils/clipboard.js';
 
@@ -62,17 +62,13 @@ const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_",
         var _autoClose;
         (_autoClose = (_args = args).autoClose) !== null && _autoClose !== void 0 ? _autoClose : _args.autoClose = false;
     }
-    return toast$1((toastProps)=>{
-        console.log({
-            toastProps
-        });
-        return /*#__PURE__*/ React.createElement(Toast, _extends$1({}, {
+    return toast$1(()=>/*#__PURE__*/ React.createElement(Toast, _extends$1({}, {
             type,
             title,
             message,
             copyError
-        }));
-    }, {
+        }))
+    , {
         containerId,
         ...args
     });
@@ -110,8 +106,8 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable =false , hideProgressBar =true , containerId ="_GLOBAL_" , ...props })=>/*#__PURE__*/ React.createElement(ToastContainer$1, _extends({
-        transition: Slide,
+const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable =false , hideProgressBar =true , containerId ="_GLOBAL_" , transition =Slide , bordered , shadow ="lg" , bodyClassName , toastClassName , ...props })=>/*#__PURE__*/ React.createElement(ToastContainer$1, _extends({
+        transition: transition,
         position: position,
         autoClose: autoClose,
         draggable: draggable,
@@ -119,6 +115,8 @@ const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable
         containerId: containerId
     }, props, {
         closeButton: false,
+        bodyClassName: `${bodyClassName || ""}${appendClass(bordered, "toast--bordered")}`,
+        toastClassName: `${toastClassName || ""}${appendClass(shadow === "md", "toast--shadow-md")}${appendClass(shadow === "sm", "toast--shadow-sm")}`,
         style: {
             width: "unset"
         }

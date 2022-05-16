@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo, forwardRef, cloneElement, isValidElement } from 'react';
+import React, { forwardRef, useState, useRef, useEffect, useCallback, useMemo, cloneElement, isValidElement } from 'react';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
-import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
+import { toast as toast$1, Slide, ToastContainer as ToastContainer$1 } from 'react-toastify';
 import Transition from 'react-transition-group/Transition';
 import ReactModal from 'react-modal';
 import EventEmitter from 'eventemitter3';
@@ -111,11 +111,6 @@ Alert.WarningAlt = (props)=>/*#__PURE__*/ React.createElement(Alert, {
     })
 ;
 
-const ConditionalWrapper = ({ condition , wrapper , children ,  })=>condition ? /*#__PURE__*/ React.cloneElement(wrapper, null, children) : /*#__PURE__*/ React.isValidElement(children) ? children : /*#__PURE__*/ React.createElement(React.Fragment, null, children)
-;
-const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React.isValidElement(children) ? children : /*#__PURE__*/ React.createElement(React.Fragment, null, children) : null
-;
-
 const appendClass = (c, what = undefined)=>{
     if (c) {
         if (typeof what === "function") return ` ${what()}`;
@@ -123,6 +118,11 @@ const appendClass = (c, what = undefined)=>{
     }
     return "";
 };
+
+const ConditionalWrapper = ({ condition , wrapper , children ,  })=>condition ? /*#__PURE__*/ React.cloneElement(wrapper, null, children) : /*#__PURE__*/ React.isValidElement(children) ? children : /*#__PURE__*/ React.createElement(React.Fragment, null, children)
+;
+const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React.isValidElement(children) ? children : /*#__PURE__*/ React.createElement(React.Fragment, null, children) : null
+;
 
 const Element = ({ selected =false , icon =null , children , className =null , ...props })=>/*#__PURE__*/ React.createElement("a", {
         className: `${selected ? "selected" : ""}${className ? ` ${className}` : ""}`,
@@ -148,6 +148,14 @@ const GroupHeader = ({ header  })=>/*#__PURE__*/ React.createElement("div", {
         className: "dropdown__group-header"
     }, header)
 ;
+const Menu = /*#__PURE__*/ forwardRef(({ children , className , ...props }, ref)=>{
+    return /*#__PURE__*/ React.createElement("div", {
+        className: `dropdown__menu${appendClass(className)}`,
+        ...props,
+        ref: ref
+    }, children);
+});
+
 const DropdownHeader$1 = ({ type , handleClick , className , header ,  })=>{
     switch(type){
         case "icon":
@@ -177,7 +185,7 @@ const DropdownHeader$1 = ({ type , handleClick , className , header ,  })=>{
             }) : null;
     }
 };
-const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen ,  })=>{
+const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen , ...props })=>{
     const [isOpen, setIsOpen] = useState(false);
     const divRef = useRef(undefined);
     useEffect(()=>{
@@ -227,20 +235,20 @@ const Dropdown = ({ openTo ="right" , children , type ="button" , className =nul
             "left",
             "center"
         ].includes(openTo), `dropdown--${openTo}`)}${appendClass(up, "dropdown--up")}${appendClass(isOpen, "active")}${appendClass(divClassName)}`,
-        ref: divRef
+        ref: divRef,
+        ...props
     }, /*#__PURE__*/ React.createElement(DropdownHeader$1, {
         type: type,
         handleClick: handleClick,
         className: className,
         header: header
-    }), /*#__PURE__*/ React.createElement("div", {
-        className: "dropdown__menu"
-    }, children));
+    }), /*#__PURE__*/ React.createElement(Menu, null, children));
 };
 Dropdown.Divider = Divider;
 Dropdown.Element = Element;
 Dropdown.Group = Group$1;
 Dropdown.GroupHeader = GroupHeader;
+Dropdown.Menu = Menu;
 
 const FileCard = ({ file , i , removeFile , inline  })=>/*#__PURE__*/ React.createElement("div", {
         className: "file-drop__card col-lg-4 col-md-6 col-sm-6",
@@ -645,19 +653,15 @@ const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_",
     if (type === "loading") {
         (_a = args.autoClose) !== null && _a !== void 0 ? _a : args.autoClose = false;
     }
-    return toast$1((toastProps)=>{
-        console.log({
-            toastProps
-        });
-        return /*#__PURE__*/ React.createElement(Toast, {
+    return toast$1(()=>/*#__PURE__*/ React.createElement(Toast, {
             ...{
                 type,
                 title,
                 message,
                 copyError
             }
-        });
-    }, {
+        })
+    , {
         containerId,
         ...args
     });
@@ -683,8 +687,8 @@ toast.update = (toastId, updates, options)=>{
 toast.dismiss = (...args)=>toast$1.dismiss(...args)
 ;
 
-const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable =false , hideProgressBar =true , containerId ="_GLOBAL_" , ...props })=>/*#__PURE__*/ React.createElement(ToastContainer$1, {
-        transition: Slide,
+const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable =false , hideProgressBar =true , containerId ="_GLOBAL_" , transition =Slide , bordered , shadow ="lg" , bodyClassName , toastClassName , ...props })=>/*#__PURE__*/ React.createElement(ToastContainer$1, {
+        transition: transition,
         position: position,
         autoClose: autoClose,
         draggable: draggable,
@@ -692,6 +696,8 @@ const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable
         containerId: containerId,
         ...props,
         closeButton: false,
+        bodyClassName: `${bodyClassName || ""}${appendClass(bordered, "toast--bordered")}`,
+        toastClassName: `${toastClassName || ""}${appendClass(shadow === "md", "toast--shadow-md")}${appendClass(shadow === "sm", "toast--shadow-sm")}`,
         style: {
             width: "unset"
         }
@@ -2466,11 +2472,12 @@ const base16Theme = {
     base0F: "#626469"
 };
 
-const Kbd = /*#__PURE__*/ forwardRef(({ children  }, ref)=>/*#__PURE__*/ React.createElement("span", {
-        className: "kbd",
-        ref: ref
+const Kbd = /*#__PURE__*/ forwardRef(({ children , className , ...props }, ref)=>/*#__PURE__*/ React.createElement("span", {
+        className: `kbd${appendClass(className)}`,
+        ref: ref,
+        ...props
     }, children)
 );
 
-export { Accordion, AccordionElement, Alert, Badge, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
+export { Accordion, AccordionElement, Alert, Badge, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
 //# sourceMappingURL=bundle.mjs.map

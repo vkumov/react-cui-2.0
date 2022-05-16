@@ -127,11 +127,6 @@ Alert.WarningAlt = (props)=>/*#__PURE__*/ React__default["default"].createElemen
     })
 ;
 
-const ConditionalWrapper = ({ condition , wrapper , children ,  })=>condition ? /*#__PURE__*/ React__default["default"].cloneElement(wrapper, null, children) : /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children)
-;
-const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children) : null
-;
-
 const appendClass = (c, what = undefined)=>{
     if (c) {
         if (typeof what === "function") return ` ${what()}`;
@@ -139,6 +134,11 @@ const appendClass = (c, what = undefined)=>{
     }
     return "";
 };
+
+const ConditionalWrapper = ({ condition , wrapper , children ,  })=>condition ? /*#__PURE__*/ React__default["default"].cloneElement(wrapper, null, children) : /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children)
+;
+const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children) : null
+;
 
 const Element = ({ selected =false , icon =null , children , className =null , ...props })=>/*#__PURE__*/ React__default["default"].createElement("a", {
         className: `${selected ? "selected" : ""}${className ? ` ${className}` : ""}`,
@@ -164,6 +164,14 @@ const GroupHeader = ({ header  })=>/*#__PURE__*/ React__default["default"].creat
         className: "dropdown__group-header"
     }, header)
 ;
+const Menu = /*#__PURE__*/ React.forwardRef(({ children , className , ...props }, ref)=>{
+    return /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `dropdown__menu${appendClass(className)}`,
+        ...props,
+        ref: ref
+    }, children);
+});
+
 const DropdownHeader$1 = ({ type , handleClick , className , header ,  })=>{
     switch(type){
         case "icon":
@@ -193,7 +201,7 @@ const DropdownHeader$1 = ({ type , handleClick , className , header ,  })=>{
             }) : null;
     }
 };
-const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen ,  })=>{
+const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen , ...props })=>{
     const [isOpen, setIsOpen] = React.useState(false);
     const divRef = React.useRef(undefined);
     React.useEffect(()=>{
@@ -243,20 +251,20 @@ const Dropdown = ({ openTo ="right" , children , type ="button" , className =nul
             "left",
             "center"
         ].includes(openTo), `dropdown--${openTo}`)}${appendClass(up, "dropdown--up")}${appendClass(isOpen, "active")}${appendClass(divClassName)}`,
-        ref: divRef
+        ref: divRef,
+        ...props
     }, /*#__PURE__*/ React__default["default"].createElement(DropdownHeader$1, {
         type: type,
         handleClick: handleClick,
         className: className,
         header: header
-    }), /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: "dropdown__menu"
-    }, children));
+    }), /*#__PURE__*/ React__default["default"].createElement(Menu, null, children));
 };
 Dropdown.Divider = Divider;
 Dropdown.Element = Element;
 Dropdown.Group = Group$1;
 Dropdown.GroupHeader = GroupHeader;
+Dropdown.Menu = Menu;
 
 const FileCard = ({ file , i , removeFile , inline  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: "file-drop__card col-lg-4 col-md-6 col-sm-6",
@@ -661,19 +669,15 @@ const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_",
     if (type === "loading") {
         (_a = args.autoClose) !== null && _a !== void 0 ? _a : args.autoClose = false;
     }
-    return reactToastify.toast((toastProps)=>{
-        console.log({
-            toastProps
-        });
-        return /*#__PURE__*/ React__default["default"].createElement(Toast, {
+    return reactToastify.toast(()=>/*#__PURE__*/ React__default["default"].createElement(Toast, {
             ...{
                 type,
                 title,
                 message,
                 copyError
             }
-        });
-    }, {
+        })
+    , {
         containerId,
         ...args
     });
@@ -699,8 +703,8 @@ toast.update = (toastId, updates, options)=>{
 toast.dismiss = (...args)=>reactToastify.toast.dismiss(...args)
 ;
 
-const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable =false , hideProgressBar =true , containerId ="_GLOBAL_" , ...props })=>/*#__PURE__*/ React__default["default"].createElement(reactToastify.ToastContainer, {
-        transition: reactToastify.Slide,
+const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable =false , hideProgressBar =true , containerId ="_GLOBAL_" , transition =reactToastify.Slide , bordered , shadow ="lg" , bodyClassName , toastClassName , ...props })=>/*#__PURE__*/ React__default["default"].createElement(reactToastify.ToastContainer, {
+        transition: transition,
         position: position,
         autoClose: autoClose,
         draggable: draggable,
@@ -708,6 +712,8 @@ const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable
         containerId: containerId,
         ...props,
         closeButton: false,
+        bodyClassName: `${bodyClassName || ""}${appendClass(bordered, "toast--bordered")}`,
+        toastClassName: `${toastClassName || ""}${appendClass(shadow === "md", "toast--shadow-md")}${appendClass(shadow === "sm", "toast--shadow-sm")}`,
         style: {
             width: "unset"
         }
@@ -2482,9 +2488,10 @@ const base16Theme = {
     base0F: "#626469"
 };
 
-const Kbd = /*#__PURE__*/ React.forwardRef(({ children  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("span", {
-        className: "kbd",
-        ref: ref
+const Kbd = /*#__PURE__*/ React.forwardRef(({ children , className , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("span", {
+        className: `kbd${appendClass(className)}`,
+        ref: ref,
+        ...props
     }, children)
 );
 
@@ -2528,6 +2535,7 @@ exports.InputHelpBaloon = InputHelpBaloon;
 exports.InputHelpBlock = InputHelpBlock;
 exports.Kbd = Kbd;
 exports.Label = Label;
+exports.Menu = Menu;
 exports.Modal = Modal;
 exports.ModalBody = ModalBody;
 exports.ModalFooter = ModalFooter;
