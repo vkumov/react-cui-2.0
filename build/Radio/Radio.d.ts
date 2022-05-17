@@ -14,8 +14,8 @@ interface RadioValue {
 }
 interface RadiosProps {
     values: RadioValue[];
-    value?: string;
-    onChange?: (value: string) => void;
+    value: string;
+    onChange: (value: string) => void;
     name: string;
 }
 export declare const Radios: FC<RadiosProps>;

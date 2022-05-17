@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React, { ForwardRefExoticComponent, HTMLProps } from "react";
 import "../../css/buttons.css";
 export declare type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
-export interface ButtonProps extends React.ButtonHTMLAttributes<any> {
+export declare type ButtonProps = {
     size?: "small" | "default" | "large";
     color?: ButtonColor;
     wide?: boolean;
@@ -13,16 +13,17 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<any> {
     className?: string;
     icon?: boolean;
     type?: "submit" | "reset" | "button";
+} & Omit<HTMLProps<HTMLButtonElement>, "size">;
+declare type BFR = ForwardRefExoticComponent<ButtonProps>;
+interface ButtonType extends BFR {
+    Primary: BFR;
+    Secondary: BFR;
+    Success: BFR;
+    Dark: BFR;
+    Ghost: BFR;
+    Link: BFR;
+    Light: BFR;
+    Danger: BFR;
 }
-interface ButtonColors {
-    Primary: FC<ButtonProps>;
-    Secondary: FC<ButtonProps>;
-    Success: FC<ButtonProps>;
-    Dark: FC<ButtonProps>;
-    Ghost: FC<ButtonProps>;
-    Link: FC<ButtonProps>;
-    Light: FC<ButtonProps>;
-    Danger: FC<ButtonProps>;
-}
-export declare const Button: ButtonColors & FC<ButtonProps>;
-export {};
+declare let Button: ButtonType;
+export { Button };

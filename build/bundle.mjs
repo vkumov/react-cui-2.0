@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useRef, useEffect, useCallback, useMemo, cloneElement, isValidElement } from 'react';
+import React, { forwardRef, useState, useRef, useEffect, useCallback, useMemo, createElement, cloneElement, isValidElement } from 'react';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
 import { toast as toast$1, Slide, ToastContainer as ToastContainer$1 } from 'react-toastify';
@@ -459,7 +459,8 @@ const Progressbar = /*#__PURE__*/ forwardRef(({ size ="default" , withLabel =fal
     }, `${percentage}%`) : null)
 );
 
-const Button$1 = ({ size ="default" , color ="primary" , wide =false , justified =false , circle =false , className =null , asLink =false , style =null , selected =false , type =null , icon =false , ...props })=>/*#__PURE__*/ React.createElement(asLink ? "a" : "button", {
+let Button$1;
+Button$1 = /*#__PURE__*/ forwardRef(({ size ="default" , color ="primary" , wide =false , justified =false , circle =false , className =null , asLink =false , style =null , selected =false , type =null , icon =false , ...props }, ref)=>/*#__PURE__*/ createElement(asLink ? "a" : "button", {
         className: `btn${appendClass(size !== "default", `btn--${size}`)} btn--${color}${appendClass(wide, "btn--wide")}${appendClass(justified, "btn--justified")}${appendClass(icon, "btn--icon")}${appendClass(circle, "btn--circle")}${appendClass(selected, "selected")}${appendClass(className)}${appendClass(asLink, "flex-middle flex-center")}`,
         style: {
             ...style || {},
@@ -470,49 +471,58 @@ const Button$1 = ({ size ="default" , color ="primary" , wide =false , justified
         ...asLink ? {} : {
             type: type || "button"
         },
-        ...props
-    })
-;
-Button$1.Primary = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "primary"
+        ref
     })
-;
-Button$1.Secondary = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
+);
+Button$1.Primary = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "secondary"
+        color: "primary",
+        ref: ref
     })
-;
-Button$1.Success = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
+);
+Button$1.Secondary = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "success"
+        color: "secondary",
+        ref: ref
     })
-;
-Button$1.Dark = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
+);
+Button$1.Success = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "dark"
+        color: "success",
+        ref: ref
     })
-;
-Button$1.Ghost = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
+);
+Button$1.Dark = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "ghost"
+        color: "dark",
+        ref: ref
     })
-;
-Button$1.Link = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
+);
+Button$1.Ghost = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "link"
+        color: "ghost",
+        ref: ref
     })
-;
-Button$1.Light = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
+);
+Button$1.Link = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "light"
+        color: "link",
+        ref: ref
     })
-;
-Button$1.Danger = (props)=>/*#__PURE__*/ React.createElement(Button$1, {
+);
+Button$1.Light = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
         ...props,
-        color: "danger"
+        color: "light",
+        ref: ref
     })
-;
+);
+Button$1.Danger = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button$1, {
+        ...props,
+        color: "danger",
+        ref: ref
+    })
+);
 
 const ButtonGroup = /*#__PURE__*/ forwardRef(({ square =false , withDivider =false , className =null , ...props }, ref)=>/*#__PURE__*/ React.createElement("div", {
         className: `btn-group${appendClass(square, "btn-group--square")}${appendClass(withDivider, " btn-group--divider")}${appendClass(className)}`,
@@ -1999,22 +2009,12 @@ const Radio = /*#__PURE__*/ forwardRef(({ spacing =null , inline =false , label 
         className: "radio__label"
     }, label) : null))
 );
-const Radios = ({ values , value: initialValue , onChange , name ,  })=>{
-    const [value, setValue] = useState(initialValue);
-    useEffect(()=>{
-        setValue(initialValue);
-    }, [
-        initialValue
-    ]);
+const Radios = ({ values , value , onChange , name  })=>{
     const onRadioChange = useCallback((e)=>{
         e.persist();
-        setValue((curr)=>{
-            let v;
-            if (e.target.checked) v = e.target.value;
-            else v = curr;
-            if (typeof onChange === "function") onChange(v);
-            return v;
-        });
+        if (e.target.checked) {
+            onChange(e.target.value);
+        }
     }, [
         onChange
     ]);
@@ -2024,7 +2024,8 @@ const Radios = ({ values , value: initialValue , onChange , name ,  })=>{
             key: v.value,
             name: `${name}.${idx}`,
             onChange: onRadioChange,
-            checked: value === v.value
+            checked: value === v.value,
+            value: v.value
         })
     ));
 };
@@ -2479,5 +2480,12 @@ const Kbd = /*#__PURE__*/ forwardRef(({ children , className , ...props }, ref)=
     }, children)
 );
 
-export { Accordion, AccordionElement, Alert, Badge, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
+const Blockquote = /*#__PURE__*/ forwardRef(({ className , cite , color , align , children , padding , ...props }, ref)=>/*#__PURE__*/ React.createElement("blockquote", {
+        className: `${appendClass(color, `blockquote--${color}`)}${appendClass(align, `blockquote--${align}`)}${appendClass(padding && padding !== "default", `blockquote--${padding}`)}${appendClass(className)}`,
+        ...props,
+        ref: ref
+    }, /*#__PURE__*/ React.createElement("p", null, children), cite ? /*#__PURE__*/ React.createElement("cite", null, cite) : null)
+);
+
+export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
 //# sourceMappingURL=bundle.mjs.map

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect, useCallback } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import { appendClass } from '../utils/index.js';
 
 function _extends() {
@@ -31,22 +31,12 @@ const Radio = /*#__PURE__*/ forwardRef(({ spacing =null , inline =false , label 
         className: "radio__label"
     }, label) : null))
 );
-const Radios = ({ values , value: initialValue , onChange , name ,  })=>{
-    const [value, setValue] = useState(initialValue);
-    useEffect(()=>{
-        setValue(initialValue);
-    }, [
-        initialValue
-    ]);
+const Radios = ({ values , value , onChange , name  })=>{
     const onRadioChange = useCallback((e)=>{
         e.persist();
-        setValue((curr)=>{
-            let v;
-            if (e.target.checked) v = e.target.value;
-            else v = curr;
-            if (typeof onChange === "function") onChange(v);
-            return v;
-        });
+        if (e.target.checked) {
+            onChange(e.target.value);
+        }
     }, [
         onChange
     ]);
@@ -56,7 +46,8 @@ const Radios = ({ values , value: initialValue , onChange , name ,  })=>{
             key: v.value,
             name: `${name}.${idx}`,
             onChange: onRadioChange,
-            checked: value === v.value
+            checked: value === v.value,
+            value: v.value
         })
     ));
 };

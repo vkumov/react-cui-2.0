@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, createElement } from 'react';
 import { appendClass } from '../utils/index.js';
 
 function _extends$1() {
@@ -15,7 +15,8 @@ function _extends$1() {
     };
     return _extends$1.apply(this, arguments);
 }
-const Button = ({ size ="default" , color ="primary" , wide =false , justified =false , circle =false , className =null , asLink =false , style =null , selected =false , type =null , icon =false , ...props })=>/*#__PURE__*/ React.createElement(asLink ? "a" : "button", {
+let Button;
+Button = /*#__PURE__*/ forwardRef(({ size ="default" , color ="primary" , wide =false , justified =false , circle =false , className =null , asLink =false , style =null , selected =false , type =null , icon =false , ...props }, ref)=>/*#__PURE__*/ createElement(asLink ? "a" : "button", {
         className: `btn${appendClass(size !== "default", `btn--${size}`)} btn--${color}${appendClass(wide, "btn--wide")}${appendClass(justified, "btn--justified")}${appendClass(icon, "btn--icon")}${appendClass(circle, "btn--circle")}${appendClass(selected, "selected")}${appendClass(className)}${appendClass(asLink, "flex-middle flex-center")}`,
         style: {
             ...style || {},
@@ -26,41 +27,50 @@ const Button = ({ size ="default" , color ="primary" , wide =false , justified =
         ...asLink ? {} : {
             type: type || "button"
         },
-        ...props
+        ...props,
+        ref
     })
-;
-Button.Primary = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "primary"
+);
+Button.Primary = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "primary",
+        ref: ref
     }))
-;
-Button.Secondary = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "secondary"
+);
+Button.Secondary = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "secondary",
+        ref: ref
     }))
-;
-Button.Success = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "success"
+);
+Button.Success = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "success",
+        ref: ref
     }))
-;
-Button.Dark = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "dark"
+);
+Button.Dark = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "dark",
+        ref: ref
     }))
-;
-Button.Ghost = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "ghost"
+);
+Button.Ghost = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "ghost",
+        ref: ref
     }))
-;
-Button.Link = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "link"
+);
+Button.Link = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "link",
+        ref: ref
     }))
-;
-Button.Light = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "light"
+);
+Button.Light = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "light",
+        ref: ref
     }))
-;
-Button.Danger = (props)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
-        color: "danger"
+);
+Button.Danger = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+        color: "danger",
+        ref: ref
     }))
-;
+);
 
 function _extends() {
     _extends = Object.assign || function(target) {

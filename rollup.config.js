@@ -120,35 +120,37 @@ const folderBuilds = getFolders("./src")
   })
   .flat();
 
+const esmBundle = {
+  input: ["src/index.ts"],
+  output: [
+    {
+      file: packageJson.module,
+      format: "esm",
+      sourcemap: true,
+      exports: "named",
+    },
+  ],
+  treeshake: true,
+  plugins: [
+    cleaner({
+      targets: ["./build/"],
+    }),
+    postcss({
+      plugins: [cssImport()],
+      minimize,
+      extract: path.resolve(__dirname, "./build/css/styles.css"),
+    }),
+    tsDTS,
+    ...plugins,
+  ],
+  external: externals,
+};
+
 /**
  * @type {import('rollup').RollupOptions}
  **/
 export default [
-  {
-    input: ["src/index.ts"],
-    output: [
-      {
-        file: packageJson.module,
-        format: "esm",
-        sourcemap: true,
-        exports: "named",
-      },
-    ],
-    treeshake: true,
-    plugins: [
-      cleaner({
-        targets: ["./build/"],
-      }),
-      postcss({
-        plugins: [cssImport()],
-        minimize,
-        extract: path.resolve(__dirname, "./build/css/styles.css"),
-      }),
-      tsDTS,
-      ...plugins,
-    ],
-    external: externals,
-  },
+  esmBundle,
   ...folderBuilds,
   {
     input: ["src/index.ts"],

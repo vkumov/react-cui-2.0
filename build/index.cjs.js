@@ -475,7 +475,8 @@ const Progressbar = /*#__PURE__*/ React.forwardRef(({ size ="default" , withLabe
     }, `${percentage}%`) : null)
 );
 
-const Button$1 = ({ size ="default" , color ="primary" , wide =false , justified =false , circle =false , className =null , asLink =false , style =null , selected =false , type =null , icon =false , ...props })=>/*#__PURE__*/ React__default["default"].createElement(asLink ? "a" : "button", {
+exports.Button = void 0;
+exports.Button = /*#__PURE__*/ React.forwardRef(({ size ="default" , color ="primary" , wide =false , justified =false , circle =false , className =null , asLink =false , style =null , selected =false , type =null , icon =false , ...props }, ref)=>/*#__PURE__*/ React.createElement(asLink ? "a" : "button", {
         className: `btn${appendClass(size !== "default", `btn--${size}`)} btn--${color}${appendClass(wide, "btn--wide")}${appendClass(justified, "btn--justified")}${appendClass(icon, "btn--icon")}${appendClass(circle, "btn--circle")}${appendClass(selected, "selected")}${appendClass(className)}${appendClass(asLink, "flex-middle flex-center")}`,
         style: {
             ...style || {},
@@ -486,49 +487,58 @@ const Button$1 = ({ size ="default" , color ="primary" , wide =false , justified
         ...asLink ? {} : {
             type: type || "button"
         },
-        ...props
-    })
-;
-Button$1.Primary = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
         ...props,
-        color: "primary"
+        ref
     })
-;
-Button$1.Secondary = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+);
+exports.Button.Primary = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
-        color: "secondary"
+        color: "primary",
+        ref: ref
     })
-;
-Button$1.Success = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+);
+exports.Button.Secondary = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
-        color: "success"
+        color: "secondary",
+        ref: ref
     })
-;
-Button$1.Dark = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+);
+exports.Button.Success = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
-        color: "dark"
+        color: "success",
+        ref: ref
     })
-;
-Button$1.Ghost = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+);
+exports.Button.Dark = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
-        color: "ghost"
+        color: "dark",
+        ref: ref
     })
-;
-Button$1.Link = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+);
+exports.Button.Ghost = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
-        color: "link"
+        color: "ghost",
+        ref: ref
     })
-;
-Button$1.Light = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+);
+exports.Button.Link = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
-        color: "light"
+        color: "link",
+        ref: ref
     })
-;
-Button$1.Danger = (props)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+);
+exports.Button.Light = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
-        color: "danger"
+        color: "light",
+        ref: ref
     })
-;
+);
+exports.Button.Danger = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
+        ...props,
+        color: "danger",
+        ref: ref
+    })
+);
 
 const ButtonGroup = /*#__PURE__*/ React.forwardRef(({ square =false , withDivider =false , className =null , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `btn-group${appendClass(square, "btn-group--square")}${appendClass(withDivider, " btn-group--divider")}${appendClass(className)}`,
@@ -1256,9 +1266,9 @@ const ConfirmationModal = ({ isOpen =false , confirmType ="primary" , autoClose 
         className: "checkbox__input"
     }), /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "checkbox__label"
-    }, dontAskAgain.text || "Don't ask again"))) : null), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, /*#__PURE__*/ React__default["default"].createElement(Button$1.Light, {
+    }, dontAskAgain.text || "Don't ask again"))) : null), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, /*#__PURE__*/ React__default["default"].createElement(exports.Button.Light, {
         onClick: closeHandle
-    }, "Close"), /*#__PURE__*/ React__default["default"].createElement(Button$1, {
+    }, "Close"), /*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         color: confirmType,
         disabled: doing,
         onClick: async ()=>{
@@ -1324,11 +1334,11 @@ function PromptModal({ title , question , onSave: cb , onClose , initial , type 
             }
         })))),
         ref: inpRef
-    })), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, /*#__PURE__*/ React__default["default"].createElement(Button$1, {
+    })), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, /*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         color: "light",
         onClick: onClose,
         disabled: doing
-    }, "Close"), /*#__PURE__*/ React__default["default"].createElement(Button$1, {
+    }, "Close"), /*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         color: "primary",
         onClick: onSave,
         disabled: doing
@@ -1398,7 +1408,7 @@ const ConfirmationListener = ()=>{
             close: ()=>closeModal(modal.id, modal.onModalClose)
         }) : /*#__PURE__*/ React.cloneElement(modal.fullBody, {
             close: ()=>closeModal(modal.id, modal.onModalClose)
-        }) : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React__default["default"].createElement(ModalBody, null, modal.body), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, modal.buttons.map((button, idx)=>/*#__PURE__*/ React__default["default"].createElement(Button$1, {
+        }) : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React__default["default"].createElement(ModalBody, null, modal.body), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, modal.buttons.map((button, idx)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
                 key: idx,
                 color: button.color || "light",
                 onClick: (e)=>{
@@ -1415,7 +1425,7 @@ const ConfirmationListener = ()=>{
             closeHandle: ()=>closeModal(modal.id, modal.onModalClose)
             ,
             title: modal.title
-        }, /*#__PURE__*/ React__default["default"].createElement(ModalBody, null, modal.body), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, /*#__PURE__*/ React__default["default"].createElement(Button$1, {
+        }, /*#__PURE__*/ React__default["default"].createElement(ModalBody, null, modal.body), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, /*#__PURE__*/ React__default["default"].createElement(exports.Button, {
             color: modal.buttonColor || "light",
             onClick: ()=>closeModal(modal.id, modal.onModalClose)
         }, modal.button)));
@@ -2015,22 +2025,12 @@ const Radio = /*#__PURE__*/ React.forwardRef(({ spacing =null , inline =false , 
         className: "radio__label"
     }, label) : null))
 );
-const Radios = ({ values , value: initialValue , onChange , name ,  })=>{
-    const [value, setValue] = React.useState(initialValue);
-    React.useEffect(()=>{
-        setValue(initialValue);
-    }, [
-        initialValue
-    ]);
+const Radios = ({ values , value , onChange , name  })=>{
     const onRadioChange = React.useCallback((e)=>{
         e.persist();
-        setValue((curr)=>{
-            let v;
-            if (e.target.checked) v = e.target.value;
-            else v = curr;
-            if (typeof onChange === "function") onChange(v);
-            return v;
-        });
+        if (e.target.checked) {
+            onChange(e.target.value);
+        }
     }, [
         onChange
     ]);
@@ -2040,7 +2040,8 @@ const Radios = ({ values , value: initialValue , onChange , name ,  })=>{
             key: v.value,
             name: `${name}.${idx}`,
             onChange: onRadioChange,
-            checked: value === v.value
+            checked: value === v.value,
+            value: v.value
         })
     ));
 };
@@ -2495,11 +2496,18 @@ const Kbd = /*#__PURE__*/ React.forwardRef(({ children , className , ...props },
     }, children)
 );
 
+const Blockquote = /*#__PURE__*/ React.forwardRef(({ className , cite , color , align , children , padding , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("blockquote", {
+        className: `${appendClass(color, `blockquote--${color}`)}${appendClass(align, `blockquote--${align}`)}${appendClass(padding && padding !== "default", `blockquote--${padding}`)}${appendClass(className)}`,
+        ...props,
+        ref: ref
+    }, /*#__PURE__*/ React__default["default"].createElement("p", null, children), cite ? /*#__PURE__*/ React__default["default"].createElement("cite", null, cite) : null)
+);
+
 exports.Accordion = Accordion;
 exports.AccordionElement = AccordionElement;
 exports.Alert = Alert;
 exports.Badge = Badge;
-exports.Button = Button$1;
+exports.Blockquote = Blockquote;
 exports.ButtonGroup = ButtonGroup;
 exports.Checkbox = Checkbox;
 exports.ConditionalWrapper = ConditionalWrapper;
@@ -2576,4 +2584,4 @@ exports.notification = notificationModal;
 exports.notificationModal = notificationModal;
 exports.prompt = prompt;
 exports.toast = toast;
-//# sourceMappingURL=index.cjs.map
+//# sourceMappingURL=index.cjs.js.map

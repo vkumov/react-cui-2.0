@@ -5,8 +5,6 @@ import React, {
   HTMLProps,
   ReactNode,
   useCallback,
-  useEffect,
-  useState,
 } from "react";
 
 import { appendClass as ac } from "src/utils";
@@ -56,32 +54,19 @@ interface RadioValue {
 
 interface RadiosProps {
   values: RadioValue[];
-  value?: string;
-  onChange?: (value: string) => void;
+  value: string;
+  onChange: (value: string) => void;
   name: string;
 }
 
-export const Radios: FC<RadiosProps> = ({
-  values,
-  value: initialValue,
-  onChange,
-  name,
-}) => {
-  const [value, setValue] = useState(initialValue);
-  useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
+export const Radios: FC<RadiosProps> = ({ values, value, onChange, name }) => {
   const onRadioChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       e.persist();
-      setValue((curr) => {
-        let v: string;
-        if (e.target.checked) v = e.target.value;
-        else v = curr;
-        if (typeof onChange === "function") onChange(v);
-        return v;
-      });
+
+      if (e.target.checked) {
+        onChange(e.target.value);
+      }
     },
     [onChange]
   );
@@ -96,6 +81,7 @@ export const Radios: FC<RadiosProps> = ({
           name={`${name}.${idx}`}
           onChange={onRadioChange}
           checked={value === v.value}
+          value={v.value}
         />
       ))}
     </>
