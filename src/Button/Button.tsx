@@ -40,7 +40,7 @@ interface ButtonType extends BFR {
   Secondary: BFR;
   Success: BFR;
   Dark: BFR;
-  Ghost: BFR;
+  Ghost: ForwardRefExoticComponent<ButtonProps & { fullGhost?: boolean }>;
   Link: BFR;
   Light: BFR;
   Danger: BFR;
@@ -99,8 +99,13 @@ Button.Success = forwardRef((props, ref) => (
 Button.Dark = forwardRef((props, ref) => (
   <Button {...props} color="dark" ref={ref} />
 ));
-Button.Ghost = forwardRef((props, ref) => (
-  <Button {...props} color="ghost" ref={ref} />
+Button.Ghost = forwardRef(({ fullGhost = false, className, ...props }, ref) => (
+  <Button
+    className={`${ac(fullGhost, "btn--full-ghost")}${ac(className)}`}
+    {...props}
+    color="ghost"
+    ref={ref}
+  />
 ));
 Button.Link = forwardRef((props, ref) => (
   <Button {...props} color="link" ref={ref} />

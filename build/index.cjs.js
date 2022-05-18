@@ -515,7 +515,8 @@ exports.Button.Dark = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/
         ref: ref
     })
 );
-exports.Button.Ghost = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
+exports.Button.Ghost = /*#__PURE__*/ React.forwardRef(({ fullGhost =false , className , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
+        className: `${appendClass(fullGhost, "btn--full-ghost")}${appendClass(className)}`,
         ...props,
         color: "ghost",
         ref: ref

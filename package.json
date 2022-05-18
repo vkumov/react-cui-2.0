@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.5.4",
+  "version": "4.5.5",
   "description": "React library for CUI 2.0",
   "module": "build/bundle.mjs",
   "main": "build/index.cjs.js",

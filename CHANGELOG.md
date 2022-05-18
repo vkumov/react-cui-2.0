@@ -1,3 +1,7 @@
+## 4.5.5
+
+- Added full ghost option to Button.Ghost
+
 ## 4.5.4
 
 - Forward refs for all Button types

@@ -20,7 +20,9 @@ interface ButtonType extends BFR {
     Secondary: BFR;
     Success: BFR;
     Dark: BFR;
-    Ghost: BFR;
+    Ghost: ForwardRefExoticComponent<ButtonProps & {
+        fullGhost?: boolean;
+    }>;
     Link: BFR;
     Light: BFR;
     Danger: BFR;

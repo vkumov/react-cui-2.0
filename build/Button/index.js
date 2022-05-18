@@ -51,7 +51,9 @@ Button.Dark = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createE
         ref: ref
     }))
 );
-Button.Ghost = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
+Button.Ghost = /*#__PURE__*/ forwardRef(({ fullGhost =false , className , ...props }, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({
+        className: `${appendClass(fullGhost, "btn--full-ghost")}${appendClass(className)}`
+    }, props, {
         color: "ghost",
         ref: ref
     }))
