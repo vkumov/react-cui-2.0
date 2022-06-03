@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ModalBody,
   ModalFooter,
@@ -122,6 +122,12 @@ export const Prompt: Story = () => {
 };
 
 export const CustomBody: Story = () => {
+  const [ref, setRef] = useState(null);
+
+  useEffect(() => {
+    console.log("Ref:", ref);
+  }, [ref]);
+
   return (
     <div className="section base-margin-top dbl-margin-bottom">
       <h3 className="display-5">Dynamic modal with custom body</h3>
@@ -132,7 +138,7 @@ export const CustomBody: Story = () => {
               console.log("Opening dynamic modal");
               await dynamicModal({
                 title: "Custom body",
-                modalProps: { closeIcon: true },
+                modalProps: { closeIcon: true, dialogProps: { ref: setRef } },
                 fullBody: (props) => <CustomDynamic {...props} />,
               });
               console.log("Dynamic modal closed, awaited");
