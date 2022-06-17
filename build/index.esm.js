@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useRef, useEffect, useCallback, useMemo, createElement, cloneElement, isValidElement } from 'react';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
-import { toast as toast$1, Slide, ToastContainer as ToastContainer$1 } from 'react-toastify';
+import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
 import Transition from 'react-transition-group/Transition';
 import ReactModal from 'react-modal';
 import EventEmitter from 'eventemitter3';
@@ -2489,4 +2489,4 @@ const Blockquote = /*#__PURE__*/ forwardRef(({ className , cite , color , align 
 );
 
 export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
-//# sourceMappingURL=bundle.mjs.map
+//# sourceMappingURL=index.esm.js.map

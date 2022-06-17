@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 const { resolve, join, basename } = require("path");
 const { readFile, writeFile, copy } = require("fs-extra");
+const glob = require("fast-glob");
 
 const packagePath = process.cwd();
 const distPath = join(packagePath, "./build");
@@ -16,14 +17,54 @@ async function createPackageFile() {
   );
   const { scripts, devDependencies, ...packageOthers } =
     JSON.parse(packageData);
+
+  const main_file = `./cjs/${basename(packageOthers.main)}`;
+  const module_file = `./${basename(packageOthers.module)}`;
+
+  const gl = join(distPath, "**/*.js");
+  const regx = new RegExp("\\./([^\\/]+)/(.*)\\.js");
+  const all = glob
+    .sync(gl)
+    .map((l) => l.replace(distPath, "."))
+    .filter(
+      (l) => l !== `./${basename(packageOthers.module)}` || l.startsWith("cjs")
+    );
+
+  console.log(regx);
+  console.log(all);
+
+  const exps = all.reduce((comb, curr) => {
+    const m = curr.match(regx);
+    if (m) {
+      if (m[2] === "index") {
+        comb[`./${m[1]}`] = {
+          import: { types: `./${m[1]}/${m[2]}.d.ts`, default: curr },
+        };
+      } else {
+        comb[`./${m[1]}/${m[2]}`] = {
+          import: { types: `./${m[1]}/${m[2]}.d.ts`, default: curr },
+        };
+      }
+    }
+    return comb;
+  }, {});
+
   const newPackageData = {
     ...packageOthers,
     private: false,
     typings: "./index.d.ts",
     types: "./index.d.ts",
-    main: `./${basename(packageOthers.main)}`,
-    module: `./${basename(packageOthers.module)}`,
-    type: "module",
+    main: main_file,
+    module: module_file,
+    // type: "module",
+    exports: {
+      ".": {
+        import: module_file,
+        require: main_file,
+      },
+      "./css/styles.css": "./css/styles.css",
+      ...exps,
+    },
   };
 
   delete newPackageData.files;

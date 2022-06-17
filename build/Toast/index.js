@@ -1,5 +1,5 @@
 import React from 'react';
-import { toast as toast$1, Slide, ToastContainer as ToastContainer$1 } from 'react-toastify';
+import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
 import { appendClass } from '../utils/index.js';
 import { copyStringToClipboard } from '../utils/clipboard.js';
 

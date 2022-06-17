@@ -5,8 +5,7 @@ import typescript from "rollup-plugin-typescript2";
 import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import cleaner from "rollup-plugin-cleaner";
-import { swc } from "rollup-plugin-swc3";
-// import tsPaths from "rollup-plugin-tsconfig-paths";
+import swc from "unplugin-swc";
 import tsPaths from "rollup-plugin-typescript-paths";
 import glob from "fast-glob";
 import path from "path";
@@ -42,8 +41,8 @@ const plugins = [
   commonjs({
     include: "node_modules/**",
   }),
-  swc({
-    tsconfig: "tsconfig.json",
+  swc.rollup({
+    tsconfigFile: "tsconfig.json",
     sourceMaps: true,
   }),
   minimize && terser(),
@@ -132,15 +131,34 @@ const esmBundle = {
   ],
   treeshake: true,
   plugins: [
-    cleaner({
-      targets: ["./build/"],
-    }),
     postcss({
       plugins: [cssImport()],
       minimize,
-      extract: path.resolve(__dirname, "./build/css/styles.css"),
+      extract: "css/styles.css",
     }),
     tsDTS,
+    ...plugins,
+  ],
+  external: externals,
+};
+
+const cjsBundle = {
+  input: ["src/index.ts"],
+  output: [
+    {
+      file: packageJson.main,
+      format: "cjs",
+      sourcemap: true,
+      exports: "named",
+    },
+  ],
+  treeshake: true,
+  plugins: [
+    cleaner({
+      targets: ["./build/"],
+    }),
+    tsDTS,
+    ignoreCssPlugin,
     ...plugins,
   ],
   external: externals,
@@ -149,21 +167,4 @@ const esmBundle = {
 /**
  * @type {import('rollup').RollupOptions}
  **/
-export default [
-  esmBundle,
-  ...folderBuilds,
-  {
-    input: ["src/index.ts"],
-    output: [
-      {
-        file: packageJson.main,
-        format: "cjs",
-        sourcemap: true,
-        exports: "named",
-      },
-    ],
-    treeshake: true,
-    plugins: [tsDTS, ignoreCssPlugin, ...plugins],
-    external: externals,
-  },
-];
+export default [cjsBundle, ...folderBuilds, esmBundle];

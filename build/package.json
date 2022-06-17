@@ -1,9 +1,9 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.5.6",
+  "version": "4.5.12",
   "description": "React library for CUI 2.0",
-  "module": "./bundle.mjs",
-  "main": "./index.cjs.js",
+  "module": "./index.esm.js",
+  "main": "./cjs/index.cjs.js",
   "types": "./index.d.ts",
   "homepage": "https://github.com/vkumov/react-cui-2.0",
   "author": "Vitaly Kumov",
@@ -16,14 +16,302 @@
     "bytes": "^3.1.2",
     "eventemitter3": "^4.0.7",
     "rc-slider": "^10.0.0",
-    "react-dropzone": "^12.0.5",
+    "react-dropzone": "^12.1.0",
     "react-modal": "^3.15.1",
-    "react-select": "^5.3.1",
-    "react-toastify": "^9.0.1",
+    "react-select": "^5.3.2",
+    "react-toastify": "^9.0.4",
     "react-transition-group": "^4.4.2",
     "use-callback-ref": "^1.3.0"
   },
   "private": false,
   "typings": "./index.d.ts",
-  "type": "module"
+  "exports": {
+    ".": {
+      "import": "./index.esm.js",
+      "require": "./cjs/index.cjs.js"
+    },
+    "./css/styles.css": "./css/styles.css",
+    "./Accordion": {
+      "import": {
+        "types": "./Accordion/index.d.ts",
+        "default": "./Accordion/index.js"
+      }
+    },
+    "./Alert": {
+      "import": {
+        "types": "./Alert/index.d.ts",
+        "default": "./Alert/index.js"
+      }
+    },
+    "./Badge": {
+      "import": {
+        "types": "./Badge/index.d.ts",
+        "default": "./Badge/index.js"
+      }
+    },
+    "./Blockquote": {
+      "import": {
+        "types": "./Blockquote/index.d.ts",
+        "default": "./Blockquote/index.js"
+      }
+    },
+    "./Button": {
+      "import": {
+        "types": "./Button/index.d.ts",
+        "default": "./Button/index.js"
+      }
+    },
+    "./Checkbox": {
+      "import": {
+        "types": "./Checkbox/index.d.ts",
+        "default": "./Checkbox/index.js"
+      }
+    },
+    "./Conditional": {
+      "import": {
+        "types": "./Conditional/index.d.ts",
+        "default": "./Conditional/index.js"
+      }
+    },
+    "./Dropdown": {
+      "import": {
+        "types": "./Dropdown/index.d.ts",
+        "default": "./Dropdown/index.js"
+      }
+    },
+    "./Dropzone": {
+      "import": {
+        "types": "./Dropzone/index.d.ts",
+        "default": "./Dropzone/index.js"
+      }
+    },
+    "./Icon": {
+      "import": {
+        "types": "./Icon/index.d.ts",
+        "default": "./Icon/index.js"
+      }
+    },
+    "./Input": {
+      "import": {
+        "types": "./Input/index.d.ts",
+        "default": "./Input/index.js"
+      }
+    },
+    "./InputChips": {
+      "import": {
+        "types": "./InputChips/index.d.ts",
+        "default": "./InputChips/index.js"
+      }
+    },
+    "./InputHelp": {
+      "import": {
+        "types": "./InputHelp/index.d.ts",
+        "default": "./InputHelp/index.js"
+      }
+    },
+    "./Kbd": {
+      "import": {
+        "types": "./Kbd/index.d.ts",
+        "default": "./Kbd/index.js"
+      }
+    },
+    "./Label": {
+      "import": {
+        "types": "./Label/index.d.ts",
+        "default": "./Label/index.js"
+      }
+    },
+    "./Layout": {
+      "import": {
+        "types": "./Layout/index.d.ts",
+        "default": "./Layout/index.js"
+      }
+    },
+    "./Loader": {
+      "import": {
+        "types": "./Loader/index.d.ts",
+        "default": "./Loader/index.js"
+      }
+    },
+    "./Modal": {
+      "import": {
+        "types": "./Modal/index.d.ts",
+        "default": "./Modal/index.js"
+      }
+    },
+    "./Pagination": {
+      "import": {
+        "types": "./Pagination/index.d.ts",
+        "default": "./Pagination/index.js"
+      }
+    },
+    "./Panel": {
+      "import": {
+        "types": "./Panel/index.d.ts",
+        "default": "./Panel/index.js"
+      }
+    },
+    "./Portal": {
+      "import": {
+        "types": "./Portal/index.d.ts",
+        "default": "./Portal/index.js"
+      }
+    },
+    "./Progressbar": {
+      "import": {
+        "types": "./Progressbar/index.d.ts",
+        "default": "./Progressbar/index.js"
+      }
+    },
+    "./Radio": {
+      "import": {
+        "types": "./Radio/index.d.ts",
+        "default": "./Radio/index.js"
+      }
+    },
+    "./ReactSelect/creatable": {
+      "import": {
+        "types": "./ReactSelect/creatable.d.ts",
+        "default": "./ReactSelect/creatable.js"
+      }
+    },
+    "./ReactSelect/helpers": {
+      "import": {
+        "types": "./ReactSelect/helpers.d.ts",
+        "default": "./ReactSelect/helpers.js"
+      }
+    },
+    "./ReactSelect": {
+      "import": {
+        "types": "./ReactSelect/index.d.ts",
+        "default": "./ReactSelect/index.js"
+      }
+    },
+    "./Section": {
+      "import": {
+        "types": "./Section/index.d.ts",
+        "default": "./Section/index.js"
+      }
+    },
+    "./Select": {
+      "import": {
+        "types": "./Select/index.d.ts",
+        "default": "./Select/index.js"
+      }
+    },
+    "./Slider": {
+      "import": {
+        "types": "./Slider/index.d.ts",
+        "default": "./Slider/index.js"
+      }
+    },
+    "./Steps": {
+      "import": {
+        "types": "./Steps/index.d.ts",
+        "default": "./Steps/index.js"
+      }
+    },
+    "./Switch": {
+      "import": {
+        "types": "./Switch/index.d.ts",
+        "default": "./Switch/index.js"
+      }
+    },
+    "./Table": {
+      "import": {
+        "types": "./Table/index.d.ts",
+        "default": "./Table/index.js"
+      }
+    },
+    "./Tabs": {
+      "import": {
+        "types": "./Tabs/index.d.ts",
+        "default": "./Tabs/index.js"
+      }
+    },
+    "./Textarea": {
+      "import": {
+        "types": "./Textarea/index.d.ts",
+        "default": "./Textarea/index.js"
+      }
+    },
+    "./Timeline": {
+      "import": {
+        "types": "./Timeline/index.d.ts",
+        "default": "./Timeline/index.js"
+      }
+    },
+    "./Toast": {
+      "import": {
+        "types": "./Toast/index.d.ts",
+        "default": "./Toast/index.js"
+      }
+    },
+    "./Typo": {
+      "import": {
+        "types": "./Typo/index.d.ts",
+        "default": "./Typo/index.js"
+      }
+    },
+    "./VSeparator": {
+      "import": {
+        "types": "./VSeparator/index.d.ts",
+        "default": "./VSeparator/index.js"
+      }
+    },
+    "./VariantSelector": {
+      "import": {
+        "types": "./VariantSelector/index.d.ts",
+        "default": "./VariantSelector/index.js"
+      }
+    },
+    "./VerticalCenter": {
+      "import": {
+        "types": "./VerticalCenter/index.d.ts",
+        "default": "./VerticalCenter/index.js"
+      }
+    },
+    "./cjs/index.cjs": {
+      "import": {
+        "types": "./cjs/index.cjs.d.ts",
+        "default": "./cjs/index.cjs.js"
+      }
+    },
+    "./hooks/usePortal": {
+      "import": {
+        "types": "./hooks/usePortal.d.ts",
+        "default": "./hooks/usePortal.js"
+      }
+    },
+    "./hooks/usePrevious": {
+      "import": {
+        "types": "./hooks/usePrevious.d.ts",
+        "default": "./hooks/usePrevious.js"
+      }
+    },
+    "./utils/base16Theme": {
+      "import": {
+        "types": "./utils/base16Theme.d.ts",
+        "default": "./utils/base16Theme.js"
+      }
+    },
+    "./utils/clipboard": {
+      "import": {
+        "types": "./utils/clipboard.d.ts",
+        "default": "./utils/clipboard.js"
+      }
+    },
+    "./utils/eventManager": {
+      "import": {
+        "types": "./utils/eventManager.d.ts",
+        "default": "./utils/eventManager.js"
+      }
+    },
+    "./utils": {
+      "import": {
+        "types": "./utils/index.d.ts",
+        "default": "./utils/index.js"
+      }
+    }
+  }
 }
