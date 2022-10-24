@@ -63,7 +63,7 @@ export const Timeline: FC<TimelineProps> = ({
     )}${ac(simplified, "simplified")}${ac(className)}`}
   >
     {React.Children.map(children, (child) =>
-      isValidElement(child) ? cloneElement(child, { simplified }) : child
+      isValidElement(child) ? cloneElement<any>(child, { simplified }) : child
     )}
   </div>
 );

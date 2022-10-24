@@ -52,7 +52,7 @@ const DropdownHeader: FC<DropdownHeaderProps> = ({
       );
     default:
       return React.isValidElement(header)
-        ? React.cloneElement(header, { onClick: handleClick })
+        ? React.cloneElement<any>(header, { onClick: handleClick })
         : null;
   }
 };

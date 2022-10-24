@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactText, useEffect, useState } from "react";
 import {
   ModalBody,
   ModalFooter,
@@ -50,7 +50,7 @@ export const Notificaion: Story = () => {
 };
 
 export const Confirmation: Story = () => {
-  const [confResult, setConfResult] = useState(null);
+  const [confResult, setConfResult] = useState<boolean | null>(null);
 
   return (
     <div className="section base-margin-top dbl-margin-bottom">
@@ -98,7 +98,7 @@ export const Confirmation: Story = () => {
 };
 
 export const Prompt: Story = () => {
-  const [promptResult, setPromptResult] = useState(null);
+  const [promptResult, setPromptResult] = useState<ReactText | null>(null);
 
   return (
     <>
@@ -138,7 +138,10 @@ export const CustomBody: Story = () => {
               console.log("Opening dynamic modal");
               await dynamicModal({
                 title: "Custom body",
-                modalProps: { closeIcon: true, dialogProps: { ref: setRef } },
+                modalProps: {
+                  closeIcon: true,
+                  dialogProps: { ref: setRef as any },
+                },
                 fullBody: (props) => <CustomDynamic {...props} />,
               });
               console.log("Dynamic modal closed, awaited");

@@ -1173,11 +1173,13 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         setMaximized((curr)=>!curr
         );
     }, []);
+    const nodeRef = React__default["default"].useRef(null);
     return /*#__PURE__*/ React__default["default"].createElement(Transition__default["default"], {
         in: isOpen,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: animationDuration,
+        nodeRef: nodeRef,
         ...transitionEvents
     }, (state)=>/*#__PURE__*/ React__default["default"].createElement(ReactModal__default["default"], {
             ...props,
@@ -1188,7 +1190,8 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
                 "entered"
             ].includes(state),
             className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
-            closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration
+            closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration,
+            ref: nodeRef
         }, /*#__PURE__*/ React__default["default"].createElement("div", {
             className: "modal__dialog",
             ...dialogProps,
@@ -1548,77 +1551,52 @@ const Icon = ({ icon , size =null , className =null , ...props })=>/*#__PURE__*/
     })
 ;
 
-/**
- * Creates DOM element to be used as React root.
- * @returns {HTMLElement}
- */ function createRootElement(id) {
-    const rootContainer = document.createElement("div");
-    rootContainer.setAttribute("id", id);
-    return rootContainer;
-}
-/**
- * Appends element as last child of body.
- * @param {HTMLElement} rootElem
- */ function addRootElement(rootElem) {
-    document.body.insertBefore(rootElem, document.body.lastElementChild.nextElementSibling);
-}
-/**
- * Hook to create a React Portal.
- * Automatically handles creating and tearing-down the root elements (no SRR
- * makes this trivial), so there is no need to ensure the parent target already
- * exists.
- * @example
- * const target = usePortal(id, [id]);
- * return createPortal(children, target);
- * @param {String} id The id of the target container, e.g 'modal' or 'spotlight'
- * @returns {HTMLElement} The DOM node to use as the Portal target.
- */ function usePortal(id) {
-    const rootElemRef = React.useRef(null);
-    React.useEffect(function setupElement() {
-        // Look for existing target dom element to append to
-        const existingParent = document.querySelector(`#${id}`);
-        // Parent is either a new root or the existing dom element
-        const parentElem = existingParent || createRootElement(id);
-        // If there is no existing DOM element, add a new one.
-        if (!existingParent) {
-            addRootElement(parentElem);
+// useLayoutEffect will show warning if used during ssr, e.g. with Next.js
+// useIsomorphicEffect removes it by replacing useLayoutEffect with useEffect during ssr
+const useIsomorphicEffect = typeof document !== "undefined" ? React.useLayoutEffect : React.useEffect;
+
+function usePortal(target) {
+    const [mounted, setMounted] = React.useState(false);
+    const ref = React.useRef();
+    useIsomorphicEffect(()=>{
+        setMounted(true);
+        ref.current = !target ? document.createElement("div") : typeof target === "string" ? document.querySelector(target) : target;
+        if (!target) {
+            document.body.appendChild(ref.current);
         }
-        // Add the detached element to the parent
-        parentElem.appendChild(rootElemRef.current);
-        return function removeElement() {
-            rootElemRef.current.remove();
-            if (parentElem.childNodes.length === -1) {
-                parentElem.remove();
-            }
+        return ()=>{
+            !target && document.body.removeChild(ref.current);
         };
-    }, []);
-    /**
-     * It's important we evaluate this lazily:
-     * - We need first render to contain the DOM element, so it shouldn't happen
-     *   in useEffect. We would normally put this in the constructor().
-     * - We can't do 'const rootElemRef = useRef(document.createElement('div))',
-     *   since this will run every single render (that's a lot).
-     * - We want the ref to consistently point to the same DOM element and only
-     *   ever run once.
-     * @link https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily
-     */ function getRootElem() {
-        if (!rootElemRef.current) {
-            rootElemRef.current = document.createElement("div");
-        }
-        return rootElemRef.current;
+    }, [
+        target
+    ]);
+    if (!mounted) {
+        return null;
     }
-    return getRootElem();
+    return ref.current;
 }
 
-/**
- * @example
- * <Portal>
- *   <p>Thinking with portals</p>
- * </Portal>
- */ const Portal = ({ id , children  })=>{
-    const target = usePortal(id);
-    return /*#__PURE__*/ reactDom.createPortal(children, target);
+const defaultProps = {
+    zIndex: 1,
+    position: "relative"
 };
+function Portal(props) {
+    const { children , zIndex , target , className , position  } = {
+        ...defaultProps,
+        ...props
+    };
+    const portal = usePortal(target);
+    if (!portal) {
+        return null;
+    }
+    return /*#__PURE__*/ reactDom.createPortal(/*#__PURE__*/ React__default["default"].createElement("div", {
+        className: className,
+        style: {
+            position: position,
+            zIndex
+        }
+    }, children), portal);
+}
 
 const Accordion = ({ children , toggles =false , bordered =false ,  })=>{
     return /*#__PURE__*/ React__default["default"].createElement("ul", {
@@ -2504,6 +2482,35 @@ const Blockquote = /*#__PURE__*/ React.forwardRef(({ className , cite , color , 
     }, /*#__PURE__*/ React__default["default"].createElement("p", null, children), cite ? /*#__PURE__*/ React__default["default"].createElement("cite", null, cite) : null)
 );
 
+const Gauge = /*#__PURE__*/ React.forwardRef(({ color ="primary" , size ="default" , className =null , label , percentage , ...props }, ref)=>{
+    return /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `gauge-container${appendClass(className)}`,
+        ...props,
+        ref: ref
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `gauge${appendClass(size && size !== "default", `gauge--${size}`)}${appendClass(color, `gauge--${color}`)}`,
+        "data-percentage": `${percentage}`
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "gauge__circle"
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "mask full"
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "fill"
+    })), /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "mask half"
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "fill"
+    }), /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "fill fix"
+    }))), /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "gauge__inset"
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "gauge__percentage"
+    }, percentage))), label ? /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "gauge__label"
+    }, label) : null);
+});
+
 exports.Accordion = Accordion;
 exports.AccordionElement = AccordionElement;
 exports.Alert = Alert;
@@ -2533,6 +2540,7 @@ exports.Dropzone = Dropzone;
 exports.DynamicModal = ConfirmationListener;
 exports.EditableSelect = EditableSelect;
 exports.Footer = Footer;
+exports.Gauge = Gauge;
 exports.GenericTable = GenericTable;
 exports.Header = Header;
 exports.HeaderPanel = HeaderPanel;

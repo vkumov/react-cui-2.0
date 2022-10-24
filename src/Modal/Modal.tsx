@@ -73,12 +73,15 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
     setMaximized((curr) => !curr);
   }, []);
 
+  const nodeRef = React.useRef(null);
+
   return (
     <Transition
       in={isOpen}
       mountOnEnter
       unmountOnExit
       timeout={animationDuration}
+      nodeRef={nodeRef}
       {...transitionEvents}
     >
       {(state) => (
@@ -96,6 +99,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
               ? animationDuration.exit
               : animationDuration
           }
+          ref={nodeRef}
         >
           <div
             className="modal__dialog"

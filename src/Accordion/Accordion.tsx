@@ -15,7 +15,7 @@ export const Accordion: FC<AccordionProps> = ({
     <ul className={`accordion${bordered ? " accordion--bordered" : ""}`}>
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
-          ? React.cloneElement(child, {
+          ? React.cloneElement<any>(child, {
               toggles,
             })
           : null

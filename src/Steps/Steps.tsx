@@ -32,7 +32,7 @@ export const Steps = forwardRef<HTMLDivElement, StepsProps>(
         .filter(Boolean)
         .map((child, idx) =>
           isValidElement(child)
-            ? React.cloneElement(child, { consequativeIdx: idx + 1 })
+            ? React.cloneElement<any>(child, { consequativeIdx: idx + 1 })
             : child
         )}
     </div>

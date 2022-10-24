@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React, { FC, PropsWithChildren } from "react";
 
-export const VerticalCenter: FC = ({ children }) => (
+export const VerticalCenter: FC<PropsWithChildren> = ({ children }) => (
   <div
     className="content-fluid"
     style={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}

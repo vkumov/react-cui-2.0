@@ -93,11 +93,13 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         setMaximized((curr)=>!curr
         );
     }, []);
+    const nodeRef = React.useRef(null);
     return /*#__PURE__*/ React.createElement(Transition, _extends$1({
         in: isOpen,
         mountOnEnter: true,
         unmountOnExit: true,
-        timeout: animationDuration
+        timeout: animationDuration,
+        nodeRef: nodeRef
     }, transitionEvents), (state)=>/*#__PURE__*/ React.createElement(ReactModal, _extends$1({}, props, {
             onRequestClose: autoClose && closeHandle ? closeHandle : undefined,
             overlayClassName: "modal-backdrop",
@@ -106,7 +108,8 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
                 "entered"
             ].includes(state),
             className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
-            closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration
+            closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration,
+            ref: nodeRef
         }), /*#__PURE__*/ React.createElement("div", _extends$1({
             className: "modal__dialog"
         }, dialogProps, {

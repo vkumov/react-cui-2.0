@@ -231,7 +231,7 @@ export const Tabs: FC<TabsProps> = ({
         >
           {React.Children.map(children, (child, idx) =>
             React.isValidElement(child)
-              ? React.cloneElement(child, {
+              ? React.cloneElement<any>(child, {
                   active: isActive(openTab, child.props.id, idx),
                 })
               : child

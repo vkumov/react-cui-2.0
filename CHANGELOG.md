@@ -1,5 +1,9 @@
 # Changelog
 
+## ?.?.?
+
+- Added gauge component
+
 ## 4.5.7
 
 - Fixed exports

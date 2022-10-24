@@ -6,7 +6,7 @@ import {
 } from "react-toastify";
 import { appendClass } from "src/utils";
 
-type ExtraPorps = {
+type ExtraProps = {
   bordered?: boolean;
   shadow?: "sm" | "md" | "lg";
 };
@@ -23,7 +23,7 @@ export const ToastContainer = ({
   bodyClassName,
   toastClassName,
   ...props
-}: ToastContainerProps & ExtraPorps): JSX.Element => (
+}: ToastContainerProps & ExtraProps): JSX.Element => (
   <ToastifyContainer
     transition={transition}
     position={position}
