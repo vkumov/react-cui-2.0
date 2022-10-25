@@ -109,7 +109,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             ].includes(state),
             className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
             closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration,
-            ref: nodeRef
+            overlayRef: (n)=>nodeRef.current = n
         }), /*#__PURE__*/ React.createElement("div", _extends$1({
             className: "modal__dialog"
         }, dialogProps, {

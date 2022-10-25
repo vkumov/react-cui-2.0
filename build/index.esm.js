@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useRef, useEffect, useCallback, useMemo, createElement, cloneElement, useLayoutEffect, isValidElement } from 'react';
+import React, { useRef, useEffect, forwardRef, useState, useCallback, useMemo, createElement, cloneElement, useLayoutEffect, isValidElement } from 'react';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
 import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
@@ -111,6 +111,70 @@ Alert.WarningAlt = (props)=>/*#__PURE__*/ React.createElement(Alert, {
     })
 ;
 
+const DEFAULT_EVENTS$1 = [
+    "mousedown",
+    "touchstart"
+];
+function useClickInside(handler, events, nodes) {
+    const ref = useRef();
+    useEffect(()=>{
+        const listener = (event)=>{
+            var _a;
+            if (Array.isArray(nodes)) {
+                const shouldIgnore = (_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.hasAttribute("data-ignore-inside-clicks");
+                const shouldTrigger = nodes.every((node)=>Boolean(node) && node.contains(event.target)
+                );
+                shouldTrigger && !shouldIgnore && handler();
+            } else if (ref.current && !ref.current.contains(event.target)) {
+                handler();
+            }
+        };
+        (events || DEFAULT_EVENTS$1).forEach((fn)=>document.addEventListener(fn, listener)
+        );
+        return ()=>{
+            (events || DEFAULT_EVENTS$1).forEach((fn)=>document.removeEventListener(fn, listener)
+            );
+        };
+    }, [
+        ref,
+        handler,
+        nodes
+    ]);
+    return ref;
+}
+
+const DEFAULT_EVENTS = [
+    "mousedown",
+    "touchstart"
+];
+function useClickOutside(handler, events, nodes) {
+    const ref = useRef();
+    useEffect(()=>{
+        const listener = (event)=>{
+            var _a;
+            if (Array.isArray(nodes)) {
+                const shouldIgnore = (_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.hasAttribute("data-ignore-outside-clicks");
+                const shouldTrigger = nodes.every((node)=>!!node && !node.contains(event.target)
+                );
+                shouldTrigger && !shouldIgnore && handler();
+            } else if (ref.current && !ref.current.contains(event.target)) {
+                handler();
+            }
+        };
+        (events || DEFAULT_EVENTS).forEach((fn)=>document.addEventListener(fn, listener)
+        );
+        return ()=>{
+            (events || DEFAULT_EVENTS).forEach((fn)=>document.removeEventListener(fn, listener)
+            );
+        };
+    }, [
+        ref,
+        handler,
+        nodes
+    ]);
+    return ref;
+}
+
 const appendClass = (c, what = undefined)=>{
     if (c) {
         if (typeof what === "function") return ` ${what()}`;
@@ -188,25 +252,18 @@ const DropdownHeader$1 = ({ type , handleClick , className , header ,  })=>{
 const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen , ...props })=>{
     const [isOpen, setIsOpen] = useState(false);
     const divRef = useRef(undefined);
+    const menuRef = useRef(undefined);
     useEffect(()=>{
         if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null) setIsOpen(outsideIsOpen);
     }, [
         outsideIsOpen
     ]);
-    // eslint-disable-next-line prefer-const
-    let handleOutsideClick;
-    const handleClick = useCallback((e)=>{
+    const handleHeaderClick = useCallback((e)=>{
         if (stopPropagation) {
             e.stopPropagation();
             e.preventDefault();
         }
         setIsOpen((current)=>{
-            if (!current) {
-                // attach/remove event handler
-                document.addEventListener("click", handleOutsideClick, true);
-            } else {
-                document.removeEventListener("click", handleOutsideClick, true);
-            }
             const newIsOpen = !current;
             if (newIsOpen && onOpen) onOpen(e);
             if (!newIsOpen && onClose) onClose(e);
@@ -217,19 +274,18 @@ const Dropdown = ({ openTo ="right" , children , type ="button" , className =nul
         onClose,
         onOpen
     ]);
-    handleOutsideClick = (e)=>{
-        // ignore clicks on the component itself
-        if (!(e.target instanceof Node) || !(divRef === null || divRef === void 0 ? void 0 : divRef.current)) return;
-        if (!alwaysClose && divRef.current && divRef.current.contains(e.target)) return;
-        if (!divRef.current.contains(e.target)) {
-            handleClick(e);
-            return;
-        }
-        if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose) {
-            handleClick(e);
-            return;
-        }
-    };
+    useClickOutside(()=>{
+        setIsOpen(false);
+    }, undefined, [
+        divRef.current
+    ]);
+    useClickInside(()=>{
+        if (alwaysClose) setIsOpen(false);
+    }, [
+        "click"
+    ], [
+        menuRef.current
+    ]);
     return /*#__PURE__*/ React.createElement("div", {
         className: `dropdown${appendClass([
             "left",
@@ -239,10 +295,12 @@ const Dropdown = ({ openTo ="right" , children , type ="button" , className =nul
         ...props
     }, /*#__PURE__*/ React.createElement(DropdownHeader$1, {
         type: type,
-        handleClick: handleClick,
+        handleClick: handleHeaderClick,
         className: className,
         header: header
-    }), /*#__PURE__*/ React.createElement(Menu, null, children));
+    }), /*#__PURE__*/ React.createElement(Menu, {
+        ref: menuRef
+    }, children));
 };
 Dropdown.Divider = Divider;
 Dropdown.Element = Element;
@@ -1175,7 +1233,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             ].includes(state),
             className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
             closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration,
-            ref: nodeRef
+            overlayRef: (n)=>nodeRef.current = n
         }, /*#__PURE__*/ React.createElement("div", {
             className: "modal__dialog",
             ...dialogProps,

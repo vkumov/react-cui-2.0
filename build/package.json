@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.6.1",
+  "version": "4.6.3",
   "description": "React library for CUI 2.0",
   "module": "./index.esm.js",
   "main": "./cjs/index.cjs.js",
@@ -281,6 +281,12 @@
       "import": {
         "types": "./cjs/index.cjs.d.ts",
         "default": "./cjs/index.cjs.js"
+      }
+    },
+    "./hooks/useClickInside": {
+      "import": {
+        "types": "./hooks/useClickInside.d.ts",
+        "default": "./hooks/useClickInside.js"
       }
     },
     "./hooks/useClickOutside": {

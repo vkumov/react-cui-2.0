@@ -1,6 +1,14 @@
 # Changelog
 
-## ?.?.?
+## 4.6.3
+
+- Dropdown use hooks for outside & inside clicks
+
+## 4.6.0
+
+- Moved to React 18
+
+## 4.5.12
 
 - Added gauge component
 

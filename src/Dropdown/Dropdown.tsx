@@ -1,13 +1,14 @@
 import React, {
   FC,
   HTMLProps,
-  MouseEvent,
   ReactNode,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
+import { useClickInside } from "src/hooks/useClickInside";
+import { useClickOutside } from "src/hooks/useClickOutside";
 
 import { appendClass } from "src/utils";
 import { Divider, Element, Group, GroupHeader, Menu } from "./Menu";
@@ -99,16 +100,14 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const divRef = useRef<HTMLDivElement>(undefined);
+  const menuRef = useRef<HTMLDivElement>(undefined);
 
   useEffect(() => {
     if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null)
       setIsOpen(outsideIsOpen);
   }, [outsideIsOpen]);
 
-  // eslint-disable-next-line prefer-const
-  let handleOutsideClick;
-
-  const handleClick = useCallback(
+  const handleHeaderClick = useCallback(
     (e): void => {
       if (stopPropagation) {
         e.stopPropagation();
@@ -116,12 +115,6 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
       }
 
       setIsOpen((current) => {
-        if (!current) {
-          // attach/remove event handler
-          document.addEventListener("click", handleOutsideClick, true);
-        } else {
-          document.removeEventListener("click", handleOutsideClick, true);
-        }
         const newIsOpen = !current;
         if (newIsOpen && onOpen) onOpen(e);
         if (!newIsOpen && onClose) onClose(e);
@@ -131,21 +124,21 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
     [stopPropagation, onClose, onOpen]
   );
 
-  handleOutsideClick = (e: MouseEvent<Node>): void => {
-    // ignore clicks on the component itself
-    if (!(e.target instanceof Node) || !divRef?.current) return;
-    if (!alwaysClose && divRef.current && divRef.current.contains(e.target))
-      return;
+  useClickOutside(
+    () => {
+      setIsOpen(false);
+    },
+    undefined,
+    [divRef.current]
+  );
 
-    if (!divRef.current.contains(e.target)) {
-      handleClick(e);
-      return;
-    }
-    if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose) {
-      handleClick(e);
-      return;
-    }
-  };
+  useClickInside(
+    () => {
+      if (alwaysClose) setIsOpen(false);
+    },
+    ["click"],
+    [menuRef.current]
+  );
 
   return (
     <div
@@ -161,11 +154,11 @@ const Dropdown: DropdownParts & FC<DropdownProps> = ({
     >
       <DropdownHeader
         type={type}
-        handleClick={handleClick}
+        handleClick={handleHeaderClick}
         className={className}
         header={header}
       />
-      <Menu>{children}</Menu>
+      <Menu ref={menuRef}>{children}</Menu>
     </div>
   );
 };

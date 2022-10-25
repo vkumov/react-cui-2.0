@@ -99,7 +99,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
               ? animationDuration.exit
               : animationDuration
           }
-          ref={nodeRef}
+          overlayRef={(n) => (nodeRef.current = n)}
         >
           <div
             className="modal__dialog"

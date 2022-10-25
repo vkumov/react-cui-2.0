@@ -46,7 +46,9 @@ export const Dropdown: Story = () => (
           </LibDropdown>
         </div>
         <div className="col">
-          <div className="subheader">Closes open when item clicked</div>
+          <div className="subheader">
+            Closes when item clicked (alwaysClose = true)
+          </div>
           <LibDropdown header="Dropdown" alwaysClose>
             <LibDropdown.Element>Item one</LibDropdown.Element>
             <LibDropdown.Element>Item two</LibDropdown.Element>
@@ -57,10 +59,16 @@ export const Dropdown: Story = () => (
               <LibDropdown.Element>Item one</LibDropdown.Element>
               <LibDropdown.Element>Item two</LibDropdown.Element>
             </LibDropdown.Group>
-            <LibDropdown.Element icon="social-facebook">
+            <LibDropdown.Element
+              icon="social-facebook"
+              onClick={() => console.log("facebook")}
+            >
               Facebook
             </LibDropdown.Element>
-            <LibDropdown.Element icon="social-twitter">
+            <LibDropdown.Element
+              icon="social-twitter"
+              onClick={() => console.log("twitter")}
+            >
               Twitter
             </LibDropdown.Element>
           </LibDropdown>

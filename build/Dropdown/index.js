@@ -1,4 +1,6 @@
 import React, { forwardRef, useState, useRef, useEffect, useCallback } from 'react';
+import { useClickInside } from '../hooks/useClickInside.js';
+import { useClickOutside } from '../hooks/useClickOutside.js';
 import { appendClass } from '../utils/index.js';
 import { ConditionalWrapper } from '../Conditional/index.js';
 
@@ -93,25 +95,18 @@ const DropdownHeader = ({ type , handleClick , className , header ,  })=>{
 const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen , ...props })=>{
     const [isOpen, setIsOpen] = useState(false);
     const divRef = useRef(undefined);
+    const menuRef = useRef(undefined);
     useEffect(()=>{
         if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null) setIsOpen(outsideIsOpen);
     }, [
         outsideIsOpen
     ]);
-    // eslint-disable-next-line prefer-const
-    let handleOutsideClick;
-    const handleClick = useCallback((e)=>{
+    const handleHeaderClick = useCallback((e)=>{
         if (stopPropagation) {
             e.stopPropagation();
             e.preventDefault();
         }
         setIsOpen((current)=>{
-            if (!current) {
-                // attach/remove event handler
-                document.addEventListener("click", handleOutsideClick, true);
-            } else {
-                document.removeEventListener("click", handleOutsideClick, true);
-            }
             const newIsOpen = !current;
             if (newIsOpen && onOpen) onOpen(e);
             if (!newIsOpen && onClose) onClose(e);
@@ -122,19 +117,18 @@ const Dropdown = ({ openTo ="right" , children , type ="button" , className =nul
         onClose,
         onOpen
     ]);
-    handleOutsideClick = (e)=>{
-        // ignore clicks on the component itself
-        if (!(e.target instanceof Node) || !(divRef === null || divRef === void 0 ? void 0 : divRef.current)) return;
-        if (!alwaysClose && divRef.current && divRef.current.contains(e.target)) return;
-        if (!divRef.current.contains(e.target)) {
-            handleClick(e);
-            return;
-        }
-        if (!divRef.current.isSameNode(e.target.parentNode) && alwaysClose) {
-            handleClick(e);
-            return;
-        }
-    };
+    useClickOutside(()=>{
+        setIsOpen(false);
+    }, undefined, [
+        divRef.current
+    ]);
+    useClickInside(()=>{
+        if (alwaysClose) setIsOpen(false);
+    }, [
+        "click"
+    ], [
+        menuRef.current
+    ]);
     return /*#__PURE__*/ React.createElement("div", _extends({
         className: `dropdown${appendClass([
             "left",
@@ -143,10 +137,12 @@ const Dropdown = ({ openTo ="right" , children , type ="button" , className =nul
         ref: divRef
     }, props), /*#__PURE__*/ React.createElement(DropdownHeader, {
         type: type,
-        handleClick: handleClick,
+        handleClick: handleHeaderClick,
         className: className,
         header: header
-    }), /*#__PURE__*/ React.createElement(Menu, null, children));
+    }), /*#__PURE__*/ React.createElement(Menu, {
+        ref: menuRef
+    }, children));
 };
 Dropdown.Divider = Divider;
 Dropdown.Element = Element;
