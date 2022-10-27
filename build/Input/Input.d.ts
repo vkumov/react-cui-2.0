@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, ReactElement } from "react";
 import "../../css/input.css";
 export declare type InputProps = {
     label?: ReactNode;
@@ -6,7 +6,7 @@ export declare type InputProps = {
     inline?: "label" | "both" | "form";
     helpBlock?: boolean;
     iconClick?: (e: any) => void;
-    icon?: string;
+    icon?: string | ReactElement<any>;
     className?: string;
     plain?: boolean;
     error?: ReactNode;

@@ -1189,9 +1189,9 @@ const Input = /*#__PURE__*/ React.forwardRef(({ type ="text" , inline =null , he
         className: "link",
         tabIndex: -1,
         onClick: iconClick
-    }, /*#__PURE__*/ React__default["default"].createElement("span", {
-        className: `icon-${icon}`
-    })) : null), /*#__PURE__*/ React__default["default"].createElement(DisplayIf, {
+    }, typeof icon === "string" ? /*#__PURE__*/ React__default["default"].createElement("span", {
+        className: icon.startsWith(" ") ? icon : `icon-${icon}`
+    }) : icon) : null), /*#__PURE__*/ React__default["default"].createElement(DisplayIf, {
         condition: !inline && helpBlock && !!error
     }, /*#__PURE__*/ React__default["default"].createElement(InputHelpBlock, {
         text: error

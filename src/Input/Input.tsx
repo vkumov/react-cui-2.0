@@ -1,4 +1,4 @@
-import React, { ReactNode, HTMLProps, forwardRef } from "react";
+import React, { ReactNode, HTMLProps, forwardRef, ReactElement } from "react";
 
 import { DisplayIf as If, ConditionalWrapper } from "src/Conditional";
 import { InputHelpBlock } from "src/InputHelp";
@@ -12,7 +12,7 @@ export type InputProps = {
   inline?: "label" | "both" | "form";
   helpBlock?: boolean;
   iconClick?: (e) => void;
-  icon?: string;
+  icon?: string | ReactElement<any>;
   className?: string;
   plain?: boolean;
   error?: ReactNode;
@@ -80,7 +80,11 @@ export const Input = forwardRef<
             tabIndex={-1}
             onClick={iconClick}
           >
-            <span className={`icon-${icon}`} />
+            {typeof icon === "string" ? (
+              <span className={icon.startsWith(" ") ? icon : `icon-${icon}`} />
+            ) : (
+              icon
+            )}
           </button>
         ) : null}
       </div>

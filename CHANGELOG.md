@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.6.5
+
+- Generic ReactSelect
+
+## 4.6.4
+
+- Input icon support ReactElement, not only strings
+
 ## 4.6.3
 
 - Dropdown use hooks for outside & inside clicks
