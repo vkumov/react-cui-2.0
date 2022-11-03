@@ -4,7 +4,7 @@ import bytes from 'bytes';
 import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
 import { useMergeRefs } from 'use-callback-ref';
 import Transition from 'react-transition-group/Transition';
-import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react-dom-interactions';
+import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager, offset, flip, shift, arrow, useHover } from '@floating-ui/react-dom-interactions';
 import EventEmitter from 'eventemitter3';
 import { createPortal } from 'react-dom';
 import Select from 'react-select';
@@ -1223,6 +1223,13 @@ const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ Rea
 const FloatingContext = /*#__PURE__*/ createContext(null);
 const useFloatingContext = ()=>useContext(FloatingContext)
 ;
+const FloatingProvider = ({ rootRef , children ,  })=>{
+    return /*#__PURE__*/ React.createElement(FloatingContext.Provider, {
+        value: {
+            rootRef
+        }
+    }, children);
+};
 
 const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll ,  })=>{
     const [maximized, setMaximized] = React.useState(false);
@@ -2609,5 +2616,191 @@ const Gauge = /*#__PURE__*/ forwardRef(({ color ="primary" , size ="default" , c
     }, label) : null);
 });
 
-export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, Gauge, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, IndeterminateCheckbox, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
+const Tooltip = /*#__PURE__*/ forwardRef(function TooltipRefed({ className , children , ...props }, ref) {
+    return /*#__PURE__*/ React.createElement("div", {
+        ref: ref,
+        className: "tooltip__wrapper",
+        ...props
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: className
+    }, children));
+});
+function useTooltip(placement) {
+    const [show, setShow] = useState(false);
+    const arrowRef = useRef(null);
+    const fl = useFloating({
+        middleware: [
+            offset(6),
+            flip(),
+            shift({
+                padding: {
+                    left: 8,
+                    right: 8
+                }
+            }),
+            arrow({
+                element: arrowRef
+            }), 
+        ],
+        open: show,
+        onOpenChange: setShow,
+        placement
+    });
+    const role = useRole(fl.context, {
+        role: "tooltip"
+    });
+    const hover = useHover(fl.context, {
+        delay: {
+            open: 500,
+            close: 0
+        },
+        move: false
+    });
+    const { getReferenceProps , getFloatingProps  } = useInteractions([
+        role,
+        hover, 
+    ]);
+    return {
+        ...fl,
+        getFloatingProps,
+        show,
+        getReferenceProps,
+        arrowRef
+    };
+}
+const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFloatingProps , middlewareData , arrowRef , placement , root: rootProvided ,  })=>{
+    const { x: arrowX , y: arrowY  } = middlewareData.arrow || {
+        x: 0,
+        y: 0
+    };
+    const floatingRef = useRef(null);
+    const staticSide = {
+        top: "bottom",
+        right: "left",
+        bottom: "top",
+        left: "right"
+    }[placement.split("-")[0]];
+    const modalContext = useFloatingContext();
+    const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    return /*#__PURE__*/ React.createElement(Transition, {
+        in: show,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: 200,
+        nodeRef: floatingRef
+    }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+            root: root
+        }, /*#__PURE__*/ React.createElement(Tooltip, {
+            ref: (r)=>{
+                floating(r);
+                floatingRef.current = r;
+            },
+            style: {
+                position: strategy,
+                top: y !== null && y !== void 0 ? y : 0,
+                left: x !== null && x !== void 0 ? x : 0
+            },
+            ...getFloatingProps({
+                className: `tooltip__body ${state === "exiting" || state === "exited" ? "tooltip--disappear" : "tooltip--appear"}`
+            })
+        }, children, /*#__PURE__*/ React.createElement("div", {
+            ref: arrowRef,
+            className: "tooltip__arrow",
+            style: {
+                left: arrowX != null ? `${arrowX}px` : "",
+                top: arrowY != null ? `${arrowY}px` : "",
+                right: "",
+                bottom: "",
+                [staticSide]: "-4px"
+            }
+        })))
+    );
+};
+const WithTooltip = ({ children , tooltip , placement ="top" ,  })=>{
+    const { getReferenceProps , reference , ...tt } = useTooltip(placement);
+    const ref = useMergeRefs([
+        reference,
+        children.ref
+    ]);
+    return /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ cloneElement(children, getReferenceProps({
+        ref,
+        ...children.props
+    })), /*#__PURE__*/ React.createElement(TooltipWrapper, {
+        ...tt
+    }, tooltip));
+};
+
+var styles = {"form_group":"Segmented-module_form_group__1mUdE","form_group--full":"Segmented-module_form_group--full__N5wVG","segmented_root--full":"Segmented-module_segmented_root--full__18wiw","segmented_root":"Segmented-module_segmented_root__3-Dvo","segmented_active":"Segmented-module_segmented_active__151Vo","segmented_option_control":"Segmented-module_segmented_option_control__2QX0m","segmented_option_control_active":"Segmented-module_segmented_option_control_active__1PrMk","segmented_option_control_label":"Segmented-module_segmented_option_control_label__2UOPS","segmented_option_control_input":"Segmented-module_segmented_option_control_input__3sL3S"};
+
+const Active = ({ activeRef , value , fullWidth  })=>{
+    const [coord, setCoord] = useState({
+        x: 0,
+        y: 0,
+        w: 0,
+        h: 0
+    });
+    useEffect(()=>{
+        if (!activeRef.current) return;
+        setCoord({
+            x: activeRef.current.offsetLeft - 4,
+            y: activeRef.current.offsetTop - 4,
+            w: activeRef.current.offsetWidth,
+            h: activeRef.current.offsetHeight
+        });
+    }, [
+        activeRef.current,
+        value,
+        fullWidth
+    ]);
+    if (!activeRef.current) return null;
+    return /*#__PURE__*/ React.createElement("span", {
+        className: styles.segmented_active,
+        style: {
+            width: `${coord.w}px`,
+            height: `${coord.h}px`,
+            transform: coord.x > 0 || coord.y > 0 ? `translateX(${coord.x}px) translateY(${coord.y}px) translateZ(0px)` : "none"
+        }
+    });
+};
+const OptionDisplay = ({ children , value , activeRef , active , className , disabled , ...props })=>{
+    return /*#__PURE__*/ React.createElement("div", {
+        className: `${styles.segmented_option_control}${appendClass(active, styles.segmented_option_control_active)}${appendClass(disabled, "disabled")}`,
+        ref: active ? activeRef : null
+    }, /*#__PURE__*/ React.createElement("input", {
+        type: "radio",
+        className: styles.segmented_option_control_input,
+        value: value,
+        id: `${props.name}-${value}`,
+        ...props
+    }), /*#__PURE__*/ React.createElement("label", {
+        className: styles.segmented_option_control_label,
+        htmlFor: `${props.name}-${value}`
+    }, children));
+};
+function UrefedSegmented({ options , value , label , inline , className , fullWidth , ...props }, ref) {
+    const activeRef = useRef(null);
+    return /*#__PURE__*/ React.createElement("div", {
+        className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}`
+    }, /*#__PURE__*/ React.createElement("div", {
+        className: `${styles.form_group}${appendClass(fullWidth, styles["form_group--full"])}`
+    }, label ? /*#__PURE__*/ React.createElement("label", null, label) : null, /*#__PURE__*/ React.createElement("div", {
+        className: `${styles.segmented_root}${appendClass(fullWidth, styles["segmented_root--full"])}`,
+        ref: ref
+    }, /*#__PURE__*/ React.createElement(Active, {
+        activeRef: activeRef,
+        value: value,
+        fullWidth: fullWidth
+    }), options.map((o)=>/*#__PURE__*/ React.createElement(OptionDisplay, {
+            activeRef: activeRef,
+            active: value === o.value,
+            value: o.value,
+            key: o.value,
+            disabled: o.disabled,
+            ...props
+        }, o.label)
+    ))));
+}
+const SegmentedControl = /*#__PURE__*/ forwardRef(UrefedSegmented);
+
+export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, FloatingProvider, Footer, Gauge, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, IndeterminateCheckbox, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, SegmentedControl, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, TooltipWrapper as Tooltip, VSeparator, VariantSelector, VerticalCenter, WithBadge, WithTooltip, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast, useFloatingContext, useTooltip };
 //# sourceMappingURL=index.esm.js.map

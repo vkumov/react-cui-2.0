@@ -1238,6 +1238,13 @@ const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ Rea
 const FloatingContext = /*#__PURE__*/ React.createContext(null);
 const useFloatingContext = ()=>React.useContext(FloatingContext)
 ;
+const FloatingProvider = ({ rootRef , children ,  })=>{
+    return /*#__PURE__*/ React__default["default"].createElement(FloatingContext.Provider, {
+        value: {
+            rootRef
+        }
+    }, children);
+};
 
 const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll ,  })=>{
     const [maximized, setMaximized] = React__default["default"].useState(false);
@@ -2624,6 +2631,192 @@ const Gauge = /*#__PURE__*/ React.forwardRef(({ color ="primary" , size ="defaul
     }, label) : null);
 });
 
+const Tooltip = /*#__PURE__*/ React.forwardRef(function TooltipRefed({ className , children , ...props }, ref) {
+    return /*#__PURE__*/ React__default["default"].createElement("div", {
+        ref: ref,
+        className: "tooltip__wrapper",
+        ...props
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: className
+    }, children));
+});
+function useTooltip(placement) {
+    const [show, setShow] = React.useState(false);
+    const arrowRef = React.useRef(null);
+    const fl = reactDomInteractions.useFloating({
+        middleware: [
+            reactDomInteractions.offset(6),
+            reactDomInteractions.flip(),
+            reactDomInteractions.shift({
+                padding: {
+                    left: 8,
+                    right: 8
+                }
+            }),
+            reactDomInteractions.arrow({
+                element: arrowRef
+            }), 
+        ],
+        open: show,
+        onOpenChange: setShow,
+        placement
+    });
+    const role = reactDomInteractions.useRole(fl.context, {
+        role: "tooltip"
+    });
+    const hover = reactDomInteractions.useHover(fl.context, {
+        delay: {
+            open: 500,
+            close: 0
+        },
+        move: false
+    });
+    const { getReferenceProps , getFloatingProps  } = reactDomInteractions.useInteractions([
+        role,
+        hover, 
+    ]);
+    return {
+        ...fl,
+        getFloatingProps,
+        show,
+        getReferenceProps,
+        arrowRef
+    };
+}
+const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFloatingProps , middlewareData , arrowRef , placement , root: rootProvided ,  })=>{
+    const { x: arrowX , y: arrowY  } = middlewareData.arrow || {
+        x: 0,
+        y: 0
+    };
+    const floatingRef = React.useRef(null);
+    const staticSide = {
+        top: "bottom",
+        right: "left",
+        bottom: "top",
+        left: "right"
+    }[placement.split("-")[0]];
+    const modalContext = useFloatingContext();
+    const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    return /*#__PURE__*/ React__default["default"].createElement(Transition__default["default"], {
+        in: show,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: 200,
+        nodeRef: floatingRef
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingPortal, {
+            root: root
+        }, /*#__PURE__*/ React__default["default"].createElement(Tooltip, {
+            ref: (r)=>{
+                floating(r);
+                floatingRef.current = r;
+            },
+            style: {
+                position: strategy,
+                top: y !== null && y !== void 0 ? y : 0,
+                left: x !== null && x !== void 0 ? x : 0
+            },
+            ...getFloatingProps({
+                className: `tooltip__body ${state === "exiting" || state === "exited" ? "tooltip--disappear" : "tooltip--appear"}`
+            })
+        }, children, /*#__PURE__*/ React__default["default"].createElement("div", {
+            ref: arrowRef,
+            className: "tooltip__arrow",
+            style: {
+                left: arrowX != null ? `${arrowX}px` : "",
+                top: arrowY != null ? `${arrowY}px` : "",
+                right: "",
+                bottom: "",
+                [staticSide]: "-4px"
+            }
+        })))
+    );
+};
+const WithTooltip = ({ children , tooltip , placement ="top" ,  })=>{
+    const { getReferenceProps , reference , ...tt } = useTooltip(placement);
+    const ref = useCallbackRef.useMergeRefs([
+        reference,
+        children.ref
+    ]);
+    return /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React.cloneElement(children, getReferenceProps({
+        ref,
+        ...children.props
+    })), /*#__PURE__*/ React__default["default"].createElement(TooltipWrapper, {
+        ...tt
+    }, tooltip));
+};
+
+var styles = {"form_group":"Segmented-module_form_group__1mUdE","form_group--full":"Segmented-module_form_group--full__N5wVG","segmented_root--full":"Segmented-module_segmented_root--full__18wiw","segmented_root":"Segmented-module_segmented_root__3-Dvo","segmented_active":"Segmented-module_segmented_active__151Vo","segmented_option_control":"Segmented-module_segmented_option_control__2QX0m","segmented_option_control_active":"Segmented-module_segmented_option_control_active__1PrMk","segmented_option_control_label":"Segmented-module_segmented_option_control_label__2UOPS","segmented_option_control_input":"Segmented-module_segmented_option_control_input__3sL3S"};
+
+const Active = ({ activeRef , value , fullWidth  })=>{
+    const [coord, setCoord] = React.useState({
+        x: 0,
+        y: 0,
+        w: 0,
+        h: 0
+    });
+    React.useEffect(()=>{
+        if (!activeRef.current) return;
+        setCoord({
+            x: activeRef.current.offsetLeft - 4,
+            y: activeRef.current.offsetTop - 4,
+            w: activeRef.current.offsetWidth,
+            h: activeRef.current.offsetHeight
+        });
+    }, [
+        activeRef.current,
+        value,
+        fullWidth
+    ]);
+    if (!activeRef.current) return null;
+    return /*#__PURE__*/ React__default["default"].createElement("span", {
+        className: styles.segmented_active,
+        style: {
+            width: `${coord.w}px`,
+            height: `${coord.h}px`,
+            transform: coord.x > 0 || coord.y > 0 ? `translateX(${coord.x}px) translateY(${coord.y}px) translateZ(0px)` : "none"
+        }
+    });
+};
+const OptionDisplay = ({ children , value , activeRef , active , className , disabled , ...props })=>{
+    return /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `${styles.segmented_option_control}${appendClass(active, styles.segmented_option_control_active)}${appendClass(disabled, "disabled")}`,
+        ref: active ? activeRef : null
+    }, /*#__PURE__*/ React__default["default"].createElement("input", {
+        type: "radio",
+        className: styles.segmented_option_control_input,
+        value: value,
+        id: `${props.name}-${value}`,
+        ...props
+    }), /*#__PURE__*/ React__default["default"].createElement("label", {
+        className: styles.segmented_option_control_label,
+        htmlFor: `${props.name}-${value}`
+    }, children));
+};
+function UrefedSegmented({ options , value , label , inline , className , fullWidth , ...props }, ref) {
+    const activeRef = React.useRef(null);
+    return /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}`
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `${styles.form_group}${appendClass(fullWidth, styles["form_group--full"])}`
+    }, label ? /*#__PURE__*/ React__default["default"].createElement("label", null, label) : null, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: `${styles.segmented_root}${appendClass(fullWidth, styles["segmented_root--full"])}`,
+        ref: ref
+    }, /*#__PURE__*/ React__default["default"].createElement(Active, {
+        activeRef: activeRef,
+        value: value,
+        fullWidth: fullWidth
+    }), options.map((o)=>/*#__PURE__*/ React__default["default"].createElement(OptionDisplay, {
+            activeRef: activeRef,
+            active: value === o.value,
+            value: o.value,
+            key: o.value,
+            disabled: o.disabled,
+            ...props
+        }, o.label)
+    ))));
+}
+const SegmentedControl = /*#__PURE__*/ React.forwardRef(UrefedSegmented);
+
 exports.Accordion = Accordion;
 exports.AccordionElement = AccordionElement;
 exports.Alert = Alert;
@@ -2652,6 +2845,7 @@ exports.DropdownGroupHeader = GroupHeader;
 exports.Dropzone = Dropzone;
 exports.DynamicModal = ConfirmationListener;
 exports.EditableSelect = EditableSelect;
+exports.FloatingProvider = FloatingProvider;
 exports.Footer = Footer;
 exports.Gauge = Gauge;
 exports.GenericTable = GenericTable;
@@ -2680,6 +2874,7 @@ exports.Radio = Radio;
 exports.Radios = Radios;
 exports.ReactSelect = ReactSelect;
 exports.Section = Section;
+exports.SegmentedControl = SegmentedControl;
 exports.Slider = Slider;
 exports.Spinner = Spinner;
 exports.Step = Step;
@@ -2694,10 +2889,12 @@ exports.Timeline = Timeline;
 exports.TimelineItem = TimelineItem;
 exports.Toast = Toast;
 exports.ToastContainer = ToastContainer;
+exports.Tooltip = TooltipWrapper;
 exports.VSeparator = VSeparator;
 exports.VariantSelector = VariantSelector;
 exports.VerticalCenter = VerticalCenter;
 exports.WithBadge = WithBadge;
+exports.WithTooltip = WithTooltip;
 exports.base16Theme = base16Theme;
 exports.confirmation = confirmation;
 exports.dynamicModal = dynamicModal;
@@ -2707,4 +2904,6 @@ exports.notification = notificationModal;
 exports.notificationModal = notificationModal;
 exports.prompt = prompt;
 exports.toast = toast;
+exports.useFloatingContext = useFloatingContext;
+exports.useTooltip = useTooltip;
 //# sourceMappingURL=index.cjs.js.map

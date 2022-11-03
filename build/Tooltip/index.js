@@ -74,6 +74,7 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
         x: 0,
         y: 0
     };
+    const floatingRef = useRef(null);
     const staticSide = {
         top: "bottom",
         right: "left",
@@ -87,11 +88,14 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: 200,
-        nodeRef: floating
+        nodeRef: floatingRef
     }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
             root: root
         }, /*#__PURE__*/ React.createElement(Tooltip, _extends({
-            ref: floating,
+            ref: (r)=>{
+                floating(r);
+                floatingRef.current = r;
+            },
             style: {
                 position: strategy,
                 top: y !== null && y !== void 0 ? y : 0,

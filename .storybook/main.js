@@ -1,5 +1,7 @@
 /// <reference types="node" />
 
+const path = require("path");
+
 /**
  * @type {import('@storybook/react/types').StorybookConfig}
  **/
@@ -16,6 +18,22 @@ const config = {
   // Add any Storybook addons you want here: https://storybook.js.org/addons/
   addons: [
     {
+      name: "@storybook/preset-scss",
+      options: {
+        rule: {
+          test: /\.(scss|sass)$/i,
+        },
+        sassLoaderOptions: {
+          sassOptions: {
+            includePaths: [
+              path.resolve("node_modules"),
+              path.resolve("./src/styles"),
+            ],
+          },
+        },
+      },
+    },
+    {
       name: "@storybook/addon-docs",
       options: {
         transcludeMarkdown: true,
@@ -26,6 +44,23 @@ const config = {
     },
     "@storybook/addon-essentials",
     "storybook-dark-mode",
+    // {
+    //   name: "storybook-addon-sass-postcss",
+    //   options: {
+    //     rule: {
+    //       test: /\.(scss|sass)$/i,
+    //     },
+    //     sassLoaderOptions: {
+    //       implementation: require("sass"),
+    //       sassOptions: {
+    //         includePaths: [
+    //           path.resolve("node_modules"),
+    //           path.resolve("./src/styles"),
+    //         ],
+    //       },
+    //     },
+    //   },
+    // },
   ],
   core: {
     builder: "webpack5",

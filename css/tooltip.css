@@ -1,5 +1,5 @@
 .tooltip__wrapper {
-  z-index: 50;
+  z-index: 2002;
   outline: none !important;
 }
 
@@ -12,7 +12,6 @@
   border-radius: 4px;
   color: #fff;
   white-space: nowrap;
-  z-index: 10;
   padding: var(--cui-spacing-qtr) var(--cui-spacing-half);
 }
 

@@ -1,0 +1,20 @@
+$floaty-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+$floaty-shadow-dark: rgba(60, 64, 67, 0.7) 0px 1px 2px 0px, rgba(60, 64, 67, 0.55) 0px 2px 6px 2px;
+$border-radius-rounder: 4px;
+$popover-border-radius: 5px;
+
+$darkest: #1e2125;
+
+@mixin floaty {
+  :global(.cui) & {
+    box-shadow: $floaty-shadow;
+  }
+
+  :global(.cui[data-theme="dark"]) & {
+    box-shadow: $floaty-shadow-dark;
+  }
+}
+
+@mixin rounder {
+  border-radius: $border-radius-rounder;
+}

@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.7.0",
+  "version": "4.8.0",
   "description": "React library for CUI 2.0",
   "module": "./index.esm.js",
   "main": "./cjs/index.cjs.js",
@@ -205,6 +205,12 @@
         "default": "./Section/index.js"
       }
     },
+    "./SegmentedControl": {
+      "import": {
+        "types": "./SegmentedControl/index.d.ts",
+        "default": "./SegmentedControl/index.js"
+      }
+    },
     "./Select": {
       "import": {
         "types": "./Select/index.d.ts",
@@ -329,6 +335,12 @@
       "import": {
         "types": "./hooks/usePrevious.d.ts",
         "default": "./hooks/usePrevious.js"
+      }
+    },
+    "./typings/declarations.d": {
+      "import": {
+        "types": "./typings/declarations.d.d.ts",
+        "default": "./typings/declarations.d.js"
       }
     },
     "./utils/base16Theme": {

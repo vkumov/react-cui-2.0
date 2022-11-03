@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.8.0
+
+- Add SegmentedControl
+
 ## 4.7.0
 
 - Use FloatingUI instead of ReactModal

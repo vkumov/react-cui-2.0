@@ -19,7 +19,6 @@ import { basename } from "path";
 const externals = [
   "react",
   "react-dom",
-  "react-modal",
   "react-transition-group",
   "react-dropzone",
 ];
@@ -61,6 +60,14 @@ const ignoreCssPlugin = postcss({
   minimize,
   extract: false,
   inject: false,
+  use: {
+    sass: {
+      includePaths: [
+        path.resolve("node_modules"),
+        path.resolve("./src/styles"),
+      ],
+    },
+  },
 });
 
 const getFolders = (entry) => {
@@ -135,6 +142,14 @@ const esmBundle = {
       plugins: [cssImport()],
       minimize,
       extract: "css/styles.css",
+      use: {
+        sass: {
+          includePaths: [
+            path.resolve("node_modules"),
+            path.resolve("./src/styles"),
+          ],
+        },
+      },
     }),
     tsDTS,
     ...plugins,

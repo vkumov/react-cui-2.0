@@ -40,3 +40,6 @@ export * from "./utils/base16Theme";
 export * from "./Kbd";
 export * from "./Blockquote";
 export * from "./Gauge";
+export * from "./Tooltip";
+export * from "./FloatingProvider";
+export * from "./SegmentedControl";

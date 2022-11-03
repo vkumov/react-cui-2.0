@@ -17,6 +17,7 @@
 	opacity: 1;
 	transition: opacity .15s linear;
 	outline: none;
+  z-index: 2000;
 }
 
 .cui .modal-backdrop--before-close .modal__dialog {

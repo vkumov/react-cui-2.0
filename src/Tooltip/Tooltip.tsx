@@ -26,7 +26,6 @@ import {
   useRole,
 } from "@floating-ui/react-dom-interactions";
 
-import "../../css/tooltip.css";
 import { useFloatingContext } from "src/FloatingProvider";
 
 const Tooltip = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
@@ -104,6 +103,7 @@ const TooltipWrapper: FC<
   root: rootProvided,
 }) => {
   const { x: arrowX, y: arrowY } = middlewareData.arrow || { x: 0, y: 0 };
+  const floatingRef = useRef<any>(null);
 
   const staticSide = {
     top: "bottom",
@@ -122,12 +122,15 @@ const TooltipWrapper: FC<
       mountOnEnter
       unmountOnExit
       timeout={200}
-      nodeRef={floating}
+      nodeRef={floatingRef}
     >
       {(state) => (
         <FloatingPortal root={root}>
           <Tooltip
-            ref={floating}
+            ref={(r) => {
+              floating(r);
+              floatingRef.current = r;
+            }}
             style={{
               position: strategy,
               top: y ?? 0,

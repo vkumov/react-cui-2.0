@@ -3,7 +3,7 @@ import { appendClass } from '../utils/index.js';
 import Transition from 'react-transition-group/Transition';
 import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react-dom-interactions';
 import { DisplayIf, ConditionalWrapper } from '../Conditional/index.js';
-import { useFloatingContext } from '../FloatingProvider/index.ts';
+import { useFloatingContext } from '../FloatingProvider/index.js';
 import { Button } from '../Button/index.js';
 import { Input } from '../Input/index.js';
 import { eventManager } from '../utils/eventManager.js';

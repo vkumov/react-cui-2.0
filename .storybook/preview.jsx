@@ -16,6 +16,7 @@ function ThemeWrapper(props) {
 export const decorators = [
   (Story) => {
     const bodyRef = useRef(null);
+    const dark = useDarkMode();
     return (
       <ThemeWrapper>
         <div
@@ -23,6 +24,7 @@ export const decorators = [
           id="cui-root"
           ref={bodyRef}
           style={{ overflow: "visible" }}
+          data-theme={dark ? "dark" : "default"}
         >
           <FloatingProvider rootRef={bodyRef}>
             <div className="base-margin">

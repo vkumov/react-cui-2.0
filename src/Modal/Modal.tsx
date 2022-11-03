@@ -15,11 +15,11 @@ import {
 
 import { ConditionalWrapper, DisplayIf as If } from "src/Conditional";
 import { appendClass as ac } from "src/utils";
+import { useFloatingContext } from "src/FloatingProvider";
 
 import { ModalHeader } from "./Header";
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
-import { useFloatingContext } from "../FloatingProvider";
 
 /**
  * Modal
