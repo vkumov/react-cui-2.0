@@ -8,7 +8,6 @@ Import `cui-standard.min.css` in your code directly (for NextJS).
 Bootstrap code:
 ```jsx
 import React, { useEffect } from "react";
-import ReactModal from "react-modal";
 import { Portal, ToastContainer, DynamicModal, } from "@vkumov/react-cui-2.0";
 
 import "../public/css/cui-standard.min.css";
@@ -16,11 +15,6 @@ import "../public/css/cui-standard.min.css";
 import "@vkumov/react-cui-2.0/css/styles.css";
 
 const App = () => {
-  useEffect(() => {
-    // for modals to work 
-    ReactModal.setAppElement("body");
-  }, []);
-
   return <>
     {/* Your code */}
     <Portal id="toast-portal">

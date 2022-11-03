@@ -1,5 +1,4 @@
-import React, { useLayoutEffect } from "react";
-import ReactModal from "react-modal";
+import React from "react";
 import { EditableSelect as ES } from "./index";
 import { DynamicModal, dynamicModal, ModalBody, ModalFooter } from "../Modal";
 import { Button } from "../Button";
@@ -9,9 +8,6 @@ export default {
 };
 
 export const Select = () => {
-  useLayoutEffect(() => {
-    ReactModal.setAppElement("body");
-  }, []);
   return (
     <>
       <div className="section base-margin-top dbl-margin-bottom">

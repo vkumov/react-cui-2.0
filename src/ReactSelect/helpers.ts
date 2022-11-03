@@ -1,21 +1,23 @@
 import type { ReactNode } from "react";
 
-export type Option = { label: ReactNode; value: string };
-export type OptionGroup = { label: ReactNode; options: Option[] };
+export type Option<V = string> = { label: ReactNode; value: V };
+export type OptionGroup<O> = { label: ReactNode; options: O[] };
 
-export const isGrouped = (v: Option | OptionGroup): v is OptionGroup => {
+export function isGrouped<O extends { value: any }>(
+  v: O | OptionGroup<O>
+): v is OptionGroup<O> {
   return "options" in v;
-};
+}
 
-export const findOption = (
-  value: any,
-  options: (Option | OptionGroup)[]
-): Option => {
-  let found: Option;
+export function findOption<V, O extends { value: V } = Option<V>>(
+  value: V,
+  options: (O | OptionGroup<O>)[]
+): O {
+  let found: O;
   for (const it of options) {
-    if (isGrouped(it)) found = findOption(value, it.options);
+    if (isGrouped<O>(it)) found = findOption<V, O>(value, it.options);
     else found = it.value === value ? it : null;
 
     if (found) return found;
   }
-};
+}

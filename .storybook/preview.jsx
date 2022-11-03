@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import ReactModal from "react-modal";
+import React, { useEffect, useRef } from "react";
 import { useDarkMode } from "storybook-dark-mode";
 import { DynamicModal } from "../src/Modal";
+import { FloatingProvider } from "../src/FloatingProvider";
 
 function ThemeWrapper(props) {
   const dark = useDarkMode();
@@ -15,17 +15,21 @@ function ThemeWrapper(props) {
 
 export const decorators = [
   (Story) => {
-    React.useEffect(() => {
-      ReactModal.setAppElement("body");
-    }, []);
-
+    const bodyRef = useRef(null);
     return (
       <ThemeWrapper>
-        <div className="cui" style={{ overflow: "visible" }}>
-          <div className="base-margin">
-            <Story />
-            <DynamicModal />
-          </div>
+        <div
+          className="cui"
+          id="cui-root"
+          ref={bodyRef}
+          style={{ overflow: "visible" }}
+        >
+          <FloatingProvider rootRef={bodyRef}>
+            <div className="base-margin">
+              <Story />
+              <DynamicModal />
+            </div>
+          </FloatingProvider>
         </div>
       </ThemeWrapper>
     );

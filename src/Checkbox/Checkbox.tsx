@@ -3,6 +3,8 @@ import React, { forwardRef, HTMLProps, ReactNode } from "react";
 import { ConditionalWrapper } from "src/Conditional";
 import { appendClass as ac } from "src/utils";
 
+import "../../css/checkbox.css";
+
 type CheckboxProps = {
   inline?: boolean;
   asFormGroup?: boolean;

@@ -837,6 +837,21 @@
 .cui .toast.toast--bordered, .cui .toast--bordered .toast {
     border: var(--cui-border);
 }
+.cui .checkbox input.indeterminate ~ .checkbox__input::after,
+.cui .checkbox input:indeterminate ~ .checkbox__input::after {
+  position: absolute;
+  display: block;
+  left: 6px;
+  top: 3px;
+  width: 0px;
+  height: 8px;
+  color: transparent;
+  border: var(--cui-border-form-color) solid;
+  border-width: 0 2px 0px 0;
+  transform: rotate(90deg);
+  opacity: 1;
+}
+
 
 .cui .form-group__text > .labeled > .input-label {
     height: calc(var(--cui-form-size) - 2px);
@@ -908,12 +923,12 @@
 	outline: none;
 }
   
-  .cui .ReactModal__Overlay--before-close .modal__dialog {
+  .cui .modal-backdrop--before-close .modal__dialog {
     -webkit-animation: blowdown 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards, fade-out 0.25s 1 linear !important;
             animation: blowdown 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards, fade-out 0.25s 1 linear !important;
 }
   
-  .cui .ReactModal__Overlay--before-close {
+  .cui .modal-backdrop--before-close {
     opacity: 0 !important;
 }
   

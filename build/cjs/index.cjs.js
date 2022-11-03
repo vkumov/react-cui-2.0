@@ -6,11 +6,11 @@ var React = require('react');
 var ReactDropzone = require('react-dropzone');
 var bytes = require('bytes');
 var reactToastify = require('react-toastify');
+var useCallbackRef = require('use-callback-ref');
 var Transition = require('react-transition-group/Transition');
-var ReactModal = require('react-modal');
+var reactDomInteractions = require('@floating-ui/react-dom-interactions');
 var EventEmitter = require('eventemitter3');
 var reactDom = require('react-dom');
-var useCallbackRef = require('use-callback-ref');
 var Select = require('react-select');
 var CreatableSelect = require('react-select/creatable');
 var RCSlider = require('rc-slider');
@@ -21,7 +21,6 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var ReactDropzone__default = /*#__PURE__*/_interopDefaultLegacy(ReactDropzone);
 var bytes__default = /*#__PURE__*/_interopDefaultLegacy(bytes);
 var Transition__default = /*#__PURE__*/_interopDefaultLegacy(Transition);
-var ReactModal__default = /*#__PURE__*/_interopDefaultLegacy(ReactModal);
 var EventEmitter__default = /*#__PURE__*/_interopDefaultLegacy(EventEmitter);
 var Select__default = /*#__PURE__*/_interopDefaultLegacy(Select);
 var CreatableSelect__default = /*#__PURE__*/_interopDefaultLegacy(CreatableSelect);
@@ -1122,6 +1121,26 @@ const Checkbox = /*#__PURE__*/ React.forwardRef(({ inline =false , asFormGroup =
     }, children) : null))
 );
 
+const IndeterminateCheckbox = /*#__PURE__*/ React.forwardRef(({ indeterminate , ...rest }, fwd)=>{
+    const ref = React.useRef(null);
+    const refs = useCallbackRef.useMergeRefs([
+        ref,
+        fwd
+    ]);
+    React.useEffect(()=>{
+        if (typeof indeterminate === "boolean") {
+            ref.current.indeterminate = !rest.checked && indeterminate;
+        }
+    }, [
+        ref,
+        indeterminate
+    ]);
+    return /*#__PURE__*/ React__default["default"].createElement(Checkbox, {
+        ref: refs,
+        ...rest
+    });
+});
+
 const Switch = /*#__PURE__*/ React.forwardRef(({ left =null , right =null , disabled =false , inline =false , spacing =null , asFormGroup =true , className =null , id =null , style =null , ...input }, forwardedRef)=>/*#__PURE__*/ React__default["default"].createElement(ConditionalWrapper, {
         condition: asFormGroup,
         wrapper: /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -1216,7 +1235,11 @@ const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ Rea
     }, children)
 ;
 
-const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , ...props })=>{
+const FloatingContext = /*#__PURE__*/ React.createContext(null);
+const useFloatingContext = ()=>React.useContext(FloatingContext)
+;
+
+const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll ,  })=>{
     const [maximized, setMaximized] = React__default["default"].useState(false);
     React__default["default"].useEffect(()=>setMaximized(false)
     , [
@@ -1227,10 +1250,30 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         maximized,
         size
     ]);
-    const maximizeCb = React__default["default"].useCallback(()=>{
-        setMaximized((curr)=>!curr
-        );
-    }, []);
+    const modalContext = useFloatingContext();
+    const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    const { reference , floating , context  } = reactDomInteractions.useFloating({
+        open: isOpen,
+        onOpenChange: (state)=>!state ? void closeHandle() : void 0
+    });
+    React__default["default"].useEffect(()=>{
+        if (refElement) reference(refElement);
+    }, [
+        refElement
+    ]);
+    const click = reactDomInteractions.useClick(context);
+    const role = reactDomInteractions.useRole(context, {
+        role: "dialog"
+    });
+    const dismiss = reactDomInteractions.useDismiss(context, {
+        enabled: autoClose,
+        ancestorScroll
+    });
+    const { getFloatingProps  } = reactDomInteractions.useInteractions([
+        click,
+        role,
+        dismiss
+    ]);
     const nodeRef = React__default["default"].useRef(null);
     return /*#__PURE__*/ React__default["default"].createElement(Transition__default["default"], {
         in: isOpen,
@@ -1239,17 +1282,21 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         timeout: animationDuration,
         nodeRef: nodeRef,
         ...transitionEvents
-    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(ReactModal__default["default"], {
-            ...props,
-            onRequestClose: autoClose && closeHandle ? closeHandle : undefined,
-            overlayClassName: "modal-backdrop",
-            isOpen: [
-                "entering",
-                "entered"
-            ].includes(state),
-            className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
-            closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration,
-            overlayRef: (n)=>nodeRef.current = n
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingPortal, {
+            root: root
+        }, /*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingOverlay, {
+            className: `modal-backdrop${appendClass(state === "exiting", "modal-backdrop--before-close")}`,
+            lockScroll: lockScroll,
+            ref: nodeRef,
+            onClick: ()=>autoClose ? closeHandle() : void 0
+        }, /*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingFocusManager, {
+            context: context
+        }, /*#__PURE__*/ React__default["default"].createElement("div", {
+            ref: floating,
+            ...getFloatingProps({
+                className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
+                onClick: ()=>autoClose ? closeHandle() : void 0
+            })
         }, /*#__PURE__*/ React__default["default"].createElement("div", {
             className: "modal__dialog",
             ...dialogProps,
@@ -1266,7 +1313,8 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             })
         }, Boolean(maximize) && /*#__PURE__*/ React__default["default"].createElement("a", {
             className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
-            onClick: maximizeCb
+            onClick: ()=>setMaximized((curr)=>!curr
+                )
         }, /*#__PURE__*/ React__default["default"].createElement("span", {
             className: maximized ? "icon-minimize" : "icon-maximize"
         })), Boolean(closeIcon && closeHandle) && /*#__PURE__*/ React__default["default"].createElement("a", {
@@ -1276,7 +1324,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React__default["default"].createElement(ModalHeader, null, /*#__PURE__*/ React__default["default"].createElement("h1", {
             className: "modal__title"
-        }, title)), children)))
+        }, title)), children))))))
     );
 };
 Modal.Small = (props)=>/*#__PURE__*/ React__default["default"].createElement(Modal, {
@@ -1545,14 +1593,16 @@ function confirmation(prompt1, onConfirm, confirmType = "primary", confirmText =
 }) {
     if (!prompt1) throw new Error("Prompt must be specified");
     if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
-    eventManager.emit("showModal", {
-        modalType: "confirmation",
-        prompt: /*#__PURE__*/ React__default["default"].createElement("p", null, prompt1),
-        onConfirm,
-        confirmText,
-        confirmType,
-        dontAskAgain
-    });
+    return new Promise((resolve)=>eventManager.emit("showModal", {
+            modalType: "confirmation",
+            prompt: /*#__PURE__*/ React__default["default"].createElement("p", null, prompt1),
+            onConfirm,
+            confirmText,
+            confirmType,
+            dontAskAgain,
+            onModalClose: resolve
+        })
+    );
 }
 const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
     if (!title || !body) throw new Error("Title and body must be specified");
@@ -1570,26 +1620,29 @@ const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
 function prompt(title, question, cb, initial, type = "text", hint = undefined) {
     if (!title || !question) throw new Error("Title and question must be specified");
     if (typeof initial === "object") {
-        eventManager.emit("showModal", {
+        return new Promise((resolve)=>eventManager.emit("showModal", {
+                modalType: "prompt",
+                title,
+                question,
+                cb,
+                options: initial,
+                onModalClose: resolve
+            })
+        );
+    }
+    return new Promise((resolve)=>eventManager.emit("showModal", {
             modalType: "prompt",
             title,
+            initial,
+            type,
             question,
             cb,
-            options: initial
-        });
-        return;
-    }
-    eventManager.emit("showModal", {
-        modalType: "prompt",
-        title,
-        initial,
-        type,
-        question,
-        cb,
-        hint
-    });
+            hint,
+            onModalClose: resolve
+        })
+    );
 }
-const dynamicModal = async ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
+const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
     return new Promise((resolve)=>{
         eventManager.emit("showModal", {
             modalType: "dynamic",
@@ -2428,7 +2481,7 @@ const GroupHeading = ({ className , children , ...props })=>/*#__PURE__*/ React_
     }, children)
 ;
 
-const ReactSelect = /*#__PURE__*/ React.forwardRef(({ label =null , className , error , ...props }, ref)=>{
+function UnrefedSelect$1({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
     }, label && /*#__PURE__*/ React__default["default"].createElement("label", null, label), /*#__PURE__*/ React__default["default"].createElement(Select__default["default"], {
@@ -2446,9 +2499,10 @@ const ReactSelect = /*#__PURE__*/ React.forwardRef(({ label =null , className , 
     }), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React__default["default"].createElement(InputHelpBlock, {
         text: error
     }) : null);
-});
+}
+const ReactSelect = /*#__PURE__*/ React.forwardRef(UnrefedSelect$1);
 
-const CreatableReactSelect = /*#__PURE__*/ React.forwardRef(({ label =null , className , error , ...props }, ref)=>{
+function UnrefedSelect({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
     }, label && /*#__PURE__*/ React__default["default"].createElement("label", null, label), /*#__PURE__*/ React__default["default"].createElement(CreatableSelect__default["default"], {
@@ -2470,19 +2524,20 @@ const CreatableReactSelect = /*#__PURE__*/ React.forwardRef(({ label =null , cla
     }), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React__default["default"].createElement(InputHelpBlock, {
         text: error
     }) : null);
-});
+}
+const CreatableReactSelect = /*#__PURE__*/ React.forwardRef(UnrefedSelect);
 
-const isGrouped = (v)=>{
+function isGrouped(v) {
     return "options" in v;
-};
-const findOption = (value, options)=>{
+}
+function findOption(value, options) {
     let found;
     for (const it of options){
         if (isGrouped(it)) found = findOption(value, it.options);
         else found = it.value === value ? it : null;
         if (found) return found;
     }
-};
+}
 
 const VSeparator = /*#__PURE__*/ React.forwardRef(({ size ="default" , compressed =false , className ="" , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `v-separator${appendClass(size !== "default", `v-separator--${size}`)}${appendClass(compressed, "v-separator--compressed")}${appendClass(className)}`,
@@ -2604,6 +2659,7 @@ exports.Header = Header;
 exports.HeaderPanel = HeaderPanel;
 exports.HeaderTitle = HeaderTitle;
 exports.Icon = Icon;
+exports.IndeterminateCheckbox = IndeterminateCheckbox;
 exports.Input = Input;
 exports.InputChips = InputChips;
 exports.InputHelpBaloon = InputHelpBaloon;

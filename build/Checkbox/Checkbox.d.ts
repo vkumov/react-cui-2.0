@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import "../../css/checkbox.css";
 declare type CheckboxProps = {
     inline?: boolean;
     asFormGroup?: boolean;

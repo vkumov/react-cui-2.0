@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactText } from "react";
+import React, { type ReactNode } from "react";
 import type { ButtonColor } from "src/Button";
 import { eventManager } from "src/utils/eventManager";
 
@@ -10,25 +10,30 @@ export type DontAskAgain = {
   text?: ReactNode;
 };
 
+type TextOrNumber = string | number;
+
 export function confirmation(
   prompt: ReactNode,
   onConfirm: (dontAskAgain?: boolean) => boolean | Promise<boolean>,
   confirmType: ButtonColor = "primary",
   confirmText = "Confirm",
   dontAskAgain: DontAskAgain = { show: false }
-): void {
+): Promise<void> {
   if (!prompt) throw new Error("Prompt must be specified");
   if (!onConfirm || typeof onConfirm !== "function")
     throw new Error("onConfirm must be specified and must be a function");
 
-  eventManager.emit("showModal", {
-    modalType: "confirmation",
-    prompt: <p>{prompt}</p>,
-    onConfirm,
-    confirmText,
-    confirmType,
-    dontAskAgain,
-  });
+  return new Promise((resolve) =>
+    eventManager.emit("showModal", {
+      modalType: "confirmation",
+      prompt: <p>{prompt}</p>,
+      onConfirm,
+      confirmText,
+      confirmType,
+      dontAskAgain,
+      onModalClose: resolve,
+    })
+  );
 }
 
 type NotificationModal = (
@@ -43,7 +48,7 @@ export const notificationModal: NotificationModal = (
   body,
   buttonColor = "light",
   button = "OK"
-) => {
+): Promise<void> => {
   if (!title || !body) throw new Error("Title and body must be specified");
 
   return new Promise((resolve) => {
@@ -60,55 +65,60 @@ export const notificationModal: NotificationModal = (
 
 export { notificationModal as notification };
 
-type initialOrOptions<T extends ReactText> =
+type initialOrOptions<T extends TextOrNumber> =
   | Pick<PromptModalProps<T>, "initial" | "type" | "hint" | "validate">
   | string;
 
-export function prompt<T extends ReactText>(
-  title: React.ReactText,
+export function prompt<T extends TextOrNumber>(
+  title: string,
   question: ReactNode,
   cb: (value: T) => void | Promise<void>,
   initial?: string,
   type?: string,
   hint?: ReactNode
-): void;
-export function prompt<T extends ReactText>(
-  title: React.ReactText,
+): Promise<void>;
+export function prompt<T extends TextOrNumber>(
+  title: string,
   question: ReactNode,
   cb: (value: T) => void | Promise<void>,
   options?: Pick<PromptModalProps<T>, "initial" | "type" | "hint" | "validate">
-): void;
-export function prompt<T extends ReactText>(
-  title: React.ReactText,
+): Promise<void>;
+export function prompt<T extends TextOrNumber>(
+  title: string,
   question: ReactNode,
   cb: (value: T) => void | Promise<void>,
   initial: initialOrOptions<T>,
   type = "text",
   hint = undefined
-): void {
+): Promise<void> {
   if (!title || !question)
     throw new Error("Title and question must be specified");
 
   if (typeof initial === "object") {
+    return new Promise((resolve) =>
+      eventManager.emit("showModal", {
+        modalType: "prompt",
+        title,
+        question,
+        cb,
+        options: initial,
+        onModalClose: resolve,
+      })
+    );
+  }
+
+  return new Promise((resolve) =>
     eventManager.emit("showModal", {
       modalType: "prompt",
       title,
+      initial,
+      type,
       question,
       cb,
-      options: initial,
-    });
-    return;
-  }
-
-  eventManager.emit("showModal", {
-    modalType: "prompt",
-    title,
-    initial,
-    type,
-    question,
-    cb,
-    hint,
-  });
+      hint,
+      onModalClose: resolve,
+    })
+  );
 }
 
 type CloseHandler = () => void;
@@ -137,13 +147,13 @@ interface DynamicModalOptions {
 
 type DynamicModalHandler = (options: DynamicModalOptions) => Promise<void>;
 
-export const dynamicModal: DynamicModalHandler = async ({
+export const dynamicModal: DynamicModalHandler = ({
   title,
   fullBody = null,
   body = null,
   buttons = [],
   modalProps = {},
-}) => {
+}): Promise<void> => {
   return new Promise((resolve) => {
     eventManager.emit("showModal", {
       modalType: "dynamic",

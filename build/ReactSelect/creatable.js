@@ -58,7 +58,7 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-const CreatableReactSelect = /*#__PURE__*/ forwardRef(({ label =null , className , error , ...props }, ref)=>{
+function UnrefedSelect({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React.createElement("div", {
         className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(CreatableSelect, _extends({
@@ -79,7 +79,8 @@ const CreatableReactSelect = /*#__PURE__*/ forwardRef(({ label =null , className
     })), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
         text: error
     }) : null);
-});
+}
+const CreatableReactSelect = /*#__PURE__*/ forwardRef(UnrefedSelect);
 
 export { CreatableReactSelect };
 //# sourceMappingURL=creatable.js.map

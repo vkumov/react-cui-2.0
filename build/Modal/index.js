@@ -1,8 +1,9 @@
 import React, { cloneElement } from 'react';
 import { appendClass } from '../utils/index.js';
 import Transition from 'react-transition-group/Transition';
-import ReactModal from 'react-modal';
+import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react-dom-interactions';
 import { DisplayIf, ConditionalWrapper } from '../Conditional/index.js';
+import { useFloatingContext } from '../FloatingProvider/index.ts';
 import { Button } from '../Button/index.js';
 import { Input } from '../Input/index.js';
 import { eventManager } from '../utils/eventManager.js';
@@ -78,7 +79,7 @@ function _extends$1() {
     };
     return _extends$1.apply(this, arguments);
 }
-const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , ...props })=>{
+const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll ,  })=>{
     const [maximized, setMaximized] = React.useState(false);
     React.useEffect(()=>setMaximized(false)
     , [
@@ -89,10 +90,30 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         maximized,
         size
     ]);
-    const maximizeCb = React.useCallback(()=>{
-        setMaximized((curr)=>!curr
-        );
-    }, []);
+    const modalContext = useFloatingContext();
+    const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    const { reference , floating , context  } = useFloating({
+        open: isOpen,
+        onOpenChange: (state)=>!state ? void closeHandle() : void 0
+    });
+    React.useEffect(()=>{
+        if (refElement) reference(refElement);
+    }, [
+        refElement
+    ]);
+    const click = useClick(context);
+    const role = useRole(context, {
+        role: "dialog"
+    });
+    const dismiss = useDismiss(context, {
+        enabled: autoClose,
+        ancestorScroll
+    });
+    const { getFloatingProps  } = useInteractions([
+        click,
+        role,
+        dismiss
+    ]);
     const nodeRef = React.useRef(null);
     return /*#__PURE__*/ React.createElement(Transition, _extends$1({
         in: isOpen,
@@ -100,17 +121,21 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         unmountOnExit: true,
         timeout: animationDuration,
         nodeRef: nodeRef
-    }, transitionEvents), (state)=>/*#__PURE__*/ React.createElement(ReactModal, _extends$1({}, props, {
-            onRequestClose: autoClose && closeHandle ? closeHandle : undefined,
-            overlayClassName: "modal-backdrop",
-            isOpen: [
-                "entering",
-                "entered"
-            ].includes(state),
+    }, transitionEvents), (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+            root: root
+        }, /*#__PURE__*/ React.createElement(FloatingOverlay, {
+            className: `modal-backdrop${appendClass(state === "exiting", "modal-backdrop--before-close")}`,
+            lockScroll: lockScroll,
+            ref: nodeRef,
+            onClick: ()=>autoClose ? closeHandle() : void 0
+        }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
+            context: context
+        }, /*#__PURE__*/ React.createElement("div", _extends$1({
+            ref: floating
+        }, getFloatingProps({
             className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
-            closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration,
-            overlayRef: (n)=>nodeRef.current = n
-        }), /*#__PURE__*/ React.createElement("div", _extends$1({
+            onClick: ()=>autoClose ? closeHandle() : void 0
+        })), /*#__PURE__*/ React.createElement("div", _extends$1({
             className: "modal__dialog"
         }, dialogProps, {
             onClick: (e)=>e.stopPropagation()
@@ -125,7 +150,8 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             })
         }, Boolean(maximize) && /*#__PURE__*/ React.createElement("a", {
             className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
-            onClick: maximizeCb
+            onClick: ()=>setMaximized((curr)=>!curr
+                )
         }, /*#__PURE__*/ React.createElement("span", {
             className: maximized ? "icon-minimize" : "icon-maximize"
         })), Boolean(closeIcon && closeHandle) && /*#__PURE__*/ React.createElement("a", {
@@ -135,7 +161,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React.createElement(ModalHeader, null, /*#__PURE__*/ React.createElement("h1", {
             className: "modal__title"
-        }, title)), children)))
+        }, title)), children))))))
     );
 };
 Modal.Small = (props)=>/*#__PURE__*/ React.createElement(Modal, _extends$1({}, props, {
@@ -411,14 +437,16 @@ function confirmation(prompt1, onConfirm, confirmType = "primary", confirmText =
 }) {
     if (!prompt1) throw new Error("Prompt must be specified");
     if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
-    eventManager.emit("showModal", {
-        modalType: "confirmation",
-        prompt: /*#__PURE__*/ React.createElement("p", null, prompt1),
-        onConfirm,
-        confirmText,
-        confirmType,
-        dontAskAgain
-    });
+    return new Promise((resolve)=>eventManager.emit("showModal", {
+            modalType: "confirmation",
+            prompt: /*#__PURE__*/ React.createElement("p", null, prompt1),
+            onConfirm,
+            confirmText,
+            confirmType,
+            dontAskAgain,
+            onModalClose: resolve
+        })
+    );
 }
 const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
     if (!title || !body) throw new Error("Title and body must be specified");
@@ -436,26 +464,29 @@ const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
 function prompt(title, question, cb, initial, type = "text", hint = undefined) {
     if (!title || !question) throw new Error("Title and question must be specified");
     if (typeof initial === "object") {
-        eventManager.emit("showModal", {
+        return new Promise((resolve)=>eventManager.emit("showModal", {
+                modalType: "prompt",
+                title,
+                question,
+                cb,
+                options: initial,
+                onModalClose: resolve
+            })
+        );
+    }
+    return new Promise((resolve)=>eventManager.emit("showModal", {
             modalType: "prompt",
             title,
+            initial,
+            type,
             question,
             cb,
-            options: initial
-        });
-        return;
-    }
-    eventManager.emit("showModal", {
-        modalType: "prompt",
-        title,
-        initial,
-        type,
-        question,
-        cb,
-        hint
-    });
+            hint,
+            onModalClose: resolve
+        })
+    );
 }
-const dynamicModal = async ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
+const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
     return new Promise((resolve)=>{
         eventManager.emit("showModal", {
             modalType: "dynamic",

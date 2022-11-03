@@ -14,7 +14,7 @@ import { Modal } from "./Modal";
 type ConfirmationModalProps = {
   isOpen?: boolean;
   confirmHandle: (dontAskAgain?: boolean) => boolean | Promise<boolean>;
-  closeHandle: (e) => void;
+  closeHandle: () => void;
   prompt: ReactNode;
   confirmType?: ButtonColor;
   confirmText?: string;

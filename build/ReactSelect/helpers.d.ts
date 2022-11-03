@@ -1,11 +1,15 @@
 import type { ReactNode } from "react";
-export declare type Option = {
+export declare type Option<V = string> = {
     label: ReactNode;
-    value: string;
+    value: V;
 };
-export declare type OptionGroup = {
+export declare type OptionGroup<O> = {
     label: ReactNode;
-    options: Option[];
+    options: O[];
 };
-export declare const isGrouped: (v: Option | OptionGroup) => v is OptionGroup;
-export declare const findOption: (value: any, options: (Option | OptionGroup)[]) => Option;
+export declare function isGrouped<O extends {
+    value: any;
+}>(v: O | OptionGroup<O>): v is OptionGroup<O>;
+export declare function findOption<V, O extends {
+    value: V;
+} = Option<V>>(value: V, options: (O | OptionGroup<O>)[]): O;

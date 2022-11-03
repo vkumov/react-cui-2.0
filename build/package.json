@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.6.4",
+  "version": "4.7.0",
   "description": "React library for CUI 2.0",
   "module": "./index.esm.js",
   "main": "./cjs/index.cjs.js",
@@ -13,11 +13,11 @@
     "react-dom": "^17.0.2 || ^18.0.0"
   },
   "dependencies": {
+    "@floating-ui/react-dom-interactions": "^0.10.3",
     "bytes": "^3.1.2",
     "eventemitter3": "^4.0.7",
     "rc-slider": "^10.0.1",
     "react-dropzone": "^14.2.3",
-    "react-modal": "^3.16.1",
     "react-select": "^5.5.4",
     "react-toastify": "^9.0.8",
     "react-transition-group": "^4.4.5",
@@ -83,6 +83,12 @@
       "import": {
         "types": "./Dropzone/index.d.ts",
         "default": "./Dropzone/index.js"
+      }
+    },
+    "./FloatingProvider": {
+      "import": {
+        "types": "./FloatingProvider/index.d.ts",
+        "default": "./FloatingProvider/index.js"
       }
     },
     "./Gauge": {
@@ -251,6 +257,12 @@
       "import": {
         "types": "./Toast/index.d.ts",
         "default": "./Toast/index.js"
+      }
+    },
+    "./Tooltip": {
+      "import": {
+        "types": "./Tooltip/index.d.ts",
+        "default": "./Tooltip/index.js"
       }
     },
     "./Typo": {

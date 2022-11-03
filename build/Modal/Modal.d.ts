@@ -1,5 +1,5 @@
-import React, { FC, ReactNode, PropsWithChildren } from "react";
-import { Props as ReactModalProps } from "react-modal";
+import React, { type FC, type ReactNode, type PropsWithChildren } from "react";
+import { FloatingPortal, FloatingOverlay, useDismiss, type ReferenceType } from "@floating-ui/react-dom-interactions";
 import { ModalHeader } from "./Header";
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
@@ -10,7 +10,7 @@ export declare type ModalSize = "small" | "default" | "large" | "full" | "fluid"
 export declare type ModalProps = PropsWithChildren<{
     size?: ModalSize;
     closeIcon?: boolean;
-    closeHandle?: (e: any) => void;
+    closeHandle?: () => void;
     title?: ReactNode;
     isOpen: boolean;
     autoClose?: boolean;
@@ -24,7 +24,11 @@ export declare type ModalProps = PropsWithChildren<{
     dialogProps?: React.ComponentProps<"div">;
     contentProps?: React.ComponentProps<"div">;
     maximize?: boolean;
-}> & ReactModalProps;
+    refElement?: ReferenceType;
+    root?: Parameters<typeof FloatingPortal>[0]["root"];
+    lockScroll?: Parameters<typeof FloatingOverlay>[0]["lockScroll"];
+    ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
+}>;
 declare type ModalSizes = {
     Small: FC<ModalProps>;
     Large: FC<ModalProps>;

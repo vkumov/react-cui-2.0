@@ -27,7 +27,7 @@ export type ReactSelectProps<
   Option,
   IsMulti extends boolean,
   Group extends GroupBase<Option>
-> = SelectGeneric<Option, IsMulti, Group> & CUISelectProps & SelectProps;
+> = CUISelectProps & SelectProps<Option, IsMulti, Group>;
 
 function UnrefedSelect<
   Option = unknown,

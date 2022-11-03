@@ -6,7 +6,7 @@ export interface PromptModalProps<T extends React.ReactText> {
     title: ReactNode;
     question: ReactNode;
     onSave: (value: T) => void | Promise<void>;
-    onClose?: (e?: any) => void;
+    onClose?: () => void;
     initial?: T;
     type?: string;
     isOpen: boolean;

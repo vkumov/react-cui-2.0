@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.7.0
+
+- Use FloatingUI instead of ReactModal
+- All dynamic modals are awaitable
+- Provide FloatingContext to propagate root element
+- Tooltips using FloatingUI
+
+## 4.6.8
+
+- Add indeterminate styling for checkboxes
+
 ## 4.6.5
 
 - Generic ReactSelect

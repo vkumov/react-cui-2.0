@@ -1,12 +1,12 @@
-import React, { useRef, useEffect, forwardRef, useState, useCallback, useMemo, createElement, cloneElement, useLayoutEffect, isValidElement } from 'react';
+import React, { useRef, useEffect, forwardRef, useState, useCallback, useMemo, createElement, useContext, createContext, cloneElement, useLayoutEffect, isValidElement } from 'react';
 import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
 import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
+import { useMergeRefs } from 'use-callback-ref';
 import Transition from 'react-transition-group/Transition';
-import ReactModal from 'react-modal';
+import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react-dom-interactions';
 import EventEmitter from 'eventemitter3';
 import { createPortal } from 'react-dom';
-import { useMergeRefs } from 'use-callback-ref';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import RCSlider from 'rc-slider';
@@ -1106,6 +1106,26 @@ const Checkbox = /*#__PURE__*/ forwardRef(({ inline =false , asFormGroup =true ,
     }, children) : null))
 );
 
+const IndeterminateCheckbox = /*#__PURE__*/ forwardRef(({ indeterminate , ...rest }, fwd)=>{
+    const ref = useRef(null);
+    const refs = useMergeRefs([
+        ref,
+        fwd
+    ]);
+    useEffect(()=>{
+        if (typeof indeterminate === "boolean") {
+            ref.current.indeterminate = !rest.checked && indeterminate;
+        }
+    }, [
+        ref,
+        indeterminate
+    ]);
+    return /*#__PURE__*/ React.createElement(Checkbox, {
+        ref: refs,
+        ...rest
+    });
+});
+
 const Switch = /*#__PURE__*/ forwardRef(({ left =null , right =null , disabled =false , inline =false , spacing =null , asFormGroup =true , className =null , id =null , style =null , ...input }, forwardedRef)=>/*#__PURE__*/ React.createElement(ConditionalWrapper, {
         condition: asFormGroup,
         wrapper: /*#__PURE__*/ React.createElement("div", {
@@ -1200,7 +1220,11 @@ const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ Rea
     }, children)
 ;
 
-const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , ...props })=>{
+const FloatingContext = /*#__PURE__*/ createContext(null);
+const useFloatingContext = ()=>useContext(FloatingContext)
+;
+
+const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll ,  })=>{
     const [maximized, setMaximized] = React.useState(false);
     React.useEffect(()=>setMaximized(false)
     , [
@@ -1211,10 +1235,30 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         maximized,
         size
     ]);
-    const maximizeCb = React.useCallback(()=>{
-        setMaximized((curr)=>!curr
-        );
-    }, []);
+    const modalContext = useFloatingContext();
+    const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    const { reference , floating , context  } = useFloating({
+        open: isOpen,
+        onOpenChange: (state)=>!state ? void closeHandle() : void 0
+    });
+    React.useEffect(()=>{
+        if (refElement) reference(refElement);
+    }, [
+        refElement
+    ]);
+    const click = useClick(context);
+    const role = useRole(context, {
+        role: "dialog"
+    });
+    const dismiss = useDismiss(context, {
+        enabled: autoClose,
+        ancestorScroll
+    });
+    const { getFloatingProps  } = useInteractions([
+        click,
+        role,
+        dismiss
+    ]);
     const nodeRef = React.useRef(null);
     return /*#__PURE__*/ React.createElement(Transition, {
         in: isOpen,
@@ -1223,17 +1267,21 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         timeout: animationDuration,
         nodeRef: nodeRef,
         ...transitionEvents
-    }, (state)=>/*#__PURE__*/ React.createElement(ReactModal, {
-            ...props,
-            onRequestClose: autoClose && closeHandle ? closeHandle : undefined,
-            overlayClassName: "modal-backdrop",
-            isOpen: [
-                "entering",
-                "entered"
-            ].includes(state),
-            className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
-            closeTimeoutMS: typeof animationDuration === "object" ? animationDuration.exit : animationDuration,
-            overlayRef: (n)=>nodeRef.current = n
+    }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+            root: root
+        }, /*#__PURE__*/ React.createElement(FloatingOverlay, {
+            className: `modal-backdrop${appendClass(state === "exiting", "modal-backdrop--before-close")}`,
+            lockScroll: lockScroll,
+            ref: nodeRef,
+            onClick: ()=>autoClose ? closeHandle() : void 0
+        }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
+            context: context
+        }, /*#__PURE__*/ React.createElement("div", {
+            ref: floating,
+            ...getFloatingProps({
+                className: `modal${appendClass(realSize, `modal--${realSize}`)}${appendClass(left, "modal--left")}`,
+                onClick: ()=>autoClose ? closeHandle() : void 0
+            })
         }, /*#__PURE__*/ React.createElement("div", {
             className: "modal__dialog",
             ...dialogProps,
@@ -1250,7 +1298,8 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             })
         }, Boolean(maximize) && /*#__PURE__*/ React.createElement("a", {
             className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
-            onClick: maximizeCb
+            onClick: ()=>setMaximized((curr)=>!curr
+                )
         }, /*#__PURE__*/ React.createElement("span", {
             className: maximized ? "icon-minimize" : "icon-maximize"
         })), Boolean(closeIcon && closeHandle) && /*#__PURE__*/ React.createElement("a", {
@@ -1260,7 +1309,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React.createElement(ModalHeader, null, /*#__PURE__*/ React.createElement("h1", {
             className: "modal__title"
-        }, title)), children)))
+        }, title)), children))))))
     );
 };
 Modal.Small = (props)=>/*#__PURE__*/ React.createElement(Modal, {
@@ -1529,14 +1578,16 @@ function confirmation(prompt1, onConfirm, confirmType = "primary", confirmText =
 }) {
     if (!prompt1) throw new Error("Prompt must be specified");
     if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
-    eventManager.emit("showModal", {
-        modalType: "confirmation",
-        prompt: /*#__PURE__*/ React.createElement("p", null, prompt1),
-        onConfirm,
-        confirmText,
-        confirmType,
-        dontAskAgain
-    });
+    return new Promise((resolve)=>eventManager.emit("showModal", {
+            modalType: "confirmation",
+            prompt: /*#__PURE__*/ React.createElement("p", null, prompt1),
+            onConfirm,
+            confirmText,
+            confirmType,
+            dontAskAgain,
+            onModalClose: resolve
+        })
+    );
 }
 const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
     if (!title || !body) throw new Error("Title and body must be specified");
@@ -1554,26 +1605,29 @@ const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
 function prompt(title, question, cb, initial, type = "text", hint = undefined) {
     if (!title || !question) throw new Error("Title and question must be specified");
     if (typeof initial === "object") {
-        eventManager.emit("showModal", {
+        return new Promise((resolve)=>eventManager.emit("showModal", {
+                modalType: "prompt",
+                title,
+                question,
+                cb,
+                options: initial,
+                onModalClose: resolve
+            })
+        );
+    }
+    return new Promise((resolve)=>eventManager.emit("showModal", {
             modalType: "prompt",
             title,
+            initial,
+            type,
             question,
             cb,
-            options: initial
-        });
-        return;
-    }
-    eventManager.emit("showModal", {
-        modalType: "prompt",
-        title,
-        initial,
-        type,
-        question,
-        cb,
-        hint
-    });
+            hint,
+            onModalClose: resolve
+        })
+    );
 }
-const dynamicModal = async ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
+const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
     return new Promise((resolve)=>{
         eventManager.emit("showModal", {
             modalType: "dynamic",
@@ -2412,7 +2466,7 @@ const GroupHeading = ({ className , children , ...props })=>/*#__PURE__*/ React.
     }, children)
 ;
 
-const ReactSelect = /*#__PURE__*/ forwardRef(({ label =null , className , error , ...props }, ref)=>{
+function UnrefedSelect$1({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React.createElement("div", {
         className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(Select, {
@@ -2430,9 +2484,10 @@ const ReactSelect = /*#__PURE__*/ forwardRef(({ label =null , className , error 
     }), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
         text: error
     }) : null);
-});
+}
+const ReactSelect = /*#__PURE__*/ forwardRef(UnrefedSelect$1);
 
-const CreatableReactSelect = /*#__PURE__*/ forwardRef(({ label =null , className , error , ...props }, ref)=>{
+function UnrefedSelect({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React.createElement("div", {
         className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(CreatableSelect, {
@@ -2454,19 +2509,20 @@ const CreatableReactSelect = /*#__PURE__*/ forwardRef(({ label =null , className
     }), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
         text: error
     }) : null);
-});
+}
+const CreatableReactSelect = /*#__PURE__*/ forwardRef(UnrefedSelect);
 
-const isGrouped = (v)=>{
+function isGrouped(v) {
     return "options" in v;
-};
-const findOption = (value, options)=>{
+}
+function findOption(value, options) {
     let found;
     for (const it of options){
         if (isGrouped(it)) found = findOption(value, it.options);
         else found = it.value === value ? it : null;
         if (found) return found;
     }
-};
+}
 
 const VSeparator = /*#__PURE__*/ forwardRef(({ size ="default" , compressed =false , className ="" , ...props }, ref)=>/*#__PURE__*/ React.createElement("div", {
         className: `v-separator${appendClass(size !== "default", `v-separator--${size}`)}${appendClass(compressed, "v-separator--compressed")}${appendClass(className)}`,
@@ -2553,5 +2609,5 @@ const Gauge = /*#__PURE__*/ forwardRef(({ color ="primary" , size ="default" , c
     }, label) : null);
 });
 
-export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, Gauge, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
+export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group$1 as DropdownGroup, GroupHeader as DropdownGroupHeader, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, Footer, Gauge, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, IndeterminateCheckbox, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, VSeparator, VariantSelector, VerticalCenter, WithBadge, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast };
 //# sourceMappingURL=index.esm.js.map

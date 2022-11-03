@@ -1,0 +1,14 @@
+.cui .checkbox input.indeterminate ~ .checkbox__input::after,
+.cui .checkbox input:indeterminate ~ .checkbox__input::after {
+  position: absolute;
+  display: block;
+  left: 6px;
+  top: 3px;
+  width: 0px;
+  height: 8px;
+  color: transparent;
+  border: var(--cui-border-form-color) solid;
+  border-width: 0 2px 0px 0;
+  transform: rotate(90deg);
+  opacity: 1;
+}
