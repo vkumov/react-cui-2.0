@@ -32,8 +32,7 @@ const Checkbox = /*#__PURE__*/ forwardRef(({ inline =false , asFormGroup =true ,
         className: "checkbox__input"
     }), children ? /*#__PURE__*/ React.createElement("span", {
         className: "checkbox__label"
-    }, children) : null))
-);
+    }, children) : null)));
 
 function _extends() {
     _extends = Object.assign || function(target) {

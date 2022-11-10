@@ -1,21 +1,22 @@
-import React, { forwardRef, type Ref } from "react";
-import Select, { Props as SelectProps, GroupBase } from "react-select";
+import React, { forwardRef, type Ref, type ReactNode } from "react";
+import Select, {
+  type Props as SelectProps,
+  type GroupBase,
+} from "react-select";
 import type SelectGeneric from "react-select/dist/declarations/src/Select";
 
 import { InputHelpBlock } from "src/InputHelp";
 import { appendClass } from "src/utils";
+import type { LabelColor } from "src/Label";
 
 import "../../css/react-select.css";
 import {
   MultiValueContainer,
   MultiValueLabel,
   MultiValueRemove,
-  Group,
+  Group as GroupComponent,
   GroupHeading,
 } from "./components";
-
-import type { ReactNode } from "react";
-import type { LabelColor } from "src/Label";
 
 type CUISelectProps = {
   label?: ReactNode;
@@ -57,7 +58,7 @@ function UnrefedSelect<
           MultiValueContainer,
           MultiValueLabel,
           MultiValueRemove,
-          Group,
+          Group: GroupComponent,
           GroupHeading,
         }}
         {...props}

@@ -24,8 +24,7 @@ function _extends$4() {
 }
 const ModalHeader = ({ className =null , children , ...props })=>/*#__PURE__*/ React.createElement("div", _extends$4({
         className: `modal__header${appendClass(className)}`
-    }, props), children)
-;
+    }, props), children);
 
 function _extends$3() {
     _extends$3 = Object.assign || function(target) {
@@ -43,8 +42,7 @@ function _extends$3() {
 }
 const ModalFooter = ({ className =null , children , ...props })=>/*#__PURE__*/ React.createElement("div", _extends$3({
         className: `modal__footer${appendClass(className)}`
-    }, props), children)
-;
+    }, props), children);
 
 function _extends$2() {
     _extends$2 = Object.assign || function(target) {
@@ -62,8 +60,7 @@ function _extends$2() {
 }
 const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ React.createElement("div", _extends$2({
         className: `modal__body${appendClass(className)}`
-    }, props), children)
-;
+    }, props), children);
 
 function _extends$1() {
     _extends$1 = Object.assign || function(target) {
@@ -79,14 +76,12 @@ function _extends$1() {
     };
     return _extends$1.apply(this, arguments);
 }
-const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll ,  })=>{
+const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll  })=>{
     const [maximized, setMaximized] = React.useState(false);
-    React.useEffect(()=>setMaximized(false)
-    , [
+    React.useEffect(()=>setMaximized(false), [
         isOpen
     ]);
-    const realSize = React.useMemo(()=>maximized ? "full" : size
-    , [
+    const realSize = React.useMemo(()=>maximized ? "full" : size, [
         maximized,
         size
     ]);
@@ -150,8 +145,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             })
         }, Boolean(maximize) && /*#__PURE__*/ React.createElement("a", {
             className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
-            onClick: ()=>setMaximized((curr)=>!curr
-                )
+            onClick: ()=>setMaximized((curr)=>!curr)
         }, /*#__PURE__*/ React.createElement("span", {
             className: maximized ? "icon-minimize" : "icon-maximize"
         })), Boolean(closeIcon && closeHandle) && /*#__PURE__*/ React.createElement("a", {
@@ -161,32 +155,27 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React.createElement(ModalHeader, null, /*#__PURE__*/ React.createElement("h1", {
             className: "modal__title"
-        }, title)), children))))))
-    );
+        }, title)), children)))))));
 };
 Modal.Small = (props)=>/*#__PURE__*/ React.createElement(Modal, _extends$1({}, props, {
         size: "small"
-    }))
-;
+    }));
 Modal.Large = (props)=>/*#__PURE__*/ React.createElement(Modal, _extends$1({}, props, {
         size: "large"
-    }))
-;
+    }));
 Modal.Full = (props)=>/*#__PURE__*/ React.createElement(Modal, _extends$1({}, props, {
         size: "full"
-    }))
-;
+    }));
 Modal.Fluid = (props)=>/*#__PURE__*/ React.createElement(Modal, _extends$1({}, props, {
         size: "fluid"
-    }))
-;
+    }));
 Modal.Header = ModalHeader;
 Modal.Body = ModalBody;
 Modal.Footer = ModalFooter;
 
 const ConfirmationModal = ({ isOpen =false , confirmType ="primary" , autoClose =true , confirmText ="Confirm" , confirmHandle , closeHandle , prompt , dontAskAgain ={
     show: false
-} ,  })=>{
+}  })=>{
     const [doing, setDoing] = React.useState(false);
     const [dontAsk, setDontAsk] = React.useState(false);
     return /*#__PURE__*/ React.createElement(Modal, {
@@ -238,8 +227,7 @@ function PromptModal({ title , question , onSave: cb , onClose , initial , type 
         val,
         validate
     ]);
-    React.useEffect(()=>setVal(initial)
-    , [
+    React.useEffect(()=>setVal(initial), [
         initial
     ]);
     const inpRef = React.useRef(undefined);
@@ -255,8 +243,7 @@ function PromptModal({ title , question , onSave: cb , onClose , initial , type 
         title: title
     }, /*#__PURE__*/ React.createElement(ModalBody, null, /*#__PURE__*/ React.createElement(Input, {
         type: type,
-        onChange: (e)=>setVal(e.target.value)
-        ,
+        onChange: (e)=>setVal(e.target.value),
         onKeyUp: (e)=>{
             if (e.key === "Enter") {
                 onSave();
@@ -313,36 +300,29 @@ const ConfirmationListener = ()=>{
                     shown: true,
                     ...modal
                 }
-            ]
-        )
-    , []);
+            ]), []);
     const hideModal = React.useCallback((id)=>{
         setModals((curr)=>curr.map((m)=>m.id === id ? {
                     ...m,
                     shown: false
-                } : m
-            )
-        );
+                } : m));
     }, []);
     const deleteModal = React.useCallback((id)=>{
         setModals((curr)=>curr.filter((m)=>{
                 if (m.id === id && typeof m.onClosed === "function") m.onClosed();
                 return m.id !== id;
-            })
-        );
+            }));
     }, []);
     const closeModal = React.useCallback((id, cb)=>{
         hideModal(id);
-        setTimeout(()=>deleteModal(id)
-        , 500);
+        setTimeout(()=>deleteModal(id), 500);
         if (cb) cb();
     }, [
         hideModal,
         deleteModal
     ]);
     React.useEffect(()=>{
-        const cb = (m)=>addModal(m)
-        ;
+        const cb = (m)=>addModal(m);
         eventManager.on("showModal", cb);
         return ()=>{
             eventManager.off("showModal", cb);
@@ -355,8 +335,7 @@ const ConfirmationListener = ()=>{
         if (modal.modalType === "dynamic") return /*#__PURE__*/ React.createElement(Modal, _extends({}, modal.modalProps, {
             key: modal.id,
             isOpen: modal.shown,
-            closeHandle: ()=>closeModal(modal.id, modal.onModalClose)
-            ,
+            closeHandle: ()=>closeModal(modal.id, modal.onModalClose),
             title: modal.title
         }), modal.fullBody ? typeof modal.fullBody === "function" ? modal.fullBody({
             close: ()=>closeModal(modal.id, modal.onModalClose)
@@ -366,18 +345,15 @@ const ConfirmationListener = ()=>{
                 key: idx,
                 color: button.color || "light",
                 onClick: (e)=>{
-                    if (typeof button.onClick === "function") button.onClick(e, ()=>closeModal(modal.id, modal.onModalClose)
-                    );
+                    if (typeof button.onClick === "function") button.onClick(e, ()=>closeModal(modal.id, modal.onModalClose));
                     else closeModal(modal.id, modal.onModalClose);
                 }
-            }, button.text)
-        ))));
+            }, button.text)))));
         if (modal.modalType === "notification") return /*#__PURE__*/ React.createElement(Modal, {
             key: modal.id,
             isOpen: modal.shown,
             closeIcon: true,
-            closeHandle: ()=>closeModal(modal.id, modal.onModalClose)
-            ,
+            closeHandle: ()=>closeModal(modal.id, modal.onModalClose),
             title: modal.title
         }, /*#__PURE__*/ React.createElement(ModalBody, null, modal.body), /*#__PURE__*/ React.createElement(ModalFooter, null, /*#__PURE__*/ React.createElement(Button, {
             color: modal.buttonColor || "light",
@@ -385,12 +361,11 @@ const ConfirmationListener = ()=>{
         }, modal.button)));
         if (modal.modalType === "prompt") {
             if (typeof modal.options !== "undefined") {
-                const { initial ="" , type ="text" , hint =undefined , validate =undefined ,  } = modal.options;
+                const { initial ="" , type ="text" , hint =undefined , validate =undefined  } = modal.options;
                 return /*#__PURE__*/ React.createElement(PromptModal, {
                     key: modal.id,
                     isOpen: modal.shown,
-                    onClose: ()=>closeModal(modal.id, modal.onModalClose)
-                    ,
+                    onClose: ()=>closeModal(modal.id, modal.onModalClose),
                     onSave: modal.cb,
                     title: modal.title,
                     question: modal.question,
@@ -403,8 +378,7 @@ const ConfirmationListener = ()=>{
             return /*#__PURE__*/ React.createElement(PromptModal, {
                 key: modal.id,
                 isOpen: modal.shown,
-                onClose: ()=>closeModal(modal.id, modal.onModalClose)
-                ,
+                onClose: ()=>closeModal(modal.id, modal.onModalClose),
                 onSave: modal.cb,
                 title: modal.title,
                 question: modal.question,
@@ -422,8 +396,7 @@ const ConfirmationListener = ()=>{
                 if (r) closeModal(modal.id, modal.onModalClose);
                 return true;
             },
-            closeHandle: ()=>closeModal(modal.id, modal.onModalClose)
-            ,
+            closeHandle: ()=>closeModal(modal.id, modal.onModalClose),
             confirmText: modal.confirmText,
             confirmType: modal.confirmType,
             dontAskAgain: modal.dontAskAgain
@@ -432,21 +405,20 @@ const ConfirmationListener = ()=>{
     }));
 };
 
-function confirmation(prompt1, onConfirm, confirmType = "primary", confirmText = "Confirm", dontAskAgain = {
+function confirmation(prompt, onConfirm, confirmType = "primary", confirmText = "Confirm", dontAskAgain = {
     show: false
 }) {
-    if (!prompt1) throw new Error("Prompt must be specified");
+    if (!prompt) throw new Error("Prompt must be specified");
     if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
     return new Promise((resolve)=>eventManager.emit("showModal", {
             modalType: "confirmation",
-            prompt: /*#__PURE__*/ React.createElement("p", null, prompt1),
+            prompt: /*#__PURE__*/ React.createElement("p", null, prompt),
             onConfirm,
             confirmText,
             confirmType,
             dontAskAgain,
             onModalClose: resolve
-        })
-    );
+        }));
 }
 const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
     if (!title || !body) throw new Error("Title and body must be specified");
@@ -471,8 +443,7 @@ function prompt(title, question, cb, initial, type = "text", hint = undefined) {
                 cb,
                 options: initial,
                 onModalClose: resolve
-            })
-        );
+            }));
     }
     return new Promise((resolve)=>eventManager.emit("showModal", {
             modalType: "prompt",
@@ -483,10 +454,9 @@ function prompt(title, question, cb, initial, type = "text", hint = undefined) {
             cb,
             hint,
             onModalClose: resolve
-        })
-    );
+        }));
 }
-const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
+const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , modalProps ={}  })=>{
     return new Promise((resolve)=>{
         eventManager.emit("showModal", {
             modalType: "dynamic",

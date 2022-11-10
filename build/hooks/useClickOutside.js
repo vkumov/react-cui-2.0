@@ -5,31 +5,28 @@ const DEFAULT_EVENTS = [
     "touchstart"
 ];
 function useClickOutside(handler, events, nodes) {
-    const ref1 = useRef();
+    const ref = useRef();
     useEffect(()=>{
         const listener = (event)=>{
             if (Array.isArray(nodes)) {
-                var ref;
-                const shouldIgnore = event === null || event === void 0 ? void 0 : (ref = event.target) === null || ref === void 0 ? void 0 : ref.hasAttribute("data-ignore-outside-clicks");
-                const shouldTrigger = nodes.every((node)=>!!node && !node.contains(event.target)
-                );
+                var ref1;
+                const shouldIgnore = event === null || event === void 0 ? void 0 : (ref1 = event.target) === null || ref1 === void 0 ? void 0 : ref1.hasAttribute("data-ignore-outside-clicks");
+                const shouldTrigger = nodes.every((node)=>!!node && !node.contains(event.target));
                 shouldTrigger && !shouldIgnore && handler();
-            } else if (ref1.current && !ref1.current.contains(event.target)) {
+            } else if (ref.current && !ref.current.contains(event.target)) {
                 handler();
             }
         };
-        (events || DEFAULT_EVENTS).forEach((fn)=>document.addEventListener(fn, listener)
-        );
+        (events || DEFAULT_EVENTS).forEach((fn)=>document.addEventListener(fn, listener));
         return ()=>{
-            (events || DEFAULT_EVENTS).forEach((fn)=>document.removeEventListener(fn, listener)
-            );
+            (events || DEFAULT_EVENTS).forEach((fn)=>document.removeEventListener(fn, listener));
         };
     }, [
-        ref1,
+        ref,
         handler,
         nodes
     ]);
-    return ref1;
+    return ref;
 }
 
 export { useClickOutside };

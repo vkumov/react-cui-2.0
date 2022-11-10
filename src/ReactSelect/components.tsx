@@ -35,14 +35,14 @@ export const MultiValueRemove = ({
   return <span className="icon-close" {...props} />;
 };
 
-export const Group = <Option = unknown, IsMulti extends boolean = boolean>({
+export function Group<Option = unknown, IsMulti extends boolean = boolean>({
   className,
   children,
   Heading,
   headingProps,
   innerProps,
   ...props
-}: GroupProps<Option, IsMulti>) => {
+}: GroupProps<Option, IsMulti>) {
   return (
     <div className={`dropdown__group${appendClass(className)}`} {...innerProps}>
       <Heading {...props} id={headingProps.id}>
@@ -51,17 +51,15 @@ export const Group = <Option = unknown, IsMulti extends boolean = boolean>({
       {children}
     </div>
   );
-};
+}
 
-export const GroupHeading = <
+export function GroupHeading<
   Option = unknown,
   IsMulti extends boolean = boolean
->({
-  className,
-  children,
-  ...props
-}: GroupHeadingProps<Option, IsMulti>) => (
-  <div className={`dropdown__group-header${appendClass(className)}`}>
-    {children}
-  </div>
-);
+>({ className, children, ...props }: GroupHeadingProps<Option, IsMulti>) {
+  return (
+    <div className={`dropdown__group-header${appendClass(className)}`}>
+      {children}
+    </div>
+  );
+}

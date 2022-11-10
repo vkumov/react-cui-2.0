@@ -61,8 +61,7 @@ const FileCard = ({ file , i , removeFile , inline  })=>/*#__PURE__*/ React.crea
         className: "file-icon text-muted icon-file-o qtr-margin-right"
     }), /*#__PURE__*/ React.createElement("small", null, bytes.format(file.size, {
         unitSeparator: " "
-    })))))
-;
+    })))));
 const DropzoneMessage = ({ inline , accept , maxFileSize  })=>{
     if (inline) {
         return /*#__PURE__*/ React.createElement("div", {
@@ -105,8 +104,7 @@ const DropzoneFiles = ({ files , inline , showTotalSelected , removeFile  })=>{
             i: i,
             inline: inline,
             removeFile: removeFile
-        })
-    ))), showTotalSelected ? /*#__PURE__*/ React.createElement("div", {
+        })))), showTotalSelected ? /*#__PURE__*/ React.createElement("div", {
         className: "file-drop__filecnt"
     }, files.length, " selected") : null);
 };
@@ -145,8 +143,7 @@ const Dropzone = ({ error , loose , compressed , inline , label , name , value ,
         inline
     ]);
     const handleDrop = useCallback((filesToUpload)=>{
-        if (maxFileSize) filesToUpload = filesToUpload.filter((file)=>file.size <= maxFileSize
-        );
+        if (maxFileSize) filesToUpload = filesToUpload.filter((file)=>file.size <= maxFileSize);
         if (maxFiles && filesToUpload.length > maxFiles) filesToUpload = filesToUpload.slice(0, maxFiles);
         onChange(filesToUpload);
     }, [
@@ -155,8 +152,7 @@ const Dropzone = ({ error , loose , compressed , inline , label , name , value ,
         onChange
     ]);
     const removeFile = (toRemove)=>{
-        onChange(Array.isArray(value) ? value.filter((_, idx)=>toRemove !== idx
-        ) : value);
+        onChange(Array.isArray(value) ? value.filter((_, idx)=>toRemove !== idx) : value);
     };
     return /*#__PURE__*/ React.createElement("div", {
         className: `form-group${appendClass(error, "form-group--error")}`
@@ -178,8 +174,7 @@ const Dropzone = ({ error , loose , compressed , inline , label , name , value ,
             maxFileSize: maxFileSize,
             inline: inline,
             accept: props.accept
-        }))
-    )), error ? /*#__PURE__*/ React.createElement("div", {
+        })))), error ? /*#__PURE__*/ React.createElement("div", {
         className: `help-block text-danger`,
         role: "alert"
     }, /*#__PURE__*/ React.createElement("span", null, error)) : null);

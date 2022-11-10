@@ -17,8 +17,7 @@ function _extends() {
 }
 const Icon = ({ icon , size =null , className =null , ...props })=>/*#__PURE__*/ React.createElement("span", _extends({
         className: `icon-${icon}${appendClass(className)}${appendClass(size, `icon-size-${size}`)}`
-    }, props))
-;
+    }, props));
 
 export { Icon };
 //# sourceMappingURL=index.js.map

@@ -37,8 +37,7 @@ const Switch = /*#__PURE__*/ forwardRef(({ left =null , right =null , disabled =
         className: "switch__input"
     }), right ? /*#__PURE__*/ React.createElement("span", {
         className: "switch__label"
-    }, right) : null))
-);
+    }, right) : null)));
 
 export { Switch };
 //# sourceMappingURL=index.js.map

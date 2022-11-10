@@ -18,8 +18,7 @@ function _extends() {
 const Kbd = /*#__PURE__*/ forwardRef(({ children , className , ...props }, ref)=>/*#__PURE__*/ React.createElement("span", _extends({
         className: `kbd${appendClass(className)}`,
         ref: ref
-    }, props), children)
-);
+    }, props), children));
 
 export { Kbd };
 //# sourceMappingURL=index.js.map

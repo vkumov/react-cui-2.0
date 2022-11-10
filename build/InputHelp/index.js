@@ -10,14 +10,12 @@ const InputHelpBaloon = ({ baloon  })=>/*#__PURE__*/ React.createElement("span",
         style: {
             cursor: "help"
         }
-    }))
-;
+    }));
 
 const InputHelpBlock = ({ text =null  })=>text && /*#__PURE__*/ React.createElement("div", {
         className: "form-group__help",
         role: "alert"
-    }, /*#__PURE__*/ React.createElement("span", null, text))
-;
+    }, /*#__PURE__*/ React.createElement("span", null, text));
 
 export { InputHelpBaloon, InputHelpBlock };
 //# sourceMappingURL=index.js.map

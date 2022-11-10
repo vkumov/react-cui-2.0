@@ -19,8 +19,7 @@ const VSeparator = /*#__PURE__*/ forwardRef(({ size ="default" , compressed =fal
         className: `v-separator${appendClass(size !== "default", `v-separator--${size}`)}${appendClass(compressed, "v-separator--compressed")}${appendClass(className)}`
     }, props, {
         ref: ref
-    }))
-);
+    })));
 
 export { VSeparator };
 //# sourceMappingURL=index.js.map

@@ -66,7 +66,7 @@ const classes = (type, icon)=>{
             ];
     }
 };
-const Alert = ({ type ="info" , children , title ="" , dismissable =false , className =null , onDismiss =null , withIcon =true , icon =null ,  })=>{
+const Alert = ({ type ="info" , children , title ="" , dismissable =false , className =null , onDismiss =null , withIcon =true , icon =null  })=>{
     const [dismissed, setDismissed] = React__default["default"].useState(false);
     const handleDismiss = (e)=>{
         setDismissed(true);
@@ -88,43 +88,35 @@ const Alert = ({ type ="info" , children , title ="" , dismissable =false , clas
 Alert.Warning = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "warning",
         ...props
-    })
-;
+    });
 Alert.Danger = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "danger",
         ...props
-    })
-;
+    });
 Alert.Error = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "error",
         ...props
-    })
-;
+    });
 Alert.Success = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "success",
         ...props
-    })
-;
+    });
 Alert.Info = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "info",
         ...props
-    })
-;
+    });
 Alert.Dark = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "dark",
         ...props
-    })
-;
+    });
 Alert.Light = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "light",
         ...props
-    })
-;
+    });
 Alert.WarningAlt = (props)=>/*#__PURE__*/ React__default["default"].createElement(Alert, {
         type: "warning-alt",
         ...props
-    })
-;
+    });
 
 const DEFAULT_EVENTS$1 = [
     "mousedown",
@@ -137,18 +129,15 @@ function useClickInside(handler, events, nodes) {
             var _a;
             if (Array.isArray(nodes)) {
                 const shouldIgnore = (_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.hasAttribute("data-ignore-inside-clicks");
-                const shouldTrigger = nodes.every((node)=>Boolean(node) && node.contains(event.target)
-                );
+                const shouldTrigger = nodes.every((node)=>Boolean(node) && node.contains(event.target));
                 shouldTrigger && !shouldIgnore && handler();
             } else if (ref.current && !ref.current.contains(event.target)) {
                 handler();
             }
         };
-        (events || DEFAULT_EVENTS$1).forEach((fn)=>document.addEventListener(fn, listener)
-        );
+        (events || DEFAULT_EVENTS$1).forEach((fn)=>document.addEventListener(fn, listener));
         return ()=>{
-            (events || DEFAULT_EVENTS$1).forEach((fn)=>document.removeEventListener(fn, listener)
-            );
+            (events || DEFAULT_EVENTS$1).forEach((fn)=>document.removeEventListener(fn, listener));
         };
     }, [
         ref,
@@ -169,18 +158,15 @@ function useClickOutside(handler, events, nodes) {
             var _a;
             if (Array.isArray(nodes)) {
                 const shouldIgnore = (_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.hasAttribute("data-ignore-outside-clicks");
-                const shouldTrigger = nodes.every((node)=>!!node && !node.contains(event.target)
-                );
+                const shouldTrigger = nodes.every((node)=>!!node && !node.contains(event.target));
                 shouldTrigger && !shouldIgnore && handler();
             } else if (ref.current && !ref.current.contains(event.target)) {
                 handler();
             }
         };
-        (events || DEFAULT_EVENTS).forEach((fn)=>document.addEventListener(fn, listener)
-        );
+        (events || DEFAULT_EVENTS).forEach((fn)=>document.addEventListener(fn, listener));
         return ()=>{
-            (events || DEFAULT_EVENTS).forEach((fn)=>document.removeEventListener(fn, listener)
-            );
+            (events || DEFAULT_EVENTS).forEach((fn)=>document.removeEventListener(fn, listener));
         };
     }, [
         ref,
@@ -198,10 +184,8 @@ const appendClass = (c, what = undefined)=>{
     return "";
 };
 
-const ConditionalWrapper = ({ condition , wrapper , children ,  })=>condition ? /*#__PURE__*/ React__default["default"].cloneElement(wrapper, null, children) : /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children)
-;
-const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children) : null
-;
+const ConditionalWrapper = ({ condition , wrapper , children  })=>condition ? /*#__PURE__*/ React__default["default"].cloneElement(wrapper, null, children) : /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children);
+const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children) : null;
 
 const Element = ({ selected =false , icon =null , children , className =null , ...props })=>/*#__PURE__*/ React__default["default"].createElement("a", {
         className: `${selected ? "selected" : ""}${className ? ` ${className}` : ""}`,
@@ -213,20 +197,16 @@ const Element = ({ selected =false , icon =null , children , className =null , .
         wrapper: /*#__PURE__*/ React__default["default"].createElement("span", {
             className: "qtr-margin-left"
         })
-    }, children))
-;
+    }, children));
 const Divider = ()=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: "divider"
-    })
-;
+    });
 const Group$1 = ({ children  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: "dropdown__group"
-    }, children)
-;
+    }, children);
 const GroupHeader = ({ header  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: "dropdown__group-header"
-    }, header)
-;
+    }, header);
 const Menu = /*#__PURE__*/ React.forwardRef(({ children , className , ...props }, ref)=>{
     return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `dropdown__menu${appendClass(className)}`,
@@ -235,7 +215,7 @@ const Menu = /*#__PURE__*/ React.forwardRef(({ children , className , ...props }
     }, children);
 });
 
-const DropdownHeader$1 = ({ type , handleClick , className , header ,  })=>{
+const DropdownHeader$1 = ({ type , handleClick , className , header  })=>{
     switch(type){
         case "icon":
             return /*#__PURE__*/ React__default["default"].createElement("span", {
@@ -367,8 +347,7 @@ const FileCard = ({ file , i , removeFile , inline  })=>/*#__PURE__*/ React__def
         className: "file-icon text-muted icon-file-o qtr-margin-right"
     }), /*#__PURE__*/ React__default["default"].createElement("small", null, bytes__default["default"].format(file.size, {
         unitSeparator: " "
-    })))))
-;
+    })))));
 const DropzoneMessage = ({ inline , accept , maxFileSize  })=>{
     if (inline) {
         return /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -411,8 +390,7 @@ const DropzoneFiles = ({ files , inline , showTotalSelected , removeFile  })=>{
             i: i,
             inline: inline,
             removeFile: removeFile
-        })
-    ))), showTotalSelected ? /*#__PURE__*/ React__default["default"].createElement("div", {
+        })))), showTotalSelected ? /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "file-drop__filecnt"
     }, files.length, " selected") : null);
 };
@@ -451,8 +429,7 @@ const Dropzone = ({ error , loose , compressed , inline , label , name , value ,
         inline
     ]);
     const handleDrop = React.useCallback((filesToUpload)=>{
-        if (maxFileSize) filesToUpload = filesToUpload.filter((file)=>file.size <= maxFileSize
-        );
+        if (maxFileSize) filesToUpload = filesToUpload.filter((file)=>file.size <= maxFileSize);
         if (maxFiles && filesToUpload.length > maxFiles) filesToUpload = filesToUpload.slice(0, maxFiles);
         onChange(filesToUpload);
     }, [
@@ -461,8 +438,7 @@ const Dropzone = ({ error , loose , compressed , inline , label , name , value ,
         onChange
     ]);
     const removeFile = (toRemove)=>{
-        onChange(Array.isArray(value) ? value.filter((_, idx)=>toRemove !== idx
-        ) : value);
+        onChange(Array.isArray(value) ? value.filter((_, idx)=>toRemove !== idx) : value);
     };
     return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `form-group${appendClass(error, "form-group--error")}`
@@ -488,8 +464,7 @@ const Dropzone = ({ error , loose , compressed , inline , label , name , value ,
             maxFileSize: maxFileSize,
             inline: inline,
             accept: props.accept
-        }))
-    )), error ? /*#__PURE__*/ React__default["default"].createElement("div", {
+        })))), error ? /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `help-block text-danger`,
         role: "alert"
     }, /*#__PURE__*/ React__default["default"].createElement("span", null, error)) : null);
@@ -498,8 +473,7 @@ const Dropzone = ({ error , loose , compressed , inline , label , name , value ,
 const Dots = /*#__PURE__*/ React.forwardRef(({ color ="primary"  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `loading-dots${color !== "primary" ? ` loading-dots--${color}` : ""}`,
         ref: ref
-    }, /*#__PURE__*/ React__default["default"].createElement("span", null), /*#__PURE__*/ React__default["default"].createElement("span", null), /*#__PURE__*/ React__default["default"].createElement("span", null))
-);
+    }, /*#__PURE__*/ React__default["default"].createElement("span", null), /*#__PURE__*/ React__default["default"].createElement("span", null), /*#__PURE__*/ React__default["default"].createElement("span", null)));
 
 const Spinner = /*#__PURE__*/ React.forwardRef(({ size ="default" , text =null  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: "flex-center flex-middle",
@@ -515,8 +489,7 @@ const Spinner = /*#__PURE__*/ React.forwardRef(({ size ="default" , text =null  
         className: "wheel"
     }))), !text ? null : /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "base-margin-top text-center"
-    }, text || "Loading...")))
-);
+    }, text || "Loading..."))));
 
 const Progressbar = /*#__PURE__*/ React.forwardRef(({ size ="default" , withLabel =false , label =null , color =null , className =null , percentage , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `progressbar${appendClass(size !== "default", `progressbar--${size}`)}${appendClass(color, `progressbar--${color}`)}${appendClass(className)}`,
@@ -529,8 +502,7 @@ const Progressbar = /*#__PURE__*/ React.forwardRef(({ size ="default" , withLabe
         className: "progressbar__label"
     }, label) : /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "progressbar__label"
-    }, `${percentage}%`) : null)
-);
+    }, `${percentage}%`) : null));
 
 exports.Button = void 0;
 exports.Button = /*#__PURE__*/ React.forwardRef(({ size ="default" , color ="primary" , wide =false , justified =false , circle =false , className =null , asLink =false , style =null , selected =false , type =null , icon =false , ...props }, ref)=>/*#__PURE__*/ React.createElement(asLink ? "a" : "button", {
@@ -546,64 +518,54 @@ exports.Button = /*#__PURE__*/ React.forwardRef(({ size ="default" , color ="pri
         },
         ...props,
         ref
-    })
-);
+    }));
 exports.Button.Primary = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
         color: "primary",
         ref: ref
-    })
-);
+    }));
 exports.Button.Secondary = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
         color: "secondary",
         ref: ref
-    })
-);
+    }));
 exports.Button.Success = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
         color: "success",
         ref: ref
-    })
-);
+    }));
 exports.Button.Dark = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
         color: "dark",
         ref: ref
-    })
-);
+    }));
 exports.Button.Ghost = /*#__PURE__*/ React.forwardRef(({ fullGhost =false , className , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         className: `${appendClass(fullGhost, "btn--full-ghost")}${appendClass(className)}`,
         ...props,
         color: "ghost",
         ref: ref
-    })
-);
+    }));
 exports.Button.Link = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
         color: "link",
         ref: ref
-    })
-);
+    }));
 exports.Button.Light = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
         color: "light",
         ref: ref
-    })
-);
+    }));
 exports.Button.Danger = /*#__PURE__*/ React.forwardRef((props, ref)=>/*#__PURE__*/ React__default["default"].createElement(exports.Button, {
         ...props,
         color: "danger",
         ref: ref
-    })
-);
+    }));
 
 const ButtonGroup = /*#__PURE__*/ React.forwardRef(({ square =false , withDivider =false , className =null , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `btn-group${appendClass(square, "btn-group--square")}${appendClass(withDivider, " btn-group--divider")}${appendClass(className)}`,
         ...props,
         ref: ref
-    })
-);
+    }));
 
 const Label = ({ size ="default" , color ="primary" , bordered =false , removable =false , onRemove =null , raised =false , className =null , children , ...props })=>/*#__PURE__*/ React__default["default"].createElement("span", {
         className: `label label--${color}${appendClass(size !== "default", `label--${size}`)}${appendClass(bordered, "label--bordered")}${appendClass(raised, "label--raised")}${appendClass(className)}`,
@@ -611,70 +573,57 @@ const Label = ({ size ="default" , color ="primary" , bordered =false , removabl
     }, children, removable ? /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "icon-close",
         onClick: onRemove
-    }) : null)
-;
+    }) : null);
 Label.Primary = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "primary",
         ...props
-    })
-;
+    });
 Label.Secondary = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "secondary",
         ...props
-    })
-;
+    });
 Label.Tertiary = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "tertiary",
         ...props
-    })
-;
+    });
 Label.Success = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "success",
         ...props
-    })
-;
+    });
 Label.Info = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "info",
         ...props
-    })
-;
+    });
 Label.WarningAlt = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "warning-alt",
         ...props
-    })
-;
+    });
 Label.Warning = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "warning",
         ...props
-    })
-;
+    });
 Label.Danger = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "danger",
         ...props
-    })
-;
+    });
 Label.Dark = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "dark",
         ...props
-    })
-;
+    });
 Label.Light = (props)=>/*#__PURE__*/ React__default["default"].createElement(Label, {
         color: "light",
         ...props
-    })
-;
+    });
 
 const Panel = /*#__PURE__*/ React__default["default"].forwardRef(({ color ="plain" , padding ="default" , bordered =false , raised =false , well =false , className =null , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `panel${appendClass(color !== "plain", `panel--${color}`)}${appendClass(padding !== "default", `panel--${padding}`)}${appendClass(bordered, ()=>{
             if (typeof bordered === "string") return `panel--bordered-${bordered}`;
-            if (Array.isArray(bordered)) return bordered.map((b)=>`panel--bordered-${b}`
-            ).join(" ");
+            if (Array.isArray(bordered)) return bordered.map((b)=>`panel--bordered-${b}`).join(" ");
             return "panel--bordered";
         })}${appendClass(raised, "panel--raised")}${appendClass(well, "panel--well")}${appendClass(className)}`,
         ref: ref,
         ...props
-    })
-);
+    }));
 
 const copyStringToClipboard = async (str)=>{
     str = typeof str === "string" ? str : str.toString();
@@ -718,7 +667,7 @@ const ToastIcon = ({ type  })=>{
         className: iconType(type)
     })) : null;
 };
-const Toast = ({ title , message , type , copyError =false , bordered =false ,  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
+const Toast = ({ title , message , type , copyError =false , bordered =false  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `toast${appendClass(bordered, "toast--bordered")}`
     }, /*#__PURE__*/ React__default["default"].createElement(ToastIcon, {
         type: type
@@ -730,8 +679,7 @@ const Toast = ({ title , message , type , copyError =false , bordered =false ,  
         className: "toast__message"
     }, message, type === "error" && copyError ? /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React__default["default"].createElement("br", null), /*#__PURE__*/ React__default["default"].createElement("br", null), /*#__PURE__*/ React__default["default"].createElement("a", {
         onClick: ()=>typeof message === "string" || typeof message === "number" ? void copyStringToClipboard(message) : void 0
-    }, "Copy to clipboard")) : null) : null))
-;
+    }, "Copy to clipboard")) : null) : null));
 const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>{
     var _a;
     if (type === "loading") {
@@ -744,32 +692,24 @@ const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_",
                 message,
                 copyError
             }
-        })
-    , {
+        }), {
         containerId,
         ...args
     });
 };
-toast.success = (...args)=>toast("success", ...args)
-;
-toast.error = (...args)=>toast("error", ...args)
-;
-toast.warning = (...args)=>toast("warning", ...args)
-;
-toast.info = (...args)=>toast("info", ...args)
-;
-toast.loading = (...args)=>toast("loading", ...args)
-;
-toast.none = (...args)=>toast("none", ...args)
-;
+toast.success = (...args)=>toast("success", ...args);
+toast.error = (...args)=>toast("error", ...args);
+toast.warning = (...args)=>toast("warning", ...args);
+toast.info = (...args)=>toast("info", ...args);
+toast.loading = (...args)=>toast("loading", ...args);
+toast.none = (...args)=>toast("none", ...args);
 toast.update = (toastId, updates, options)=>{
     options.render = /*#__PURE__*/ React__default["default"].createElement(Toast, {
         ...updates
     });
     reactToastify.toast.update(toastId, options);
 };
-toast.dismiss = (...args)=>reactToastify.toast.dismiss(...args)
-;
+toast.dismiss = (...args)=>reactToastify.toast.dismiss(...args);
 
 const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable =false , hideProgressBar =true , containerId ="_GLOBAL_" , transition =reactToastify.Slide , bordered , shadow ="lg" , bodyClassName , toastClassName , ...props })=>/*#__PURE__*/ React__default["default"].createElement(reactToastify.ToastContainer, {
         transition: transition,
@@ -785,8 +725,7 @@ const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable
         style: {
             width: "unset"
         }
-    })
-;
+    });
 
 const Footer = ()=>/*#__PURE__*/ React__default["default"].createElement("footer", {
         className: "footer"
@@ -826,8 +765,7 @@ const Footer = ()=>/*#__PURE__*/ React__default["default"].createElement("footer
         href: "https://www.cisco.com/c/en/us/about/legal/trademarks.html",
         target: "_blank",
         rel: "noopener noreferrer"
-    }, "Trademarks")))))
-;
+    }, "Trademarks")))));
 
 const Header = ({ children , fluid =false , ...props })=>/*#__PURE__*/ React__default["default"].createElement("header", {
         className: "header",
@@ -836,13 +774,11 @@ const Header = ({ children , fluid =false , ...props })=>/*#__PURE__*/ React__de
         className: `container${fluid ? "-fluid" : ""}`
     }, /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "header-panels"
-    }, children)))
-;
+    }, children)));
 const HeaderPanel = ({ children , center =false , right =false , className =null , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `header-panel${appendClass(center, "header-panel--center")}${appendClass(right, "header-panel--right")}${appendClass(className)}`,
         ...props
-    }, children)
-;
+    }, children);
 const HeaderTitle = ({ icon =true , link =null , title , ...props })=>/*#__PURE__*/ React__default["default"].createElement(HeaderPanel, {
         ...props
     }, icon ? /*#__PURE__*/ React__default["default"].createElement("a", {
@@ -854,8 +790,7 @@ const HeaderTitle = ({ icon =true , link =null , title , ...props })=>/*#__PURE_
         className: typeof icon === "string" ? `icon-${icon}` : "icon-cisco"
     })) : null, /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "header__title"
-    }, title))
-;
+    }, title));
 
 const Wrapper$1 = /*#__PURE__*/ React__default["default"].createElement("div", {
     className: "responsive-table"
@@ -867,19 +802,16 @@ const GenericTable = /*#__PURE__*/ React.forwardRef(({ outerWrap =true , lined =
         className: `table${appendClass(lined, "table--lined")}${appendClass(bordered, "table--bordered")}${appendClass(striped, "table--striped")}${appendClass(selectable, "table--selectable")}${appendClass(fixed, "table--fixed")}${appendClass(wrapped, "table--wrapped")}${appendClass(compressed, "table--compressed")}${appendClass(loose, "table--loose")}${appendClass(className)}`,
         ...props,
         ref: forwardedRef
-    }))
-);
+    })));
 
 const PaginationContext = /*#__PURE__*/ React__default["default"].createContext(null);
 
-const Button = ({ content , position , active =false , disabled =false ,  })=>/*#__PURE__*/ React__default["default"].createElement(PaginationContext.Consumer, null, ({ changePage  })=>/*#__PURE__*/ React__default["default"].createElement("li", {
+const Button = ({ content , position , active =false , disabled =false  })=>/*#__PURE__*/ React__default["default"].createElement(PaginationContext.Consumer, null, ({ changePage  })=>/*#__PURE__*/ React__default["default"].createElement("li", {
             className: active ? "active" : ""
         }, /*#__PURE__*/ React__default["default"].createElement("a", {
             className: disabled ? "disabled" : "",
             onClick: (e)=>changePage(e, position)
-        }, content))
-    )
-;
+        }, content)));
 const FirstPrev = ()=>{
     const { perPage , firstAndLast , position , icons , prev , beginAt  } = React__default["default"].useContext(PaginationContext);
     const disabled = position < perPage + beginAt;
@@ -935,9 +867,7 @@ const Pages = ({ start , finish  })=>/*#__PURE__*/ React__default["default"].cre
                 key: `${current}-page`,
                 position: (current - 1) * perPage + beginAt
             });
-        })
-    )
-;
+        }));
 const Pagination = ({ beginAt =1 , rounded =false , firstAndLast =true , icons =false , next ="Next" , perPage =1 , prev ="Previous" , size ="default" , className =null , position , total , onPageChange , ...rest })=>{
     const pages = Math.ceil(total / perPage);
     const active = Math.floor(position / perPage) + 1;
@@ -992,7 +922,7 @@ const Pagination = ({ beginAt =1 , rounded =false , firstAndLast =true , icons =
     })), /*#__PURE__*/ React__default["default"].createElement(NextLast, null)));
 };
 
-const DefaultTablePagination = ({ perPageUp =false , paginationProps ={} , total , position , onPageChange , onPerPageChange ,  })=>{
+const DefaultTablePagination = ({ perPageUp =false , paginationProps ={} , total , position , onPageChange , onPerPageChange  })=>{
     const [perPage, setPerPage] = React__default["default"].useState(50);
     React__default["default"].useEffect(()=>{
         if (typeof onPerPageChange === "function") onPerPageChange(perPage);
@@ -1032,41 +962,32 @@ const DefaultTablePagination = ({ perPageUp =false , paginationProps ={} , total
         250,
         500
     ].map((v)=>/*#__PURE__*/ React__default["default"].createElement(Dropdown.Element, {
-            onClick: ()=>setPerPage(v)
-            ,
+            onClick: ()=>setPerPage(v),
             key: v,
             selected: v === perPage
-        }, v)
-    )));
+        }, v))));
 };
 
 const asArray = (v)=>Array.isArray(v) ? v : [
         v
-    ]
-;
+    ];
 const Table = /*#__PURE__*/ React.forwardRef(({ pagination =DefaultTablePagination , paginationLocation ="bottom-right" , paginationProps ={
     icons: true,
     firstAndLast: true
 } , data =null , children =null , start =1 , ...props }, forwardedRef)=>{
     const [position, setPosition] = React__default["default"].useState(typeof start === "number" ? start : 0);
     const [perPage, setPerPage] = React__default["default"].useState(50);
-    const tbody = React__default["default"].useMemo(()=>children ? asArray(children).find((child)=>child.type === "tbody"
-        ) : null
-    , [
+    const tbody = React__default["default"].useMemo(()=>children ? asArray(children).find((child)=>child.type === "tbody") : null, [
         children
     ]);
-    const thead = React__default["default"].useMemo(()=>children ? asArray(children).find((child)=>child.type === "thead"
-        ) : null
-    , [
+    const thead = React__default["default"].useMemo(()=>children ? asArray(children).find((child)=>child.type === "thead") : null, [
         children
     ]);
-    const total = React__default["default"].useMemo(()=>(data ? data.length : asArray(tbody.props.children).length) || 0
-    , [
+    const total = React__default["default"].useMemo(()=>(data ? data.length : asArray(tbody.props.children).length) || 0, [
         data,
         tbody
     ]);
-    React__default["default"].useEffect(()=>setPosition(0)
-    , [
+    React__default["default"].useEffect(()=>setPosition(0), [
         data,
         tbody
     ]);
@@ -1075,10 +996,8 @@ const Table = /*#__PURE__*/ React.forwardRef(({ pagination =DefaultTablePaginati
     }, /*#__PURE__*/ React__default["default"].createElement(pagination, {
         total,
         position,
-        onPageChange: (_, p)=>setPosition(p)
-        ,
-        onPerPageChange: (p)=>setPerPage(p)
-        ,
+        onPageChange: (_, p)=>setPosition(p),
+        onPerPageChange: (p)=>setPerPage(p),
         paginationProps
     })), /*#__PURE__*/ React__default["default"].createElement(GenericTable, {
         ...props,
@@ -1087,17 +1006,13 @@ const Table = /*#__PURE__*/ React.forwardRef(({ pagination =DefaultTablePaginati
             key: rid
         }, row.map((col, cid)=>/*#__PURE__*/ React__default["default"].createElement("td", {
                 key: cid
-            }, col)
-        ))
-    ) : asArray(tbody.props.children).slice(position, position + perPage))), Boolean(paginationLocation.includes("bottom-")) && /*#__PURE__*/ React__default["default"].createElement("div", {
+            }, col)))) : asArray(tbody.props.children).slice(position, position + perPage))), Boolean(paginationLocation.includes("bottom-")) && /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `flex base-margin-top${appendClass(paginationLocation === "bottom-right", "flex-right")}`
     }, /*#__PURE__*/ React__default["default"].createElement(pagination, {
         total,
         position,
-        onPageChange: (_, p)=>setPosition(p)
-        ,
-        onPerPageChange: (p)=>setPerPage(p)
-        ,
+        onPageChange: (_, p)=>setPosition(p),
+        onPerPageChange: (p)=>setPerPage(p),
         perPageUp: true,
         paginationProps
     })));
@@ -1118,8 +1033,7 @@ const Checkbox = /*#__PURE__*/ React.forwardRef(({ inline =false , asFormGroup =
         className: "checkbox__input"
     }), children ? /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "checkbox__label"
-    }, children) : null))
-);
+    }, children) : null)));
 
 const IndeterminateCheckbox = /*#__PURE__*/ React.forwardRef(({ indeterminate , ...rest }, fwd)=>{
     const ref = React.useRef(null);
@@ -1162,8 +1076,7 @@ const Switch = /*#__PURE__*/ React.forwardRef(({ left =null , right =null , disa
         className: "switch__input"
     }), right ? /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "switch__label"
-    }, right) : null))
-);
+    }, right) : null)));
 
 const InputHelpBaloon = ({ baloon  })=>/*#__PURE__*/ React__default["default"].createElement("span", {
         "data-balloon": baloon,
@@ -1175,14 +1088,12 @@ const InputHelpBaloon = ({ baloon  })=>/*#__PURE__*/ React__default["default"].c
         style: {
             cursor: "help"
         }
-    }))
-;
+    }));
 
 const InputHelpBlock = ({ text =null  })=>text && /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "form-group__help",
         role: "alert"
-    }, /*#__PURE__*/ React__default["default"].createElement("span", null, text))
-;
+    }, /*#__PURE__*/ React__default["default"].createElement("span", null, text));
 
 const Input = /*#__PURE__*/ React.forwardRef(({ type ="text" , inline =null , helpBlock =true , label =null , icon =null , iconClick =null , className =null , plain =false , horizontal =null , horizontalLabelClassName ="col-3" , error =null , prefix =null , ...input }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}${appendClass(inline === "form" || inline === "both", "form-group--inline")}${appendClass(inline === "label" || inline === "both", "label--inline")}${appendClass(icon, "input--icon")}${appendClass(horizontal, "form-group--horizontal")}`
@@ -1214,31 +1125,26 @@ const Input = /*#__PURE__*/ React.forwardRef(({ type ="text" , inline =null , he
         condition: !inline && helpBlock && !!error
     }, /*#__PURE__*/ React__default["default"].createElement(InputHelpBlock, {
         text: error
-    })))
-);
+    }))));
 
 const ModalHeader = ({ className =null , children , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `modal__header${appendClass(className)}`,
         ...props
-    }, children)
-;
+    }, children);
 
 const ModalFooter = ({ className =null , children , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `modal__footer${appendClass(className)}`,
         ...props
-    }, children)
-;
+    }, children);
 
 const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `modal__body${appendClass(className)}`,
         ...props
-    }, children)
-;
+    }, children);
 
 const FloatingContext = /*#__PURE__*/ React.createContext(null);
-const useFloatingContext = ()=>React.useContext(FloatingContext)
-;
-const FloatingProvider = ({ rootRef , children ,  })=>{
+const useFloatingContext = ()=>React.useContext(FloatingContext);
+const FloatingProvider = ({ rootRef , children  })=>{
     return /*#__PURE__*/ React__default["default"].createElement(FloatingContext.Provider, {
         value: {
             rootRef
@@ -1246,14 +1152,12 @@ const FloatingProvider = ({ rootRef , children ,  })=>{
     }, children);
 };
 
-const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll ,  })=>{
+const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll  })=>{
     const [maximized, setMaximized] = React__default["default"].useState(false);
-    React__default["default"].useEffect(()=>setMaximized(false)
-    , [
+    React__default["default"].useEffect(()=>setMaximized(false), [
         isOpen
     ]);
-    const realSize = React__default["default"].useMemo(()=>maximized ? "full" : size
-    , [
+    const realSize = React__default["default"].useMemo(()=>maximized ? "full" : size, [
         maximized,
         size
     ]);
@@ -1320,8 +1224,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             })
         }, Boolean(maximize) && /*#__PURE__*/ React__default["default"].createElement("a", {
             className: `${appendClass(!(closeIcon && closeHandle), "modal__close")}${appendClass(closeIcon && closeHandle, "qtr-margin-right")}`,
-            onClick: ()=>setMaximized((curr)=>!curr
-                )
+            onClick: ()=>setMaximized((curr)=>!curr)
         }, /*#__PURE__*/ React__default["default"].createElement("span", {
             className: maximized ? "icon-minimize" : "icon-maximize"
         })), Boolean(closeIcon && closeHandle) && /*#__PURE__*/ React__default["default"].createElement("a", {
@@ -1331,36 +1234,31 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React__default["default"].createElement(ModalHeader, null, /*#__PURE__*/ React__default["default"].createElement("h1", {
             className: "modal__title"
-        }, title)), children))))))
-    );
+        }, title)), children)))))));
 };
 Modal.Small = (props)=>/*#__PURE__*/ React__default["default"].createElement(Modal, {
         ...props,
         size: "small"
-    })
-;
+    });
 Modal.Large = (props)=>/*#__PURE__*/ React__default["default"].createElement(Modal, {
         ...props,
         size: "large"
-    })
-;
+    });
 Modal.Full = (props)=>/*#__PURE__*/ React__default["default"].createElement(Modal, {
         ...props,
         size: "full"
-    })
-;
+    });
 Modal.Fluid = (props)=>/*#__PURE__*/ React__default["default"].createElement(Modal, {
         ...props,
         size: "fluid"
-    })
-;
+    });
 Modal.Header = ModalHeader;
 Modal.Body = ModalBody;
 Modal.Footer = ModalFooter;
 
 const ConfirmationModal = ({ isOpen =false , confirmType ="primary" , autoClose =true , confirmText ="Confirm" , confirmHandle , closeHandle , prompt , dontAskAgain ={
     show: false
-} ,  })=>{
+}  })=>{
     const [doing, setDoing] = React__default["default"].useState(false);
     const [dontAsk, setDontAsk] = React__default["default"].useState(false);
     return /*#__PURE__*/ React__default["default"].createElement(Modal, {
@@ -1397,7 +1295,7 @@ const ConfirmationModal = ({ isOpen =false , confirmType ="primary" , autoClose 
     }) : null)));
 };
 
-function PromptModal({ title , question , onSave: cb , onClose , initial , type , isOpen , hint , validate ,  }) {
+function PromptModal({ title , question , onSave: cb , onClose , initial , type , isOpen , hint , validate  }) {
     const [val, setVal] = React__default["default"].useState(initial);
     const [doing, setDoing] = React__default["default"].useState(false);
     const onSave = React__default["default"].useCallback(async ()=>{
@@ -1412,8 +1310,7 @@ function PromptModal({ title , question , onSave: cb , onClose , initial , type 
         val,
         validate
     ]);
-    React__default["default"].useEffect(()=>setVal(initial)
-    , [
+    React__default["default"].useEffect(()=>setVal(initial), [
         initial
     ]);
     const inpRef = React__default["default"].useRef(undefined);
@@ -1429,8 +1326,7 @@ function PromptModal({ title , question , onSave: cb , onClose , initial , type 
         title: title
     }, /*#__PURE__*/ React__default["default"].createElement(ModalBody, null, /*#__PURE__*/ React__default["default"].createElement(Input, {
         type: type,
-        onChange: (e)=>setVal(e.target.value)
-        ,
+        onChange: (e)=>setVal(e.target.value),
         onKeyUp: (e)=>{
             if (e.key === "Enter") {
                 onSave();
@@ -1475,36 +1371,29 @@ const ConfirmationListener = ()=>{
                     shown: true,
                     ...modal
                 }
-            ]
-        )
-    , []);
+            ]), []);
     const hideModal = React__default["default"].useCallback((id)=>{
         setModals((curr)=>curr.map((m)=>m.id === id ? {
                     ...m,
                     shown: false
-                } : m
-            )
-        );
+                } : m));
     }, []);
     const deleteModal = React__default["default"].useCallback((id)=>{
         setModals((curr)=>curr.filter((m)=>{
                 if (m.id === id && typeof m.onClosed === "function") m.onClosed();
                 return m.id !== id;
-            })
-        );
+            }));
     }, []);
     const closeModal = React__default["default"].useCallback((id, cb)=>{
         hideModal(id);
-        setTimeout(()=>deleteModal(id)
-        , 500);
+        setTimeout(()=>deleteModal(id), 500);
         if (cb) cb();
     }, [
         hideModal,
         deleteModal
     ]);
     React__default["default"].useEffect(()=>{
-        const cb = (m)=>addModal(m)
-        ;
+        const cb = (m)=>addModal(m);
         eventManager.on("showModal", cb);
         return ()=>{
             eventManager.off("showModal", cb);
@@ -1518,8 +1407,7 @@ const ConfirmationListener = ()=>{
             ...modal.modalProps,
             key: modal.id,
             isOpen: modal.shown,
-            closeHandle: ()=>closeModal(modal.id, modal.onModalClose)
-            ,
+            closeHandle: ()=>closeModal(modal.id, modal.onModalClose),
             title: modal.title
         }, modal.fullBody ? typeof modal.fullBody === "function" ? modal.fullBody({
             close: ()=>closeModal(modal.id, modal.onModalClose)
@@ -1529,18 +1417,15 @@ const ConfirmationListener = ()=>{
                 key: idx,
                 color: button.color || "light",
                 onClick: (e)=>{
-                    if (typeof button.onClick === "function") button.onClick(e, ()=>closeModal(modal.id, modal.onModalClose)
-                    );
+                    if (typeof button.onClick === "function") button.onClick(e, ()=>closeModal(modal.id, modal.onModalClose));
                     else closeModal(modal.id, modal.onModalClose);
                 }
-            }, button.text)
-        ))));
+            }, button.text)))));
         if (modal.modalType === "notification") return /*#__PURE__*/ React__default["default"].createElement(Modal, {
             key: modal.id,
             isOpen: modal.shown,
             closeIcon: true,
-            closeHandle: ()=>closeModal(modal.id, modal.onModalClose)
-            ,
+            closeHandle: ()=>closeModal(modal.id, modal.onModalClose),
             title: modal.title
         }, /*#__PURE__*/ React__default["default"].createElement(ModalBody, null, modal.body), /*#__PURE__*/ React__default["default"].createElement(ModalFooter, null, /*#__PURE__*/ React__default["default"].createElement(exports.Button, {
             color: modal.buttonColor || "light",
@@ -1548,12 +1433,11 @@ const ConfirmationListener = ()=>{
         }, modal.button)));
         if (modal.modalType === "prompt") {
             if (typeof modal.options !== "undefined") {
-                const { initial ="" , type ="text" , hint =undefined , validate =undefined ,  } = modal.options;
+                const { initial ="" , type ="text" , hint =undefined , validate =undefined  } = modal.options;
                 return /*#__PURE__*/ React__default["default"].createElement(PromptModal, {
                     key: modal.id,
                     isOpen: modal.shown,
-                    onClose: ()=>closeModal(modal.id, modal.onModalClose)
-                    ,
+                    onClose: ()=>closeModal(modal.id, modal.onModalClose),
                     onSave: modal.cb,
                     title: modal.title,
                     question: modal.question,
@@ -1566,8 +1450,7 @@ const ConfirmationListener = ()=>{
             return /*#__PURE__*/ React__default["default"].createElement(PromptModal, {
                 key: modal.id,
                 isOpen: modal.shown,
-                onClose: ()=>closeModal(modal.id, modal.onModalClose)
-                ,
+                onClose: ()=>closeModal(modal.id, modal.onModalClose),
                 onSave: modal.cb,
                 title: modal.title,
                 question: modal.question,
@@ -1585,8 +1468,7 @@ const ConfirmationListener = ()=>{
                 if (r) closeModal(modal.id, modal.onModalClose);
                 return true;
             },
-            closeHandle: ()=>closeModal(modal.id, modal.onModalClose)
-            ,
+            closeHandle: ()=>closeModal(modal.id, modal.onModalClose),
             confirmText: modal.confirmText,
             confirmType: modal.confirmType,
             dontAskAgain: modal.dontAskAgain
@@ -1595,21 +1477,20 @@ const ConfirmationListener = ()=>{
     }));
 };
 
-function confirmation(prompt1, onConfirm, confirmType = "primary", confirmText = "Confirm", dontAskAgain = {
+function confirmation(prompt, onConfirm, confirmType = "primary", confirmText = "Confirm", dontAskAgain = {
     show: false
 }) {
-    if (!prompt1) throw new Error("Prompt must be specified");
+    if (!prompt) throw new Error("Prompt must be specified");
     if (!onConfirm || typeof onConfirm !== "function") throw new Error("onConfirm must be specified and must be a function");
     return new Promise((resolve)=>eventManager.emit("showModal", {
             modalType: "confirmation",
-            prompt: /*#__PURE__*/ React__default["default"].createElement("p", null, prompt1),
+            prompt: /*#__PURE__*/ React__default["default"].createElement("p", null, prompt),
             onConfirm,
             confirmText,
             confirmType,
             dontAskAgain,
             onModalClose: resolve
-        })
-    );
+        }));
 }
 const notificationModal = (title, body, buttonColor = "light", button = "OK")=>{
     if (!title || !body) throw new Error("Title and body must be specified");
@@ -1634,8 +1515,7 @@ function prompt(title, question, cb, initial, type = "text", hint = undefined) {
                 cb,
                 options: initial,
                 onModalClose: resolve
-            })
-        );
+            }));
     }
     return new Promise((resolve)=>eventManager.emit("showModal", {
             modalType: "prompt",
@@ -1646,10 +1526,9 @@ function prompt(title, question, cb, initial, type = "text", hint = undefined) {
             cb,
             hint,
             onModalClose: resolve
-        })
-    );
+        }));
 }
-const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , modalProps ={} ,  })=>{
+const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , modalProps ={}  })=>{
     return new Promise((resolve)=>{
         eventManager.emit("showModal", {
             modalType: "dynamic",
@@ -1666,8 +1545,7 @@ const dynamicModal = ({ title , fullBody =null , body =null , buttons =[] , moda
 const Icon = ({ icon , size =null , className =null , ...props })=>/*#__PURE__*/ React__default["default"].createElement("span", {
         className: `icon-${icon}${appendClass(className)}${appendClass(size, `icon-size-${size}`)}`,
         ...props
-    })
-;
+    });
 
 // useLayoutEffect will show warning if used during ssr, e.g. with Next.js
 // useIsomorphicEffect removes it by replacing useLayoutEffect with useEffect during ssr
@@ -1716,23 +1594,21 @@ function Portal(props) {
     }, children), portal);
 }
 
-const Accordion = ({ children , toggles =false , bordered =false ,  })=>{
+const Accordion = ({ children , toggles =false , bordered =false  })=>{
     return /*#__PURE__*/ React__default["default"].createElement("ul", {
         className: `accordion${bordered ? " accordion--bordered" : ""}`
     }, React__default["default"].Children.map(children, (child)=>/*#__PURE__*/ React__default["default"].isValidElement(child) ? /*#__PURE__*/ React__default["default"].cloneElement(child, {
             toggles
-        }) : null
-    ));
+        }) : null));
 };
 
-const AccordionElement = ({ children , defaultOpen =false , toggles =false , title ,  })=>{
+const AccordionElement = ({ children , defaultOpen =false , toggles =false , title  })=>{
     const [isOpen, setIsOpen] = React__default["default"].useState(defaultOpen);
     return /*#__PURE__*/ React__default["default"].createElement("li", {
         className: isOpen ? "active" : ""
     }, /*#__PURE__*/ React__default["default"].createElement("a", {
         className: "accordion__title",
-        onClick: ()=>setIsOpen((prev)=>!prev
-            )
+        onClick: ()=>setIsOpen((prev)=>!prev)
     }, /*#__PURE__*/ React__default["default"].createElement("span", null, title), toggles ? /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "accordion__toggle icon-chevron-down"
     }) : null), /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -1742,45 +1618,37 @@ const AccordionElement = ({ children , defaultOpen =false , toggles =false , tit
 
 const Wrapper = ({ children , className =null  })=>/*#__PURE__*/ React__default["default"].createElement("span", {
         className: `badge-wrapper${appendClass(className)}`
-    }, children)
-;
+    }, children);
 const Badge = ({ color ="primary" , size ="default" , children , className =null , ...props })=>/*#__PURE__*/ React__default["default"].createElement("span", {
         className: `${`badge badge--${color}`}${appendClass(size !== "default", `badge--${size}`)}${appendClass(className)}`,
         ...props
-    }, children)
-;
+    }, children);
 Badge.Dot = (props)=>/*#__PURE__*/ React__default["default"].createElement(Badge, {
         ...props,
         size: "dot"
-    })
-;
+    });
 Badge.Tiny = (props)=>/*#__PURE__*/ React__default["default"].createElement(Badge, {
         ...props,
         size: "tiny"
-    })
-;
+    });
 Badge.Small = (props)=>/*#__PURE__*/ React__default["default"].createElement(Badge, {
         ...props,
         size: "small"
-    })
-;
+    });
 Badge.Default = (props)=>/*#__PURE__*/ React__default["default"].createElement(Badge, {
         ...props,
         size: "default"
-    })
-;
+    });
 Badge.Large = (props)=>/*#__PURE__*/ React__default["default"].createElement(Badge, {
         ...props,
         size: "large"
-    })
-;
+    });
 Badge.Wrapper = Wrapper;
 const WithBadge = ({ children , badge , wrapperClass =null , ...props })=>/*#__PURE__*/ React__default["default"].createElement(Badge.Wrapper, {
         className: wrapperClass
     }, children, /*#__PURE__*/ React__default["default"].createElement(Badge, {
         ...props
-    }, badge))
-;
+    }, badge));
 
 /**
  * a type-safe version of the `usePrevious` hook described here:
@@ -1795,18 +1663,15 @@ const WithBadge = ({ children , badge , wrapperClass =null , ...props })=>/*#__P
     return ref.current;
 }
 
-const firstDefined = (...args)=>args.find((el)=>typeof el !== "undefined" && el !== null
-    )
-;
-const Tab = ({ active =false , className =null , activeClassName =null , unmountInactive =false , children ,  })=>{
+const firstDefined = (...args)=>args.find((el)=>typeof el !== "undefined" && el !== null);
+const Tab = ({ active =false , className =null , activeClassName =null , unmountInactive =false , children  })=>{
     if (!active && unmountInactive) return null;
     return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `tab-pane${appendClass(active, "active")}${appendClass(active && activeClassName, activeClassName)}${appendClass(className)}`
     }, children);
 };
-const isActive = (openTab, id, idx)=>openTab === null ? idx === 0 : openTab === firstDefined(id, idx)
-;
-const TabsHeader = ({ tabsClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , inline =false , openTab =null , sticky =false , onTabChange , children ,  })=>/*#__PURE__*/ React__default["default"].createElement("ul", {
+const isActive = (openTab, id, idx)=>openTab === null ? idx === 0 : openTab === firstDefined(id, idx);
+const TabsHeader = ({ tabsClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , inline =false , openTab =null , sticky =false , onTabChange , children  })=>/*#__PURE__*/ React__default["default"].createElement("ul", {
         className: `tabs${appendClass(tabsClassName)}${appendClass(center, "tabs--centered")}${appendClass(right, "tabs--right")}${appendClass(justified, "tabs--justified")}${appendClass(embossed, "tabs--embossed")}${appendClass(bordered, "tabs--bordered")}${appendClass(vertical, "tabs--vertical")}${appendClass(inline, "tabs--inline")}`,
         style: sticky ? {
             position: "sticky",
@@ -1814,32 +1679,27 @@ const TabsHeader = ({ tabsClassName =null , center =false , right =false , justi
         } : {}
     }, React__default["default"].Children.map(children, (child, idx)=>{
         if (!/*#__PURE__*/ React__default["default"].isValidElement(child)) return child;
-        const { props: { id , title  } ,  } = child;
+        const { props: { id , title  }  } = child;
         return /*#__PURE__*/ React__default["default"].createElement("li", {
             className: `tab${appendClass(isActive(openTab, id, idx), "active")}`,
             key: firstDefined(id, idx)
         }, /*#__PURE__*/ React__default["default"].createElement("a", {
             onClick: ()=>onTabChange(firstDefined(id, idx))
         }, title));
-    }))
-;
+    }));
 const composeColumnSize = (columnWidth)=>{
     if (typeof columnWidth === "string" || typeof columnWidth === "number") return `col-${columnWidth}`;
-    return Object.keys(columnWidth).map((k)=>`col-${k}-${columnWidth[k]}`
-    ).join(" ");
+    return Object.keys(columnWidth).map((k)=>`col-${k}-${columnWidth[k]}`).join(" ");
 };
 const ColumnWrap = ({ columnWidth , className , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `${composeColumnSize(columnWidth)}${appendClass(className)}`,
         ...props
-    })
-;
-const Tabs = ({ defaultTab =null , tabsClassName =null , contentClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , sticky =false , inline =false , renderHeader =(header)=>header
- , renderBody =(body)=>body
- , onTabChange =null , leftColumn ={
+    });
+const Tabs = ({ defaultTab =null , tabsClassName =null , contentClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , sticky =false , inline =false , renderHeader =(header)=>header , renderBody =(body)=>body , onTabChange =null , leftColumn ={
     columnWidth: 3
 } , rightColumn ={
     columnWidth: 9
-} , rowProps: { className: rowClassName , ...rowProps } = {} , beforeTabChange =null , children ,  })=>{
+} , rowProps: { className: rowClassName , ...rowProps } = {} , beforeTabChange =null , children  })=>{
     const [openTab, setOpenTab] = React__default["default"].useState(defaultTab || null);
     const prevTab = usePrevious(openTab);
     React__default["default"].useEffect(()=>{
@@ -1884,8 +1744,7 @@ const Tabs = ({ defaultTab =null , tabsClassName =null , contentClassName =null 
         className: `tab-content${contentClassName ? ` ${contentClassName}` : ""}`
     }, React__default["default"].Children.map(children, (child, idx)=>/*#__PURE__*/ React__default["default"].isValidElement(child) ? /*#__PURE__*/ React__default["default"].cloneElement(child, {
             active: isActive(openTab, child.props.id, idx)
-        }) : child
-    ))));
+        }) : child))));
     return /*#__PURE__*/ React__default["default"].createElement(ConditionalWrapper, {
         condition: vertical,
         wrapper: /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -1906,43 +1765,36 @@ const Section = /*#__PURE__*/ React.forwardRef(({ children , className =null , .
         className: `section${appendClass(className)}`,
         ...props,
         ref: ref
-    }, children)
-);
+    }, children));
 
 const Display = ({ as ="h1" , className =null , size , ...props })=>/*#__PURE__*/ React__default["default"].createElement(as, {
         ...props,
         className: `display-${size}${appendClass(className)}`
-    })
-;
+    });
 const Display0 = (props)=>/*#__PURE__*/ React__default["default"].createElement(Display, {
         ...props,
         size: 0
-    })
-;
+    });
 const Display1 = (props)=>/*#__PURE__*/ React__default["default"].createElement(Display, {
         ...props,
         size: 1
-    })
-;
+    });
 const Display2 = (props)=>/*#__PURE__*/ React__default["default"].createElement(Display, {
         ...props,
         size: 2
-    })
-;
+    });
 const Display3 = (props)=>/*#__PURE__*/ React__default["default"].createElement(Display, {
         ...props,
         size: 3
-    })
-;
+    });
 const Display4 = (props)=>/*#__PURE__*/ React__default["default"].createElement(Display, {
         ...props,
         size: 4
-    })
-;
+    });
 
 const TimelineItem = ({ icon =/*#__PURE__*/ React__default["default"].createElement(Icon, {
     icon: "circle"
-}) , time =null , className =null , contentClassName =null , simplified =false , header =null , children ,  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
+}) , time =null , className =null , contentClassName =null , simplified =false , header =null , children  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `timeline__item${appendClass(className)}`
     }, /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "timeline__icon"
@@ -1954,34 +1806,28 @@ const TimelineItem = ({ icon =/*#__PURE__*/ React__default["default"].createElem
         className: "timeline__header"
     }, header) : null, time && simplified ? /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "timeline__time"
-    }, time) : null, children))
-;
-const Timeline = ({ center =false , right =false , className =null , simplified =false , children ,  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
+    }, time) : null, children));
+const Timeline = ({ center =false , right =false , className =null , simplified =false , children  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `timeline${appendClass(center, "timeline--centered")}${appendClass(right, "timeline--right")}${appendClass(simplified, "simplified")}${appendClass(className)}`
     }, React__default["default"].Children.map(children, (child)=>/*#__PURE__*/ React.isValidElement(child) ? /*#__PURE__*/ React.cloneElement(child, {
             simplified
-        }) : child
-    ))
-;
+        }) : child));
 
-const Step = /*#__PURE__*/ React.forwardRef(({ visited =false , active =false , className =null , icon , children , consequativeIdx ,  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
+const Step = /*#__PURE__*/ React.forwardRef(({ visited =false , active =false , className =null , icon , children , consequativeIdx  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `step${appendClass(visited, "visited")}${appendClass(active, "active")}${appendClass(className)}`,
         ref: ref
     }, /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "step__icon"
     }, icon !== null && icon !== void 0 ? icon : consequativeIdx), /*#__PURE__*/ React__default["default"].createElement("div", {
         className: "step__label"
-    }, children))
-);
+    }, children)));
 
-const Steps = /*#__PURE__*/ React.forwardRef(({ size ="default" , color ="primary" , vertical =false , className =null , children ,  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
+const Steps = /*#__PURE__*/ React.forwardRef(({ size ="default" , color ="primary" , vertical =false , className =null , children  }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `steps${appendClass(size !== "default", `steps--${size}`)} steps--${color}${appendClass(vertical, "steps--vertical")}${appendClass(className)}`,
         ref: ref
     }, React__default["default"].Children.toArray(children).filter(Boolean).map((child, idx)=>/*#__PURE__*/ React.isValidElement(child) ? /*#__PURE__*/ React__default["default"].cloneElement(child, {
             consequativeIdx: idx + 1
-        }) : child
-    ))
-);
+        }) : child)));
 
 const VerticalCenter = ({ children  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: "content-fluid",
@@ -1996,8 +1842,7 @@ const VerticalCenter = ({ children  })=>/*#__PURE__*/ React__default["default"].
             flexDirection: "column",
             flex: 1
         }
-    }, children))
-;
+    }, children));
 
 const Textarea = ({ label =null , textareaClass =null , innerDivClass =null , className =null , id =null , inputRef =null , inline =false , error =null , ...textarea })=>{
     return /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -2015,11 +1860,11 @@ const Textarea = ({ label =null , textareaClass =null , innerDivClass =null , cl
     }) : null);
 };
 
-const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select" ,  })=>{
-    var _a1;
+const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select"  })=>{
+    var _a;
     return /*#__PURE__*/ React__default["default"].createElement(Dropdown, {
         type: "link",
-        header: ((_a1 = variants[selectedIdx]) === null || _a1 === void 0 ? void 0 : _a1.display) || placeholder,
+        header: ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.display) || placeholder,
         alwaysClose: true,
         className: "flex-center-vertical",
         stopPropagation: true
@@ -2027,8 +1872,7 @@ const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select
         var _a;
         return /*#__PURE__*/ React__default["default"].createElement("a", {
             key: v.variant,
-            onClick: ()=>setIdx(idx)
-            ,
+            onClick: ()=>setIdx(idx),
             className: ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.variant) === v.variant ? "selected" : ""
         }, v.display);
     }));
@@ -2046,19 +1890,15 @@ const ListHeader = ({ variants , selectedIdx , setIdx  })=>/*#__PURE__*/ React__
                 onClick: ()=>setIdx(idx)
             })
         }, v.display));
-    }))
-;
-const VariantSelector = ({ disableable =false , title =null , inline =false , onChange =null , enableTitleAppend =null , className =null , list =false , variant =null , variants , name ="" ,  })=>{
+    }));
+const VariantSelector = ({ disableable =false , title =null , inline =false , onChange =null , enableTitleAppend =null , className =null , list =false , variant =null , variants , name =""  })=>{
     const [variantIdx, setIdx] = React.useState(()=>{
-        const idx = variants.findIndex((v)=>v.selected || v.variant === variant
-        );
+        const idx = variants.findIndex((v)=>v.selected || v.variant === variant);
         return !disableable && idx < 0 ? 0 : idx;
     });
     React.useEffect(()=>{
-        const idx = variants.findIndex((v)=>v.variant === variant
-        );
-        setIdx((curr)=>idx < 0 || idx === curr ? curr : idx
-        );
+        const idx = variants.findIndex((v)=>v.variant === variant);
+        setIdx((curr)=>idx < 0 || idx === curr ? curr : idx);
     }, [
         variant,
         variants
@@ -2080,8 +1920,7 @@ const VariantSelector = ({ disableable =false , title =null , inline =false , on
             variants: variants,
             selectedIdx: variantIdx,
             setIdx: setIdx
-        }))
-    ;
+        }));
     return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `form-group${appendClass(inline, " inline-variants")}${appendClass(className)}`
     }, disableable ? /*#__PURE__*/ React__default["default"].createElement("span", {
@@ -2091,9 +1930,7 @@ const VariantSelector = ({ disableable =false , title =null , inline =false , on
         htmlFor: `${name}.disableable`
     }, /*#__PURE__*/ React__default["default"].createElement("input", {
         type: "checkbox",
-        onChange: ()=>setIdx((p)=>p >= 0 ? -1 : 0
-            )
-        ,
+        onChange: ()=>setIdx((p)=>p >= 0 ? -1 : 0),
         checked: variantIdx >= 0,
         id: `${name}.disableable`
     }), /*#__PURE__*/ React__default["default"].createElement("span", {
@@ -2120,8 +1957,7 @@ const Radio = /*#__PURE__*/ React.forwardRef(({ spacing =null , inline =false , 
         className: "radio__input"
     }), label ? /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "radio__label"
-    }, label) : null))
-);
+    }, label) : null)));
 const Radios = ({ values , value , onChange , name  })=>{
     const onRadioChange = React.useCallback((e)=>{
         e.persist();
@@ -2139,18 +1975,16 @@ const Radios = ({ values , value , onChange , name  })=>{
             onChange: onRadioChange,
             checked: value === v.value,
             value: v.value
-        })
-    ));
+        })));
 };
 
 const emptyList = [];
 const InputChips = /*#__PURE__*/ React__default["default"].forwardRef(({ chipsColor ="light" , addOnBlur =true , delimiters =[
     13
 ] , label =null , allowRepeat =false , allowRegex =null , valueValidator =null , maxChips =null , baloon =null , className =null , id =null , error =null , value: initialValue = null , onChange , outerWrap =true , chipsOutside =false , renderChip =null , onBlur =null , onChipRemove =null , onClick , noInput , ...input }, ref)=>{
-    const [value1, setValue] = React.useState(emptyList);
+    const [value, setValue] = React.useState(emptyList);
     React.useEffect(()=>{
-        setValue((curr)=>initialValue || curr || emptyList
-        );
+        setValue((curr)=>initialValue || curr || emptyList);
     }, [
         initialValue
     ]);
@@ -2174,8 +2008,7 @@ const InputChips = /*#__PURE__*/ React__default["default"].forwardRef(({ chipsCo
         let d = delimiters;
         if (typeof d === "string") {
             const { map  } = Array.prototype;
-            d = map.call(d, (ch)=>ch.charCodeAt(0)
-            );
+            d = map.call(d, (ch)=>ch.charCodeAt(0));
         }
         if (Array.isArray(d) && d.includes(event.keyCode)) {
             addValue(event.target.value);
@@ -2216,7 +2049,7 @@ const InputChips = /*#__PURE__*/ React__default["default"].forwardRef(({ chipsCo
         onChange,
         onChipRemove
     ]);
-    const showInput = (!maxChips || maxChips && Array.isArray(value1) && value1.length < maxChips) && !noInput;
+    const showInput = (!maxChips || maxChips && Array.isArray(value) && value.length < maxChips) && !noInput;
     return /*#__PURE__*/ React__default["default"].createElement(ConditionalWrapper, {
         wrapper: /*#__PURE__*/ React__default["default"].createElement("div", {
             className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`,
@@ -2229,31 +2062,29 @@ const InputChips = /*#__PURE__*/ React__default["default"].forwardRef(({ chipsCo
         htmlFor: id || input.name
     }, label, baloon ? /*#__PURE__*/ React__default["default"].createElement(InputHelpBaloon, {
         baloon: baloon
-    }) : null) : null, chipsOutside && Array.isArray(value1) && value1.length ? /*#__PURE__*/ React__default["default"].createElement("span", {
+    }) : null) : null, chipsOutside && Array.isArray(value) && value.length ? /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "chips-outer qtr-margin-bottom"
     }, /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "chips-inner"
-    }, value1.map((v, i)=>renderChip ? renderChip({
+    }, value.map((v, i)=>renderChip ? renderChip({
             value: v,
             idx: i,
             onDelete: ()=>handleDelete(i)
         }) : /*#__PURE__*/ React__default["default"].createElement(Label, {
             removable: true,
-            onRemove: ()=>handleDelete(i)
-            ,
+            onRemove: ()=>handleDelete(i),
             color: chipsColor,
             size: "small",
             key: `${v}-${i}`,
             className: "no-margin-bottom"
-        }, v)
-    ))) : null, /*#__PURE__*/ React__default["default"].createElement("div", {
+        }, v)))) : null, /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `input ${appendClass(!showInput, "dbl-padding-right")}`,
         onClick: onClick
-    }, !chipsOutside && Array.isArray(value1) && value1.length ? /*#__PURE__*/ React__default["default"].createElement("span", {
+    }, !chipsOutside && Array.isArray(value) && value.length ? /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "chips-outer"
     }, /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "chips-inner"
-    }, value1.map((v, i)=>renderChip ? renderChip({
+    }, value.map((v, i)=>renderChip ? renderChip({
             value: v,
             idx: i,
             onDelete: ()=>handleDelete(i)
@@ -2268,8 +2099,7 @@ const InputChips = /*#__PURE__*/ React__default["default"].forwardRef(({ chipsCo
             size: "small",
             key: `${v}-${i}`,
             className: "no-margin-bottom"
-        }, v)
-    ))) : null, showInput ? /*#__PURE__*/ React__default["default"].createElement("input", {
+        }, v)))) : null, showInput ? /*#__PURE__*/ React__default["default"].createElement("input", {
         type: "text",
         onKeyDown: handleKeyDown,
         onBlur: handleBlur,
@@ -2290,8 +2120,7 @@ const SelectChildren = ({ children , handleOptionClick , isSelected  })=>React__
         if (!/*#__PURE__*/ React.isValidElement(child)) return child;
         if (isOption(child)) return /*#__PURE__*/ React__default["default"].createElement("a", {
             key: idx,
-            onClick: (e)=>handleOptionClick(e, child.props.value)
-            ,
+            onClick: (e)=>handleOptionClick(e, child.props.value),
             className: `${appendClass(isSelected(child.props.value), "selected")}${appendClass(child.props.disabled, "disabled")}`
         }, child.props.children);
         if (isOptGroup(child)) return /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -2304,8 +2133,7 @@ const SelectChildren = ({ children , handleOptionClick , isSelected  })=>React__
             isSelected: isSelected
         }, child.props.children));
         return child;
-    })
-;
+    });
 const collectDisplays = (children)=>{
     const t = [];
     React__default["default"].Children.forEach(children, (child)=>{
@@ -2321,12 +2149,11 @@ const collectDisplays = (children)=>{
     return t.flat();
 };
 const EditableSelect = /*#__PURE__*/ React.forwardRef(({ compressed =false , prompt ="Select an option" , inline =false , type ="text" , children , label =null , error =null , onChange =null , value: initialValue = undefined , editable =false , multi =false , displayValues =false , disabled , className , divRef , options , onSelect =null , onDeselect =null , ...input }, inputRef)=>{
-    var _a1;
+    var _a;
     const [isOpen, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(initialValue);
     const ref = React.useRef(undefined);
-    const display = React.useMemo(()=>collectDisplays(children)
-    , [
+    const display = React.useMemo(()=>collectDisplays(children), [
         children
     ]);
     const handleClick = React.useCallback((newState = true)=>{
@@ -2346,8 +2173,7 @@ const EditableSelect = /*#__PURE__*/ React.forwardRef(({ compressed =false , pro
                 }
             };
             document.addEventListener("click", onOutsideClick, true);
-            return ()=>document.removeEventListener("click", onOutsideClick, true)
-            ;
+            return ()=>document.removeEventListener("click", onOutsideClick, true);
         }
     }, [
         isOpen,
@@ -2360,8 +2186,7 @@ const EditableSelect = /*#__PURE__*/ React.forwardRef(({ compressed =false , pro
             setValue((curr)=>{
                 if (curr === null || curr === void 0 ? void 0 : curr.includes(newValue)) {
                     added = false;
-                    return curr.filter((v)=>v !== newValue
-                    );
+                    return curr.filter((v)=>v !== newValue);
                 } else return (curr || []).concat(newValue);
             });
             const r = (_a = added ? onSelect : onDeselect) === null || _a === void 0 ? void 0 : _a.call(undefined, newValue);
@@ -2376,8 +2201,7 @@ const EditableSelect = /*#__PURE__*/ React.forwardRef(({ compressed =false , pro
         onSelect,
         onDeselect
     ]);
-    const isSelected = (checkValue)=>multi ? value === null || value === void 0 ? void 0 : value.includes(checkValue) : value === checkValue
-    ;
+    const isSelected = (checkValue)=>multi ? value === null || value === void 0 ? void 0 : value.includes(checkValue) : value === checkValue;
     React.useEffect(()=>{
         setValue(initialValue);
     }, [
@@ -2406,22 +2230,17 @@ const EditableSelect = /*#__PURE__*/ React.forwardRef(({ compressed =false , pro
         ...input,
         placeholder: !Array.isArray(value) || !value.length ? input.placeholder || prompt : "",
         readOnly: !editable,
-        onClick: ()=>handleClick(true)
-        ,
-        onChange: ()=>void 0
-        ,
+        onClick: ()=>handleClick(true),
+        onChange: ()=>void 0,
         onChipRemove: (idx)=>{
             let val;
             setValue((curr)=>{
                 val = curr[idx];
-                return curr.filter((_v, i)=>i !== idx
-                );
+                return curr.filter((_v, i)=>i !== idx);
             });
             if (typeof onDeselect === "function") onDeselect(val);
         },
-        value: displayValues ? value : display.filter((d)=>value === null || value === void 0 ? void 0 : value.includes(d.value)
-        ).map((d)=>d.display
-        ),
+        value: displayValues ? value : display.filter((d)=>value === null || value === void 0 ? void 0 : value.includes(d.value)).map((d)=>d.display),
         noInput: inline && !editable && Array.isArray(value) && value.length > 0,
         outerWrap: false,
         ref: inputRef
@@ -2439,8 +2258,7 @@ const EditableSelect = /*#__PURE__*/ React.forwardRef(({ compressed =false , pro
             e.persist();
             setValue(e.target.value);
         },
-        value: editable ? value || "" : !displayValues ? ((_a1 = display === null || display === void 0 ? void 0 : display.find((el)=>el.value === value
-        )) === null || _a1 === void 0 ? void 0 : _a1.display) || "" : value,
+        value: editable ? value || "" : !displayValues ? ((_a = display === null || display === void 0 ? void 0 : display.find((el)=>el.value === value)) === null || _a === void 0 ? void 0 : _a.display) || "" : value,
         ref: inputRef
     }), label ? /*#__PURE__*/ React__default["default"].createElement("label", {
         htmlFor: input.id
@@ -2452,8 +2270,7 @@ const EditableSelect = /*#__PURE__*/ React.forwardRef(({ compressed =false , pro
     }, options ? options.map((opt, idx)=>/*#__PURE__*/ React__default["default"].createElement("option", {
             key: idx,
             value: opt.value
-        }, opt.value)
-    ) : children)), error ? /*#__PURE__*/ React__default["default"].createElement(InputHelpBlock, {
+        }, opt.value)) : children)), error ? /*#__PURE__*/ React__default["default"].createElement(InputHelpBlock, {
         text: error
     }) : null);
 });
@@ -2468,13 +2285,13 @@ const MultiValueContainer = (props)=>{
 const MultiValueLabel = (props)=>{
     return /*#__PURE__*/ React__default["default"].createElement("span", null, props.children);
 };
-const MultiValueRemove = ({ innerProps: { className , ...props } ,  })=>{
+const MultiValueRemove = ({ innerProps: { className , ...props }  })=>{
     return /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "icon-close",
         ...props
     });
 };
-const Group = ({ className , children , Heading , headingProps , innerProps , ...props })=>{
+function Group({ className , children , Heading , headingProps , innerProps , ...props }) {
     return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `dropdown__group${appendClass(className)}`,
         ...innerProps
@@ -2482,11 +2299,12 @@ const Group = ({ className , children , Heading , headingProps , innerProps , ..
         ...props,
         id: headingProps.id
     }, headingProps.data.label), children);
-};
-const GroupHeading = ({ className , children , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
+}
+function GroupHeading({ className , children , ...props }) {
+    return /*#__PURE__*/ React__default["default"].createElement("div", {
         className: `dropdown__group-header${appendClass(className)}`
-    }, children)
-;
+    }, children);
+}
 
 function UnrefedSelect$1({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -2498,7 +2316,7 @@ function UnrefedSelect$1({ label =null , className , error , ...props }, ref) {
             MultiValueContainer,
             MultiValueLabel,
             MultiValueRemove,
-            Group,
+            Group: Group,
             GroupHeading
         },
         ...props,
@@ -2524,8 +2342,7 @@ function UnrefedSelect({ label =null , className , error , ...props }, ref) {
         },
         formatCreateLabel: (inputValue)=>/*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, props.isMulti ? "Add " : "Use ", /*#__PURE__*/ React__default["default"].createElement("span", {
                 className: "text-bold"
-            }, inputValue))
-        ,
+            }, inputValue)),
         ...props,
         ref: ref
     }), Boolean(error) && typeof error !== "boolean" ? /*#__PURE__*/ React__default["default"].createElement(InputHelpBlock, {
@@ -2550,8 +2367,7 @@ const VSeparator = /*#__PURE__*/ React.forwardRef(({ size ="default" , compresse
         className: `v-separator${appendClass(size !== "default", `v-separator--${size}`)}${appendClass(compressed, "v-separator--compressed")}${appendClass(className)}`,
         ...props,
         ref: ref
-    })
-);
+    }));
 
 const Slider = /*#__PURE__*/ React.forwardRef(({ dots =true , label , className , ...props }, ref)=>{
     return /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -2592,15 +2408,13 @@ const Kbd = /*#__PURE__*/ React.forwardRef(({ children , className , ...props },
         className: `kbd${appendClass(className)}`,
         ref: ref,
         ...props
-    }, children)
-);
+    }, children));
 
 const Blockquote = /*#__PURE__*/ React.forwardRef(({ className , cite , color , align , children , padding , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("blockquote", {
         className: `${appendClass(color, `blockquote--${color}`)}${appendClass(align, `blockquote--${align}`)}${appendClass(padding && padding !== "default", `blockquote--${padding}`)}${appendClass(className)}`,
         ...props,
         ref: ref
-    }, /*#__PURE__*/ React__default["default"].createElement("p", null, children), cite ? /*#__PURE__*/ React__default["default"].createElement("cite", null, cite) : null)
-);
+    }, /*#__PURE__*/ React__default["default"].createElement("p", null, children), cite ? /*#__PURE__*/ React__default["default"].createElement("cite", null, cite) : null));
 
 const Gauge = /*#__PURE__*/ React.forwardRef(({ color ="primary" , size ="default" , className =null , label , percentage , ...props }, ref)=>{
     return /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -2655,7 +2469,7 @@ function useTooltip(placement) {
             }),
             reactDomInteractions.arrow({
                 element: arrowRef
-            }), 
+            })
         ],
         open: show,
         onOpenChange: setShow,
@@ -2673,7 +2487,7 @@ function useTooltip(placement) {
     });
     const { getReferenceProps , getFloatingProps  } = reactDomInteractions.useInteractions([
         role,
-        hover, 
+        hover
     ]);
     return {
         ...fl,
@@ -2683,7 +2497,7 @@ function useTooltip(placement) {
         arrowRef
     };
 }
-const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFloatingProps , middlewareData , arrowRef , placement , root: rootProvided ,  })=>{
+const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFloatingProps , middlewareData , arrowRef , placement , root: rootProvided  })=>{
     const { x: arrowX , y: arrowY  } = middlewareData.arrow || {
         x: 0,
         y: 0
@@ -2728,10 +2542,9 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
                 bottom: "",
                 [staticSide]: "-4px"
             }
-        })))
-    );
+        }))));
 };
-const WithTooltip = ({ children , tooltip , placement ="top" ,  })=>{
+const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
     const { getReferenceProps , reference , ...tt } = useTooltip(placement);
     const ref = useCallbackRef.useMergeRefs([
         reference,
@@ -2745,7 +2558,7 @@ const WithTooltip = ({ children , tooltip , placement ="top" ,  })=>{
     }, tooltip));
 };
 
-var styles = {"form_group":"Segmented-module_form_group__1mUdE","form_group--full":"Segmented-module_form_group--full__N5wVG","segmented_root--full":"Segmented-module_segmented_root--full__18wiw","segmented_root":"Segmented-module_segmented_root__3-Dvo","segmented_active":"Segmented-module_segmented_active__151Vo","segmented_option_control":"Segmented-module_segmented_option_control__2QX0m","segmented_option_control_active":"Segmented-module_segmented_option_control_active__1PrMk","segmented_option_control_label":"Segmented-module_segmented_option_control_label__2UOPS","segmented_option_control_input":"Segmented-module_segmented_option_control_input__3sL3S"};
+var styles = {"form_group":"Segmented-module_form_group__EAPlN","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
 
 const Active = ({ activeRef , value , fullWidth  })=>{
     const [coord, setCoord] = React.useState({
@@ -2812,8 +2625,7 @@ function UrefedSegmented({ options , value , label , inline , className , fullWi
             key: o.value,
             disabled: o.disabled,
             ...props
-        }, o.label)
-    ))));
+        }, o.label)))));
 }
 const SegmentedControl = /*#__PURE__*/ React.forwardRef(UrefedSegmented);
 

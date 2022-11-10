@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useState, useEffect } from 'react';
 import { appendClass } from '../utils/index.js';
 
-var styles = {"form_group":"Segmented-module_form_group__1mUdE","form_group--full":"Segmented-module_form_group--full__N5wVG","segmented_root--full":"Segmented-module_segmented_root--full__18wiw","segmented_root":"Segmented-module_segmented_root__3-Dvo","segmented_active":"Segmented-module_segmented_active__151Vo","segmented_option_control":"Segmented-module_segmented_option_control__2QX0m","segmented_option_control_active":"Segmented-module_segmented_option_control_active__1PrMk","segmented_option_control_label":"Segmented-module_segmented_option_control_label__2UOPS","segmented_option_control_input":"Segmented-module_segmented_option_control_input__3sL3S"};
+var styles = {"form_group":"Segmented-module_form_group__EAPlN","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -80,8 +80,7 @@ function UrefedSegmented({ options , value , label , inline , className , fullWi
             value: o.value,
             key: o.value,
             disabled: o.disabled
-        }, props), o.label)
-    ))));
+        }, props), o.label)))));
 }
 const SegmentedControl = /*#__PURE__*/ forwardRef(UrefedSegmented);
 

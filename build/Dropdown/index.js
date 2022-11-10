@@ -27,20 +27,16 @@ const Element = ({ selected =false , icon =null , children , className =null , .
         wrapper: /*#__PURE__*/ React.createElement("span", {
             className: "qtr-margin-left"
         })
-    }, children))
-;
+    }, children));
 const Divider = ()=>/*#__PURE__*/ React.createElement("div", {
         className: "divider"
-    })
-;
+    });
 const Group = ({ children  })=>/*#__PURE__*/ React.createElement("div", {
         className: "dropdown__group"
-    }, children)
-;
+    }, children);
 const GroupHeader = ({ header  })=>/*#__PURE__*/ React.createElement("div", {
         className: "dropdown__group-header"
-    }, header)
-;
+    }, header);
 const Menu = /*#__PURE__*/ forwardRef(({ children , className , ...props }, ref)=>{
     return /*#__PURE__*/ React.createElement("div", _extends$1({
         className: `dropdown__menu${appendClass(className)}`
@@ -63,7 +59,7 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-const DropdownHeader = ({ type , handleClick , className , header ,  })=>{
+const DropdownHeader = ({ type , handleClick , className , header  })=>{
     switch(type){
         case "icon":
             return /*#__PURE__*/ React.createElement("span", {

@@ -19,8 +19,7 @@ const Section = /*#__PURE__*/ forwardRef(({ children , className =null , ...prop
         className: `section${appendClass(className)}`
     }, props, {
         ref: ref
-    }), children)
-);
+    }), children));
 
 export { Section };
 //# sourceMappingURL=index.js.map

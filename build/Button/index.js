@@ -29,50 +29,41 @@ Button = /*#__PURE__*/ forwardRef(({ size ="default" , color ="primary" , wide =
         },
         ...props,
         ref
-    })
-);
+    }));
 Button.Primary = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
         color: "primary",
         ref: ref
-    }))
-);
+    })));
 Button.Secondary = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
         color: "secondary",
         ref: ref
-    }))
-);
+    })));
 Button.Success = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
         color: "success",
         ref: ref
-    }))
-);
+    })));
 Button.Dark = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
         color: "dark",
         ref: ref
-    }))
-);
+    })));
 Button.Ghost = /*#__PURE__*/ forwardRef(({ fullGhost =false , className , ...props }, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({
         className: `${appendClass(fullGhost, "btn--full-ghost")}${appendClass(className)}`
     }, props, {
         color: "ghost",
         ref: ref
-    }))
-);
+    })));
 Button.Link = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
         color: "link",
         ref: ref
-    }))
-);
+    })));
 Button.Light = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
         color: "light",
         ref: ref
-    }))
-);
+    })));
 Button.Danger = /*#__PURE__*/ forwardRef((props, ref)=>/*#__PURE__*/ React.createElement(Button, _extends$1({}, props, {
         color: "danger",
         ref: ref
-    }))
-);
+    })));
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -92,8 +83,7 @@ const ButtonGroup = /*#__PURE__*/ forwardRef(({ square =false , withDivider =fal
         className: `btn-group${appendClass(square, "btn-group--square")}${appendClass(withDivider, " btn-group--divider")}${appendClass(className)}`
     }, props, {
         ref: ref
-    }))
-);
+    })));
 
 export { Button, ButtonGroup };
 //# sourceMappingURL=index.js.map

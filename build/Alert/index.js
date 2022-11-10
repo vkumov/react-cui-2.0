@@ -54,7 +54,7 @@ const classes = (type, icon)=>{
             ];
     }
 };
-const Alert = ({ type ="info" , children , title ="" , dismissable =false , className =null , onDismiss =null , withIcon =true , icon =null ,  })=>{
+const Alert = ({ type ="info" , children , title ="" , dismissable =false , className =null , onDismiss =null , withIcon =true , icon =null  })=>{
     const [dismissed, setDismissed] = React.useState(false);
     const handleDismiss = (e)=>{
         setDismissed(true);
@@ -75,36 +75,28 @@ const Alert = ({ type ="info" , children , title ="" , dismissable =false , clas
 };
 Alert.Warning = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "warning"
-    }, props))
-;
+    }, props));
 Alert.Danger = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "danger"
-    }, props))
-;
+    }, props));
 Alert.Error = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "error"
-    }, props))
-;
+    }, props));
 Alert.Success = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "success"
-    }, props))
-;
+    }, props));
 Alert.Info = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "info"
-    }, props))
-;
+    }, props));
 Alert.Dark = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "dark"
-    }, props))
-;
+    }, props));
 Alert.Light = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "light"
-    }, props))
-;
+    }, props));
 Alert.WarningAlt = (props)=>/*#__PURE__*/ React.createElement(Alert, _extends({
         type: "warning-alt"
-    }, props))
-;
+    }, props));
 
 export { Alert };
 //# sourceMappingURL=index.js.map

@@ -28,8 +28,7 @@ const SelectChildren = ({ children , handleOptionClick , isSelected  })=>React.C
         if (!/*#__PURE__*/ isValidElement(child)) return child;
         if (isOption(child)) return /*#__PURE__*/ React.createElement("a", {
             key: idx,
-            onClick: (e)=>handleOptionClick(e, child.props.value)
-            ,
+            onClick: (e)=>handleOptionClick(e, child.props.value),
             className: `${appendClass(isSelected(child.props.value), "selected")}${appendClass(child.props.disabled, "disabled")}`
         }, child.props.children);
         if (isOptGroup(child)) return /*#__PURE__*/ React.createElement("div", {
@@ -42,8 +41,7 @@ const SelectChildren = ({ children , handleOptionClick , isSelected  })=>React.C
             isSelected: isSelected
         }, child.props.children));
         return child;
-    })
-;
+    });
 const collectDisplays = (children)=>{
     const t = [];
     React.Children.forEach(children, (child)=>{
@@ -59,12 +57,11 @@ const collectDisplays = (children)=>{
     return t.flat();
 };
 const EditableSelect = /*#__PURE__*/ forwardRef(({ compressed =false , prompt ="Select an option" , inline =false , type ="text" , children , label =null , error =null , onChange =null , value: initialValue = undefined , editable =false , multi =false , displayValues =false , disabled , className , divRef , options , onSelect =null , onDeselect =null , ...input }, inputRef)=>{
-    var ref2;
+    var ref;
     const [isOpen, setOpen] = useState(false);
     const [value, setValue] = useState(initialValue);
     const ref1 = useRef(undefined);
-    const display = useMemo(()=>collectDisplays(children)
-    , [
+    const display = useMemo(()=>collectDisplays(children), [
         children
     ]);
     const handleClick = useCallback((newState = true)=>{
@@ -84,8 +81,7 @@ const EditableSelect = /*#__PURE__*/ forwardRef(({ compressed =false , prompt ="
                 }
             };
             document.addEventListener("click", onOutsideClick, true);
-            return ()=>document.removeEventListener("click", onOutsideClick, true)
-            ;
+            return ()=>document.removeEventListener("click", onOutsideClick, true);
         }
     }, [
         isOpen,
@@ -98,8 +94,7 @@ const EditableSelect = /*#__PURE__*/ forwardRef(({ compressed =false , prompt ="
             setValue((curr)=>{
                 if (curr === null || curr === void 0 ? void 0 : curr.includes(newValue)) {
                     added = false;
-                    return curr.filter((v)=>v !== newValue
-                    );
+                    return curr.filter((v)=>v !== newValue);
                 } else return (curr || []).concat(newValue);
             });
             const r = (ref = added ? onSelect : onDeselect) === null || ref === void 0 ? void 0 : ref.call(undefined, newValue);
@@ -145,23 +140,19 @@ const EditableSelect = /*#__PURE__*/ forwardRef(({ compressed =false , prompt ="
     }, input, {
         placeholder: !Array.isArray(value) || !value.length ? input.placeholder || prompt : "",
         readOnly: !editable,
-        onClick: ()=>handleClick(true)
-        ,
-        onChange: ()=>void 0
-        ,
+        onClick: ()=>handleClick(true),
+        onChange: ()=>void 0,
         onChipRemove: (idx)=>{
             let val;
             setValue((curr)=>{
                 val = curr[idx];
-                return curr.filter((_v, i)=>i !== idx
-                );
+                return curr.filter((_v, i)=>i !== idx);
             });
             if (typeof onDeselect === "function") onDeselect(val);
         },
         value: displayValues ? value : display.filter((d)=>{
             return value === null || value === void 0 ? void 0 : value.includes(d.value);
-        }).map((d)=>d.display
-        ),
+        }).map((d)=>d.display),
         noInput: inline && !editable && Array.isArray(value) && value.length > 0,
         outerWrap: false,
         ref: inputRef
@@ -179,8 +170,7 @@ const EditableSelect = /*#__PURE__*/ forwardRef(({ compressed =false , prompt ="
             e.persist();
             setValue(e.target.value);
         },
-        value: editable ? value || "" : !displayValues ? ((ref2 = display === null || display === void 0 ? void 0 : display.find((el)=>el.value === value
-        )) === null || ref2 === void 0 ? void 0 : ref2.display) || "" : value,
+        value: editable ? value || "" : !displayValues ? ((ref = display === null || display === void 0 ? void 0 : display.find((el)=>el.value === value)) === null || ref === void 0 ? void 0 : ref.display) || "" : value,
         ref: inputRef
     })), label ? /*#__PURE__*/ React.createElement("label", {
         htmlFor: input.id
@@ -192,8 +182,7 @@ const EditableSelect = /*#__PURE__*/ forwardRef(({ compressed =false , prompt ="
     }, options ? options.map((opt, idx)=>/*#__PURE__*/ React.createElement("option", {
             key: idx,
             value: opt.value
-        }, opt.value)
-    ) : children)), error ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
+        }, opt.value)) : children)), error ? /*#__PURE__*/ React.createElement(InputHelpBlock, {
         text: error
     }) : null);
 });

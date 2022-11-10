@@ -3,11 +3,11 @@ import { Dropdown } from '../Dropdown/index.js';
 import { ConditionalWrapper } from '../Conditional/index.js';
 import { appendClass } from '../utils/index.js';
 
-const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select" ,  })=>{
-    var ref1;
+const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select"  })=>{
+    var ref;
      return React.createElement(Dropdown, {
         type: "link",
-        header: ((ref1 = variants[selectedIdx]) === null || ref1 === void 0 ? void 0 : ref1.display) || placeholder,
+        header: ((ref = variants[selectedIdx]) === null || ref === void 0 ? void 0 : ref.display) || placeholder,
         alwaysClose: true,
         className: "flex-center-vertical",
         stopPropagation: true
@@ -15,8 +15,7 @@ const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select
         var ref;
          return React.createElement("a", {
             key: v.variant,
-            onClick: ()=>setIdx(idx)
-            ,
+            onClick: ()=>setIdx(idx),
             className: ((ref = variants[selectedIdx]) === null || ref === void 0 ? void 0 : ref.variant) === v.variant ? "selected" : ""
         }, v.display);
     }));
@@ -37,17 +36,14 @@ const ListHeader = ({ variants , selectedIdx , setIdx  })=>{
         }, v.display));
     }));
 };
-const VariantSelector = ({ disableable =false , title =null , inline =false , onChange =null , enableTitleAppend =null , className =null , list =false , variant =null , variants , name ="" ,  })=>{
+const VariantSelector = ({ disableable =false , title =null , inline =false , onChange =null , enableTitleAppend =null , className =null , list =false , variant =null , variants , name =""  })=>{
     const [variantIdx, setIdx] = useState(()=>{
-        const idx = variants.findIndex((v)=>v.selected || v.variant === variant
-        );
+        const idx = variants.findIndex((v)=>v.selected || v.variant === variant);
         return !disableable && idx < 0 ? 0 : idx;
     });
     useEffect(()=>{
-        const idx = variants.findIndex((v)=>v.variant === variant
-        );
-        setIdx((curr)=>idx < 0 || idx === curr ? curr : idx
-        );
+        const idx = variants.findIndex((v)=>v.variant === variant);
+        setIdx((curr)=>idx < 0 || idx === curr ? curr : idx);
     }, [
         variant,
         variants
@@ -69,8 +65,7 @@ const VariantSelector = ({ disableable =false , title =null , inline =false , on
             variants: variants,
             selectedIdx: variantIdx,
             setIdx: setIdx
-        }))
-    ;
+        }));
     return /*#__PURE__*/ React.createElement("div", {
         className: `form-group${appendClass(inline, " inline-variants")}${appendClass(className)}`
     }, disableable ? /*#__PURE__*/ React.createElement("span", {
@@ -80,9 +75,7 @@ const VariantSelector = ({ disableable =false , title =null , inline =false , on
         htmlFor: `${name}.disableable`
     }, /*#__PURE__*/ React.createElement("input", {
         type: "checkbox",
-        onChange: ()=>setIdx((p)=>p >= 0 ? -1 : 0
-            )
-        ,
+        onChange: ()=>setIdx((p)=>p >= 0 ? -1 : 0),
         checked: variantIdx >= 0,
         id: `${name}.disableable`
     }), /*#__PURE__*/ React.createElement("span", {

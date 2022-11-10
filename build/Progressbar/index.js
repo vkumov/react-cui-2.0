@@ -26,8 +26,7 @@ const Progressbar = /*#__PURE__*/ forwardRef(({ size ="default" , withLabel =fal
         className: "progressbar__label"
     }, label) : /*#__PURE__*/ React.createElement("div", {
         className: "progressbar__label"
-    }, `${percentage}%`) : null)
-);
+    }, `${percentage}%`) : null));
 
 export { Progressbar };
 //# sourceMappingURL=index.js.map

@@ -16,14 +16,12 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-const Button = ({ content , position , active =false , disabled =false ,  })=>/*#__PURE__*/ React.createElement(PaginationContext.Consumer, null, ({ changePage  })=>/*#__PURE__*/ React.createElement("li", {
+const Button = ({ content , position , active =false , disabled =false  })=>/*#__PURE__*/ React.createElement(PaginationContext.Consumer, null, ({ changePage  })=>/*#__PURE__*/ React.createElement("li", {
             className: active ? "active" : ""
         }, /*#__PURE__*/ React.createElement("a", {
             className: disabled ? "disabled" : "",
             onClick: (e)=>changePage(e, position)
-        }, content))
-    )
-;
+        }, content)));
 const FirstPrev = ()=>{
     const { perPage , firstAndLast , position , icons , prev , beginAt  } = React.useContext(PaginationContext);
     const disabled = position < perPage + beginAt;
@@ -79,9 +77,7 @@ const Pages = ({ start , finish  })=>/*#__PURE__*/ React.createElement(Paginatio
                 key: `${current}-page`,
                 position: (current - 1) * perPage + beginAt
             });
-        })
-    )
-;
+        }));
 const Pagination = ({ beginAt =1 , rounded =false , firstAndLast =true , icons =false , next ="Next" , perPage =1 , prev ="Previous" , size ="default" , className =null , position , total , onPageChange , ...rest })=>{
     const pages = Math.ceil(total / perPage);
     const active = Math.floor(position / perPage) + 1;

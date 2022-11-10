@@ -47,8 +47,7 @@ const Input = /*#__PURE__*/ forwardRef(({ type ="text" , inline =null , helpBloc
         condition: !inline && helpBlock && !!error
     }, /*#__PURE__*/ React.createElement(InputHelpBlock, {
         text: error
-    })))
-);
+    }))));
 
 export { Input };
 //# sourceMappingURL=index.js.map

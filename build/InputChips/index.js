@@ -21,11 +21,10 @@ function _extends() {
 const emptyList = [];
 const InputChips = /*#__PURE__*/ React.forwardRef(({ chipsColor ="light" , addOnBlur =true , delimiters =[
     13
-] , label =null , allowRepeat =false , allowRegex =null , valueValidator =null , maxChips =null , baloon =null , className =null , id =null , error =null , value: initialValue = null , onChange , outerWrap =true , chipsOutside =false , renderChip =null , onBlur =null , onChipRemove =null , onClick , noInput , ...input }, ref1)=>{
-    const [value1, setValue] = useState(emptyList);
+] , label =null , allowRepeat =false , allowRegex =null , valueValidator =null , maxChips =null , baloon =null , className =null , id =null , error =null , value: initialValue = null , onChange , outerWrap =true , chipsOutside =false , renderChip =null , onBlur =null , onChipRemove =null , onClick , noInput , ...input }, ref)=>{
+    const [value, setValue] = useState(emptyList);
     useEffect(()=>{
-        setValue((curr)=>initialValue || curr || emptyList
-        );
+        setValue((curr)=>initialValue || curr || emptyList);
     }, [
         initialValue
     ]);
@@ -49,8 +48,7 @@ const InputChips = /*#__PURE__*/ React.forwardRef(({ chipsColor ="light" , addOn
         let d = delimiters;
         if (typeof d === "string") {
             const { map  } = Array.prototype;
-            d = map.call(d, (ch)=>ch.charCodeAt(0)
-            );
+            d = map.call(d, (ch)=>ch.charCodeAt(0));
         }
         if (Array.isArray(d) && d.includes(event.keyCode)) {
             addValue(event.target.value);
@@ -91,11 +89,11 @@ const InputChips = /*#__PURE__*/ React.forwardRef(({ chipsColor ="light" , addOn
         onChange,
         onChipRemove
     ]);
-    const showInput = (!maxChips || maxChips && Array.isArray(value1) && value1.length < maxChips) && !noInput;
+    const showInput = (!maxChips || maxChips && Array.isArray(value) && value.length < maxChips) && !noInput;
     return /*#__PURE__*/ React.createElement(ConditionalWrapper, {
         wrapper: /*#__PURE__*/ React.createElement("div", {
             className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`,
-            ref: ref1
+            ref: ref
         }),
         condition: outerWrap
     }, /*#__PURE__*/ React.createElement("div", {
@@ -104,31 +102,29 @@ const InputChips = /*#__PURE__*/ React.forwardRef(({ chipsColor ="light" , addOn
         htmlFor: id || input.name
     }, label, baloon ? /*#__PURE__*/ React.createElement(InputHelpBaloon, {
         baloon: baloon
-    }) : null) : null, chipsOutside && Array.isArray(value1) && value1.length ? /*#__PURE__*/ React.createElement("span", {
+    }) : null) : null, chipsOutside && Array.isArray(value) && value.length ? /*#__PURE__*/ React.createElement("span", {
         className: "chips-outer qtr-margin-bottom"
     }, /*#__PURE__*/ React.createElement("span", {
         className: "chips-inner"
-    }, value1.map((v, i)=>renderChip ? renderChip({
+    }, value.map((v, i)=>renderChip ? renderChip({
             value: v,
             idx: i,
             onDelete: ()=>handleDelete(i)
         }) : /*#__PURE__*/ React.createElement(Label, {
             removable: true,
-            onRemove: ()=>handleDelete(i)
-            ,
+            onRemove: ()=>handleDelete(i),
             color: chipsColor,
             size: "small",
             key: `${v}-${i}`,
             className: "no-margin-bottom"
-        }, v)
-    ))) : null, /*#__PURE__*/ React.createElement("div", {
+        }, v)))) : null, /*#__PURE__*/ React.createElement("div", {
         className: `input ${appendClass(!showInput, "dbl-padding-right")}`,
         onClick: onClick
-    }, !chipsOutside && Array.isArray(value1) && value1.length ? /*#__PURE__*/ React.createElement("span", {
+    }, !chipsOutside && Array.isArray(value) && value.length ? /*#__PURE__*/ React.createElement("span", {
         className: "chips-outer"
     }, /*#__PURE__*/ React.createElement("span", {
         className: "chips-inner"
-    }, value1.map((v, i)=>renderChip ? renderChip({
+    }, value.map((v, i)=>renderChip ? renderChip({
             value: v,
             idx: i,
             onDelete: ()=>handleDelete(i)
@@ -143,8 +139,7 @@ const InputChips = /*#__PURE__*/ React.forwardRef(({ chipsColor ="light" , addOn
             size: "small",
             key: `${v}-${i}`,
             className: "no-margin-bottom"
-        }, v)
-    ))) : null, showInput ? /*#__PURE__*/ React.createElement("input", _extends({
+        }, v)))) : null, showInput ? /*#__PURE__*/ React.createElement("input", _extends({
         type: "text",
         onKeyDown: handleKeyDown,
         onBlur: handleBlur,

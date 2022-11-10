@@ -19,8 +19,7 @@ const Blockquote = /*#__PURE__*/ forwardRef(({ className , cite , color , align 
         className: `${appendClass(color, `blockquote--${color}`)}${appendClass(align, `blockquote--${align}`)}${appendClass(padding && padding !== "default", `blockquote--${padding}`)}${appendClass(className)}`
     }, props, {
         ref: ref
-    }), /*#__PURE__*/ React.createElement("p", null, children), cite ? /*#__PURE__*/ React.createElement("cite", null, cite) : null)
-);
+    }), /*#__PURE__*/ React.createElement("p", null, children), cite ? /*#__PURE__*/ React.createElement("cite", null, cite) : null));
 
 export { Blockquote };
 //# sourceMappingURL=index.js.map

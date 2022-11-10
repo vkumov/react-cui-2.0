@@ -1,9 +1,8 @@
-import React, { type Ref } from "react";
-import { Props as SelectProps, GroupBase } from "react-select";
+import React, { type Ref, type ReactNode } from "react";
+import { type Props as SelectProps, type GroupBase } from "react-select";
 import type SelectGeneric from "react-select/dist/declarations/src/Select";
-import "../../css/react-select.css";
-import type { ReactNode } from "react";
 import type { LabelColor } from "../Label";
+import "../../css/react-select.css";
 declare type CUISelectProps = {
   label?: ReactNode;
   multiValueColor?: LabelColor;
@@ -71,6 +70,7 @@ export declare const ReactSelect: <
         | "theme"
         | "value"
         | "form"
+        | "required"
       > & {
         "aria-live"?: "off" | "assertive" | "polite";
         backspaceRemovesValue?: boolean;
@@ -168,6 +168,7 @@ export declare const ReactSelect: <
         | "theme"
         | "value"
         | "form"
+        | "required"
       > & {
         "aria-live"?: "off" | "assertive" | "polite";
         backspaceRemovesValue?: boolean;

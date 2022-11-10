@@ -39,8 +39,7 @@ const Footer = ()=>/*#__PURE__*/ React.createElement("footer", {
         href: "https://www.cisco.com/c/en/us/about/legal/trademarks.html",
         target: "_blank",
         rel: "noopener noreferrer"
-    }, "Trademarks")))))
-;
+    }, "Trademarks")))));
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -62,12 +61,10 @@ const Header = ({ children , fluid =false , ...props })=>/*#__PURE__*/ React.cre
         className: `container${fluid ? "-fluid" : ""}`
     }, /*#__PURE__*/ React.createElement("div", {
         className: "header-panels"
-    }, children)))
-;
+    }, children)));
 const HeaderPanel = ({ children , center =false , right =false , className =null , ...props })=>/*#__PURE__*/ React.createElement("div", _extends({
         className: `header-panel${appendClass(center, "header-panel--center")}${appendClass(right, "header-panel--right")}${appendClass(className)}`
-    }, props), children)
-;
+    }, props), children);
 const HeaderTitle = ({ icon =true , link =null , title , ...props })=>/*#__PURE__*/ React.createElement(HeaderPanel, _extends({}, props), icon ? /*#__PURE__*/ React.createElement("a", {
         className: "header__logo",
         href: link || "http://www.cisco.com",
@@ -77,8 +74,7 @@ const HeaderTitle = ({ icon =true , link =null , title , ...props })=>/*#__PURE_
         className: typeof icon === "string" ? `icon-${icon}` : "icon-cisco"
     })) : null, /*#__PURE__*/ React.createElement("div", {
         className: "header__title"
-    }, title))
-;
+    }, title));
 
 export { Footer, Header, HeaderPanel, HeaderTitle };
 //# sourceMappingURL=index.js.map

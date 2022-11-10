@@ -71,6 +71,7 @@ export declare const CreatableReactSelect: <
       | "theme"
       | "value"
       | "form"
+      | "required"
     > & {
       "aria-live"?: "off" | "assertive" | "polite";
       backspaceRemovesValue?: boolean;
@@ -171,6 +172,7 @@ export declare const CreatableReactSelect: <
         | "theme"
         | "value"
         | "form"
+        | "required"
       > & {
         "aria-live"?: "off" | "assertive" | "polite";
         backspaceRemovesValue?: boolean;

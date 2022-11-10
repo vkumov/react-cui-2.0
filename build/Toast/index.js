@@ -43,7 +43,7 @@ const ToastIcon = ({ type  })=>{
         className: iconType(type)
     })) : null;
 };
-const Toast = ({ title , message , type , copyError =false , bordered =false ,  })=>/*#__PURE__*/ React.createElement("div", {
+const Toast = ({ title , message , type , copyError =false , bordered =false  })=>/*#__PURE__*/ React.createElement("div", {
         className: `toast${appendClass(bordered, "toast--bordered")}`
     }, /*#__PURE__*/ React.createElement(ToastIcon, {
         type: type
@@ -55,8 +55,7 @@ const Toast = ({ title , message , type , copyError =false , bordered =false ,  
         className: "toast__message"
     }, message, type === "error" && copyError ? /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ React.createElement("br", null), /*#__PURE__*/ React.createElement("br", null), /*#__PURE__*/ React.createElement("a", {
         onClick: ()=>typeof message === "string" || typeof message === "number" ? void copyStringToClipboard(message) : void 0
-    }, "Copy to clipboard")) : null) : null))
-;
+    }, "Copy to clipboard")) : null) : null));
 const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_", args = {})=>{
     if (type === "loading") {
         var _autoClose;
@@ -67,30 +66,22 @@ const toast = (type, title, message, copyError = true, containerId = "_GLOBAL_",
             title,
             message,
             copyError
-        }))
-    , {
+        })), {
         containerId,
         ...args
     });
 };
-toast.success = (...args)=>toast("success", ...args)
-;
-toast.error = (...args)=>toast("error", ...args)
-;
-toast.warning = (...args)=>toast("warning", ...args)
-;
-toast.info = (...args)=>toast("info", ...args)
-;
-toast.loading = (...args)=>toast("loading", ...args)
-;
-toast.none = (...args)=>toast("none", ...args)
-;
+toast.success = (...args)=>toast("success", ...args);
+toast.error = (...args)=>toast("error", ...args);
+toast.warning = (...args)=>toast("warning", ...args);
+toast.info = (...args)=>toast("info", ...args);
+toast.loading = (...args)=>toast("loading", ...args);
+toast.none = (...args)=>toast("none", ...args);
 toast.update = (toastId, updates, options)=>{
     options.render = /*#__PURE__*/ React.createElement(Toast, _extends$1({}, updates));
     toast$1.update(toastId, options);
 };
-toast.dismiss = (...args)=>toast$1.dismiss(...args)
-;
+toast.dismiss = (...args)=>toast$1.dismiss(...args);
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -120,8 +111,7 @@ const ToastContainer = ({ position ="bottom-right" , autoClose =5000 , draggable
         style: {
             width: "unset"
         }
-    }))
-;
+    }));
 
 export { Toast, ToastContainer, toast };
 //# sourceMappingURL=index.js.map

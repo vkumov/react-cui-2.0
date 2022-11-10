@@ -29,8 +29,7 @@ const Radio = /*#__PURE__*/ forwardRef(({ spacing =null , inline =false , label 
         className: "radio__input"
     }), label ? /*#__PURE__*/ React.createElement("span", {
         className: "radio__label"
-    }, label) : null))
-);
+    }, label) : null)));
 const Radios = ({ values , value , onChange , name  })=>{
     const onRadioChange = useCallback((e)=>{
         e.persist();
@@ -48,8 +47,7 @@ const Radios = ({ values , value , onChange , name  })=>{
             onChange: onRadioChange,
             checked: value === v.value,
             value: v.value
-        })
-    ));
+        })));
 };
 
 export { Radio, Radios };

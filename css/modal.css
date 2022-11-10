@@ -12,7 +12,7 @@
 	  opacity: 0; } }
 	  
 .cui .modal-backdrop {
-	background: rgba(196, 199, 204, .65);
+	/* background: rgba(196, 199, 204, .65); */
 	pointer-events: all;
 	opacity: 1;
 	transition: opacity .15s linear;

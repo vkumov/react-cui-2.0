@@ -20,48 +20,37 @@ const Label = ({ size ="default" , color ="primary" , bordered =false , removabl
     }, props), children, removable ? /*#__PURE__*/ React.createElement("span", {
         className: "icon-close",
         onClick: onRemove
-    }) : null)
-;
+    }) : null);
 Label.Primary = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "primary"
-    }, props))
-;
+    }, props));
 Label.Secondary = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "secondary"
-    }, props))
-;
+    }, props));
 Label.Tertiary = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "tertiary"
-    }, props))
-;
+    }, props));
 Label.Success = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "success"
-    }, props))
-;
+    }, props));
 Label.Info = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "info"
-    }, props))
-;
+    }, props));
 Label.WarningAlt = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "warning-alt"
-    }, props))
-;
+    }, props));
 Label.Warning = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "warning"
-    }, props))
-;
+    }, props));
 Label.Danger = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "danger"
-    }, props))
-;
+    }, props));
 Label.Dark = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "dark"
-    }, props))
-;
+    }, props));
 Label.Light = (props)=>/*#__PURE__*/ React.createElement(Label, _extends({
         color: "light"
-    }, props))
-;
+    }, props));
 
 export { Label };
 //# sourceMappingURL=index.js.map

@@ -41,7 +41,7 @@ function useTooltip(placement) {
             }),
             arrow({
                 element: arrowRef
-            }), 
+            })
         ],
         open: show,
         onOpenChange: setShow,
@@ -59,7 +59,7 @@ function useTooltip(placement) {
     });
     const { getReferenceProps , getFloatingProps  } = useInteractions([
         role,
-        hover, 
+        hover
     ]);
     return {
         ...fl,
@@ -69,7 +69,7 @@ function useTooltip(placement) {
         arrowRef
     };
 }
-const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFloatingProps , middlewareData , arrowRef , placement , root: rootProvided ,  })=>{
+const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFloatingProps , middlewareData , arrowRef , placement , root: rootProvided  })=>{
     const { x: arrowX , y: arrowY  } = middlewareData.arrow || {
         x: 0,
         y: 0
@@ -113,10 +113,9 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
                 bottom: "",
                 [staticSide]: "-4px"
             }
-        })))
-    );
+        }))));
 };
-const WithTooltip = ({ children , tooltip , placement ="top" ,  })=>{
+const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
     const { getReferenceProps , reference , ...tt } = useTooltip(placement);
     const ref = useMergeRefs([
         reference,

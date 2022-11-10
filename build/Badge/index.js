@@ -17,37 +17,29 @@ function _extends() {
 }
 const Wrapper = ({ children , className =null  })=>/*#__PURE__*/ React.createElement("span", {
         className: `badge-wrapper${appendClass(className)}`
-    }, children)
-;
+    }, children);
 const Badge = ({ color ="primary" , size ="default" , children , className =null , ...props })=>/*#__PURE__*/ React.createElement("span", _extends({
         className: `${`badge badge--${color}`}${appendClass(size !== "default", `badge--${size}`)}${appendClass(className)}`
-    }, props), children)
-;
+    }, props), children);
 Badge.Dot = (props)=>/*#__PURE__*/ React.createElement(Badge, _extends({}, props, {
         size: "dot"
-    }))
-;
+    }));
 Badge.Tiny = (props)=>/*#__PURE__*/ React.createElement(Badge, _extends({}, props, {
         size: "tiny"
-    }))
-;
+    }));
 Badge.Small = (props)=>/*#__PURE__*/ React.createElement(Badge, _extends({}, props, {
         size: "small"
-    }))
-;
+    }));
 Badge.Default = (props)=>/*#__PURE__*/ React.createElement(Badge, _extends({}, props, {
         size: "default"
-    }))
-;
+    }));
 Badge.Large = (props)=>/*#__PURE__*/ React.createElement(Badge, _extends({}, props, {
         size: "large"
-    }))
-;
+    }));
 Badge.Wrapper = Wrapper;
 const WithBadge = ({ children , badge , wrapperClass =null , ...props })=>/*#__PURE__*/ React.createElement(Badge.Wrapper, {
         className: wrapperClass
-    }, children, /*#__PURE__*/ React.createElement(Badge, _extends({}, props), badge))
-;
+    }, children, /*#__PURE__*/ React.createElement(Badge, _extends({}, props), badge));
 
 export { Badge, WithBadge };
 //# sourceMappingURL=index.js.map

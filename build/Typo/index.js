@@ -18,28 +18,22 @@ function _extends() {
 const Display = ({ as ="h1" , className =null , size , ...props })=>/*#__PURE__*/ React.createElement(as, {
         ...props,
         className: `display-${size}${appendClass(className)}`
-    })
-;
+    });
 const Display0 = (props)=>/*#__PURE__*/ React.createElement(Display, _extends({}, props, {
         size: 0
-    }))
-;
+    }));
 const Display1 = (props)=>/*#__PURE__*/ React.createElement(Display, _extends({}, props, {
         size: 1
-    }))
-;
+    }));
 const Display2 = (props)=>/*#__PURE__*/ React.createElement(Display, _extends({}, props, {
         size: 2
-    }))
-;
+    }));
 const Display3 = (props)=>/*#__PURE__*/ React.createElement(Display, _extends({}, props, {
         size: 3
-    }))
-;
+    }));
 const Display4 = (props)=>/*#__PURE__*/ React.createElement(Display, _extends({}, props, {
         size: 4
-    }))
-;
+    }));
 
 export { Display, Display0, Display1, Display2, Display3, Display4 };
 //# sourceMappingURL=index.js.map

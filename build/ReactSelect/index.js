@@ -32,17 +32,18 @@ const MultiValueRemove = ({ innerProps: { className , ...props }  })=>{
         className: "icon-close"
     }, props));
 };
-const Group = ({ className , children , Heading , headingProps , innerProps , ...props })=>{
+function Group({ className , children , Heading , headingProps , innerProps , ...props }) {
     return /*#__PURE__*/ React.createElement("div", _extends$1({
         className: `dropdown__group${appendClass(className)}`
     }, innerProps), /*#__PURE__*/ React.createElement(Heading, _extends$1({}, props, {
         id: headingProps.id
     }), headingProps.data.label), children);
-};
-const GroupHeading = ({ className , children , ...props })=>/*#__PURE__*/ React.createElement("div", {
+}
+function GroupHeading({ className , children , ...props }) {
+    return /*#__PURE__*/ React.createElement("div", {
         className: `dropdown__group-header${appendClass(className)}`
-    }, children)
-;
+    }, children);
+}
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -68,7 +69,7 @@ function UnrefedSelect({ label =null , className , error , ...props }, ref) {
             MultiValueContainer,
             MultiValueLabel,
             MultiValueRemove,
-            Group,
+            Group: Group,
             GroupHeading
         }
     }, props, {

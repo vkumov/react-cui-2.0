@@ -17,18 +17,15 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-const firstDefined = (...args)=>args.find((el)=>typeof el !== "undefined" && el !== null
-    )
-;
-const Tab = ({ active =false , className =null , activeClassName =null , unmountInactive =false , children ,  })=>{
+const firstDefined = (...args)=>args.find((el)=>typeof el !== "undefined" && el !== null);
+const Tab = ({ active =false , className =null , activeClassName =null , unmountInactive =false , children  })=>{
     if (!active && unmountInactive) return null;
     return /*#__PURE__*/ React.createElement("div", {
         className: `tab-pane${appendClass(active, "active")}${appendClass(active && activeClassName, activeClassName)}${appendClass(className)}`
     }, children);
 };
-const isActive = (openTab, id, idx)=>openTab === null ? idx === 0 : openTab === firstDefined(id, idx)
-;
-const TabsHeader = ({ tabsClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , inline =false , openTab =null , sticky =false , onTabChange , children ,  })=>/*#__PURE__*/ React.createElement("ul", {
+const isActive = (openTab, id, idx)=>openTab === null ? idx === 0 : openTab === firstDefined(id, idx);
+const TabsHeader = ({ tabsClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , inline =false , openTab =null , sticky =false , onTabChange , children  })=>/*#__PURE__*/ React.createElement("ul", {
         className: `tabs${appendClass(tabsClassName)}${appendClass(center, "tabs--centered")}${appendClass(right, "tabs--right")}${appendClass(justified, "tabs--justified")}${appendClass(embossed, "tabs--embossed")}${appendClass(bordered, "tabs--bordered")}${appendClass(vertical, "tabs--vertical")}${appendClass(inline, "tabs--inline")}`,
         style: sticky ? {
             position: "sticky",
@@ -36,31 +33,26 @@ const TabsHeader = ({ tabsClassName =null , center =false , right =false , justi
         } : {}
     }, React.Children.map(children, (child, idx)=>{
         if (!/*#__PURE__*/ React.isValidElement(child)) return child;
-        const { props: { id , title  } ,  } = child;
+        const { props: { id , title  }  } = child;
         return /*#__PURE__*/ React.createElement("li", {
             className: `tab${appendClass(isActive(openTab, id, idx), "active")}`,
             key: firstDefined(id, idx)
         }, /*#__PURE__*/ React.createElement("a", {
             onClick: ()=>onTabChange(firstDefined(id, idx))
         }, title));
-    }))
-;
+    }));
 const composeColumnSize = (columnWidth)=>{
     if (typeof columnWidth === "string" || typeof columnWidth === "number") return `col-${columnWidth}`;
-    return Object.keys(columnWidth).map((k)=>`col-${k}-${columnWidth[k]}`
-    ).join(" ");
+    return Object.keys(columnWidth).map((k)=>`col-${k}-${columnWidth[k]}`).join(" ");
 };
 const ColumnWrap = ({ columnWidth , className , ...props })=>/*#__PURE__*/ React.createElement("div", _extends({
         className: `${composeColumnSize(columnWidth)}${appendClass(className)}`
-    }, props))
-;
-const Tabs = ({ defaultTab =null , tabsClassName =null , contentClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , sticky =false , inline =false , renderHeader =(header)=>header
- , renderBody =(body)=>body
- , onTabChange =null , leftColumn ={
+    }, props));
+const Tabs = ({ defaultTab =null , tabsClassName =null , contentClassName =null , center =false , right =false , justified =false , embossed =false , bordered =false , vertical =false , sticky =false , inline =false , renderHeader =(header)=>header , renderBody =(body)=>body , onTabChange =null , leftColumn ={
     columnWidth: 3
 } , rightColumn ={
     columnWidth: 9
-} , rowProps: { className: rowClassName , ...rowProps } = {} , beforeTabChange =null , children ,  })=>{
+} , rowProps: { className: rowClassName , ...rowProps } = {} , beforeTabChange =null , children  })=>{
     const [openTab, setOpenTab] = React.useState(defaultTab || null);
     const prevTab = usePrevious(openTab);
     React.useEffect(()=>{
@@ -101,8 +93,7 @@ const Tabs = ({ defaultTab =null , tabsClassName =null , contentClassName =null 
         className: `tab-content${contentClassName ? ` ${contentClassName}` : ""}`
     }, React.Children.map(children, (child, idx)=>/*#__PURE__*/ React.isValidElement(child) ? /*#__PURE__*/ React.cloneElement(child, {
             active: isActive(openTab, child.props.id, idx)
-        }) : child
-    ))));
+        }) : child))));
     return /*#__PURE__*/ React.createElement(ConditionalWrapper, {
         condition: vertical,
         wrapper: /*#__PURE__*/ React.createElement("div", _extends({
