@@ -13,8 +13,10 @@ import { useClickOutside } from "src/hooks/useClickOutside";
 import { appendClass } from "src/utils";
 import { Divider, Element, Group, GroupHeader, Menu } from "./Menu";
 
+type DropdownType = "icon" | "link" | "div" | "button" | "custom";
+
 type DropdownHeaderProps = {
-  type: string;
+  type: DropdownType;
   handleClick: (...args) => void;
   className?: string;
   header: ReactNode;
@@ -57,8 +59,6 @@ const DropdownHeader: FC<DropdownHeaderProps> = ({
         : null;
   }
 };
-
-type DropdownType = "icon" | "link" | "div" | "button" | "custom";
 
 type DropdownProps = {
   type?: DropdownType;

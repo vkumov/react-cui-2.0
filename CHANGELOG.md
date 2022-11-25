@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.8.3
+
+- Add small size for SegmentedControl
+
 ## 4.8.0
 
 - Add SegmentedControl

@@ -10,7 +10,7 @@ import React, {
   useState,
   forwardRef,
 } from "react";
-import { appendClass as ac } from "src/utils";
+import cx from "classnames";
 
 import styles from "./Segmented.module.scss";
 
@@ -24,21 +24,22 @@ type ActiveProps = {
   activeRef: RefObject<HTMLDivElement>;
   value: any;
   fullWidth?: boolean;
+  small: boolean;
 };
 
-const Active: FC<ActiveProps> = ({ activeRef, value, fullWidth }) => {
+const Active: FC<ActiveProps> = ({ activeRef, value, fullWidth, small }) => {
   const [coord, setCoord] = useState({ x: 0, y: 0, w: 0, h: 0 });
 
   useEffect(() => {
     if (!activeRef.current) return;
 
     setCoord({
-      x: activeRef.current.offsetLeft - 4,
-      y: activeRef.current.offsetTop - 4,
+      x: activeRef.current.offsetLeft - (small ? 2 : 4),
+      y: activeRef.current.offsetTop - (small ? 2 : 4),
       w: activeRef.current.offsetWidth,
       h: activeRef.current.offsetHeight,
     });
-  }, [activeRef.current, value, fullWidth]);
+  }, [activeRef.current, value, fullWidth, small]);
 
   if (!activeRef.current) return null;
 
@@ -71,26 +72,27 @@ const OptionDisplay: FC<PropsWithChildren<OptionDisplayProps>> = ({
   active,
   className,
   disabled,
+  id,
   ...props
 }) => {
   return (
     <div
-      className={`${styles.segmented_option_control}${ac(
-        active,
-        styles.segmented_option_control_active
-      )}${ac(disabled, "disabled")}`}
+      className={cx(styles.segmented_option_control, {
+        [styles.segmented_option_control_active]: active,
+        disabled,
+      })}
       ref={active ? activeRef : null}
     >
       <input
         type="radio"
         className={styles.segmented_option_control_input}
         value={value}
-        id={`${props.name}-${value}`}
+        id={`${id || props.name}-${value}`}
         {...props}
       />
       <label
         className={styles.segmented_option_control_label}
-        htmlFor={`${props.name}-${value}`}
+        htmlFor={`${id || props.name}-${value}`}
       >
         {children}
       </label>
@@ -104,35 +106,47 @@ type Props<V> = {
   label?: ReactNode;
   inline?: boolean;
   fullWidth?: boolean;
+  small?: boolean;
 } & HTMLProps<HTMLInputElement>;
 
 function UrefedSegmented<V extends string | number = string>(
-  { options, value, label, inline, className, fullWidth, ...props }: Props<V>,
+  {
+    options,
+    value,
+    label,
+    inline,
+    className,
+    fullWidth,
+    small,
+    ...props
+  }: Props<V>,
   ref: Ref<HTMLDivElement>
 ): JSX.Element {
   const activeRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
-      className={`form-group${ac(inline, "form-group--inline")}${ac(
-        className
-      )}`}
+      className={cx("form-group", className, { "form-group--inline": inline })}
     >
       <div
-        className={`${styles.form_group}${ac(
-          fullWidth,
-          styles["form_group--full"]
-        )}`}
+        className={cx(styles.form_group, {
+          [styles["form_group--full"]]: fullWidth,
+          [styles.small]: small,
+        })}
       >
         {label ? <label>{label}</label> : null}
         <div
-          className={`${styles.segmented_root}${ac(
-            fullWidth,
-            styles["segmented_root--full"]
-          )}`}
+          className={cx(styles.segmented_root, {
+            [styles["segmented_root--full"]]: fullWidth,
+          })}
           ref={ref}
         >
-          <Active activeRef={activeRef} value={value} fullWidth={fullWidth} />
+          <Active
+            activeRef={activeRef}
+            value={value}
+            fullWidth={fullWidth}
+            small={small}
+          />
           {options.map((o) => (
             <OptionDisplay
               activeRef={activeRef}

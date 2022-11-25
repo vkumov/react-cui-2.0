@@ -10,6 +10,7 @@ import { createPortal } from 'react-dom';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import RCSlider from 'rc-slider';
+import cx from 'classnames';
 
 const classes = (type, icon)=>{
     switch(type){
@@ -2543,9 +2544,9 @@ const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
     }, tooltip));
 };
 
-var styles = {"form_group":"Segmented-module_form_group__EAPlN","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
+var styles = {"form_group":"Segmented-module_form_group__EAPlN","small":"Segmented-module_small__e1Knx","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
 
-const Active = ({ activeRef , value , fullWidth  })=>{
+const Active = ({ activeRef , value , fullWidth , small  })=>{
     const [coord, setCoord] = useState({
         x: 0,
         y: 0,
@@ -2555,15 +2556,16 @@ const Active = ({ activeRef , value , fullWidth  })=>{
     useEffect(()=>{
         if (!activeRef.current) return;
         setCoord({
-            x: activeRef.current.offsetLeft - 4,
-            y: activeRef.current.offsetTop - 4,
+            x: activeRef.current.offsetLeft - (small ? 2 : 4),
+            y: activeRef.current.offsetTop - (small ? 2 : 4),
             w: activeRef.current.offsetWidth,
             h: activeRef.current.offsetHeight
         });
     }, [
         activeRef.current,
         value,
-        fullWidth
+        fullWidth,
+        small
     ]);
     if (!activeRef.current) return null;
     return /*#__PURE__*/ React.createElement("span", {
@@ -2575,34 +2577,45 @@ const Active = ({ activeRef , value , fullWidth  })=>{
         }
     });
 };
-const OptionDisplay = ({ children , value , activeRef , active , className , disabled , ...props })=>{
+const OptionDisplay = ({ children , value , activeRef , active , className , disabled , id , ...props })=>{
     return /*#__PURE__*/ React.createElement("div", {
-        className: `${styles.segmented_option_control}${appendClass(active, styles.segmented_option_control_active)}${appendClass(disabled, "disabled")}`,
+        className: cx(styles.segmented_option_control, {
+            [styles.segmented_option_control_active]: active,
+            disabled
+        }),
         ref: active ? activeRef : null
     }, /*#__PURE__*/ React.createElement("input", {
         type: "radio",
         className: styles.segmented_option_control_input,
         value: value,
-        id: `${props.name}-${value}`,
+        id: `${id || props.name}-${value}`,
         ...props
     }), /*#__PURE__*/ React.createElement("label", {
         className: styles.segmented_option_control_label,
-        htmlFor: `${props.name}-${value}`
+        htmlFor: `${id || props.name}-${value}`
     }, children));
 };
-function UrefedSegmented({ options , value , label , inline , className , fullWidth , ...props }, ref) {
+function UrefedSegmented({ options , value , label , inline , className , fullWidth , small , ...props }, ref) {
     const activeRef = useRef(null);
     return /*#__PURE__*/ React.createElement("div", {
-        className: `form-group${appendClass(inline, "form-group--inline")}${appendClass(className)}`
+        className: cx("form-group", className, {
+            "form-group--inline": inline
+        })
     }, /*#__PURE__*/ React.createElement("div", {
-        className: `${styles.form_group}${appendClass(fullWidth, styles["form_group--full"])}`
+        className: cx(styles.form_group, {
+            [styles["form_group--full"]]: fullWidth,
+            [styles.small]: small
+        })
     }, label ? /*#__PURE__*/ React.createElement("label", null, label) : null, /*#__PURE__*/ React.createElement("div", {
-        className: `${styles.segmented_root}${appendClass(fullWidth, styles["segmented_root--full"])}`,
+        className: cx(styles.segmented_root, {
+            [styles["segmented_root--full"]]: fullWidth
+        }),
         ref: ref
     }, /*#__PURE__*/ React.createElement(Active, {
         activeRef: activeRef,
         value: value,
-        fullWidth: fullWidth
+        fullWidth: fullWidth,
+        small: small
     }), options.map((o)=>/*#__PURE__*/ React.createElement(OptionDisplay, {
             activeRef: activeRef,
             active: value === o.value,

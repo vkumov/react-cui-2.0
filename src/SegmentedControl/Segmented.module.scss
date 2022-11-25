@@ -4,6 +4,18 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  --segmented-padding: 4px;
+  --max-segment-height: 27px;
+  --segment-padding: 5px 10px;
+
+  &.small {
+    --segmented-padding: 2px;
+    --cui-form-size: 24px;
+    --cui-form-label-font-size: var(--cui-font-size-sm);
+    --max-segment-height: 20px;
+    --segment-padding: 4px 10px;
+    font-size: var(--cui-font-size-sm);
+  }
 
   & > label {
     color: var(--cui-form-label-color);
@@ -42,7 +54,10 @@
 
   border-radius: 4px;
   overflow: hidden;
-  padding: 4px;
+  padding: var(--segmented-padding);
+
+  max-height: var(--cui-form-size);
+  font-size: var(--cui-form-label-font-size);
 
   :global(.cui) & {
     background-color: var(--cui-color-gray-200);
@@ -100,12 +115,13 @@
   & .segmented_option_control_label {
     -webkit-tap-highlight-color: transparent;
     border-radius: 4px;
-    font-weight: var(--cui-font-weight);
-    font-size: var(--cui-font-size);
+    font-weight: var(--cui-form-label-font-weight);
+    font-size: var(--cui-form-label-font-size);
+    max-height: var(--max-segment-height);
     cursor: pointer;
     display: block;
     text-align: center;
-    padding: 5px 10px;
+    padding: var(--segment-padding);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
