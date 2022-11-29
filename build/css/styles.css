@@ -1647,7 +1647,7 @@
   --cui-form-size: 24px;
   --cui-form-label-font-size: var(--cui-font-size-sm);
   --max-segment-height: 20px;
-  --segment-padding: 4px 10px;
+  --segment-padding: 3px 10px;
   font-size: var(--cui-font-size-sm);
 }
 .Segmented-module_form_group__EAPlN > label {
@@ -1683,6 +1683,19 @@
   padding: var(--segmented-padding);
   max-height: var(--cui-form-size);
   font-size: var(--cui-form-label-font-size);
+  transition: all var(--cui-animate-speed) var(--cui-animate-timing-function);
+  border: 1px solid transparent;
+}
+.Segmented-module_segmented_root__36qE5:hover {
+  border-color: var(--cui-accent-color);
+}
+.Segmented-module_segmented_root__36qE5:focus, .Segmented-module_segmented_root__36qE5:focus-within {
+  box-shadow: 0 0 0 var(--cui-focus-thickness) rgba(var(--cui-focus-color), var(--cui-focus-opacity));
+  opacity: 1;
+  outline: var(--cui-focus-thickness) transparent;
+  outline-offset: 1px;
+  outline-width: thin;
+  outline-style: none;
 }
 .cui .Segmented-module_segmented_root__36qE5 {
   background-color: var(--cui-color-gray-200);

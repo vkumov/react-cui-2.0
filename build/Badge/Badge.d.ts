@@ -1,10 +1,10 @@
 import { FC, PropsWithChildren, ReactNode } from "react";
-declare type WrapperProps = {
+type WrapperProps = {
     children: ReactNode;
     className?: string;
 };
-export declare type BadgeColor = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning" | "warning-alt" | "danger" | "dark" | "light";
-declare type BadgeProps = PropsWithChildren<{
+export type BadgeColor = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning" | "warning-alt" | "danger" | "dark" | "light";
+type BadgeProps = PropsWithChildren<{
     color?: BadgeColor;
     size?: "dot" | "tiny" | "small" | "default" | "large";
     className?: string;
@@ -18,7 +18,7 @@ interface BadgeSizes {
     Wrapper: FC<WrapperProps>;
 }
 export declare const Badge: BadgeSizes & FC<BadgeProps>;
-declare type WithBadgeProps = {
+type WithBadgeProps = {
     children: ReactNode;
     badge: ReactNode;
     wrapperClass?: string;

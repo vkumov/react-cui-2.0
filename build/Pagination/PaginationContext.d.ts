@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-declare type IPaginationContext = {
+type IPaginationContext = {
     active: number;
     beginAt: number;
     changePage: (e: any, position: number) => void;

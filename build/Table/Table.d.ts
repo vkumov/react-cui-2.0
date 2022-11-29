@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from "react";
 import { GenericTableProps } from "./GenericTable";
-declare type PaginationLocation = "top-left" | "bottom-left" | "bottom-right" | "top-right";
-declare type TableProps = {
+type PaginationLocation = "top-left" | "bottom-left" | "bottom-right" | "top-right";
+type TableProps = {
     pagination?: FC<any> | React.ComponentClass<any> | string;
     paginationLocation?: PaginationLocation;
     paginationProps?: {

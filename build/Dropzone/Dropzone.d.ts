@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import { DropzoneProps as ReactDropzoneProps } from "react-dropzone";
 import "../../css/dropzone.css";
-export declare type DropzoneProps = {
+export type DropzoneProps = {
     name: string;
     value?: any[];
     maxFiles?: number;

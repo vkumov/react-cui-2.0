@@ -1,6 +1,6 @@
 import { type FC, type PropsWithChildren, MutableRefObject, ReactNode } from "react";
 import { FloatingPortal, useFloating, useInteractions, type Placement } from "@floating-ui/react-dom-interactions";
-export declare type UseTooltipReturn = ReturnType<typeof useFloating> & {
+export type UseTooltipReturn = ReturnType<typeof useFloating> & {
     getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
     show: boolean;
     getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"];
@@ -11,7 +11,7 @@ declare const TooltipWrapper: FC<PropsWithChildren<Omit<ReturnType<typeof useToo
     root?: Parameters<typeof FloatingPortal>[0]["root"];
 }>;
 export { TooltipWrapper as Tooltip };
-export declare type WithTooltipProps = {
+export type WithTooltipProps = {
     children: JSX.Element;
     tooltip: ReactNode;
     placement?: Placement;

@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-declare type ModalProps = {
+type ModalProps = {
     modalType: "confirmation" | "notification" | "prompt" | "dynamic";
     onModalClose?: () => unknown;
     [prop: string]: any;

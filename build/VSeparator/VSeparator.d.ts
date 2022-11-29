@@ -1,6 +1,6 @@
 import { FC, HTMLProps } from "react";
 import "../../css/v-separator.css";
-declare type VSeparatorProps = {
+type VSeparatorProps = {
     size?: "small" | "large" | "huge" | "default";
     compressed?: boolean;
 } & Omit<HTMLProps<HTMLDivElement>, "size">;

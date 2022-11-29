@@ -1,5 +1,5 @@
 import React from "react";
-declare type SpinnerProps = {
+type SpinnerProps = {
     size?: "small" | "default" | "large";
     text?: React.ReactNode;
 };

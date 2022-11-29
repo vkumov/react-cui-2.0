@@ -6,8 +6,8 @@ import { ModalFooter } from "./Footer";
 /**
  * Modal
  */
-export declare type ModalSize = "small" | "default" | "large" | "full" | "fluid";
-export declare type ModalProps = PropsWithChildren<{
+export type ModalSize = "small" | "default" | "large" | "full" | "fluid";
+export type ModalProps = PropsWithChildren<{
     size?: ModalSize;
     closeIcon?: boolean;
     closeHandle?: () => void;
@@ -29,13 +29,13 @@ export declare type ModalProps = PropsWithChildren<{
     lockScroll?: Parameters<typeof FloatingOverlay>[0]["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
 }>;
-declare type ModalSizes = {
+type ModalSizes = {
     Small: FC<ModalProps>;
     Large: FC<ModalProps>;
     Full: FC<ModalProps>;
     Fluid: FC<ModalProps>;
 };
-declare type ModalComponents = {
+type ModalComponents = {
     Header: typeof ModalHeader;
     Body: typeof ModalBody;
     Footer: typeof ModalFooter;

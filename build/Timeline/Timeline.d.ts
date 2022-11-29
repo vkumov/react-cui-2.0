@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import "../../css/timeline.css";
-export declare type TimelineItemProps = {
+export type TimelineItemProps = {
     icon?: ReactNode;
     time?: string;
     children: ReactNode;
@@ -10,7 +10,7 @@ export declare type TimelineItemProps = {
     header?: ReactNode;
 };
 export declare const TimelineItem: FC<TimelineItemProps>;
-export declare type TimelineProps = {
+export type TimelineProps = {
     center?: boolean;
     right?: boolean;
     className?: string;

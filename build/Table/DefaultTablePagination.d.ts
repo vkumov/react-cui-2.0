@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-declare type DefaultTablePaginationProps = {
+type DefaultTablePaginationProps = {
     total: number;
     position: number;
     onPageChange: (e: any, position: number) => void;

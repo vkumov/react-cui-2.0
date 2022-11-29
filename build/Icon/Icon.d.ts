@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-declare type IconProps = {
+type IconProps = {
     icon: string;
     size?: 10 | 12 | 14 | 16 | 18 | 20 | 24 | 28 | 32 | 36 | 48 | 64 | 96 | 128;
     className?: string;

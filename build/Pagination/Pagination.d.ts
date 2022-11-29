@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-export declare type PaginationProps = {
+export type PaginationProps = {
     size?: "small" | "default" | "large";
     rounded?: boolean;
     icons?: boolean;

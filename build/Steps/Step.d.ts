@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-declare type StepProps = {
+type StepProps = {
     icon?: ReactNode;
     children: ReactNode;
     visited?: boolean;

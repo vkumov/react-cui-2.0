@@ -4,7 +4,7 @@ import type { DontAskAgain } from "./calls";
 /**
  * Confirmation Modal
  */
-declare type ConfirmationModalProps = {
+type ConfirmationModalProps = {
   isOpen?: boolean;
   confirmHandle: (dontAskAgain?: boolean) => boolean | Promise<boolean>;
   closeHandle: () => void;

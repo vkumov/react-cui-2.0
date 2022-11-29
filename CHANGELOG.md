@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.8.5
+
+- hover & focus states for SegmentedControl
+
 ## 4.8.3
 
 - Add small size for SegmentedControl

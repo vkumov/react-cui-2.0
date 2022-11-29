@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { ToastContainerProps } from "react-toastify";
-declare type ExtraProps = {
+type ExtraProps = {
     bordered?: boolean;
     shadow?: "sm" | "md" | "lg";
 };

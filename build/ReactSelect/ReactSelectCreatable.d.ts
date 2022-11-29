@@ -5,12 +5,12 @@ import { type CreatableProps } from "react-select/creatable";
 import "../../css/react-select.css";
 import type { ReactNode } from "react";
 import type { LabelColor } from "../Label";
-declare type CUISelectProps = {
+type CUISelectProps = {
   label?: ReactNode;
   multiValueColor?: LabelColor;
   error?: ReactNode | boolean;
 };
-export declare type CreatableReactSelectProps<
+export type CreatableReactSelectProps<
   Option = unknown,
   IsMulti extends boolean = boolean,
   Group extends GroupBase<Option> = GroupBase<Option>

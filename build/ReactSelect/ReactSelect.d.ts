@@ -3,12 +3,12 @@ import { type Props as SelectProps, type GroupBase } from "react-select";
 import type SelectGeneric from "react-select/dist/declarations/src/Select";
 import type { LabelColor } from "../Label";
 import "../../css/react-select.css";
-declare type CUISelectProps = {
+type CUISelectProps = {
   label?: ReactNode;
   multiValueColor?: LabelColor;
   error?: ReactNode | boolean;
 };
-export declare type ReactSelectProps<
+export type ReactSelectProps<
   Option,
   IsMulti extends boolean,
   Group extends GroupBase<Option>

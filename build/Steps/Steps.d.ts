@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-declare type StepsProps = {
+type StepsProps = {
     size?: "dot" | "small" | "default" | "large";
     color?: "primary" | "secondary" | "success" | "dark";
     vertical?: boolean;

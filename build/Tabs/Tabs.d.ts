@@ -1,5 +1,5 @@
 import React, { FC, HTMLProps, ReactNode } from "react";
-declare type TabId = number | string;
+type TabId = number | string;
 interface TabProps {
     id: TabId;
     active?: boolean;
@@ -31,8 +31,8 @@ interface ColumnSizes {
     lg?: number;
     xl?: number;
 }
-declare type ColumnSize = number | string | ColumnSizes;
-declare type Column = {
+type ColumnSize = number | string | ColumnSizes;
+type Column = {
     columnWidth?: ColumnSize;
 } & React.HTMLProps<HTMLDivElement>;
 interface TabsProps {

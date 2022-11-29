@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-export declare type Option<V = string> = {
+export type Option<V = string> = {
     label: ReactNode;
     value: V;
 };
-export declare type OptionGroup<O> = {
+export type OptionGroup<O> = {
     label: ReactNode;
     options: O[];
 };

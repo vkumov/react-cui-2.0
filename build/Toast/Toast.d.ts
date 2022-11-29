@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from "react";
 import { ToastOptions, UpdateOptions } from "react-toastify";
-declare type ToastType = "success" | "error" | "warning" | "info" | "loading" | "none";
-export declare type ToastProps = {
+type ToastType = "success" | "error" | "warning" | "info" | "loading" | "none";
+export type ToastProps = {
     title: ReactNode;
     message: ReactNode;
     type: ToastType;
@@ -9,11 +9,11 @@ export declare type ToastProps = {
     bordered?: boolean;
 };
 export declare const Toast: FC<ToastProps>;
-declare type ToastFunction = (title: ReactNode, message: ReactNode, copyError?: boolean, containerId?: string, args?: Record<string, unknown>) => React.ReactText;
+type ToastFunction = (title: ReactNode, message: ReactNode, copyError?: boolean, containerId?: string, args?: Record<string, unknown>) => React.ReactText;
 export interface IToast {
     (type: ToastType, title: ReactNode, message: ReactNode, copyError?: boolean, containerId?: string, args?: Partial<ToastOptions>): React.ReactText;
 }
-declare type Toasts = {
+type Toasts = {
     [x in ToastType]: ToastFunction;
 };
 interface ToastMethods {

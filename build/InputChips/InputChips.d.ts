@@ -1,7 +1,7 @@
 import React, { HTMLProps, ReactNode } from "react";
 import { LabelColor } from "../Label";
 import "../../css/chips.css";
-export declare type InputChipsProps = {
+export type InputChipsProps = {
   label?: ReactNode;
   chipsColor?: LabelColor;
   addOnBlur?: boolean;
@@ -26,7 +26,7 @@ export declare type InputChipsProps = {
     idx: number;
   }) => JSX.Element;
 };
-export declare type FullInputChipsProps = InputChipsProps &
+export type FullInputChipsProps = InputChipsProps &
   Omit<HTMLProps<HTMLInputElement>, "id" | "value" | "onChange" | "label">;
 export declare const InputChips: React.ForwardRefExoticComponent<
   Pick<
@@ -293,6 +293,8 @@ export declare const InputChips: React.ForwardRefExoticComponent<
     | "onProgressCapture"
     | "onRateChange"
     | "onRateChangeCapture"
+    | "onResize"
+    | "onResizeCapture"
     | "onSeeked"
     | "onSeekedCapture"
     | "onSeeking"

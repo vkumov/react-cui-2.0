@@ -1,5 +1,5 @@
 import { FC } from "react";
-declare type InputHelpBaloonProps = {
+type InputHelpBaloonProps = {
     baloon: string;
 };
 export declare const InputHelpBaloon: FC<InputHelpBaloonProps>;

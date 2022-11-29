@@ -1,7 +1,7 @@
 import { FC, HTMLProps, ReactNode } from "react";
 import { Divider, Element, Group, GroupHeader, Menu } from "./Menu";
-declare type DropdownType = "icon" | "link" | "div" | "button" | "custom";
-declare type DropdownProps = {
+type DropdownType = "icon" | "link" | "div" | "button" | "custom";
+type DropdownProps = {
     type?: DropdownType;
     className?: string;
     header?: ReactNode;
