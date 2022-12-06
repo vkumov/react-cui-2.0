@@ -1,4 +1,4 @@
-import React, { FC, HTMLProps, PropsWithChildren } from "react";
+import React, { FC, forwardRef, HTMLProps, PropsWithChildren } from "react";
 
 import { appendClass as ac } from "src/utils";
 
@@ -11,12 +11,10 @@ type ModalBodyProps = PropsWithChildren<{
 }> &
   HTMLProps<HTMLDivElement>;
 
-export const ModalBody: FC<ModalBodyProps> = ({
-  className = null,
-  children,
-  ...props
-}) => (
-  <div className={`modal__body${ac(className)}`} {...props}>
-    {children}
-  </div>
+export const ModalBody: FC<ModalBodyProps> = forwardRef(
+  ({ className = null, children, ...props }, ref) => (
+    <div className={`modal__body${ac(className)}`} {...props} ref={ref}>
+      {children}
+    </div>
+  )
 );

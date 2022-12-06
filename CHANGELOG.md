@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.8.6
+
+- ModalBody & ModalFooter forward refs
+
 ## 4.8.5
 
 - hover & focus states for SegmentedControl

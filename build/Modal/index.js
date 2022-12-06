@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import React, { forwardRef, cloneElement } from 'react';
 import { appendClass } from '../utils/index.js';
 import Transition from 'react-transition-group/Transition';
 import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react-dom-interactions';
@@ -40,9 +40,11 @@ function _extends$3() {
     };
     return _extends$3.apply(this, arguments);
 }
-const ModalFooter = ({ className =null , children , ...props })=>/*#__PURE__*/ React.createElement("div", _extends$3({
+const ModalFooter = /*#__PURE__*/ forwardRef(({ className =null , children , ...props }, ref)=>/*#__PURE__*/ React.createElement("div", _extends$3({
         className: `modal__footer${appendClass(className)}`
-    }, props), children);
+    }, props, {
+        ref: ref
+    }), children));
 
 function _extends$2() {
     _extends$2 = Object.assign || function(target) {
@@ -58,9 +60,11 @@ function _extends$2() {
     };
     return _extends$2.apply(this, arguments);
 }
-const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ React.createElement("div", _extends$2({
+const ModalBody = /*#__PURE__*/ forwardRef(({ className =null , children , ...props }, ref)=>/*#__PURE__*/ React.createElement("div", _extends$2({
         className: `modal__body${appendClass(className)}`
-    }, props), children);
+    }, props, {
+        ref: ref
+    }), children));
 
 function _extends$1() {
     _extends$1 = Object.assign || function(target) {

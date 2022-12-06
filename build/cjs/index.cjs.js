@@ -1134,15 +1134,17 @@ const ModalHeader = ({ className =null , children , ...props })=>/*#__PURE__*/ R
         ...props
     }, children);
 
-const ModalFooter = ({ className =null , children , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
+const ModalFooter = /*#__PURE__*/ React.forwardRef(({ className =null , children , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `modal__footer${appendClass(className)}`,
-        ...props
-    }, children);
+        ...props,
+        ref: ref
+    }, children));
 
-const ModalBody = ({ className =null , children , ...props })=>/*#__PURE__*/ React__default["default"].createElement("div", {
+const ModalBody = /*#__PURE__*/ React.forwardRef(({ className =null , children , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: `modal__body${appendClass(className)}`,
-        ...props
-    }, children);
+        ...props,
+        ref: ref
+    }, children));
 
 const FloatingContext = /*#__PURE__*/ React.createContext(null);
 const useFloatingContext = ()=>React.useContext(FloatingContext);
