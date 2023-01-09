@@ -1,5 +1,5 @@
 import React, { type FC, type ReactNode, type PropsWithChildren } from "react";
-import { FloatingPortal, FloatingOverlay, useDismiss, type ReferenceType } from "@floating-ui/react-dom-interactions";
+import { FloatingPortal, FloatingOverlay, useDismiss, type ReferenceType } from "@floating-ui/react";
 import { ModalHeader } from "./Header";
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";

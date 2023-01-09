@@ -1,7 +1,7 @@
 import React, { forwardRef, cloneElement } from 'react';
 import { appendClass } from '../utils/index.js';
 import Transition from 'react-transition-group/Transition';
-import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react-dom-interactions';
+import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react';
 import { DisplayIf, ConditionalWrapper } from '../Conditional/index.js';
 import { useFloatingContext } from '../FloatingProvider/index.js';
 import { Button } from '../Button/index.js';

@@ -77,6 +77,11 @@ export declare const CreatableReactSelect: <
       backspaceRemovesValue?: boolean;
       blurInputOnSelect?: boolean;
       captureMenuScroll?: boolean;
+      classNames?: import("react-select").ClassNamesConfig<
+        Option,
+        IsMulti,
+        Group
+      >;
       closeMenuOnSelect?: boolean;
       closeMenuOnScroll?: boolean | ((event: Event) => boolean);
       components?: Partial<
@@ -125,6 +130,7 @@ export declare const CreatableReactSelect: <
       styles?: import("react-select").StylesConfig<Option, IsMulti, Group>;
       tabIndex?: number;
       tabSelectsValue?: boolean;
+      unstyled?: boolean;
     } & {},
     | "inputValue"
     | "menuIsOpen"
@@ -178,6 +184,11 @@ export declare const CreatableReactSelect: <
         backspaceRemovesValue?: boolean;
         blurInputOnSelect?: boolean;
         captureMenuScroll?: boolean;
+        classNames?: import("react-select").ClassNamesConfig<
+          Option,
+          IsMulti,
+          Group
+        >;
         closeMenuOnSelect?: boolean;
         closeMenuOnScroll?: boolean | ((event: Event) => boolean);
         components?: Partial<
@@ -226,6 +237,7 @@ export declare const CreatableReactSelect: <
         styles?: import("react-select").StylesConfig<Option, IsMulti, Group>;
         tabIndex?: number;
         tabSelectsValue?: boolean;
+        unstyled?: boolean;
       } & {}
     > &
     import("react-select/dist/declarations/src/useStateManager").StateManagerAdditionalProps<Option> &

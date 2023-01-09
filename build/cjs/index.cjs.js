@@ -8,7 +8,7 @@ var bytes = require('bytes');
 var reactToastify = require('react-toastify');
 var useCallbackRef = require('use-callback-ref');
 var Transition = require('react-transition-group/Transition');
-var reactDomInteractions = require('@floating-ui/react-dom-interactions');
+var react = require('@floating-ui/react');
 var EventEmitter = require('eventemitter3');
 var reactDom = require('react-dom');
 var Select = require('react-select');
@@ -1167,7 +1167,7 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     ]);
     const modalContext = useFloatingContext();
     const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
-    const { reference , floating , context  } = reactDomInteractions.useFloating({
+    const { reference , floating , context  } = react.useFloating({
         open: isOpen,
         onOpenChange: (state)=>!state ? void closeHandle() : void 0
     });
@@ -1176,15 +1176,15 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     }, [
         refElement
     ]);
-    const click = reactDomInteractions.useClick(context);
-    const role = reactDomInteractions.useRole(context, {
+    const click = react.useClick(context);
+    const role = react.useRole(context, {
         role: "dialog"
     });
-    const dismiss = reactDomInteractions.useDismiss(context, {
+    const dismiss = react.useDismiss(context, {
         enabled: autoClose,
         ancestorScroll
     });
-    const { getFloatingProps  } = reactDomInteractions.useInteractions([
+    const { getFloatingProps  } = react.useInteractions([
         click,
         role,
         dismiss
@@ -1197,14 +1197,14 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         timeout: animationDuration,
         nodeRef: nodeRef,
         ...transitionEvents
-    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingPortal, {
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
             root: root
-        }, /*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingOverlay, {
+        }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingOverlay, {
             className: `modal-backdrop${appendClass(state === "exiting", "modal-backdrop--before-close")}`,
             lockScroll: lockScroll,
             ref: nodeRef,
             onClick: ()=>autoClose ? closeHandle() : void 0
-        }, /*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingFocusManager, {
+        }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
             context: context
         }, /*#__PURE__*/ React__default["default"].createElement("div", {
             ref: floating,
@@ -2461,17 +2461,17 @@ const Tooltip = /*#__PURE__*/ React.forwardRef(function TooltipRefed({ className
 function useTooltip(placement) {
     const [show, setShow] = React.useState(false);
     const arrowRef = React.useRef(null);
-    const fl = reactDomInteractions.useFloating({
+    const fl = react.useFloating({
         middleware: [
-            reactDomInteractions.offset(6),
-            reactDomInteractions.flip(),
-            reactDomInteractions.shift({
+            react.offset(6),
+            react.flip(),
+            react.shift({
                 padding: {
                     left: 8,
                     right: 8
                 }
             }),
-            reactDomInteractions.arrow({
+            react.arrow({
                 element: arrowRef
             })
         ],
@@ -2479,17 +2479,17 @@ function useTooltip(placement) {
         onOpenChange: setShow,
         placement
     });
-    const role = reactDomInteractions.useRole(fl.context, {
+    const role = react.useRole(fl.context, {
         role: "tooltip"
     });
-    const hover = reactDomInteractions.useHover(fl.context, {
+    const hover = react.useHover(fl.context, {
         delay: {
             open: 500,
             close: 0
         },
         move: false
     });
-    const { getReferenceProps , getFloatingProps  } = reactDomInteractions.useInteractions([
+    const { getReferenceProps , getFloatingProps  } = react.useInteractions([
         role,
         hover
     ]);
@@ -2521,7 +2521,7 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
         unmountOnExit: true,
         timeout: 200,
         nodeRef: floatingRef
-    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(reactDomInteractions.FloatingPortal, {
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
             root: root
         }, /*#__PURE__*/ React__default["default"].createElement(Tooltip, {
             ref: (r)=>{

@@ -11,7 +11,7 @@ import {
   useRole,
   useInteractions,
   type ReferenceType,
-} from "@floating-ui/react-dom-interactions";
+} from "@floating-ui/react";
 
 import { ConditionalWrapper, DisplayIf as If } from "src/Conditional";
 import { appendClass as ac } from "src/utils";

@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLProps } from "react";
+import React, { forwardRef, type HTMLProps, type FC } from "react";
 
 import { ConditionalWrapper } from "src/Conditional";
 import { appendClass as ac } from "src/utils";
@@ -15,9 +15,12 @@ export type GenericTableProps = {
   wrapped?: boolean;
   compressed?: boolean;
   loose?: boolean;
-} & HTMLProps<HTMLTableElement>;
+} & Partial<HTMLProps<HTMLTableElement>>;
 
-export const GenericTable = forwardRef<HTMLTableElement, GenericTableProps>(
+export const GenericTable: FC<GenericTableProps> = forwardRef<
+  HTMLTableElement,
+  GenericTableProps
+>(
   (
     {
       outerWrap = true,

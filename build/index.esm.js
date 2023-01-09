@@ -4,7 +4,7 @@ import bytes from 'bytes';
 import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
 import { useMergeRefs } from 'use-callback-ref';
 import Transition from 'react-transition-group/Transition';
-import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager, offset, flip, shift, arrow, useHover } from '@floating-ui/react-dom-interactions';
+import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager, offset, flip, shift, arrow, useHover } from '@floating-ui/react';
 import EventEmitter from 'eventemitter3';
 import { createPortal } from 'react-dom';
 import Select from 'react-select';

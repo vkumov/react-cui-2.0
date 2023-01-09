@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { usePortal } from '../hooks/usePortal.ts';
+import { usePortal } from '../hooks/usePortal.js';
 
 const defaultProps = {
     zIndex: 1,

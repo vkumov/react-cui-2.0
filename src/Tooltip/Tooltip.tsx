@@ -24,7 +24,7 @@ import {
   type Side,
   type Placement,
   useRole,
-} from "@floating-ui/react-dom-interactions";
+} from "@floating-ui/react";
 
 import { useFloatingContext } from "src/FloatingProvider";
 

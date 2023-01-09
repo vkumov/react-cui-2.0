@@ -1,5 +1,5 @@
 import { type FC, type PropsWithChildren, MutableRefObject, ReactNode } from "react";
-import { FloatingPortal, useFloating, useInteractions, type Placement } from "@floating-ui/react-dom-interactions";
+import { FloatingPortal, useFloating, useInteractions, type Placement } from "@floating-ui/react";
 export type UseTooltipReturn = ReturnType<typeof useFloating> & {
     getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
     show: boolean;

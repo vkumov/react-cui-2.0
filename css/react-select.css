@@ -50,8 +50,14 @@
   .react-select-container
   .react-select__control
   .react-select__value-container
-  .react-select__single-value {
-  color: var(--cui-font-color);
+  .react-select__single-value,
+.cui
+  .react-select-container
+  .react-select__control
+  .react-select__value-container
+  .react-select__single-value
+  .react-select__input-container input {
+  color: var(--cui-font-color) !important;
 }
 
 .cui .react-select-container .react-select__control:hover {

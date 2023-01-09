@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.10
+
+- Bump versions
+- Fix: Input Font is not white in Dark mode for ReactSelect (#3)
+
 ## 4.8.6
 
 - ModalBody & ModalFooter forward refs
