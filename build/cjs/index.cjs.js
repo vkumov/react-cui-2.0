@@ -2341,7 +2341,7 @@ function UnrefedSelect({ label =null , className , error , ...props }, ref) {
             MultiValueContainer,
             MultiValueLabel,
             MultiValueRemove,
-            Group,
+            Group: Group,
             GroupHeading
         },
         formatCreateLabel: (inputValue)=>/*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, props.isMulti ? "Add " : "Use ", /*#__PURE__*/ React__default["default"].createElement("span", {

@@ -11,7 +11,7 @@ import {
   MultiValueContainer,
   MultiValueLabel,
   MultiValueRemove,
-  Group,
+  Group as GroupComponent,
   GroupHeading,
 } from "./components";
 
@@ -58,7 +58,7 @@ function UnrefedSelect<
           MultiValueContainer,
           MultiValueLabel,
           MultiValueRemove,
-          Group,
+          Group: GroupComponent,
           GroupHeading,
         }}
         formatCreateLabel={(inputValue: string) => (
