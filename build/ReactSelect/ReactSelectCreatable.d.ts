@@ -1,10 +1,9 @@
-import React, { type Ref } from "react";
+import React, { type Ref, type ReactNode } from "react";
 import type { GroupBase } from "react-select/dist/declarations/src/types";
 import type SelectGeneric from "react-select/dist/declarations/src/Select";
-import { type CreatableProps } from "react-select/creatable";
-import "../../css/react-select.css";
-import type { ReactNode } from "react";
+import type { CreatableProps } from "react-select/creatable";
 import type { LabelColor } from "../Label";
+import "../../css/react-select.css";
 type CUISelectProps = {
   label?: ReactNode;
   multiValueColor?: LabelColor;

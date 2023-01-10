@@ -7,8 +7,9 @@ var ReactDropzone = require('react-dropzone');
 var bytes = require('bytes');
 var reactToastify = require('react-toastify');
 var useCallbackRef = require('use-callback-ref');
-var Transition = require('react-transition-group/Transition');
+var reactTransitionGroup = require('react-transition-group');
 var react = require('@floating-ui/react');
+var nanoid = require('nanoid');
 var EventEmitter = require('eventemitter3');
 var reactDom = require('react-dom');
 var Select = require('react-select');
@@ -21,7 +22,6 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var ReactDropzone__default = /*#__PURE__*/_interopDefaultLegacy(ReactDropzone);
 var bytes__default = /*#__PURE__*/_interopDefaultLegacy(bytes);
-var Transition__default = /*#__PURE__*/_interopDefaultLegacy(Transition);
 var EventEmitter__default = /*#__PURE__*/_interopDefaultLegacy(EventEmitter);
 var Select__default = /*#__PURE__*/_interopDefaultLegacy(Select);
 var CreatableSelect__default = /*#__PURE__*/_interopDefaultLegacy(CreatableSelect);
@@ -1167,9 +1167,12 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     ]);
     const modalContext = useFloatingContext();
     const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    const nodeId = react.useFloatingNodeId();
+    const parentId = react.useFloatingParentNodeId();
     const { reference , floating , context  } = react.useFloating({
         open: isOpen,
-        onOpenChange: (state)=>!state ? void closeHandle() : void 0
+        onOpenChange: (state)=>!state ? void closeHandle() : void 0,
+        nodeId
     });
     React__default["default"].useEffect(()=>{
         if (refElement) reference(refElement);
@@ -1182,7 +1185,12 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     });
     const dismiss = react.useDismiss(context, {
         enabled: autoClose,
-        ancestorScroll
+        ancestorScroll,
+        bubbles: false,
+        outsidePress () {
+            if (!parentId) return false;
+            return true;
+        }
     });
     const { getFloatingProps  } = react.useInteractions([
         click,
@@ -1190,20 +1198,21 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         dismiss
     ]);
     const nodeRef = React__default["default"].useRef(null);
-    return /*#__PURE__*/ React__default["default"].createElement(Transition__default["default"], {
+    const t = /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
         in: isOpen,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: animationDuration,
         nodeRef: nodeRef,
         ...transitionEvents
-    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingNode, {
+            id: nodeId
+        }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
             root: root
         }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingOverlay, {
             className: `modal-backdrop${appendClass(state === "exiting", "modal-backdrop--before-close")}`,
             lockScroll: lockScroll,
-            ref: nodeRef,
-            onClick: ()=>autoClose ? closeHandle() : void 0
+            ref: nodeRef
         }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
             context: context
         }, /*#__PURE__*/ React__default["default"].createElement("div", {
@@ -1238,7 +1247,11 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React__default["default"].createElement(ModalHeader, null, /*#__PURE__*/ React__default["default"].createElement("h1", {
             className: "modal__title"
-        }, title)), children)))))));
+        }, title)), children))))))));
+    if (parentId === null) {
+        return /*#__PURE__*/ React__default["default"].createElement(react.FloatingTree, null, t);
+    }
+    return t;
 };
 Modal.Small = (props)=>/*#__PURE__*/ React__default["default"].createElement(Modal, {
         ...props,
@@ -1371,7 +1384,7 @@ const ConfirmationListener = ()=>{
     const addModal = React__default["default"].useCallback((modal)=>setModals((curr)=>[
                 ...curr,
                 {
-                    id: Date.now(),
+                    id: nanoid.nanoid(),
                     shown: true,
                     ...modal
                 }
@@ -2515,7 +2528,7 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
     }[placement.split("-")[0]];
     const modalContext = useFloatingContext();
     const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
-    return /*#__PURE__*/ React__default["default"].createElement(Transition__default["default"], {
+    return /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
         in: show,
         mountOnEnter: true,
         unmountOnExit: true,

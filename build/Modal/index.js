@@ -1,11 +1,12 @@
 import React, { forwardRef, cloneElement } from 'react';
 import { appendClass } from '../utils/index.js';
-import Transition from 'react-transition-group/Transition';
-import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager } from '@floating-ui/react';
+import { Transition } from 'react-transition-group';
+import { useFloatingNodeId, useFloatingParentNodeId, useFloating, useClick, useRole, useDismiss, useInteractions, FloatingNode, FloatingPortal, FloatingOverlay, FloatingFocusManager, FloatingTree } from '@floating-ui/react';
 import { DisplayIf, ConditionalWrapper } from '../Conditional/index.js';
 import { useFloatingContext } from '../FloatingProvider/index.js';
 import { Button } from '../Button/index.js';
 import { Input } from '../Input/index.js';
+import { nanoid } from 'nanoid';
 import { eventManager } from '../utils/eventManager.js';
 
 function _extends$4() {
@@ -91,9 +92,12 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     ]);
     const modalContext = useFloatingContext();
     const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    const nodeId = useFloatingNodeId();
+    const parentId = useFloatingParentNodeId();
     const { reference , floating , context  } = useFloating({
         open: isOpen,
-        onOpenChange: (state)=>!state ? void closeHandle() : void 0
+        onOpenChange: (state)=>!state ? void closeHandle() : void 0,
+        nodeId
     });
     React.useEffect(()=>{
         if (refElement) reference(refElement);
@@ -106,7 +110,12 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     });
     const dismiss = useDismiss(context, {
         enabled: autoClose,
-        ancestorScroll
+        ancestorScroll,
+        bubbles: false,
+        outsidePress () {
+            if (!parentId) return false;
+            return true;
+        }
     });
     const { getFloatingProps  } = useInteractions([
         click,
@@ -114,19 +123,20 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         dismiss
     ]);
     const nodeRef = React.useRef(null);
-    return /*#__PURE__*/ React.createElement(Transition, _extends$1({
+    const t = /*#__PURE__*/ React.createElement(Transition, _extends$1({
         in: isOpen,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: animationDuration,
         nodeRef: nodeRef
-    }, transitionEvents), (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+    }, transitionEvents), (state)=>/*#__PURE__*/ React.createElement(FloatingNode, {
+            id: nodeId
+        }, /*#__PURE__*/ React.createElement(FloatingPortal, {
             root: root
         }, /*#__PURE__*/ React.createElement(FloatingOverlay, {
             className: `modal-backdrop${appendClass(state === "exiting", "modal-backdrop--before-close")}`,
             lockScroll: lockScroll,
-            ref: nodeRef,
-            onClick: ()=>autoClose ? closeHandle() : void 0
+            ref: nodeRef
         }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
             context: context
         }, /*#__PURE__*/ React.createElement("div", _extends$1({
@@ -159,7 +169,11 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React.createElement(ModalHeader, null, /*#__PURE__*/ React.createElement("h1", {
             className: "modal__title"
-        }, title)), children)))))));
+        }, title)), children))))))));
+    if (parentId === null) {
+        return /*#__PURE__*/ React.createElement(FloatingTree, null, t);
+    }
+    return t;
 };
 Modal.Small = (props)=>/*#__PURE__*/ React.createElement(Modal, _extends$1({}, props, {
         size: "small"
@@ -300,7 +314,7 @@ const ConfirmationListener = ()=>{
     const addModal = React.useCallback((modal)=>setModals((curr)=>[
                 ...curr,
                 {
-                    id: Date.now(),
+                    id: nanoid(),
                     shown: true,
                     ...modal
                 }

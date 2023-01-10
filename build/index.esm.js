@@ -3,8 +3,9 @@ import ReactDropzone from 'react-dropzone';
 import bytes from 'bytes';
 import { toast as toast$1, ToastContainer as ToastContainer$1, Slide } from 'react-toastify';
 import { useMergeRefs } from 'use-callback-ref';
-import Transition from 'react-transition-group/Transition';
-import { useFloating, useClick, useRole, useDismiss, useInteractions, FloatingPortal, FloatingOverlay, FloatingFocusManager, offset, flip, shift, arrow, useHover } from '@floating-ui/react';
+import { Transition } from 'react-transition-group';
+import { useFloatingNodeId, useFloatingParentNodeId, useFloating, useClick, useRole, useDismiss, useInteractions, FloatingNode, FloatingPortal, FloatingOverlay, FloatingFocusManager, FloatingTree, offset, flip, shift, arrow, useHover } from '@floating-ui/react';
+import { nanoid } from 'nanoid';
 import EventEmitter from 'eventemitter3';
 import { createPortal } from 'react-dom';
 import Select from 'react-select';
@@ -1151,9 +1152,12 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     ]);
     const modalContext = useFloatingContext();
     const root = (rootProvided !== null && rootProvided !== void 0 ? rootProvided : modalContext) ? modalContext.rootRef.current : undefined;
+    const nodeId = useFloatingNodeId();
+    const parentId = useFloatingParentNodeId();
     const { reference , floating , context  } = useFloating({
         open: isOpen,
-        onOpenChange: (state)=>!state ? void closeHandle() : void 0
+        onOpenChange: (state)=>!state ? void closeHandle() : void 0,
+        nodeId
     });
     React.useEffect(()=>{
         if (refElement) reference(refElement);
@@ -1166,7 +1170,12 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
     });
     const dismiss = useDismiss(context, {
         enabled: autoClose,
-        ancestorScroll
+        ancestorScroll,
+        bubbles: false,
+        outsidePress () {
+            if (!parentId) return false;
+            return true;
+        }
     });
     const { getFloatingProps  } = useInteractions([
         click,
@@ -1174,20 +1183,21 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
         dismiss
     ]);
     const nodeRef = React.useRef(null);
-    return /*#__PURE__*/ React.createElement(Transition, {
+    const t = /*#__PURE__*/ React.createElement(Transition, {
         in: isOpen,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: animationDuration,
         nodeRef: nodeRef,
         ...transitionEvents
-    }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+    }, (state)=>/*#__PURE__*/ React.createElement(FloatingNode, {
+            id: nodeId
+        }, /*#__PURE__*/ React.createElement(FloatingPortal, {
             root: root
         }, /*#__PURE__*/ React.createElement(FloatingOverlay, {
             className: `modal-backdrop${appendClass(state === "exiting", "modal-backdrop--before-close")}`,
             lockScroll: lockScroll,
-            ref: nodeRef,
-            onClick: ()=>autoClose ? closeHandle() : void 0
+            ref: nodeRef
         }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
             context: context
         }, /*#__PURE__*/ React.createElement("div", {
@@ -1222,7 +1232,11 @@ const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIc
             className: "icon-close"
         })))), Boolean(title) && /*#__PURE__*/ React.createElement(ModalHeader, null, /*#__PURE__*/ React.createElement("h1", {
             className: "modal__title"
-        }, title)), children)))))));
+        }, title)), children))))))));
+    if (parentId === null) {
+        return /*#__PURE__*/ React.createElement(FloatingTree, null, t);
+    }
+    return t;
 };
 Modal.Small = (props)=>/*#__PURE__*/ React.createElement(Modal, {
         ...props,
@@ -1355,7 +1369,7 @@ const ConfirmationListener = ()=>{
     const addModal = React.useCallback((modal)=>setModals((curr)=>[
                 ...curr,
                 {
-                    id: Date.now(),
+                    id: nanoid(),
                     shown: true,
                     ...modal
                 }

@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.9.0
+
+- Per-folder TS declarations
+
+## 4.8.12
+
+- Modals create FloatingTree if needed
+- Fix double handle calls on modal outside click
+
 ## 4.8.10
 
 - Bump versions

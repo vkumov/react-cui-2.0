@@ -1,5 +1,5 @@
 import React, { useState, useRef, cloneElement, forwardRef } from 'react';
-import Transition from 'react-transition-group/Transition';
+import { Transition } from 'react-transition-group';
 import { useMergeRefs } from 'use-callback-ref';
 import { useFloating, offset, flip, shift, arrow, useRole, useHover, useInteractions, FloatingPortal } from '@floating-ui/react';
 import { useFloatingContext } from '../FloatingProvider/index.js';

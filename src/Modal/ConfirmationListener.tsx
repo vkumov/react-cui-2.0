@@ -1,4 +1,5 @@
 import React, { cloneElement } from "react";
+import { nanoid } from "nanoid";
 
 import { Button } from "src/Button";
 
@@ -15,7 +16,7 @@ export const ConfirmationListener = (): JSX.Element => {
 
   const addModal = React.useCallback(
     (modal) =>
-      setModals((curr) => [...curr, { id: Date.now(), shown: true, ...modal }]),
+      setModals((curr) => [...curr, { id: nanoid(), shown: true, ...modal }]),
     []
   );
 

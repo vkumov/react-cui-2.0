@@ -9,7 +9,7 @@ import React, {
   ReactNode,
   cloneElement,
 } from "react";
-import Transition from "react-transition-group/Transition";
+import { Transition } from "react-transition-group";
 import { useMergeRefs } from "use-callback-ref";
 
 import {

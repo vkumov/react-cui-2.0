@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
 const { resolve, join, basename } = require("path");
-const { readFile, writeFile, copy } = require("fs-extra");
+const { readFile, writeFile, copy, appendFileSync } = require("fs-extra");
 const glob = require("fast-glob");
 
 const packagePath = process.cwd();
@@ -9,6 +9,15 @@ const distPath = join(packagePath, "./build");
 
 const writeJson = (targetPath, obj) =>
   writeFile(targetPath, JSON.stringify(obj, null, 2), "utf8");
+
+function globJsFiles(bn) {
+  const gl = join(distPath, "**/*.js");
+  const all = glob
+    .sync(gl)
+    .map((l) => l.replace(distPath, "."))
+    .filter((l) => l !== `./${bn}` || l.startsWith("cjs"));
+  return all;
+}
 
 async function createPackageFile() {
   const packageData = await readFile(
@@ -21,14 +30,8 @@ async function createPackageFile() {
   const main_file = `./cjs/${basename(packageOthers.main)}`;
   const module_file = `./${basename(packageOthers.module)}`;
 
-  const gl = join(distPath, "**/*.js");
   const regx = new RegExp("\\./([^\\/]+)/(.*)\\.js");
-  const all = glob
-    .sync(gl)
-    .map((l) => l.replace(distPath, "."))
-    .filter(
-      (l) => l !== `./${basename(packageOthers.module)}` || l.startsWith("cjs")
-    );
+  const all = globJsFiles(basename(packageOthers.module));
 
   console.log(regx);
   console.log(all);
@@ -56,7 +59,7 @@ async function createPackageFile() {
     types: "./index.d.ts",
     main: main_file,
     module: module_file,
-    // type: "module",
+    type: "module",
     exports: {
       ".": {
         import: module_file,
@@ -82,11 +85,43 @@ async function includeFileInBuild(file) {
   console.log(`Copied ${sourcePath} to ${targetPath}`);
 }
 
+async function generateDeclarations() {
+  const packageData = await readFile(
+    resolve(packagePath, "./package.json"),
+    "utf8"
+  );
+  const { module: m, name: packageName } = JSON.parse(packageData);
+  const all = globJsFiles(basename(m)).filter(
+    (f) => !f.includes("/cjs/") && !f.includes("/typings/")
+  );
+
+  const declarations = await Promise.all(
+    all.map(async (f) => {
+      const m = await import(join(resolve("./build/"), f));
+      const mName = f
+        .replace(/^\.\//, "")
+        .replace(/index\.js$/, "")
+        .replace(/\.js$/, "")
+        .replace(/\/$/, "");
+      const keys = Object.keys(m);
+      const declaration = `
+declare module "${packageName}/${mName}" {
+  import { ${keys.join(", ")} } from "${packageName}";
+  export { ${keys.join(", ")} };
+}`;
+      return declaration;
+    })
+  );
+
+  appendFileSync(resolve("./build/index.d.ts"), declarations.join("\n"));
+}
+
 async function run() {
   try {
     await createPackageFile();
     await includeFileInBuild("./README.md");
     // await includeFileInBuild('../../LICENSE');
+    await generateDeclarations();
   } catch (err) {
     console.error(err);
     process.exit(1);

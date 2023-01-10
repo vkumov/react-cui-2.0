@@ -1,6 +1,13 @@
 import React, { useCallback, useState } from "react";
-import { Modal, ModalBody, ModalFooter, ModalSize } from "./index";
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalSize,
+  confirmation,
+} from "./index";
 import { Button } from "../Button";
+import { Checkbox } from "../Checkbox";
 import { Story, Meta } from "@storybook/react/types-6-0";
 
 export default {
@@ -10,6 +17,7 @@ export default {
 export const Modals: Story = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalSize, setModalSize] = useState<ModalSize>("default");
+  const [conf, setConf] = useState(false);
 
   const openModal = useCallback((size: ModalSize) => {
     setModalSize(size);
@@ -17,8 +25,18 @@ export const Modals: Story = () => {
   }, []);
 
   const closeModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    if (conf)
+      confirmation(
+        "Please confirm",
+        () => {
+          setIsOpen(false);
+          return true;
+        },
+        "primary",
+        "Confirm!"
+      );
+    else setIsOpen(false);
+  }, [conf]);
 
   return (
     <>
@@ -80,7 +98,12 @@ export const Modals: Story = () => {
         closeIcon
         title={`This is ${modalSize} modal`}
       >
-        <ModalBody>Modal body goes here</ModalBody>
+        <ModalBody>
+          <div>Modal body goes here</div>
+          <Checkbox checked={conf} onChange={() => setConf((c) => !c)}>
+            Confirm on close
+          </Checkbox>
+        </ModalBody>
         <ModalFooter>
           <Button.Light onClick={closeModal}>OK</Button.Light>
         </ModalFooter>

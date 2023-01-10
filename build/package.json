@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.8.11",
+  "version": "4.9.0",
   "description": "React library for CUI 2.0",
   "module": "./index.esm.js",
   "main": "./cjs/index.cjs.js",
@@ -17,6 +17,7 @@
     "bytes": "^3.1.2",
     "classnames": "^2.3.2",
     "eventemitter3": "^4.0.7",
+    "nanoid": "^4.0.0",
     "rc-slider": "^10.1.0",
     "react-dropzone": "^14.2.3",
     "react-select": "^5.7.0",
@@ -52,6 +53,7 @@
   },
   "private": false,
   "typings": "./index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./index.esm.js",
