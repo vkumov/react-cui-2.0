@@ -116,12 +116,24 @@ declare module "${packageName}/${mName}" {
   appendFileSync(resolve("./build/index.d.ts"), declarations.join("\n"));
 }
 
+async function removeTypeModule() {
+  const packageData = await readFile(resolve("./build/package.json"), "utf8");
+  const pkg = JSON.parse(packageData);
+
+  delete pkg.type;
+
+  const targetPath = resolve(distPath, "./package.json");
+
+  await writeJson(targetPath, pkg);
+}
+
 async function run() {
   try {
     await createPackageFile();
     await includeFileInBuild("./README.md");
     // await includeFileInBuild('../../LICENSE');
     await generateDeclarations();
+    await removeTypeModule();
   } catch (err) {
     console.error(err);
     process.exit(1);
