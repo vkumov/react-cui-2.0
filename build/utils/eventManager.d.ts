@@ -1,4 +1,5 @@
-import EventEmitter from "eventemitter3";
+import EventEmitter from 'eventemitter3';
+
 type ModalProps = {
     modalType: "confirmation" | "notification" | "prompt" | "dynamic";
     onModalClose?: () => unknown;
@@ -7,5 +8,6 @@ type ModalProps = {
 interface KnownEvents {
     showModal: (modal: ModalProps) => void;
 }
-export declare const eventManager: EventEmitter<KnownEvents, any>;
-export {};
+declare const eventManager: EventEmitter<KnownEvents, any>;
+
+export { eventManager };

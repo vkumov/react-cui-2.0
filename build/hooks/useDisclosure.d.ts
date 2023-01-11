@@ -1,4 +1,4 @@
-export declare function useDisclosure(initialState: boolean, callbacks?: {
+declare function useDisclosure(initialState: boolean, callbacks?: {
     onOpen?(): void;
     onClose?(): void;
 }): readonly [boolean, {
@@ -6,3 +6,5 @@ export declare function useDisclosure(initialState: boolean, callbacks?: {
     readonly close: () => void;
     readonly toggle: () => void;
 }];
+
+export { useDisclosure };

@@ -1,4 +1,4 @@
-export declare const base16Theme: {
+declare const base16Theme: {
     scheme: string;
     author: string;
     base00: string;
@@ -18,3 +18,5 @@ export declare const base16Theme: {
     base0E: string;
     base0F: string;
 };
+
+export { base16Theme };

@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
 const { resolve, join, basename } = require("path");
-const { readFile, writeFile, copy, appendFileSync } = require("fs-extra");
+const {
+  readFile,
+  writeFile,
+  copy,
+  appendFileSync,
+  remove,
+} = require("fs-extra");
 const glob = require("fast-glob");
+var replace = require("replace");
+const { spawn } = require("node:child_process");
+const chalk = require("chalk");
 
 const packagePath = process.cwd();
 const distPath = join(packagePath, "./build");
@@ -33,8 +42,8 @@ async function createPackageFile() {
   const regx = new RegExp("\\./([^\\/]+)/(.*)\\.js");
   const all = globJsFiles(basename(packageOthers.module));
 
-  console.log(regx);
-  console.log(all);
+  // console.log(regx);
+  // console.log(all);
 
   const exps = all.reduce((comb, curr) => {
     const m = curr.match(regx);
@@ -75,14 +84,14 @@ async function createPackageFile() {
   const targetPath = resolve(distPath, "./package.json");
 
   await writeJson(targetPath, newPackageData);
-  console.log(`Created package.json in ${targetPath}`);
+  console.log(chalk.green.bold(`✓ Created package.json in ${targetPath}`));
 }
 
 async function includeFileInBuild(file) {
   const sourcePath = resolve(packagePath, file);
   const targetPath = resolve(distPath, basename(file));
   await copy(sourcePath, targetPath);
-  console.log(`Copied ${sourcePath} to ${targetPath}`);
+  console.log(chalk.green.bold(`✓ Copied ${sourcePath} to ${targetPath}`));
 }
 
 async function generateDeclarations() {
@@ -103,6 +112,7 @@ async function generateDeclarations() {
         .replace(/index\.js$/, "")
         .replace(/\.js$/, "")
         .replace(/\/$/, "");
+      // const bName = basename(f);
       const keys = Object.keys(m);
       const declaration = `
 declare module "${packageName}/${mName}" {
@@ -114,6 +124,9 @@ declare module "${packageName}/${mName}" {
   );
 
   appendFileSync(resolve("./build/index.d.ts"), declarations.join("\n"));
+  console.log(
+    chalk.green.bold(`✓ Generated declarations in ./build/index.d.ts`)
+  );
 }
 
 async function removeTypeModule() {
@@ -127,13 +140,73 @@ async function removeTypeModule() {
   await writeJson(targetPath, pkg);
 }
 
+async function replaceAndRemove() {
+  replace({
+    regex: `"src/`,
+    replacement: `"../`,
+    paths: ["./build/"],
+    include: "*.d.ts,*.ts",
+    recursive: true,
+    silent: false,
+  });
+
+  replace({
+    regex: /import ".*\.css";/g,
+    replacement: "",
+    paths: ["./build/"],
+    include: "*.d.ts",
+    recursive: true,
+    silent: false,
+  });
+
+  console.log(chalk.green.bold(`✓ Cleaned *.d.ts files`));
+}
+
+async function generateDts() {
+  await new Promise((resolve, reject) => {
+    const ls = spawn("npm", ["run", "build:dts"], { shell: true });
+
+    ls.stdout.on("data", (data) => {
+      console.log(data.toString());
+    });
+
+    ls.stderr.on("data", (data) => {
+      console.log(data.toString().replace("\n", ""));
+    });
+
+    ls.on("close", (code) => {
+      if (code === 0) resolve(0);
+      else reject(code);
+    });
+  });
+
+  console.log(chalk.green.bold(`✓ Merged per-folder declarations`));
+}
+
+async function cleanup() {
+  const files = await glob("./build/**/[A-Z]*.d.ts", {
+    caseSensitiveMatch: true,
+    globstar: true,
+  });
+
+  await Promise.all(files.map((f) => remove(f)));
+
+  console.log(chalk.green.bold(`✓ Removed unused *.d.ts files`));
+}
+
 async function run() {
   try {
     await createPackageFile();
     await includeFileInBuild("./README.md");
     // await includeFileInBuild('../../LICENSE');
+
+    await replaceAndRemove();
+    await generateDts();
+
     await generateDeclarations();
     await removeTypeModule();
+
+    await cleanup();
   } catch (err) {
     console.error(err);
     process.exit(1);

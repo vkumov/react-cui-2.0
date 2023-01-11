@@ -1,1 +1,3 @@
-export declare const copyStringToClipboard: (str: string | number) => Promise<void>;
+declare const copyStringToClipboard: (str: string | number) => Promise<void>;
+
+export { copyStringToClipboard };

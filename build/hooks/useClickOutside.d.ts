@@ -1,2 +1,6 @@
 /// <reference types="react" />
-export declare function useClickOutside<T extends HTMLElement = any>(handler: () => void, events?: string[] | null, nodes?: HTMLElement[]): import("react").MutableRefObject<T>;
+import * as react from 'react';
+
+declare function useClickOutside<T extends HTMLElement = any>(handler: () => void, events?: string[] | null, nodes?: HTMLElement[]): react.MutableRefObject<T>;
+
+export { useClickOutside };
