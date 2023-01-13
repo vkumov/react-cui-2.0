@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from "react";
 
 import { Pagination } from "src/Pagination";
-import { Dropdown } from "src/Dropdown";
+import { Dropdown, MenuElement } from "src/Dropdown";
 
 type DefaultTablePaginationProps = {
   total: number;
@@ -50,20 +50,18 @@ export const DefaultTablePagination: FC<DefaultTablePaginationProps> = ({
       <span className="text-muted qtr-margin-left qtr-margin-right">|</span>
       <span className="qtr-margin-right">Per page:</span>
       <Dropdown
-        type="link"
-        header={perPage}
-        openTo="left"
+        label={<a>{perPage}</a>}
         alwaysClose
-        up={perPageUp}
+        placement={perPageUp ? "top" : undefined}
       >
         {[10, 25, 50, 100, 250, 500].map((v) => (
-          <Dropdown.Element
+          <MenuElement
             onClick={() => setPerPage(v)}
             key={v}
             selected={v === perPage}
           >
             {v}
-          </Dropdown.Element>
+          </MenuElement>
         ))}
       </Dropdown>
     </div>

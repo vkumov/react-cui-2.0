@@ -6,11 +6,10 @@ import { appendClass } from '../utils/index.js';
 const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select"  })=>{
     var ref;
      return React.createElement(Dropdown, {
-        type: "link",
-        header: ((ref = variants[selectedIdx]) === null || ref === void 0 ? void 0 : ref.display) || placeholder,
-        alwaysClose: true,
-        className: "flex-center-vertical",
-        stopPropagation: true
+        label: /*#__PURE__*/ React.createElement("a", {
+            className: "flex-center-vertical"
+        }, ((ref = variants[selectedIdx]) === null || ref === void 0 ? void 0 : ref.display) || placeholder),
+        alwaysClose: true
     }, variants.map((v, idx)=>{
         var ref;
          return React.createElement("a", {

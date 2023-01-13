@@ -43,3 +43,4 @@ export * from "./Gauge";
 export * from "./Tooltip";
 export * from "./FloatingProvider";
 export * from "./SegmentedControl";
+export * from "./Popover";

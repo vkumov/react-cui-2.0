@@ -1,0 +1,76 @@
+@import "../../node_modules/include-media/dist/include-media";
+@import "breakpoints";
+@import "consts";
+
+@keyframes popover_appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+    scale: 0.8;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    scale: 1;
+  }
+}
+
+.wrapper {
+  z-index: 50;
+  --offset: 4px;
+  @include media("<md") {
+    min-width: calc(100vw - calc(var(--offset) * 2));
+    width: calc(100vw - calc(var(--offset) * 2));
+  }
+  @include media(">=md") {
+    min-width: 500px;
+  }
+
+  --cui-menu-item-height: 35px;
+  --cui-menu-item-padding: 0 var(--cui-spacing-dbl) 0 var(--cui-spacing-half);
+
+  & .body {
+    border-radius: $popover-border-radius !important;
+    border-top: var(--cui-accent-thickness) solid var(--cui-accent-color) !important;
+
+    animation-name: popover_appear;
+    animation-duration: var(--cui-animate-speed);
+    animation-fill-mode: forwards;
+  }
+
+  &.disappear {
+    & .body {
+      animation-direction: reverse;
+    }
+  }
+}
+
+@keyframes overlay_appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
+
+.overlay {
+  position: "absolute";
+  display: "grid";
+  justify-content: "space-evenly";
+  justify-items: "center";
+  align-content: "center";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+
+  animation-name: overlay_appear;
+  animation-duration: var(--cui-animate-speed);
+  animation-fill-mode: forwards;
+
+  &.disappear {
+    animation-direction: reverse;
+  }
+}

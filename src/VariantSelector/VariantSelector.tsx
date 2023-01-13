@@ -38,11 +38,12 @@ const DropdownHeader: FC<HeaderProps> = ({
   placeholder = "Select",
 }) => (
   <Dropdown
-    type="link"
-    header={variants[selectedIdx]?.display || placeholder}
+    label={
+      <a className="flex-center-vertical">
+        {variants[selectedIdx]?.display || placeholder}
+      </a>
+    }
     alwaysClose
-    className="flex-center-vertical"
-    stopPropagation
   >
     {variants.map((v, idx) => (
       <a

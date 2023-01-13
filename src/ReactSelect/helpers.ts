@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-export type Option<V = string> = { label: ReactNode; value: V };
-export type OptionGroup<O> = { label: ReactNode; options: O[] };
+export type Option<V = string> = { label?: ReactNode; value: V };
+export type OptionGroup<O> = { label?: ReactNode; options: readonly O[] };
 
 export function isGrouped<O extends { value: any }>(
   v: O | OptionGroup<O>
@@ -11,7 +11,7 @@ export function isGrouped<O extends { value: any }>(
 
 export function findOption<V, O extends { value: V } = Option<V>>(
   value: V,
-  options: (O | OptionGroup<O>)[]
+  options: readonly (O | OptionGroup<O>)[]
 ): O {
   let found: O;
   for (const it of options) {

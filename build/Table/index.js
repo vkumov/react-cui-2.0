@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { ConditionalWrapper } from '../Conditional/index.js';
 import { appendClass } from '../utils/index.js';
 import { Pagination } from '../Pagination/index.js';
-import { Dropdown } from '../Dropdown/index.js';
+import { Dropdown, MenuElement } from '../Dropdown/index.js';
 
 function _extends$2() {
     _extends$2 = Object.assign || function(target) {
@@ -70,11 +70,9 @@ const DefaultTablePagination = ({ perPageUp =false , paginationProps ={} , total
     }, "|"), /*#__PURE__*/ React.createElement("span", {
         className: "qtr-margin-right"
     }, "Per page:"), /*#__PURE__*/ React.createElement(Dropdown, {
-        type: "link",
-        header: perPage,
-        openTo: "left",
+        label: /*#__PURE__*/ React.createElement("a", null, perPage),
         alwaysClose: true,
-        up: perPageUp
+        placement: perPageUp ? "top" : undefined
     }, [
         10,
         25,
@@ -82,7 +80,7 @@ const DefaultTablePagination = ({ perPageUp =false , paginationProps ={} , total
         100,
         250,
         500
-    ].map((v)=>/*#__PURE__*/ React.createElement(Dropdown.Element, {
+    ].map((v)=>/*#__PURE__*/ React.createElement(MenuElement, {
             onClick: ()=>setPerPage(v),
             key: v,
             selected: v === perPage

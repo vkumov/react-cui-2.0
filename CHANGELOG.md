@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.0.0
+
+- **BREAKING:** Dropdown implemented with Floating UI, added support for sub menus. Components renamed - now Dropdown exports:
+  - `Dropdown`
+  - `Menu`
+  - `MenuElement`
+  - `MenuDivider`
+  - `MenuGroup`
+- Added: Popover
+
 ## 4.9.0
 
 - Per-folder TS declarations

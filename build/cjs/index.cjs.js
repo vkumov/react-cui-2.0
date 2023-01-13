@@ -3,30 +3,30 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
+var react = require('@floating-ui/react');
+var cx = require('classnames');
+var useCallbackRef = require('use-callback-ref');
+var reactTransitionGroup = require('react-transition-group');
 var ReactDropzone = require('react-dropzone');
 var bytes = require('bytes');
 var reactToastify = require('react-toastify');
-var useCallbackRef = require('use-callback-ref');
-var reactTransitionGroup = require('react-transition-group');
-var react = require('@floating-ui/react');
 var nanoid = require('nanoid');
 var EventEmitter = require('eventemitter3');
 var reactDom = require('react-dom');
 var Select = require('react-select');
 var CreatableSelect = require('react-select/creatable');
 var RCSlider = require('rc-slider');
-var cx = require('classnames');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var cx__default = /*#__PURE__*/_interopDefaultLegacy(cx);
 var ReactDropzone__default = /*#__PURE__*/_interopDefaultLegacy(ReactDropzone);
 var bytes__default = /*#__PURE__*/_interopDefaultLegacy(bytes);
 var EventEmitter__default = /*#__PURE__*/_interopDefaultLegacy(EventEmitter);
 var Select__default = /*#__PURE__*/_interopDefaultLegacy(Select);
 var CreatableSelect__default = /*#__PURE__*/_interopDefaultLegacy(CreatableSelect);
 var RCSlider__default = /*#__PURE__*/_interopDefaultLegacy(RCSlider);
-var cx__default = /*#__PURE__*/_interopDefaultLegacy(cx);
 
 const classes = (type, icon)=>{
     switch(type){
@@ -120,63 +120,281 @@ Alert.WarningAlt = (props)=>/*#__PURE__*/ React__default["default"].createElemen
         ...props
     });
 
-const DEFAULT_EVENTS$1 = [
-    "mousedown",
-    "touchstart"
-];
-function useClickInside(handler, events, nodes) {
-    const ref = React.useRef();
-    React.useEffect(()=>{
-        const listener = (event)=>{
-            var _a;
-            if (Array.isArray(nodes)) {
-                const shouldIgnore = (_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.hasAttribute("data-ignore-inside-clicks");
-                const shouldTrigger = nodes.every((node)=>Boolean(node) && node.contains(event.target));
-                shouldTrigger && !shouldIgnore && handler();
-            } else if (ref.current && !ref.current.contains(event.target)) {
-                handler();
-            }
-        };
-        (events || DEFAULT_EVENTS$1).forEach((fn)=>document.addEventListener(fn, listener));
-        return ()=>{
-            (events || DEFAULT_EVENTS$1).forEach((fn)=>document.removeEventListener(fn, listener));
-        };
-    }, [
-        ref,
-        handler,
-        nodes
-    ]);
-    return ref;
-}
+const FloatingContext = /*#__PURE__*/ React.createContext(null);
+const useFloatingContext = ()=>React.useContext(FloatingContext);
+const FloatingProvider = ({ rootRef , children  })=>{
+    return /*#__PURE__*/ React__default["default"].createElement(FloatingContext.Provider, {
+        value: {
+            rootRef
+        }
+    }, children);
+};
 
-const DEFAULT_EVENTS = [
-    "mousedown",
-    "touchstart"
-];
-function useClickOutside(handler, events, nodes) {
-    const ref = React.useRef();
-    React.useEffect(()=>{
-        const listener = (event)=>{
-            var _a;
-            if (Array.isArray(nodes)) {
-                const shouldIgnore = (_a = event === null || event === void 0 ? void 0 : event.target) === null || _a === void 0 ? void 0 : _a.hasAttribute("data-ignore-outside-clicks");
-                const shouldTrigger = nodes.every((node)=>!!node && !node.contains(event.target));
-                shouldTrigger && !shouldIgnore && handler();
-            } else if (ref.current && !ref.current.contains(event.target)) {
-                handler();
+var styles$2 = {"submenu":"Dropdown-module_submenu__uXrqH","dropdown":"Dropdown-module_dropdown__QOREt","active":"Dropdown-module_active__p0UcD","dropdown_appear":"Dropdown-module_dropdown_appear__FJDEz","disappear":"Dropdown-module_disappear__9T3XQ","dropdown_disappear":"Dropdown-module_dropdown_disappear__3is4U","menu_root":"Dropdown-module_menu_root__in1ol","with_chevron":"Dropdown-module_with_chevron__ngan7"};
+
+const MenuElement = /*#__PURE__*/ React.forwardRef(({ selected , className , icon , children , submenu , ...props }, ref)=>{
+    return /*#__PURE__*/ React__default["default"].createElement("a", {
+        ref: ref,
+        ...props,
+        className: cx__default["default"](className, {
+            selected: selected && !submenu,
+            [styles$2.submenu]: submenu
+        })
+    }, icon ? /*#__PURE__*/ React.isValidElement(icon) ? /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, icon, /*#__PURE__*/ React.isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement("span", {
+        className: "qtr-margin-left"
+    }, children)) : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React__default["default"].createElement("span", {
+        className: icon
+    }), /*#__PURE__*/ React__default["default"].createElement("span", {
+        className: "qtr-margin-left"
+    }, children)) : children);
+});
+MenuElement.displayName = "MenuElement";
+const Menu = /*#__PURE__*/ React.forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , ...props }, ref)=>{
+    var _a;
+    const [open, setOpen] = React.useState(false);
+    const [activeIndex, setActiveIndex] = React.useState(null);
+    const [allowHover, setAllowHover] = React.useState(false);
+    const listItemsRef = React.useRef([]);
+    const listContentRef = React.useRef(React.Children.map(children, (child)=>/*#__PURE__*/ React.isValidElement(child) ? child.props.label : null));
+    const tree = react.useFloatingTree();
+    const nodeId = react.useFloatingNodeId();
+    const parentId = react.useFloatingParentNodeId();
+    nested !== null && nested !== void 0 ? nested : nested = parentId != null;
+    const { x , y , reference , floating , strategy , refs , context  } = react.useFloating({
+        open,
+        onOpenChange: (st)=>{
+            if (typeof onOpen === "function") onOpen();
+            setOpen(st);
+        },
+        middleware: [
+            react.offset({
+                mainAxis: nested ? 0 : 2,
+                alignmentAxis: nested ? -5 : 0
+            }),
+            react.flip(),
+            react.shift()
+        ],
+        placement: nested ? "right-start" : placement,
+        nodeId,
+        whileElementsMounted: react.autoUpdate,
+        strategy: providedStrategy
+    });
+    const { getReferenceProps , getFloatingProps , getItemProps  } = react.useInteractions([
+        react.useHover(context, {
+            handleClose: react.safePolygon({
+                restMs: 25
+            }),
+            enabled: nested && allowHover,
+            delay: {
+                open: 75
             }
-        };
-        (events || DEFAULT_EVENTS).forEach((fn)=>document.addEventListener(fn, listener));
+        }),
+        react.useClick(context, {
+            toggle: !nested,
+            event: "mousedown",
+            ignoreMouse: nested
+        }),
+        react.useRole(context, {
+            role: "menu"
+        }),
+        react.useDismiss(context),
+        react.useListNavigation(context, {
+            listRef: listItemsRef,
+            activeIndex,
+            nested,
+            onNavigate: setActiveIndex
+        }),
+        react.useTypeahead(context, {
+            listRef: listContentRef,
+            onMatch: open ? setActiveIndex : undefined,
+            activeIndex
+        })
+    ]);
+    React.useEffect(()=>{
+        function onTreeClick() {
+            var _a;
+            if (alwaysClose) setOpen(false);
+            if (parentId === null) {
+                (_a = refs.domReference.current) === null || _a === void 0 ? void 0 : _a.focus();
+            }
+        }
+        tree === null || tree === void 0 ? void 0 : tree.events.on("click", onTreeClick);
         return ()=>{
-            (events || DEFAULT_EVENTS).forEach((fn)=>document.removeEventListener(fn, listener));
+            tree === null || tree === void 0 ? void 0 : tree.events.off("click", onTreeClick);
         };
     }, [
-        ref,
-        handler,
-        nodes
+        parentId,
+        tree,
+        refs,
+        alwaysClose
     ]);
-    return ref;
-}
+    React.useEffect(()=>{
+        function onPointerMove() {
+            setAllowHover(true);
+        }
+        function onKeyDown() {
+            setAllowHover(false);
+        }
+        window.addEventListener("pointermove", onPointerMove, {
+            once: true,
+            capture: true
+        });
+        window.addEventListener("keydown", onKeyDown, true);
+        return ()=>{
+            window.removeEventListener("pointermove", onPointerMove, {
+                capture: true
+            });
+            window.removeEventListener("keydown", onKeyDown, true);
+        };
+    }, [
+        allowHover
+    ]);
+    const floatingNodeRef = React.useRef(null);
+    const mergedReferenceRef = useCallbackRef.useMergeRefs([
+        ref,
+        reference
+    ]);
+    const rootCtx = useFloatingContext();
+    portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = ((_a = rootCtx === null || rootCtx === void 0 ? void 0 : rootCtx.rootRef) === null || _a === void 0 ? void 0 : _a.current) || undefined;
+    return /*#__PURE__*/ React__default["default"].createElement(react.FloatingNode, {
+        id: nodeId
+    }, /*#__PURE__*/ React.isValidElement(label) ? /*#__PURE__*/ React.cloneElement(label, {
+        ...getReferenceProps({
+            ...props,
+            ref: mergedReferenceRef,
+            onClick (event) {
+                event.stopPropagation();
+                event.currentTarget.focus();
+            },
+            ...nested ? {
+                className: cx__default["default"]("menu_item", {
+                    open
+                }),
+                role: "menuitem",
+                onKeyDown (event) {
+                    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+                        setOpen(false);
+                    }
+                }
+            } : {
+                className: cx__default["default"](styles$2.menu_root, label.props.className, {
+                    open,
+                    [styles$2.with_chevron]: !noChevron
+                })
+            }
+        })
+    }) : /*#__PURE__*/ React__default["default"].createElement(MenuElement, {
+        submenu: nested,
+        ...getReferenceProps({
+            ...props,
+            ref: mergedReferenceRef,
+            onClick (event) {
+                event.stopPropagation();
+                event.currentTarget.focus();
+            },
+            ...nested ? {
+                className: cx__default["default"]("menu_item", {
+                    open
+                }),
+                role: "menuitem",
+                onKeyDown (event) {
+                    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+                        setOpen(false);
+                    }
+                }
+            } : {
+                className: cx__default["default"](styles$2.menu_root, {
+                    open,
+                    [styles$2.with_chevron]: !noChevron
+                })
+            }
+        })
+    }, label), /*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
+        root: portalRoot
+    }, /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
+        in: open,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: {
+            enter: 100,
+            exit: 250
+        },
+        nodeRef: floatingNodeRef
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
+            context: context,
+            modal: !nested,
+            returnFocus: !nested,
+            order: [
+                "reference",
+                "content"
+            ]
+        }, /*#__PURE__*/ React__default["default"].createElement("div", {
+            ...getFloatingProps({
+                className: cx__default["default"]("dropdown", styles$2.active, styles$2.dropdown, {
+                    [styles$2.disappear]: state === "exiting" || state === "exited"
+                }),
+                ref (r) {
+                    floatingNodeRef.current = r;
+                    floating(r);
+                },
+                style: {
+                    position: strategy,
+                    top: y !== null && y !== void 0 ? y : 0,
+                    left: x !== null && x !== void 0 ? x : 0
+                },
+                onKeyDown (event) {
+                    if (event.key === "Tab") {
+                        setOpen(false);
+                    }
+                }
+            })
+        }, /*#__PURE__*/ React__default["default"].createElement("div", {
+            className: "dropdown__menu",
+            onClick: alwaysClose ? ()=>{
+                tree === null || tree === void 0 ? void 0 : tree.events.emit("click");
+            } : undefined
+        }, React.Children.map(children, (child, index)=>/*#__PURE__*/ React.isValidElement(child) && /*#__PURE__*/ React.cloneElement(child, getItemProps({
+                tabIndex: -1,
+                role: "menuitem",
+                className: "menu_item",
+                ref (node) {
+                    listItemsRef.current[index] = node;
+                },
+                onClick (e) {
+                    if (child.props.onClick) child.props.onClick(e);
+                    else tree === null || tree === void 0 ? void 0 : tree.events.emit("click");
+                },
+                onPointerEnter () {
+                    if (allowHover) {
+                        setActiveIndex(index);
+                    }
+                }
+            })))))))));
+});
+Menu.displayName = "Menu";
+const Dropdown = /*#__PURE__*/ React.forwardRef(({ children , placement ="bottom-start" , ...props }, ref)=>{
+    return /*#__PURE__*/ React__default["default"].createElement(react.FloatingTree, null, /*#__PURE__*/ React__default["default"].createElement(Menu, {
+        placement: placement,
+        ...props,
+        nested: false,
+        ref: ref
+    }, children));
+});
+Dropdown.displayName = "Dropdown";
+const MenuDivider = /*#__PURE__*/ React.forwardRef(({ className , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
+        ...props,
+        className: cx__default["default"]("divider", className),
+        ref: ref
+    }));
+MenuDivider.displayName = "MenuDivider";
+const MenuGroup = /*#__PURE__*/ React.forwardRef(({ className , header , children , ...props }, ref)=>/*#__PURE__*/ React__default["default"].createElement("div", {
+        className: cx__default["default"]("dropdown__group", className),
+        ...props,
+        ref: ref
+    }, header ? /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: "dropdown__group-header"
+    }, header) : null, children));
+MenuGroup.displayName = "MenuGroup";
 
 const appendClass = (c, what = undefined)=>{
     if (c) {
@@ -185,125 +403,6 @@ const appendClass = (c, what = undefined)=>{
     }
     return "";
 };
-
-const ConditionalWrapper = ({ condition , wrapper , children  })=>condition ? /*#__PURE__*/ React__default["default"].cloneElement(wrapper, null, children) : /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children);
-const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children) : null;
-
-const Element = ({ selected =false , icon =null , children , className =null , ...props })=>/*#__PURE__*/ React__default["default"].createElement("a", {
-        className: `${selected ? "selected" : ""}${className ? ` ${className}` : ""}`,
-        ...props
-    }, icon ? /*#__PURE__*/ React__default["default"].createElement("span", {
-        className: `icon-${icon}`
-    }) : null, /*#__PURE__*/ React__default["default"].createElement(ConditionalWrapper, {
-        condition: Boolean(icon),
-        wrapper: /*#__PURE__*/ React__default["default"].createElement("span", {
-            className: "qtr-margin-left"
-        })
-    }, children));
-const Divider = ()=>/*#__PURE__*/ React__default["default"].createElement("div", {
-        className: "divider"
-    });
-const Group$1 = ({ children  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
-        className: "dropdown__group"
-    }, children);
-const GroupHeader = ({ header  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
-        className: "dropdown__group-header"
-    }, header);
-const Menu = /*#__PURE__*/ React.forwardRef(({ children , className , ...props }, ref)=>{
-    return /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: `dropdown__menu${appendClass(className)}`,
-        ...props,
-        ref: ref
-    }, children);
-});
-
-const DropdownHeader$1 = ({ type , handleClick , className , header  })=>{
-    switch(type){
-        case "icon":
-            return /*#__PURE__*/ React__default["default"].createElement("span", {
-                onClick: handleClick,
-                className: className
-            });
-        case "link":
-            return /*#__PURE__*/ React__default["default"].createElement("a", {
-                onClick: handleClick,
-                className: className
-            }, header);
-        case "div":
-            return /*#__PURE__*/ React__default["default"].createElement("div", {
-                onClick: handleClick,
-                className: className
-            }, header);
-        case "button":
-            return /*#__PURE__*/ React__default["default"].createElement("button", {
-                type: "button",
-                onClick: handleClick,
-                className: `btn ${className}`
-            }, header);
-        default:
-            return /*#__PURE__*/ React__default["default"].isValidElement(header) ? /*#__PURE__*/ React__default["default"].cloneElement(header, {
-                onClick: handleClick
-            }) : null;
-    }
-};
-const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen , ...props })=>{
-    const [isOpen, setIsOpen] = React.useState(false);
-    const divRef = React.useRef(undefined);
-    const menuRef = React.useRef(undefined);
-    React.useEffect(()=>{
-        if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null) setIsOpen(outsideIsOpen);
-    }, [
-        outsideIsOpen
-    ]);
-    const handleHeaderClick = React.useCallback((e)=>{
-        if (stopPropagation) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        setIsOpen((current)=>{
-            const newIsOpen = !current;
-            if (newIsOpen && onOpen) onOpen(e);
-            if (!newIsOpen && onClose) onClose(e);
-            return newIsOpen;
-        });
-    }, [
-        stopPropagation,
-        onClose,
-        onOpen
-    ]);
-    useClickOutside(()=>{
-        setIsOpen(false);
-    }, undefined, [
-        divRef.current
-    ]);
-    useClickInside(()=>{
-        if (alwaysClose) setIsOpen(false);
-    }, [
-        "click"
-    ], [
-        menuRef.current
-    ]);
-    return /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: `dropdown${appendClass([
-            "left",
-            "center"
-        ].includes(openTo), `dropdown--${openTo}`)}${appendClass(up, "dropdown--up")}${appendClass(isOpen, "active")}${appendClass(divClassName)}`,
-        ref: divRef,
-        ...props
-    }, /*#__PURE__*/ React__default["default"].createElement(DropdownHeader$1, {
-        type: type,
-        handleClick: handleHeaderClick,
-        className: className,
-        header: header
-    }), /*#__PURE__*/ React__default["default"].createElement(Menu, {
-        ref: menuRef
-    }, children));
-};
-Dropdown.Divider = Divider;
-Dropdown.Element = Element;
-Dropdown.Group = Group$1;
-Dropdown.GroupHeader = GroupHeader;
-Dropdown.Menu = Menu;
 
 const FileCard = ({ file , i , removeFile , inline  })=>/*#__PURE__*/ React__default["default"].createElement("div", {
         className: "file-drop__card col-lg-4 col-md-6 col-sm-6",
@@ -794,6 +893,9 @@ const HeaderTitle = ({ icon =true , link =null , title , ...props })=>/*#__PURE_
         className: "header__title"
     }, title));
 
+const ConditionalWrapper = ({ condition , wrapper , children  })=>condition ? /*#__PURE__*/ React__default["default"].cloneElement(wrapper, null, children) : /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children);
+const DisplayIf = ({ condition , children  })=>condition ? /*#__PURE__*/ React__default["default"].isValidElement(children) ? children : /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, children) : null;
+
 const Wrapper$1 = /*#__PURE__*/ React__default["default"].createElement("div", {
     className: "responsive-table"
 });
@@ -951,11 +1053,9 @@ const DefaultTablePagination = ({ perPageUp =false , paginationProps ={} , total
     }, "|"), /*#__PURE__*/ React__default["default"].createElement("span", {
         className: "qtr-margin-right"
     }, "Per page:"), /*#__PURE__*/ React__default["default"].createElement(Dropdown, {
-        type: "link",
-        header: perPage,
-        openTo: "left",
+        label: /*#__PURE__*/ React__default["default"].createElement("a", null, perPage),
         alwaysClose: true,
-        up: perPageUp
+        placement: perPageUp ? "top" : undefined
     }, [
         10,
         25,
@@ -963,7 +1063,7 @@ const DefaultTablePagination = ({ perPageUp =false , paginationProps ={} , total
         100,
         250,
         500
-    ].map((v)=>/*#__PURE__*/ React__default["default"].createElement(Dropdown.Element, {
+    ].map((v)=>/*#__PURE__*/ React__default["default"].createElement(MenuElement, {
             onClick: ()=>setPerPage(v),
             key: v,
             selected: v === perPage
@@ -1145,16 +1245,6 @@ const ModalBody = /*#__PURE__*/ React.forwardRef(({ className =null , children ,
         ...props,
         ref: ref
     }, children));
-
-const FloatingContext = /*#__PURE__*/ React.createContext(null);
-const useFloatingContext = ()=>React.useContext(FloatingContext);
-const FloatingProvider = ({ rootRef , children  })=>{
-    return /*#__PURE__*/ React__default["default"].createElement(FloatingContext.Provider, {
-        value: {
-            rootRef
-        }
-    }, children);
-};
 
 const Modal = ({ size =null , autoClose =true , animationDuration =250 , closeIcon =false , title =null , closeHandle =null , left =false , transitionEvents =null , dialogProps =null , contentProps =null , maximize =false , children , isOpen , refElement , root: rootProvided , lockScroll , ancestorScroll  })=>{
     const [maximized, setMaximized] = React__default["default"].useState(false);
@@ -1880,11 +1970,10 @@ const Textarea = ({ label =null , textareaClass =null , innerDivClass =null , cl
 const DropdownHeader = ({ variants , selectedIdx , setIdx , placeholder ="Select"  })=>{
     var _a;
     return /*#__PURE__*/ React__default["default"].createElement(Dropdown, {
-        type: "link",
-        header: ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.display) || placeholder,
-        alwaysClose: true,
-        className: "flex-center-vertical",
-        stopPropagation: true
+        label: /*#__PURE__*/ React__default["default"].createElement("a", {
+            className: "flex-center-vertical"
+        }, ((_a = variants[selectedIdx]) === null || _a === void 0 ? void 0 : _a.display) || placeholder),
+        alwaysClose: true
     }, variants.map((v, idx)=>{
         var _a;
         return /*#__PURE__*/ React__default["default"].createElement("a", {
@@ -2575,7 +2664,7 @@ const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
     }, tooltip));
 };
 
-var styles = {"form_group":"Segmented-module_form_group__EAPlN","small":"Segmented-module_small__e1Knx","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
+var styles$1 = {"form_group":"Segmented-module_form_group__EAPlN","small":"Segmented-module_small__e1Knx","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
 
 const Active = ({ activeRef , value , fullWidth , small  })=>{
     const [coord, setCoord] = React.useState({
@@ -2600,7 +2689,7 @@ const Active = ({ activeRef , value , fullWidth , small  })=>{
     ]);
     if (!activeRef.current) return null;
     return /*#__PURE__*/ React__default["default"].createElement("span", {
-        className: styles.segmented_active,
+        className: styles$1.segmented_active,
         style: {
             width: `${coord.w}px`,
             height: `${coord.h}px`,
@@ -2610,19 +2699,19 @@ const Active = ({ activeRef , value , fullWidth , small  })=>{
 };
 const OptionDisplay = ({ children , value , activeRef , active , className , disabled , id , ...props })=>{
     return /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: cx__default["default"](styles.segmented_option_control, {
-            [styles.segmented_option_control_active]: active,
+        className: cx__default["default"](styles$1.segmented_option_control, {
+            [styles$1.segmented_option_control_active]: active,
             disabled
         }),
         ref: active ? activeRef : null
     }, /*#__PURE__*/ React__default["default"].createElement("input", {
         type: "radio",
-        className: styles.segmented_option_control_input,
+        className: styles$1.segmented_option_control_input,
         value: value,
         id: `${id || props.name}-${value}`,
         ...props
     }), /*#__PURE__*/ React__default["default"].createElement("label", {
-        className: styles.segmented_option_control_label,
+        className: styles$1.segmented_option_control_label,
         htmlFor: `${id || props.name}-${value}`
     }, children));
 };
@@ -2633,13 +2722,13 @@ function UrefedSegmented({ options , value , label , inline , className , fullWi
             "form-group--inline": inline
         })
     }, /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: cx__default["default"](styles.form_group, {
-            [styles["form_group--full"]]: fullWidth,
-            [styles.small]: small
+        className: cx__default["default"](styles$1.form_group, {
+            [styles$1["form_group--full"]]: fullWidth,
+            [styles$1.small]: small
         })
     }, label ? /*#__PURE__*/ React__default["default"].createElement("label", null, label) : null, /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: cx__default["default"](styles.segmented_root, {
-            [styles["segmented_root--full"]]: fullWidth
+        className: cx__default["default"](styles$1.segmented_root, {
+            [styles$1["segmented_root--full"]]: fullWidth
         }),
         ref: ref
     }, /*#__PURE__*/ React__default["default"].createElement(Active, {
@@ -2657,6 +2746,193 @@ function UrefedSegmented({ options , value , label , inline , className , fullWi
         }, o.label)))));
 }
 const SegmentedControl = /*#__PURE__*/ React.forwardRef(UrefedSegmented);
+
+function useLockedBody(initialLocked = false, rootId = "___gatsby" // Default to `___gatsby` to not introduce breaking change
+) {
+    const [locked, setLocked] = React.useState(initialLocked);
+    // Do the side effect before render
+    useIsomorphicEffect(()=>{
+        if (!locked) {
+            return;
+        }
+        // Save initial body style
+        const originalOverflow = document.body.style.overflow;
+        const originalPaddingRight = document.body.style.paddingRight;
+        // Lock body scroll
+        document.body.style.overflow = "hidden";
+        // Get the scrollBar width
+        const root = document.getElementById(rootId); // or root
+        const scrollBarWidth = root ? root.offsetWidth - root.scrollWidth : 0;
+        // Avoid width reflow
+        if (scrollBarWidth) {
+            document.body.style.paddingRight = `${scrollBarWidth}px`;
+        }
+        return ()=>{
+            document.body.style.overflow = originalOverflow;
+            if (scrollBarWidth) {
+                document.body.style.paddingRight = originalPaddingRight;
+            }
+        };
+    }, [
+        locked
+    ]);
+    // Update state if initialValue changes
+    React.useEffect(()=>{
+        if (locked !== initialLocked) {
+            setLocked(initialLocked);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        initialLocked
+    ]);
+    return [
+        locked,
+        setLocked
+    ];
+}
+
+var styles = {"wrapper":"Popover-module_wrapper__m7aDv","body":"Popover-module_body__ytz0O","popover_appear":"Popover-module_popover_appear__dJaAP","disappear":"Popover-module_disappear__w-dyh","overlay":"Popover-module_overlay__u9dvj","overlay_appear":"Popover-module_overlay_appear__b1qOJ"};
+
+const PopoverContext = /*#__PURE__*/ React.createContext(null);
+const PopoverProvider = ({ children , ...props })=>/*#__PURE__*/ React__default["default"].createElement(PopoverContext.Provider, {
+        value: props
+    }, children);
+const usePopoverContext = ()=>React.useContext(PopoverContext);
+
+const Overlay = ({ show , children , background ="var(--cui-background-color)" , className  })=>{
+    const ref = React.useRef(null);
+    return /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
+        in: show,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: 250,
+        nodeRef: ref
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement("div", {
+            style: {
+                background
+            },
+            className: cx__default["default"](styles.overlay, className, {
+                [styles.disappear]: state === "exiting" || state === "exited"
+            }),
+            ref: ref
+        }, children));
+};
+const GenericPopover = /*#__PURE__*/ React.forwardRef(function GenericPopoverRefed({ className , children , wrapperClassName , state , offset: offsetOptions , ...props }, ref) {
+    const ownRef = React.useRef(null);
+    const merged = useCallbackRef.useMergeRefs([
+        ref,
+        ownRef
+    ]);
+    React.useEffect(()=>{
+        var _a;
+        const r = ownRef.current;
+        if (r && offsetOptions && typeof offsetOptions !== "function") r.style.setProperty("--offset", `${typeof offsetOptions === "number" ? offsetOptions : (_a = offsetOptions.mainAxis) !== null && _a !== void 0 ? _a : 4}px`);
+        return ()=>{
+            if (r) r.style.setProperty("--offset", "4px");
+        };
+    }, [
+        offsetOptions
+    ]);
+    return /*#__PURE__*/ React__default["default"].createElement("div", {
+        ref: merged,
+        className: cx__default["default"](styles.wrapper, wrapperClassName, {
+            [styles.disappear]: state === "exiting" || state === "exited"
+        }),
+        ...props
+    }, /*#__PURE__*/ React__default["default"].createElement("div", {
+        className: cx__default["default"]("panel panel--bordered panel--raised", styles.body, className)
+    }, children));
+});
+const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef  })=>{
+    var _a;
+    const [show, setShow] = useLockedBody(false, "root");
+    const { x , y , reference , floating , strategy , context  } = react.useFloating({
+        placement,
+        middleware: [
+            react.offset(offsetOptions),
+            react.flip(),
+            react.shift({
+                padding: {
+                    left: 8,
+                    right: 8
+                }
+            })
+        ],
+        open: show,
+        onOpenChange: (newOpen)=>{
+            if (newOpen && typeof onOpen === "function") onOpen();
+            if (!newOpen && typeof onClose === "function") onClose();
+            setShow(newOpen);
+        },
+        whileElementsMounted: react.autoUpdate
+    });
+    const dismiss = react.useDismiss(context);
+    const click = react.useClick(context);
+    const { getReferenceProps , getFloatingProps  } = react.useInteractions([
+        click,
+        dismiss
+    ]);
+    const [overlayShow, setOverlayShow] = React.useState(overlayShowProvided);
+    const [overlay, setOverlay] = React.useState(overlayProvided);
+    const ref = useCallbackRef.useMergeRefs([
+        reference,
+        element.ref
+    ]);
+    const transitionRef = React.useRef(null);
+    const floatingRef = useCallbackRef.useMergeRefs([
+        transitionRef,
+        floating
+    ]);
+    const rootCtx = useFloatingContext();
+    portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = ((_a = rootCtx === null || rootCtx === void 0 ? void 0 : rootCtx.rootRef) === null || _a === void 0 ? void 0 : _a.current) || undefined;
+    const closeCb = React.useCallback(()=>setShow(false), [
+        setShow
+    ]);
+    if (closeRef) closeRef.current = closeCb;
+    return /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React.cloneElement(element, getReferenceProps({
+        ref,
+        ...element.props,
+        className: cx__default["default"](element.props.className, showClassName ? {
+            [showClassName]: show
+        } : undefined)
+    })), /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
+        in: show,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: 250,
+        nodeRef: transitionRef
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
+            root: portalRoot
+        }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
+            context: context
+        }, /*#__PURE__*/ React__default["default"].createElement(GenericPopover, {
+            ref: floatingRef,
+            style: {
+                position: strategy,
+                top: y !== null && y !== void 0 ? y : 0,
+                left: x !== null && x !== void 0 ? x : 0
+            },
+            state: state,
+            offset: offsetOptions,
+            ...getFloatingProps()
+        }, /*#__PURE__*/ React__default["default"].createElement(PopoverProvider, {
+            setOverlayState: setOverlayShow,
+            setOverlay: setOverlay
+        }, /*#__PURE__*/ React__default["default"].createElement(Overlay, {
+            show: overlayShow || false
+        }, overlay), children))))));
+};
+
+const PopoverTitle = /*#__PURE__*/ React.forwardRef(({ className , noLine , ...props }, ref)=>{
+    return /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React__default["default"].createElement("h5", {
+        ref: ref,
+        className: cx__default["default"]("no-margin-bottom", className),
+        ...props
+    }), !noLine && /*#__PURE__*/ React__default["default"].createElement("hr", {
+        className: "half-margin-top"
+    }));
+});
+PopoverTitle.displayName = "PopoverTitle";
 
 exports.Accordion = Accordion;
 exports.AccordionElement = AccordionElement;
@@ -2679,16 +2955,13 @@ exports.Display4 = Display4;
 exports.DisplayIf = DisplayIf;
 exports.Dots = Dots;
 exports.Dropdown = Dropdown;
-exports.DropdownDivider = Divider;
-exports.DropdownElement = Element;
-exports.DropdownGroup = Group$1;
-exports.DropdownGroupHeader = GroupHeader;
 exports.Dropzone = Dropzone;
 exports.DynamicModal = ConfirmationListener;
 exports.EditableSelect = EditableSelect;
 exports.FloatingProvider = FloatingProvider;
 exports.Footer = Footer;
 exports.Gauge = Gauge;
+exports.GenericPopover = GenericPopover;
 exports.GenericTable = GenericTable;
 exports.Header = Header;
 exports.HeaderPanel = HeaderPanel;
@@ -2702,12 +2975,17 @@ exports.InputHelpBlock = InputHelpBlock;
 exports.Kbd = Kbd;
 exports.Label = Label;
 exports.Menu = Menu;
+exports.MenuDivider = MenuDivider;
+exports.MenuElement = MenuElement;
+exports.MenuGroup = MenuGroup;
 exports.Modal = Modal;
 exports.ModalBody = ModalBody;
 exports.ModalFooter = ModalFooter;
 exports.ModalHeader = ModalHeader;
 exports.Pagination = Pagination;
 exports.Panel = Panel;
+exports.Popover = Popover;
+exports.PopoverTitle = PopoverTitle;
 exports.Portal = Portal;
 exports.Progressbar = Progressbar;
 exports.PromptModal = PromptModal;
@@ -2746,5 +3024,6 @@ exports.notificationModal = notificationModal;
 exports.prompt = prompt;
 exports.toast = toast;
 exports.useFloatingContext = useFloatingContext;
+exports.usePopoverContext = usePopoverContext;
 exports.useTooltip = useTooltip;
 //# sourceMappingURL=index.cjs.js.map

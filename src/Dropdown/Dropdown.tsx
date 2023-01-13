@@ -1,178 +1,410 @@
+import {
+  type Strategy,
+  type Placement,
+  autoUpdate,
+  flip,
+  FloatingFocusManager,
+  FloatingNode,
+  FloatingPortal,
+  FloatingTree,
+  offset,
+  safePolygon,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useFloatingNodeId,
+  useFloatingParentNodeId,
+  useFloatingTree,
+  useHover,
+  useInteractions,
+  useListNavigation,
+  useRole,
+  useTypeahead,
+} from "@floating-ui/react";
 import React, {
-  FC,
-  HTMLProps,
-  ReactNode,
-  useCallback,
+  type PropsWithChildren,
+  type ReactNode,
+  type ReactElement,
+  type HTMLProps,
+  Children,
+  cloneElement,
+  isValidElement,
   useEffect,
   useRef,
   useState,
+  forwardRef,
 } from "react";
-import { useClickInside } from "src/hooks/useClickInside";
-import { useClickOutside } from "src/hooks/useClickOutside";
+import cx from "classnames";
+import { useMergeRefs } from "use-callback-ref";
+import { Transition } from "react-transition-group";
 
-import { appendClass } from "src/utils";
-import { Divider, Element, Group, GroupHeader, Menu } from "./Menu";
+import { useFloatingContext } from "src/FloatingProvider";
 
-type DropdownType = "icon" | "link" | "div" | "button" | "custom";
+import styles from "./Dropdown.module.scss";
 
-type DropdownHeaderProps = {
-  type: DropdownType;
-  handleClick: (...args) => void;
-  className?: string;
-  header: ReactNode;
-};
+type MenuElementProps = {
+  selected?: boolean;
+  icon?: string | ReactElement;
+  submenu?: boolean;
+} & HTMLProps<HTMLAnchorElement>;
 
-const DropdownHeader: FC<DropdownHeaderProps> = ({
-  type,
-  handleClick,
-  className,
-  header,
-}) => {
-  switch (type) {
-    case "icon":
-      return <span onClick={handleClick} className={className} />;
-    case "link":
-      return (
-        <a onClick={handleClick} className={className}>
-          {header}
-        </a>
-      );
-    case "div":
-      return (
-        <div onClick={handleClick} className={className}>
-          {header}
-        </div>
-      );
-    case "button":
-      return (
-        <button
-          type="button"
-          onClick={handleClick}
-          className={`btn ${className}`}
-        >
-          {header}
-        </button>
-      );
-    default:
-      return React.isValidElement(header)
-        ? React.cloneElement<any>(header, { onClick: handleClick })
-        : null;
+export const MenuElement = forwardRef<any, MenuElementProps>(
+  ({ selected, className, icon, children, submenu, ...props }, ref) => {
+    return (
+      <a
+        ref={ref}
+        {...props}
+        className={cx(className, {
+          selected: selected && !submenu,
+          [styles.submenu]: submenu,
+        })}
+      >
+        {icon ? (
+          isValidElement(icon) ? (
+            <>
+              {icon}
+              {isValidElement(children) ? (
+                children
+              ) : (
+                <span className="qtr-margin-left">{children}</span>
+              )}
+            </>
+          ) : (
+            <>
+              <span className={icon} />
+              <span className="qtr-margin-left">{children}</span>
+            </>
+          )
+        ) : (
+          children
+        )}
+      </a>
+    );
   }
-};
+);
 
-type DropdownProps = {
-  type?: DropdownType;
-  className?: string;
-  header?: ReactNode;
-  openTo?: "left" | "right" | "center";
+MenuElement.displayName = "MenuElement";
+
+type DropdownProps = PropsWithChildren<{
+  label: ReactNode;
+  placement?: Placement;
+  noChevron?: boolean;
+  strategy?: Strategy;
+  portalRoot?: HTMLElement | null | undefined;
   alwaysClose?: boolean;
-  onOpen?: (e) => void;
-  onClose?: (e) => void;
-  stopPropagation?: boolean;
-  divClassName?: string;
-  children: ReactNode;
-  up?: boolean;
-  isOpen?: boolean;
-} & HTMLProps<HTMLDivElement>;
+  onOpen?: () => unknown;
+}>;
 
-export interface DropdownParts {
-  Element: typeof Element;
-  Divider: typeof Divider;
-  Group: typeof Group;
-  GroupHeader: typeof GroupHeader;
-  Menu: typeof Menu;
-}
+type MenuComponentProps = {
+  nested?: boolean;
+} & DropdownProps;
 
-const Dropdown: DropdownParts & FC<DropdownProps> = ({
-  openTo = "right",
-  children,
-  type = "button",
-  className = null,
-  header = null,
-  divClassName = null,
-  up = false,
-  onClose = null,
-  onOpen = null,
-  stopPropagation = false,
-  alwaysClose = false,
-  isOpen: outsideIsOpen,
-  ...props
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const divRef = useRef<HTMLDivElement>(undefined);
-  const menuRef = useRef<HTMLDivElement>(undefined);
+export const Menu = forwardRef<
+  any,
+  MenuComponentProps & Omit<HTMLProps<HTMLButtonElement>, "label">
+>(
+  (
+    {
+      children,
+      label,
+      noChevron,
+      placement,
+      strategy: providedStrategy,
+      portalRoot,
+      alwaysClose,
+      onOpen,
+      nested,
+      ...props
+    },
+    ref
+  ) => {
+    const [open, setOpen] = useState(false);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    const [allowHover, setAllowHover] = useState(false);
 
-  useEffect(() => {
-    if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null)
-      setIsOpen(outsideIsOpen);
-  }, [outsideIsOpen]);
+    const listItemsRef = useRef<Array<HTMLButtonElement | null>>([]);
+    const listContentRef = useRef(
+      Children.map(children, (child) =>
+        isValidElement(child) ? child.props.label : null
+      ) as Array<string | null>
+    );
 
-  const handleHeaderClick = useCallback(
-    (e): void => {
-      if (stopPropagation) {
-        e.stopPropagation();
-        e.preventDefault();
+    const tree = useFloatingTree();
+    const nodeId = useFloatingNodeId();
+    const parentId = useFloatingParentNodeId();
+    nested ??= parentId != null;
+
+    const { x, y, reference, floating, strategy, refs, context } =
+      useFloating<HTMLButtonElement>({
+        open,
+        onOpenChange: (st) => {
+          if (typeof onOpen === "function") onOpen();
+          setOpen(st);
+        },
+        middleware: [
+          offset({ mainAxis: nested ? 0 : 2, alignmentAxis: nested ? -5 : 0 }),
+          flip(),
+          shift(),
+        ],
+        placement: nested ? "right-start" : placement,
+        nodeId,
+        whileElementsMounted: autoUpdate,
+        strategy: providedStrategy,
+      });
+
+    const { getReferenceProps, getFloatingProps, getItemProps } =
+      useInteractions([
+        useHover(context, {
+          handleClose: safePolygon({ restMs: 25 }),
+          enabled: nested && allowHover,
+          delay: { open: 75 },
+        }),
+        useClick(context, {
+          toggle: !nested,
+          event: "mousedown",
+          ignoreMouse: nested,
+        }),
+        useRole(context, { role: "menu" }),
+        useDismiss(context),
+        useListNavigation(context, {
+          listRef: listItemsRef,
+          activeIndex,
+          nested,
+          onNavigate: setActiveIndex,
+        }),
+        useTypeahead(context, {
+          listRef: listContentRef,
+          onMatch: open ? setActiveIndex : undefined,
+          activeIndex,
+        }),
+      ]);
+
+    useEffect(() => {
+      function onTreeClick() {
+        if (alwaysClose) setOpen(false);
+
+        if (parentId === null) {
+          refs.domReference.current?.focus();
+        }
       }
 
-      setIsOpen((current) => {
-        const newIsOpen = !current;
-        if (newIsOpen && onOpen) onOpen(e);
-        if (!newIsOpen && onClose) onClose(e);
-        return newIsOpen;
+      tree?.events.on("click", onTreeClick);
+      return () => {
+        tree?.events.off("click", onTreeClick);
+      };
+    }, [parentId, tree, refs, alwaysClose]);
+
+    useEffect(() => {
+      function onPointerMove() {
+        setAllowHover(true);
+      }
+
+      function onKeyDown() {
+        setAllowHover(false);
+      }
+
+      window.addEventListener("pointermove", onPointerMove, {
+        once: true,
+        capture: true,
       });
-    },
-    [stopPropagation, onClose, onOpen]
-  );
+      window.addEventListener("keydown", onKeyDown, true);
+      return () => {
+        window.removeEventListener("pointermove", onPointerMove, {
+          capture: true,
+        });
+        window.removeEventListener("keydown", onKeyDown, true);
+      };
+    }, [allowHover]);
 
-  useClickOutside(
-    () => {
-      setIsOpen(false);
-    },
-    undefined,
-    [divRef.current]
-  );
+    const floatingNodeRef = useRef<HTMLElement>(null);
+    const mergedReferenceRef = useMergeRefs([ref, reference]);
 
-  useClickInside(
-    () => {
-      if (alwaysClose) setIsOpen(false);
-    },
-    ["click"],
-    [menuRef.current]
-  );
+    const rootCtx = useFloatingContext();
+    portalRoot ??= rootCtx?.rootRef?.current || undefined;
 
-  return (
-    <div
-      className={`dropdown${appendClass(
-        ["left", "center"].includes(openTo),
-        `dropdown--${openTo}`
-      )}${appendClass(up, "dropdown--up")}${appendClass(
-        isOpen,
-        "active"
-      )}${appendClass(divClassName)}`}
-      ref={divRef}
-      {...props}
-    >
-      <DropdownHeader
-        type={type}
-        handleClick={handleHeaderClick}
-        className={className}
-        header={header}
-      />
-      <Menu ref={menuRef}>{children}</Menu>
-    </div>
-  );
-};
+    return (
+      <FloatingNode id={nodeId}>
+        {isValidElement(label) ? (
+          cloneElement(label, {
+            ...getReferenceProps({
+              ...props,
+              ref: mergedReferenceRef,
+              onClick(event) {
+                event.stopPropagation();
+                (event.currentTarget as HTMLButtonElement).focus();
+              },
+              ...(nested
+                ? {
+                    className: cx("menu_item", { open }),
+                    role: "menuitem",
+                    onKeyDown(event) {
+                      if (
+                        event.key === "ArrowUp" ||
+                        event.key === "ArrowDown"
+                      ) {
+                        setOpen(false);
+                      }
+                    },
+                  }
+                : {
+                    className: cx(styles.menu_root, label.props.className, {
+                      open,
+                      [styles.with_chevron]: !noChevron,
+                    }),
+                  }),
+            }),
+          })
+        ) : (
+          <MenuElement
+            submenu={nested}
+            {...getReferenceProps({
+              ...props,
+              ref: mergedReferenceRef,
+              onClick(event) {
+                event.stopPropagation();
+                (event.currentTarget as HTMLButtonElement).focus();
+              },
+              ...(nested
+                ? {
+                    className: cx("menu_item", { open }),
+                    role: "menuitem",
+                    onKeyDown(event) {
+                      if (
+                        event.key === "ArrowUp" ||
+                        event.key === "ArrowDown"
+                      ) {
+                        setOpen(false);
+                      }
+                    },
+                  }
+                : {
+                    className: cx(styles.menu_root, {
+                      open,
+                      [styles.with_chevron]: !noChevron,
+                    }),
+                  }),
+            })}
+          >
+            {label}
+          </MenuElement>
+        )}
+        <FloatingPortal root={portalRoot}>
+          <Transition
+            in={open}
+            mountOnEnter
+            unmountOnExit
+            timeout={{ enter: 100, exit: 250 }}
+            nodeRef={floatingNodeRef}
+          >
+            {(state) => (
+              <FloatingFocusManager
+                context={context}
+                modal={!nested}
+                returnFocus={!nested}
+                order={["reference", "content"]}
+              >
+                <div
+                  {...getFloatingProps({
+                    className: cx("dropdown", styles.active, styles.dropdown, {
+                      [styles.disappear]:
+                        state === "exiting" || state === "exited",
+                    }),
+                    ref(r) {
+                      floatingNodeRef.current = r;
+                      floating(r);
+                    },
+                    style: {
+                      position: strategy,
+                      top: y ?? 0,
+                      left: x ?? 0,
+                    },
+                    onKeyDown(event) {
+                      if (event.key === "Tab") {
+                        setOpen(false);
+                      }
+                    },
+                  })}
+                >
+                  <div
+                    className="dropdown__menu"
+                    onClick={
+                      alwaysClose
+                        ? () => {
+                            tree?.events.emit("click");
+                          }
+                        : undefined
+                    }
+                  >
+                    {Children.map(
+                      children,
+                      (child, index) =>
+                        isValidElement(child) &&
+                        cloneElement(
+                          child,
+                          getItemProps({
+                            tabIndex: -1,
+                            role: "menuitem",
+                            className: "menu_item",
+                            ref(node: HTMLButtonElement) {
+                              listItemsRef.current[index] = node;
+                            },
+                            onClick(e) {
+                              if (child.props.onClick) child.props.onClick(e);
+                              else tree?.events.emit("click");
+                            },
+                            onPointerEnter() {
+                              if (allowHover) {
+                                setActiveIndex(index);
+                              }
+                            },
+                          })
+                        )
+                    )}
+                  </div>
+                </div>
+              </FloatingFocusManager>
+            )}
+          </Transition>
+        </FloatingPortal>
+      </FloatingNode>
+    );
+  }
+);
 
-Dropdown.Divider = Divider;
-Dropdown.Element = Element;
-Dropdown.Group = Group;
-Dropdown.GroupHeader = GroupHeader;
-Dropdown.Menu = Menu;
+Menu.displayName = "Menu";
 
-export {
-  Dropdown,
-  Element as DropdownElement,
-  Divider as DropdownDivider,
-  Group as DropdownGroup,
-  GroupHeader as DropdownGroupHeader,
-};
+export const Dropdown = forwardRef<any, DropdownProps>(
+  ({ children, placement = "bottom-start", ...props }, ref) => {
+    return (
+      <FloatingTree>
+        <Menu placement={placement} {...props} nested={false} ref={ref}>
+          {children}
+        </Menu>
+      </FloatingTree>
+    );
+  }
+);
+
+Dropdown.displayName = "Dropdown";
+
+export const MenuDivider = forwardRef<
+  HTMLDivElement,
+  HTMLProps<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div {...props} className={cx("divider", className)} ref={ref} />
+));
+
+MenuDivider.displayName = "MenuDivider";
+
+export const MenuGroup = forwardRef<
+  HTMLDivElement,
+  HTMLProps<HTMLDivElement> & { header?: ReactNode }
+>(({ className, header, children, ...props }, ref) => (
+  <div className={cx("dropdown__group", className)} {...props} ref={ref}>
+    {header ? <div className="dropdown__group-header">{header}</div> : null}
+    {children}
+  </div>
+));
+
+MenuGroup.displayName = "MenuGroup";

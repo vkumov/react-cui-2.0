@@ -43,6 +43,7 @@ export * from "./Gauge";
 export * from "./Tooltip";
 export * from "./FloatingProvider";
 export * from "./SegmentedControl";
+export * from "./Popover";
 
 declare module "@vkumov/react-cui-2.0/Accordion" {
   import { Accordion, AccordionElement } from "@vkumov/react-cui-2.0";
@@ -80,8 +81,8 @@ declare module "@vkumov/react-cui-2.0/Conditional" {
 }
 
 declare module "@vkumov/react-cui-2.0/Dropdown" {
-  import { Dropdown, DropdownDivider, DropdownElement, DropdownGroup, DropdownGroupHeader, Menu } from "@vkumov/react-cui-2.0";
-  export { Dropdown, DropdownDivider, DropdownElement, DropdownGroup, DropdownGroupHeader, Menu };
+  import { Dropdown, Menu, MenuDivider, MenuElement, MenuGroup } from "@vkumov/react-cui-2.0";
+  export { Dropdown, Menu, MenuDivider, MenuElement, MenuGroup };
 }
 
 declare module "@vkumov/react-cui-2.0/Dropzone" {
@@ -152,6 +153,11 @@ declare module "@vkumov/react-cui-2.0/Pagination" {
 declare module "@vkumov/react-cui-2.0/Panel" {
   import { Panel } from "@vkumov/react-cui-2.0";
   export { Panel };
+}
+
+declare module "@vkumov/react-cui-2.0/Popover" {
+  import { GenericPopover, Popover, PopoverTitle, usePopoverContext } from "@vkumov/react-cui-2.0";
+  export { GenericPopover, Popover, PopoverTitle, usePopoverContext };
 }
 
 declare module "@vkumov/react-cui-2.0/Portal" {
@@ -282,6 +288,11 @@ declare module "@vkumov/react-cui-2.0/hooks/useDisclosure" {
 declare module "@vkumov/react-cui-2.0/hooks/useIsomorphicEffect" {
   import { useIsomorphicEffect } from "@vkumov/react-cui-2.0";
   export { useIsomorphicEffect };
+}
+
+declare module "@vkumov/react-cui-2.0/hooks/useLockedBody" {
+  import { useLockedBody } from "@vkumov/react-cui-2.0";
+  export { useLockedBody };
 }
 
 declare module "@vkumov/react-cui-2.0/hooks/usePortal" {

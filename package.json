@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "4.9.3",
+  "version": "5.0.0",
   "description": "React library for CUI 2.0",
   "module": "build/index.esm.js",
   "main": "build/cjs/index.cjs.js",
@@ -71,6 +71,7 @@
     "eslint-plugin-storybook": "^0.6.10",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.0",
+    "include-media": "^1.4.10",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
     "prettier": "^2.8.2",

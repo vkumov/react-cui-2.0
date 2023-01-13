@@ -1,49 +1,11 @@
-import React, { forwardRef, useState, useRef, useEffect, useCallback } from 'react';
-import { useClickInside } from '../hooks/useClickInside.js';
-import { useClickOutside } from '../hooks/useClickOutside.js';
-import { appendClass } from '../utils/index.js';
-import { ConditionalWrapper } from '../Conditional/index.js';
+import { useFloatingTree, useFloatingNodeId, useFloatingParentNodeId, useFloating, offset, flip, shift, autoUpdate, useInteractions, useHover, safePolygon, useClick, useRole, useDismiss, useListNavigation, useTypeahead, FloatingNode, FloatingPortal, FloatingFocusManager, FloatingTree } from '@floating-ui/react';
+import React, { forwardRef, isValidElement, useState, useRef, Children, useEffect, cloneElement } from 'react';
+import cx from 'classnames';
+import { useMergeRefs } from 'use-callback-ref';
+import { Transition } from 'react-transition-group';
+import { useFloatingContext } from '../FloatingProvider/index.js';
 
-function _extends$1() {
-    _extends$1 = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends$1.apply(this, arguments);
-}
-const Element = ({ selected =false , icon =null , children , className =null , ...props })=>/*#__PURE__*/ React.createElement("a", _extends$1({
-        className: `${selected ? "selected" : ""}${className ? ` ${className}` : ""}`
-    }, props), icon ? /*#__PURE__*/ React.createElement("span", {
-        className: `icon-${icon}`
-    }) : null, /*#__PURE__*/ React.createElement(ConditionalWrapper, {
-        condition: Boolean(icon),
-        wrapper: /*#__PURE__*/ React.createElement("span", {
-            className: "qtr-margin-left"
-        })
-    }, children));
-const Divider = ()=>/*#__PURE__*/ React.createElement("div", {
-        className: "divider"
-    });
-const Group = ({ children  })=>/*#__PURE__*/ React.createElement("div", {
-        className: "dropdown__group"
-    }, children);
-const GroupHeader = ({ header  })=>/*#__PURE__*/ React.createElement("div", {
-        className: "dropdown__group-header"
-    }, header);
-const Menu = /*#__PURE__*/ forwardRef(({ children , className , ...props }, ref)=>{
-    return /*#__PURE__*/ React.createElement("div", _extends$1({
-        className: `dropdown__menu${appendClass(className)}`
-    }, props, {
-        ref: ref
-    }), children);
-});
+var styles = {"submenu":"Dropdown-module_submenu__uXrqH","dropdown":"Dropdown-module_dropdown__QOREt","active":"Dropdown-module_active__p0UcD","dropdown_appear":"Dropdown-module_dropdown_appear__FJDEz","disappear":"Dropdown-module_disappear__9T3XQ","dropdown_disappear":"Dropdown-module_dropdown_disappear__3is4U","menu_root":"Dropdown-module_menu_root__in1ol","with_chevron":"Dropdown-module_with_chevron__ngan7"};
 
 function _extends() {
     _extends = Object.assign || function(target) {
@@ -59,92 +21,269 @@ function _extends() {
     };
     return _extends.apply(this, arguments);
 }
-const DropdownHeader = ({ type , handleClick , className , header  })=>{
-    switch(type){
-        case "icon":
-            return /*#__PURE__*/ React.createElement("span", {
-                onClick: handleClick,
-                className: className
-            });
-        case "link":
-            return /*#__PURE__*/ React.createElement("a", {
-                onClick: handleClick,
-                className: className
-            }, header);
-        case "div":
-            return /*#__PURE__*/ React.createElement("div", {
-                onClick: handleClick,
-                className: className
-            }, header);
-        case "button":
-            return /*#__PURE__*/ React.createElement("button", {
-                type: "button",
-                onClick: handleClick,
-                className: `btn ${className}`
-            }, header);
-        default:
-            return /*#__PURE__*/ React.isValidElement(header) ? /*#__PURE__*/ React.cloneElement(header, {
-                onClick: handleClick
-            }) : null;
-    }
-};
-const Dropdown = ({ openTo ="right" , children , type ="button" , className =null , header =null , divClassName =null , up =false , onClose =null , onOpen =null , stopPropagation =false , alwaysClose =false , isOpen: outsideIsOpen , ...props })=>{
-    const [isOpen, setIsOpen] = useState(false);
-    const divRef = useRef(undefined);
-    const menuRef = useRef(undefined);
+const MenuElement = /*#__PURE__*/ forwardRef(({ selected , className , icon , children , submenu , ...props }, ref)=>{
+    return /*#__PURE__*/ React.createElement("a", _extends({
+        ref: ref
+    }, props, {
+        className: cx(className, {
+            selected: selected && !submenu,
+            [styles.submenu]: submenu
+        })
+    }), icon ? /*#__PURE__*/ isValidElement(icon) ? /*#__PURE__*/ React.createElement(React.Fragment, null, icon, /*#__PURE__*/ isValidElement(children) ? children : /*#__PURE__*/ React.createElement("span", {
+        className: "qtr-margin-left"
+    }, children)) : /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ React.createElement("span", {
+        className: icon
+    }), /*#__PURE__*/ React.createElement("span", {
+        className: "qtr-margin-left"
+    }, children)) : children);
+});
+MenuElement.displayName = "MenuElement";
+const Menu = /*#__PURE__*/ forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , ...props }, ref)=>{
+    var ref1;
+    const [open, setOpen] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(null);
+    const [allowHover, setAllowHover] = useState(false);
+    const listItemsRef = useRef([]);
+    const listContentRef = useRef(Children.map(children, (child)=>/*#__PURE__*/ isValidElement(child) ? child.props.label : null));
+    const tree = useFloatingTree();
+    const nodeId = useFloatingNodeId();
+    const parentId = useFloatingParentNodeId();
+    nested !== null && nested !== void 0 ? nested : nested = parentId != null;
+    const { x , y , reference , floating , strategy , refs , context  } = useFloating({
+        open,
+        onOpenChange: (st)=>{
+            if (typeof onOpen === "function") onOpen();
+            setOpen(st);
+        },
+        middleware: [
+            offset({
+                mainAxis: nested ? 0 : 2,
+                alignmentAxis: nested ? -5 : 0
+            }),
+            flip(),
+            shift()
+        ],
+        placement: nested ? "right-start" : placement,
+        nodeId,
+        whileElementsMounted: autoUpdate,
+        strategy: providedStrategy
+    });
+    const { getReferenceProps , getFloatingProps , getItemProps  } = useInteractions([
+        useHover(context, {
+            handleClose: safePolygon({
+                restMs: 25
+            }),
+            enabled: nested && allowHover,
+            delay: {
+                open: 75
+            }
+        }),
+        useClick(context, {
+            toggle: !nested,
+            event: "mousedown",
+            ignoreMouse: nested
+        }),
+        useRole(context, {
+            role: "menu"
+        }),
+        useDismiss(context),
+        useListNavigation(context, {
+            listRef: listItemsRef,
+            activeIndex,
+            nested,
+            onNavigate: setActiveIndex
+        }),
+        useTypeahead(context, {
+            listRef: listContentRef,
+            onMatch: open ? setActiveIndex : undefined,
+            activeIndex
+        })
+    ]);
     useEffect(()=>{
-        if (typeof outsideIsOpen !== "undefined" && outsideIsOpen !== null) setIsOpen(outsideIsOpen);
-    }, [
-        outsideIsOpen
-    ]);
-    const handleHeaderClick = useCallback((e)=>{
-        if (stopPropagation) {
-            e.stopPropagation();
-            e.preventDefault();
+        function onTreeClick() {
+            if (alwaysClose) setOpen(false);
+            if (parentId === null) {
+                var ref;
+                (ref = refs.domReference.current) === null || ref === void 0 ? void 0 : ref.focus();
+            }
         }
-        setIsOpen((current)=>{
-            const newIsOpen = !current;
-            if (newIsOpen && onOpen) onOpen(e);
-            if (!newIsOpen && onClose) onClose(e);
-            return newIsOpen;
+        tree === null || tree === void 0 ? void 0 : tree.events.on("click", onTreeClick);
+        return ()=>{
+            tree === null || tree === void 0 ? void 0 : tree.events.off("click", onTreeClick);
+        };
+    }, [
+        parentId,
+        tree,
+        refs,
+        alwaysClose
+    ]);
+    useEffect(()=>{
+        function onPointerMove() {
+            setAllowHover(true);
+        }
+        function onKeyDown() {
+            setAllowHover(false);
+        }
+        window.addEventListener("pointermove", onPointerMove, {
+            once: true,
+            capture: true
         });
+        window.addEventListener("keydown", onKeyDown, true);
+        return ()=>{
+            window.removeEventListener("pointermove", onPointerMove, {
+                capture: true
+            });
+            window.removeEventListener("keydown", onKeyDown, true);
+        };
     }, [
-        stopPropagation,
-        onClose,
-        onOpen
+        allowHover
     ]);
-    useClickOutside(()=>{
-        setIsOpen(false);
-    }, undefined, [
-        divRef.current
+    const floatingNodeRef = useRef(null);
+    const mergedReferenceRef = useMergeRefs([
+        ref,
+        reference
     ]);
-    useClickInside(()=>{
-        if (alwaysClose) setIsOpen(false);
-    }, [
-        "click"
-    ], [
-        menuRef.current
-    ]);
-    return /*#__PURE__*/ React.createElement("div", _extends({
-        className: `dropdown${appendClass([
-            "left",
-            "center"
-        ].includes(openTo), `dropdown--${openTo}`)}${appendClass(up, "dropdown--up")}${appendClass(isOpen, "active")}${appendClass(divClassName)}`,
-        ref: divRef
-    }, props), /*#__PURE__*/ React.createElement(DropdownHeader, {
-        type: type,
-        handleClick: handleHeaderClick,
-        className: className,
-        header: header
-    }), /*#__PURE__*/ React.createElement(Menu, {
-        ref: menuRef
-    }, children));
-};
-Dropdown.Divider = Divider;
-Dropdown.Element = Element;
-Dropdown.Group = Group;
-Dropdown.GroupHeader = GroupHeader;
-Dropdown.Menu = Menu;
+    const rootCtx = useFloatingContext();
+    portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = (rootCtx === null || rootCtx === void 0 ? void 0 : (ref1 = rootCtx.rootRef) === null || ref1 === void 0 ? void 0 : ref1.current) || undefined;
+    return /*#__PURE__*/ React.createElement(FloatingNode, {
+        id: nodeId
+    }, /*#__PURE__*/ isValidElement(label) ? /*#__PURE__*/ cloneElement(label, {
+        ...getReferenceProps({
+            ...props,
+            ref: mergedReferenceRef,
+            onClick (event) {
+                event.stopPropagation();
+                event.currentTarget.focus();
+            },
+            ...nested ? {
+                className: cx("menu_item", {
+                    open
+                }),
+                role: "menuitem",
+                onKeyDown (event) {
+                    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+                        setOpen(false);
+                    }
+                }
+            } : {
+                className: cx(styles.menu_root, label.props.className, {
+                    open,
+                    [styles.with_chevron]: !noChevron
+                })
+            }
+        })
+    }) : /*#__PURE__*/ React.createElement(MenuElement, _extends({
+        submenu: nested
+    }, getReferenceProps({
+        ...props,
+        ref: mergedReferenceRef,
+        onClick (event) {
+            event.stopPropagation();
+            event.currentTarget.focus();
+        },
+        ...nested ? {
+            className: cx("menu_item", {
+                open
+            }),
+            role: "menuitem",
+            onKeyDown (event) {
+                if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+                    setOpen(false);
+                }
+            }
+        } : {
+            className: cx(styles.menu_root, {
+                open,
+                [styles.with_chevron]: !noChevron
+            })
+        }
+    })), label), /*#__PURE__*/ React.createElement(FloatingPortal, {
+        root: portalRoot
+    }, /*#__PURE__*/ React.createElement(Transition, {
+        in: open,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: {
+            enter: 100,
+            exit: 250
+        },
+        nodeRef: floatingNodeRef
+    }, (state)=>{
+         return React.createElement(FloatingFocusManager, {
+            context: context,
+            modal: !nested,
+            returnFocus: !nested,
+            order: [
+                "reference",
+                "content"
+            ]
+        }, /*#__PURE__*/ React.createElement("div", _extends({}, getFloatingProps({
+            className: cx("dropdown", styles.active, styles.dropdown, {
+                [styles.disappear]: state === "exiting" || state === "exited"
+            }),
+            ref (r) {
+                floatingNodeRef.current = r;
+                floating(r);
+            },
+            style: {
+                position: strategy,
+                top: y !== null && y !== void 0 ? y : 0,
+                left: x !== null && x !== void 0 ? x : 0
+            },
+            onKeyDown (event) {
+                if (event.key === "Tab") {
+                    setOpen(false);
+                }
+            }
+        })), /*#__PURE__*/ React.createElement("div", {
+            className: "dropdown__menu",
+            onClick: alwaysClose ? ()=>{
+                tree === null || tree === void 0 ? void 0 : tree.events.emit("click");
+            } : undefined
+        }, Children.map(children, (child, index)=>{
+             return isValidElement(child) && /*#__PURE__*/ cloneElement(child, getItemProps({
+                tabIndex: -1,
+                role: "menuitem",
+                className: "menu_item",
+                ref (node) {
+                    listItemsRef.current[index] = node;
+                },
+                onClick (e) {
+                    if (child.props.onClick) child.props.onClick(e);
+                    else tree === null || tree === void 0 ? void 0 : tree.events.emit("click");
+                },
+                onPointerEnter () {
+                    if (allowHover) {
+                        setActiveIndex(index);
+                    }
+                }
+            }));
+        }))));
+    })));
+});
+Menu.displayName = "Menu";
+const Dropdown = /*#__PURE__*/ forwardRef(({ children , placement ="bottom-start" , ...props }, ref)=>{
+    return /*#__PURE__*/ React.createElement(FloatingTree, null, /*#__PURE__*/ React.createElement(Menu, _extends({
+        placement: placement
+    }, props, {
+        nested: false,
+        ref: ref
+    }), children));
+});
+Dropdown.displayName = "Dropdown";
+const MenuDivider = /*#__PURE__*/ forwardRef(({ className , ...props }, ref)=>/*#__PURE__*/ React.createElement("div", _extends({}, props, {
+        className: cx("divider", className),
+        ref: ref
+    })));
+MenuDivider.displayName = "MenuDivider";
+const MenuGroup = /*#__PURE__*/ forwardRef(({ className , header , children , ...props }, ref)=>/*#__PURE__*/ React.createElement("div", _extends({
+        className: cx("dropdown__group", className)
+    }, props, {
+        ref: ref
+    }), header ? /*#__PURE__*/ React.createElement("div", {
+        className: "dropdown__group-header"
+    }, header) : null, children));
+MenuGroup.displayName = "MenuGroup";
 
-export { Dropdown, Divider as DropdownDivider, Element as DropdownElement, Group as DropdownGroup, GroupHeader as DropdownGroupHeader, Menu };
+export { Dropdown, Menu, MenuDivider, MenuElement, MenuGroup };
 //# sourceMappingURL=index.js.map

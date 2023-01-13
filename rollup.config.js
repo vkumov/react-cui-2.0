@@ -63,7 +63,8 @@ const ignoreCssPlugin = postcss({
   use: {
     sass: {
       includePaths: [
-        path.resolve("node_modules"),
+        // path.resolve("node_modules"),
+        path.resolve(__dirname, "node_modules"),
         path.resolve("./src/styles"),
       ],
     },
@@ -140,12 +141,13 @@ const esmBundle = {
   plugins: [
     postcss({
       plugins: [cssImport()],
-      minimize,
+      minimize: true,
       extract: "css/styles.css",
       use: {
         sass: {
           includePaths: [
-            path.resolve("node_modules"),
+            // path.resolve("node_modules"),
+            path.resolve(__dirname, "node_modules"),
             path.resolve("./src/styles"),
           ],
         },
