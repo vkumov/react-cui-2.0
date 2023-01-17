@@ -2651,7 +2651,7 @@ const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
 
 var styles$1 = {"form_group":"Segmented-module_form_group__EAPlN","small":"Segmented-module_small__e1Knx","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
 
-const Active = ({ activeRef , value , fullWidth , small  })=>{
+const Active = ({ activeElement , value , fullWidth , small  })=>{
     const [coord, setCoord] = useState({
         x: 0,
         y: 0,
@@ -2659,20 +2659,20 @@ const Active = ({ activeRef , value , fullWidth , small  })=>{
         h: 0
     });
     useEffect(()=>{
-        if (!activeRef.current) return;
+        if (!activeElement) return;
         setCoord({
-            x: activeRef.current.offsetLeft - (small ? 2 : 4),
-            y: activeRef.current.offsetTop - (small ? 2 : 4),
-            w: activeRef.current.offsetWidth,
-            h: activeRef.current.offsetHeight
+            x: activeElement.offsetLeft - (small ? 2 : 4),
+            y: activeElement.offsetTop - (small ? 2 : 4),
+            w: activeElement.offsetWidth,
+            h: activeElement.offsetHeight
         });
     }, [
-        activeRef.current,
+        activeElement,
         value,
         fullWidth,
         small
     ]);
-    if (!activeRef.current) return null;
+    if (!activeElement) return null;
     return /*#__PURE__*/ React.createElement("span", {
         className: styles$1.segmented_active,
         style: {
@@ -2684,7 +2684,7 @@ const Active = ({ activeRef , value , fullWidth , small  })=>{
 };
 const OptionDisplay = ({ children , value , activeRef , active , className , disabled , id , ...props })=>{
     return /*#__PURE__*/ React.createElement("div", {
-        className: cx(styles$1.segmented_option_control, {
+        className: cx(styles$1.segmented_option_control, className, {
             [styles$1.segmented_option_control_active]: active,
             disabled
         }),
@@ -2701,7 +2701,12 @@ const OptionDisplay = ({ children , value , activeRef , active , className , dis
     }, children));
 };
 function UrefedSegmented({ options , value , label , inline , className , fullWidth , small , ...props }, ref) {
-    const activeRef = useRef(null);
+    const [el, setEl] = useState(null);
+    const activeRefCb = useCallback((node)=>{
+        if (node !== null) {
+            setEl(node);
+        } else setEl(null);
+    }, []);
     return /*#__PURE__*/ React.createElement("div", {
         className: cx("form-group", className, {
             "form-group--inline": inline
@@ -2717,12 +2722,12 @@ function UrefedSegmented({ options , value , label , inline , className , fullWi
         }),
         ref: ref
     }, /*#__PURE__*/ React.createElement(Active, {
-        activeRef: activeRef,
+        activeElement: el,
         value: value,
         fullWidth: fullWidth,
         small: small
     }), options.map((o)=>/*#__PURE__*/ React.createElement(OptionDisplay, {
-            activeRef: activeRef,
+            activeRef: activeRefCb,
             active: value === o.value,
             value: o.value,
             key: o.value,
