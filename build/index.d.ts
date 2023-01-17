@@ -156,8 +156,8 @@ declare module "@vkumov/react-cui-2.0/Panel" {
 }
 
 declare module "@vkumov/react-cui-2.0/Popover" {
-  import { GenericPopover, Popover, PopoverTitle, usePopoverContext } from "@vkumov/react-cui-2.0";
-  export { GenericPopover, Popover, PopoverTitle, usePopoverContext };
+  import { GenericPopover, Popover, PopoverTitle, usePopover, usePopoverContext } from "@vkumov/react-cui-2.0";
+  export { GenericPopover, Popover, PopoverTitle, usePopover, usePopoverContext };
 }
 
 declare module "@vkumov/react-cui-2.0/Portal" {

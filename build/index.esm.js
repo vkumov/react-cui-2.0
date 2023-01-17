@@ -2885,15 +2885,15 @@ const Popover = ({ children , element , onClose , onOpen , showClassName , overl
         className: cx(element.props.className, showClassName ? {
             [showClassName]: show
         } : undefined)
-    })), /*#__PURE__*/ React.createElement(FloatingPortal, {
-        root: portalRoot
-    }, /*#__PURE__*/ React.createElement(Transition, {
+    })), /*#__PURE__*/ React.createElement(Transition, {
         in: show,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: 250,
         nodeRef: transitionRef
-    }, (state)=>/*#__PURE__*/ React.createElement(FloatingFocusManager, {
+    }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+            root: portalRoot
+        }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
             context: context,
             initialFocus: initialFocus,
             guards: guardsFocus,
@@ -2928,5 +2928,86 @@ const PopoverTitle = /*#__PURE__*/ forwardRef(({ className , noLine , ...props }
 });
 PopoverTitle.displayName = "PopoverTitle";
 
-export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, FloatingProvider, Footer, Gauge, GenericPopover, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, IndeterminateCheckbox, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, MenuDivider, MenuElement, MenuGroup, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Popover, PopoverTitle, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, SegmentedControl, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, TooltipWrapper as Tooltip, VSeparator, VariantSelector, VerticalCenter, WithBadge, WithTooltip, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast, useFloatingContext, usePopoverContext, useTooltip };
+function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
+    var _a;
+    const [show, setShow] = useLockedBody(false, "root");
+    const { x , y , reference , floating , strategy , context , refs  } = useFloating({
+        placement,
+        middleware: [
+            offset(offsetOptions),
+            flip(),
+            shift({
+                padding: {
+                    left: 8,
+                    right: 8
+                }
+            })
+        ],
+        open: show,
+        onOpenChange: (newOpen)=>{
+            if (newOpen && typeof onOpen === "function") onOpen();
+            if (!newOpen && typeof onClose === "function") onClose();
+            setShow(newOpen);
+        },
+        whileElementsMounted: autoUpdate
+    });
+    const dismiss = useDismiss(context);
+    const click = useClick(context);
+    const { getReferenceProps , getFloatingProps  } = useInteractions([
+        click,
+        dismiss
+    ]);
+    const closeCb = useCallback(()=>setShow(false), [
+        setShow
+    ]);
+    const openCb = useCallback(()=>setShow(true), [
+        setShow
+    ]);
+    const transitionRef = useRef(null);
+    const floatingRef = useMergeRefs([
+        transitionRef,
+        floating
+    ]);
+    const rootCtx = useFloatingContext();
+    portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = ((_a = rootCtx === null || rootCtx === void 0 ? void 0 : rootCtx.rootRef) === null || _a === void 0 ? void 0 : _a.current) || undefined;
+    const render = ()=>{
+        return /*#__PURE__*/ React.createElement(Transition, {
+            in: show,
+            mountOnEnter: true,
+            unmountOnExit: true,
+            timeout: 250,
+            nodeRef: transitionRef
+        }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+                root: portalRoot
+            }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
+                context: context,
+                initialFocus: initialFocus,
+                guards: guardsFocus,
+                modal: modalFocus,
+                closeOnFocusOut: closeOnFocusOut
+            }, /*#__PURE__*/ createElement(popoverComponent, {
+                ref: floatingRef,
+                state,
+                offset: offsetOptions,
+                ...getFloatingProps({
+                    style: {
+                        position: strategy,
+                        top: y !== null && y !== void 0 ? y : 0,
+                        left: x !== null && x !== void 0 ? x : 0
+                    }
+                })
+            }, body))));
+    };
+    return {
+        getReferenceProps,
+        reference,
+        render,
+        isShown: show,
+        refs,
+        close: closeCb,
+        open: openCb
+    };
+}
+
+export { Accordion, AccordionElement, Alert, Badge, Blockquote, Button$1 as Button, ButtonGroup, Checkbox, ConditionalWrapper, ConfirmationListener, ConfirmationModal, CreatableReactSelect, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, Dots, Dropdown, Dropzone, ConfirmationListener as DynamicModal, EditableSelect, FloatingProvider, Footer, Gauge, GenericPopover, GenericTable, Header, HeaderPanel, HeaderTitle, Icon, IndeterminateCheckbox, Input, InputChips, InputHelpBaloon, InputHelpBlock, Kbd, Label, Menu, MenuDivider, MenuElement, MenuGroup, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, Panel, Popover, PopoverTitle, Portal, Progressbar, PromptModal, Radio, Radios, ReactSelect, Section, SegmentedControl, Slider, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, Toast, ToastContainer, TooltipWrapper as Tooltip, VSeparator, VariantSelector, VerticalCenter, WithBadge, WithTooltip, base16Theme, confirmation, dynamicModal, findOption, isGrouped, notificationModal as notification, notificationModal, prompt, toast, useFloatingContext, usePopover, usePopoverContext, useTooltip };
 //# sourceMappingURL=index.esm.js.map

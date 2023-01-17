@@ -2900,15 +2900,15 @@ const Popover = ({ children , element , onClose , onOpen , showClassName , overl
         className: cx__default["default"](element.props.className, showClassName ? {
             [showClassName]: show
         } : undefined)
-    })), /*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
-        root: portalRoot
-    }, /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
+    })), /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
         in: show,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: 250,
         nodeRef: transitionRef
-    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
+            root: portalRoot
+        }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
             context: context,
             initialFocus: initialFocus,
             guards: guardsFocus,
@@ -2942,6 +2942,87 @@ const PopoverTitle = /*#__PURE__*/ React.forwardRef(({ className , noLine , ...p
     }));
 });
 PopoverTitle.displayName = "PopoverTitle";
+
+function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
+    var _a;
+    const [show, setShow] = useLockedBody(false, "root");
+    const { x , y , reference , floating , strategy , context , refs  } = react.useFloating({
+        placement,
+        middleware: [
+            react.offset(offsetOptions),
+            react.flip(),
+            react.shift({
+                padding: {
+                    left: 8,
+                    right: 8
+                }
+            })
+        ],
+        open: show,
+        onOpenChange: (newOpen)=>{
+            if (newOpen && typeof onOpen === "function") onOpen();
+            if (!newOpen && typeof onClose === "function") onClose();
+            setShow(newOpen);
+        },
+        whileElementsMounted: react.autoUpdate
+    });
+    const dismiss = react.useDismiss(context);
+    const click = react.useClick(context);
+    const { getReferenceProps , getFloatingProps  } = react.useInteractions([
+        click,
+        dismiss
+    ]);
+    const closeCb = React.useCallback(()=>setShow(false), [
+        setShow
+    ]);
+    const openCb = React.useCallback(()=>setShow(true), [
+        setShow
+    ]);
+    const transitionRef = React.useRef(null);
+    const floatingRef = useCallbackRef.useMergeRefs([
+        transitionRef,
+        floating
+    ]);
+    const rootCtx = useFloatingContext();
+    portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = ((_a = rootCtx === null || rootCtx === void 0 ? void 0 : rootCtx.rootRef) === null || _a === void 0 ? void 0 : _a.current) || undefined;
+    const render = ()=>{
+        return /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
+            in: show,
+            mountOnEnter: true,
+            unmountOnExit: true,
+            timeout: 250,
+            nodeRef: transitionRef
+        }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
+                root: portalRoot
+            }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
+                context: context,
+                initialFocus: initialFocus,
+                guards: guardsFocus,
+                modal: modalFocus,
+                closeOnFocusOut: closeOnFocusOut
+            }, /*#__PURE__*/ React.createElement(popoverComponent, {
+                ref: floatingRef,
+                state,
+                offset: offsetOptions,
+                ...getFloatingProps({
+                    style: {
+                        position: strategy,
+                        top: y !== null && y !== void 0 ? y : 0,
+                        left: x !== null && x !== void 0 ? x : 0
+                    }
+                })
+            }, body))));
+    };
+    return {
+        getReferenceProps,
+        reference,
+        render,
+        isShown: show,
+        refs,
+        close: closeCb,
+        open: openCb
+    };
+}
 
 exports.Accordion = Accordion;
 exports.AccordionElement = AccordionElement;
@@ -3033,6 +3114,7 @@ exports.notificationModal = notificationModal;
 exports.prompt = prompt;
 exports.toast = toast;
 exports.useFloatingContext = useFloatingContext;
+exports.usePopover = usePopover;
 exports.usePopoverContext = usePopoverContext;
 exports.useTooltip = useTooltip;
 //# sourceMappingURL=index.cjs.js.map

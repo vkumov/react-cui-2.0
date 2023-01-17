@@ -223,15 +223,15 @@ export const Popover: FC<PopoverProps> = ({
           ),
         })
       )}
-      <FloatingPortal root={portalRoot}>
-        <Transition
-          in={show}
-          mountOnEnter
-          unmountOnExit
-          timeout={250}
-          nodeRef={transitionRef}
-        >
-          {(state) => (
+      <Transition
+        in={show}
+        mountOnEnter
+        unmountOnExit
+        timeout={250}
+        nodeRef={transitionRef}
+      >
+        {(state) => (
+          <FloatingPortal root={portalRoot}>
             <FloatingFocusManager
               context={context}
               initialFocus={initialFocus}
@@ -259,9 +259,9 @@ export const Popover: FC<PopoverProps> = ({
                 </PopoverProvider>
               </GenericPopover>
             </FloatingFocusManager>
-          )}
-        </Transition>
-      </FloatingPortal>
+          </FloatingPortal>
+        )}
+      </Transition>
     </>
   );
 };

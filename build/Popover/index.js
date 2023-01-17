@@ -1,4 +1,4 @@
-import React, { useContext, createContext, forwardRef, useRef, useEffect, useState, useCallback, cloneElement } from 'react';
+import React, { useContext, createContext, forwardRef, useRef, useEffect, useState, useCallback, cloneElement, createElement } from 'react';
 import { useMergeRefs } from 'use-callback-ref';
 import { useFloating, offset, flip, shift, autoUpdate, useDismiss, useClick, useInteractions, FloatingPortal, FloatingFocusManager } from '@floating-ui/react';
 import cx from 'classnames';
@@ -123,15 +123,15 @@ const Popover = ({ children , element , onClose , onOpen , showClassName , overl
         className: cx(element.props.className, showClassName ? {
             [showClassName]: show
         } : undefined)
-    })), /*#__PURE__*/ React.createElement(FloatingPortal, {
-        root: portalRoot
-    }, /*#__PURE__*/ React.createElement(Transition, {
+    })), /*#__PURE__*/ React.createElement(Transition, {
         in: show,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: 250,
         nodeRef: transitionRef
-    }, (state)=>/*#__PURE__*/ React.createElement(FloatingFocusManager, {
+    }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+            root: portalRoot
+        }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
             context: context,
             initialFocus: initialFocus,
             guards: guardsFocus,
@@ -178,5 +178,86 @@ const PopoverTitle = /*#__PURE__*/ forwardRef(({ className , noLine , ...props }
 });
 PopoverTitle.displayName = "PopoverTitle";
 
-export { GenericPopover, Popover, PopoverTitle, usePopoverContext };
+function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
+    var ref;
+    const [show, setShow] = useLockedBody(false, "root");
+    const { x , y , reference , floating , strategy , context , refs  } = useFloating({
+        placement,
+        middleware: [
+            offset(offsetOptions),
+            flip(),
+            shift({
+                padding: {
+                    left: 8,
+                    right: 8
+                }
+            })
+        ],
+        open: show,
+        onOpenChange: (newOpen)=>{
+            if (newOpen && typeof onOpen === "function") onOpen();
+            if (!newOpen && typeof onClose === "function") onClose();
+            setShow(newOpen);
+        },
+        whileElementsMounted: autoUpdate
+    });
+    const dismiss = useDismiss(context);
+    const click = useClick(context);
+    const { getReferenceProps , getFloatingProps  } = useInteractions([
+        click,
+        dismiss
+    ]);
+    const closeCb = useCallback(()=>setShow(false), [
+        setShow
+    ]);
+    const openCb = useCallback(()=>setShow(true), [
+        setShow
+    ]);
+    const transitionRef = useRef(null);
+    const floatingRef = useMergeRefs([
+        transitionRef,
+        floating
+    ]);
+    const rootCtx = useFloatingContext();
+    portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = (rootCtx === null || rootCtx === void 0 ? void 0 : (ref = rootCtx.rootRef) === null || ref === void 0 ? void 0 : ref.current) || undefined;
+    const render = ()=>{
+        return /*#__PURE__*/ React.createElement(Transition, {
+            in: show,
+            mountOnEnter: true,
+            unmountOnExit: true,
+            timeout: 250,
+            nodeRef: transitionRef
+        }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
+                root: portalRoot
+            }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
+                context: context,
+                initialFocus: initialFocus,
+                guards: guardsFocus,
+                modal: modalFocus,
+                closeOnFocusOut: closeOnFocusOut
+            }, /*#__PURE__*/ createElement(popoverComponent, {
+                ref: floatingRef,
+                state,
+                offset: offsetOptions,
+                ...getFloatingProps({
+                    style: {
+                        position: strategy,
+                        top: y !== null && y !== void 0 ? y : 0,
+                        left: x !== null && x !== void 0 ? x : 0
+                    }
+                })
+            }, body))));
+    };
+    return {
+        getReferenceProps,
+        reference,
+        render,
+        isShown: show,
+        refs,
+        close: closeCb,
+        open: openCb
+    };
+}
+
+export { GenericPopover, Popover, PopoverTitle, usePopover, usePopoverContext };
 //# sourceMappingURL=index.js.map

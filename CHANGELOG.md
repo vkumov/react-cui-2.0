@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.0
+
+- added `usePopover` hook
+
 ## 5.0.4
 
 - pass Popover props to FloatingFocusManager

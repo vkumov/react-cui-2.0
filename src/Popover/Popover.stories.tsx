@@ -2,7 +2,12 @@ import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 
 import { Button } from "../Button";
-import { Popover as OGPopover, PopoverProps, PopoverTitle } from "./";
+import {
+  Popover as OGPopover,
+  PopoverProps,
+  PopoverTitle,
+  usePopover,
+} from "./";
 
 export default {
   title: "Components/Popover",
@@ -10,6 +15,11 @@ export default {
 } as Meta;
 
 export const Popover: Story<PopoverProps> = ({ element, ...args }) => {
+  const { refs, open, render } = usePopover({
+    body: "hey!",
+    offset: 8,
+  });
+
   return (
     <>
       <div className="section base-margin-top dbl-margin-bottom">
@@ -20,6 +30,18 @@ export const Popover: Story<PopoverProps> = ({ element, ...args }) => {
               <PopoverTitle>Popover title!</PopoverTitle>
               <div>And body here!</div>
             </OGPopover>
+          </div>
+          <div className="col text-center">
+            <Button
+              onContextMenu={(e) => {
+                e.preventDefault();
+                refs.setReference(e.currentTarget);
+                open();
+              }}
+            >
+              Right click on me!
+            </Button>
+            {render()}
           </div>
         </div>
       </div>
