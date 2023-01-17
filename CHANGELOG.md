@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.3
+
+- fix SegmentedControl on mount behavior
+
 ## 5.0.0
 
 - **BREAKING:** Dropdown implemented with Floating UI, added support for sub menus. Components renamed - now Dropdown exports:

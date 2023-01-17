@@ -42,10 +42,10 @@
   }
 
   &.active :global(.dropdown__menu) {
-    visibility: visible;
-    height: auto;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    visibility: visible !important;
+    height: auto !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
 
     --animate-speed: 0.1s;
     animation-name: dropdown_appear;
@@ -98,4 +98,9 @@
       var(--cui-animate-timing-function);
     transform: rotate(180deg);
   }
+}
+
+:global(.cui .dropdown .dropdown__menu .dropdown__group) {
+  display: inline-flex;
+  flex-direction: column;
 }

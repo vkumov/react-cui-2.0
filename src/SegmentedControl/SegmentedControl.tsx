@@ -3,12 +3,13 @@ import React, {
   type HTMLProps,
   type PropsWithChildren,
   type ReactNode,
-  type RefObject,
   type Ref,
   useEffect,
-  useRef,
   useState,
   forwardRef,
+  RefCallback,
+  useCallback,
+  MutableRefObject,
 } from "react";
 import cx from "classnames";
 
@@ -21,27 +22,32 @@ export type SegmentedOption<V> = {
 };
 
 type ActiveProps = {
-  activeRef: RefObject<HTMLDivElement>;
+  activeElement: HTMLDivElement | null;
   value: any;
   fullWidth?: boolean;
   small: boolean;
 };
 
-const Active: FC<ActiveProps> = ({ activeRef, value, fullWidth, small }) => {
+const Active: FC<ActiveProps> = ({
+  activeElement,
+  value,
+  fullWidth,
+  small,
+}) => {
   const [coord, setCoord] = useState({ x: 0, y: 0, w: 0, h: 0 });
 
   useEffect(() => {
-    if (!activeRef.current) return;
+    if (!activeElement) return;
 
     setCoord({
-      x: activeRef.current.offsetLeft - (small ? 2 : 4),
-      y: activeRef.current.offsetTop - (small ? 2 : 4),
-      w: activeRef.current.offsetWidth,
-      h: activeRef.current.offsetHeight,
+      x: activeElement.offsetLeft - (small ? 2 : 4),
+      y: activeElement.offsetTop - (small ? 2 : 4),
+      w: activeElement.offsetWidth,
+      h: activeElement.offsetHeight,
     });
-  }, [activeRef.current, value, fullWidth, small]);
+  }, [activeElement, value, fullWidth, small]);
 
-  if (!activeRef.current) return null;
+  if (!activeElement) return null;
 
   return (
     <span
@@ -62,8 +68,8 @@ type OptionDisplayProps = {
   value: any;
   active: boolean;
   disabled?: boolean;
-} & Pick<ActiveProps, "activeRef"> &
-  HTMLProps<HTMLInputElement>;
+  activeRef: MutableRefObject<HTMLDivElement> | RefCallback<HTMLDivElement>;
+} & HTMLProps<HTMLInputElement>;
 
 const OptionDisplay: FC<PropsWithChildren<OptionDisplayProps>> = ({
   children,
@@ -77,7 +83,7 @@ const OptionDisplay: FC<PropsWithChildren<OptionDisplayProps>> = ({
 }) => {
   return (
     <div
-      className={cx(styles.segmented_option_control, {
+      className={cx(styles.segmented_option_control, className, {
         [styles.segmented_option_control_active]: active,
         disabled,
       })}
@@ -122,7 +128,12 @@ function UrefedSegmented<V extends string | number = string>(
   }: Props<V>,
   ref: Ref<HTMLDivElement>
 ): JSX.Element {
-  const activeRef = useRef<HTMLDivElement>(null);
+  const [el, setEl] = useState<HTMLDivElement | null>(null);
+  const activeRefCb: RefCallback<HTMLDivElement> = useCallback((node) => {
+    if (node !== null) {
+      setEl(node);
+    } else setEl(null);
+  }, []);
 
   return (
     <div
@@ -142,14 +153,14 @@ function UrefedSegmented<V extends string | number = string>(
           ref={ref}
         >
           <Active
-            activeRef={activeRef}
+            activeElement={el}
             value={value}
             fullWidth={fullWidth}
             small={small}
           />
           {options.map((o) => (
             <OptionDisplay
-              activeRef={activeRef}
+              activeRef={activeRefCb}
               active={value === o.value}
               value={o.value}
               key={o.value}
