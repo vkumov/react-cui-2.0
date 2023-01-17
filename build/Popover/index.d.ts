@@ -1,5 +1,5 @@
 import React, { ReactNode, PropsWithChildren, ComponentProps, ReactElement, MutableRefObject, FC, HTMLProps } from 'react';
-import { offset, Placement, FloatingPortal } from '@floating-ui/react';
+import { offset, Placement, FloatingPortal, FloatingFocusManager } from '@floating-ui/react';
 import { TransitionStatus } from 'react-transition-group';
 
 type PopoverContextProps = {
@@ -26,6 +26,10 @@ type PopoverProps = PropsWithChildren<{
     lockRootId?: string;
     element: ReactElement;
     closeRef?: MutableRefObject<() => unknown>;
+    initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
+    guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
+    modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
+    closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
 }>;
 declare const Popover: FC<PopoverProps>;
 

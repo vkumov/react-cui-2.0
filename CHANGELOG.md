@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.4
+
+- pass Popover props to FloatingFocusManager
+
 ## 5.0.3
 
 - fix SegmentedControl on mount behavior

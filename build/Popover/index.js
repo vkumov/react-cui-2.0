@@ -71,7 +71,7 @@ const GenericPopover = /*#__PURE__*/ forwardRef(function GenericPopoverRefed({ c
         className: cx("panel panel--bordered panel--raised", styles.body, className)
     }, children));
 });
-const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef  })=>{
+const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef , initialFocus , guardsFocus , modalFocus , closeOnFocusOut  })=>{
     var ref;
     const [show, setShow] = useLockedBody(false, "root");
     const { x , y , reference , floating , strategy , context  } = useFloating({
@@ -123,16 +123,20 @@ const Popover = ({ children , element , onClose , onOpen , showClassName , overl
         className: cx(element.props.className, showClassName ? {
             [showClassName]: show
         } : undefined)
-    })), /*#__PURE__*/ React.createElement(Transition, {
+    })), /*#__PURE__*/ React.createElement(FloatingPortal, {
+        root: portalRoot
+    }, /*#__PURE__*/ React.createElement(Transition, {
         in: show,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: 250,
         nodeRef: transitionRef
-    }, (state)=>/*#__PURE__*/ React.createElement(FloatingPortal, {
-            root: portalRoot
-        }, /*#__PURE__*/ React.createElement(FloatingFocusManager, {
-            context: context
+    }, (state)=>/*#__PURE__*/ React.createElement(FloatingFocusManager, {
+            context: context,
+            initialFocus: initialFocus,
+            guards: guardsFocus,
+            modal: modalFocus,
+            closeOnFocusOut: closeOnFocusOut
         }, /*#__PURE__*/ React.createElement(GenericPopover, _extends$1({
             ref: floatingRef,
             style: {

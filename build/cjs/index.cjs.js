@@ -2848,7 +2848,7 @@ const GenericPopover = /*#__PURE__*/ React.forwardRef(function GenericPopoverRef
         className: cx__default["default"]("panel panel--bordered panel--raised", styles.body, className)
     }, children));
 });
-const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef  })=>{
+const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef , initialFocus , guardsFocus , modalFocus , closeOnFocusOut  })=>{
     var _a;
     const [show, setShow] = useLockedBody(false, "root");
     const { x , y , reference , floating , strategy , context  } = react.useFloating({
@@ -2900,16 +2900,20 @@ const Popover = ({ children , element , onClose , onOpen , showClassName , overl
         className: cx__default["default"](element.props.className, showClassName ? {
             [showClassName]: show
         } : undefined)
-    })), /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
+    })), /*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
+        root: portalRoot
+    }, /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
         in: show,
         mountOnEnter: true,
         unmountOnExit: true,
         timeout: 250,
         nodeRef: transitionRef
-    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingPortal, {
-            root: portalRoot
-        }, /*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
-            context: context
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement(react.FloatingFocusManager, {
+            context: context,
+            initialFocus: initialFocus,
+            guards: guardsFocus,
+            modal: modalFocus,
+            closeOnFocusOut: closeOnFocusOut
         }, /*#__PURE__*/ React__default["default"].createElement(GenericPopover, {
             ref: floatingRef,
             style: {

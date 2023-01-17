@@ -145,6 +145,12 @@ export type PopoverProps = PropsWithChildren<{
   lockRootId?: string;
   element: ReactElement;
   closeRef?: MutableRefObject<() => unknown>;
+  initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
+  guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
+  modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
+  closeOnFocusOut?: ComponentProps<
+    typeof FloatingFocusManager
+  >["closeOnFocusOut"];
 }>;
 
 export const Popover: FC<PopoverProps> = ({
@@ -159,6 +165,10 @@ export const Popover: FC<PopoverProps> = ({
   portalRoot,
   offset: offsetOptions = 4,
   closeRef,
+  initialFocus,
+  guardsFocus,
+  modalFocus,
+  closeOnFocusOut,
 }) => {
   const [show, setShow] = useLockedBody(false, "root");
 
@@ -213,16 +223,22 @@ export const Popover: FC<PopoverProps> = ({
           ),
         })
       )}
-      <Transition
-        in={show}
-        mountOnEnter
-        unmountOnExit
-        timeout={250}
-        nodeRef={transitionRef}
-      >
-        {(state) => (
-          <FloatingPortal root={portalRoot}>
-            <FloatingFocusManager context={context}>
+      <FloatingPortal root={portalRoot}>
+        <Transition
+          in={show}
+          mountOnEnter
+          unmountOnExit
+          timeout={250}
+          nodeRef={transitionRef}
+        >
+          {(state) => (
+            <FloatingFocusManager
+              context={context}
+              initialFocus={initialFocus}
+              guards={guardsFocus}
+              modal={modalFocus}
+              closeOnFocusOut={closeOnFocusOut}
+            >
               <GenericPopover
                 ref={floatingRef}
                 style={{
@@ -243,9 +259,9 @@ export const Popover: FC<PopoverProps> = ({
                 </PopoverProvider>
               </GenericPopover>
             </FloatingFocusManager>
-          </FloatingPortal>
-        )}
-      </Transition>
+          )}
+        </Transition>
+      </FloatingPortal>
     </>
   );
 };
