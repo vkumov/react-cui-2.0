@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.2.0
+
+- added `withSizeLimits` property for Dropdown
+
+## 5.1.4
+
+- popover render accepts body
+
+## 5.1.3
+
+- fix popover animations
+
 ## 5.1.0
 
 - added `usePopover` hook

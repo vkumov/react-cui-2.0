@@ -6,13 +6,53 @@ import { Transition } from 'react-transition-group';
 import { useLockedBody } from '../hooks/useLockedBody.js';
 import { useFloatingContext } from '../FloatingProvider/index.js';
 
-var styles = {"wrapper":"Popover-module_wrapper__m7aDv","body":"Popover-module_body__ytz0O","popover_appear":"Popover-module_popover_appear__dJaAP","disappear":"Popover-module_disappear__w-dyh","overlay":"Popover-module_overlay__u9dvj","overlay_appear":"Popover-module_overlay_appear__b1qOJ"};
+var styles = {"wrapper":"Popover-module_wrapper__m7aDv","body":"Popover-module_body__ytz0O","popover_appear":"Popover-module_popover_appear__dJaAP","disappear":"Popover-module_disappear__w-dyh","popover_disappear":"Popover-module_popover_disappear__taph3","overlay":"Popover-module_overlay__u9dvj","overlay_appear":"Popover-module_overlay_appear__b1qOJ","overlay_disappear":"Popover-module_overlay_disappear__tQSBY"};
 
 const PopoverContext = /*#__PURE__*/ createContext(null);
 const PopoverProvider = ({ children , ...props })=>/*#__PURE__*/ React.createElement(PopoverContext.Provider, {
         value: props
     }, children);
 const usePopoverContext = ()=>useContext(PopoverContext);
+
+function _extends$2() {
+    _extends$2 = Object.assign || function(target) {
+        for(var i = 1; i < arguments.length; i++){
+            var source = arguments[i];
+            for(var key in source){
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+        return target;
+    };
+    return _extends$2.apply(this, arguments);
+}
+const GenericPopover = /*#__PURE__*/ forwardRef(function GenericPopoverRefed({ className , children , wrapperClassName , state , offset: offsetOptions , ...props }, ref) {
+    const ownRef = useRef(null);
+    const merged = useMergeRefs([
+        ref,
+        ownRef
+    ]);
+    useEffect(()=>{
+        const r = ownRef.current;
+        var _mainAxis;
+        if (r && offsetOptions && typeof offsetOptions !== "function") r.style.setProperty("--offset", `${typeof offsetOptions === "number" ? offsetOptions : (_mainAxis = offsetOptions.mainAxis) !== null && _mainAxis !== void 0 ? _mainAxis : 4}px`);
+        return ()=>{
+            if (r) r.style.setProperty("--offset", "4px");
+        };
+    }, [
+        offsetOptions
+    ]);
+    return /*#__PURE__*/ React.createElement("div", _extends$2({
+        ref: merged,
+        className: cx(styles.wrapper, wrapperClassName, {
+            [styles.disappear]: state === "exiting" || state === "exited"
+        })
+    }, props), /*#__PURE__*/ React.createElement("div", {
+        className: cx("panel panel--bordered panel--raised", styles.body, className)
+    }, children));
+});
 
 function _extends$1() {
     _extends$1 = Object.assign || function(target) {
@@ -46,31 +86,6 @@ const Overlay = ({ show , children , background ="var(--cui-background-color)" ,
             ref: ref
         }, children));
 };
-const GenericPopover = /*#__PURE__*/ forwardRef(function GenericPopoverRefed({ className , children , wrapperClassName , state , offset: offsetOptions , ...props }, ref) {
-    const ownRef = useRef(null);
-    const merged = useMergeRefs([
-        ref,
-        ownRef
-    ]);
-    useEffect(()=>{
-        const r = ownRef.current;
-        var _mainAxis;
-        if (r && offsetOptions && typeof offsetOptions !== "function") r.style.setProperty("--offset", `${typeof offsetOptions === "number" ? offsetOptions : (_mainAxis = offsetOptions.mainAxis) !== null && _mainAxis !== void 0 ? _mainAxis : 4}px`);
-        return ()=>{
-            if (r) r.style.setProperty("--offset", "4px");
-        };
-    }, [
-        offsetOptions
-    ]);
-    return /*#__PURE__*/ React.createElement("div", _extends$1({
-        ref: merged,
-        className: cx(styles.wrapper, wrapperClassName, {
-            [styles.disappear]: state === "exiting" || state === "exited"
-        })
-    }, props), /*#__PURE__*/ React.createElement("div", {
-        className: cx("panel panel--bordered panel--raised", styles.body, className)
-    }, children));
-});
 const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef , initialFocus , guardsFocus , modalFocus , closeOnFocusOut  })=>{
     var ref;
     const [show, setShow] = useLockedBody(false, "root");
@@ -178,7 +193,7 @@ const PopoverTitle = /*#__PURE__*/ forwardRef(({ className , noLine , ...props }
 });
 PopoverTitle.displayName = "PopoverTitle";
 
-function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
+function usePopover({ onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
     var ref;
     const [show, setShow] = useLockedBody(false, "root");
     const { x , y , reference , floating , strategy , context , refs  } = useFloating({
@@ -220,7 +235,7 @@ function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover
     ]);
     const rootCtx = useFloatingContext();
     portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = (rootCtx === null || rootCtx === void 0 ? void 0 : (ref = rootCtx.rootRef) === null || ref === void 0 ? void 0 : ref.current) || undefined;
-    const render = ()=>{
+    const render = (body)=>{
         return /*#__PURE__*/ React.createElement(Transition, {
             in: show,
             mountOnEnter: true,

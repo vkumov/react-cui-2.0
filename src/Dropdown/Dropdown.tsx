@@ -10,6 +10,7 @@ import {
   offset,
   safePolygon,
   shift,
+  size,
   useClick,
   useDismiss,
   useFloating,
@@ -94,6 +95,7 @@ type DropdownProps = PropsWithChildren<{
   portalRoot?: HTMLElement | null | undefined;
   alwaysClose?: boolean;
   onOpen?: () => unknown;
+  withSizeLimit?: boolean;
 }>;
 
 type MenuComponentProps = {
@@ -115,6 +117,7 @@ export const Menu = forwardRef<
       alwaysClose,
       onOpen,
       nested,
+      withSizeLimit,
       ...props
     },
     ref
@@ -146,7 +149,17 @@ export const Menu = forwardRef<
           offset({ mainAxis: nested ? 0 : 2, alignmentAxis: nested ? -5 : 0 }),
           flip(),
           shift(),
-        ],
+          withSizeLimit
+            ? size({
+                apply({ availableHeight, availableWidth, elements }) {
+                  Object.assign(elements.floating.style, {
+                    maxWidth: `${availableWidth}px`,
+                    maxHeight: `${availableHeight - 4}px`,
+                  });
+                },
+              })
+            : undefined,
+        ].filter(Boolean),
         placement: nested ? "right-start" : placement,
         nodeId,
         whileElementsMounted: autoUpdate,

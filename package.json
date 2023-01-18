@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "React library for CUI 2.0",
   "module": "build/index.esm.js",
   "main": "build/cjs/index.cjs.js",

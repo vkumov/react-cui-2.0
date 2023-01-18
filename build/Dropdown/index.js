@@ -1,4 +1,4 @@
-import { useFloatingTree, useFloatingNodeId, useFloatingParentNodeId, useFloating, offset, flip, shift, autoUpdate, useInteractions, useHover, safePolygon, useClick, useRole, useDismiss, useListNavigation, useTypeahead, FloatingNode, FloatingPortal, FloatingFocusManager, FloatingTree } from '@floating-ui/react';
+import { useFloatingTree, useFloatingNodeId, useFloatingParentNodeId, useFloating, offset, flip, shift, size, autoUpdate, useInteractions, useHover, safePolygon, useClick, useRole, useDismiss, useListNavigation, useTypeahead, FloatingNode, FloatingPortal, FloatingFocusManager, FloatingTree } from '@floating-ui/react';
 import React, { forwardRef, isValidElement, useState, useRef, Children, useEffect, cloneElement } from 'react';
 import cx from 'classnames';
 import { useMergeRefs } from 'use-callback-ref';
@@ -38,7 +38,7 @@ const MenuElement = /*#__PURE__*/ forwardRef(({ selected , className , icon , ch
     }, children)) : children);
 });
 MenuElement.displayName = "MenuElement";
-const Menu = /*#__PURE__*/ forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , ...props }, ref)=>{
+const Menu = /*#__PURE__*/ forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , withSizeLimit , ...props }, ref)=>{
     var ref1;
     const [open, setOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(null);
@@ -61,8 +61,16 @@ const Menu = /*#__PURE__*/ forwardRef(({ children , label , noChevron , placemen
                 alignmentAxis: nested ? -5 : 0
             }),
             flip(),
-            shift()
-        ],
+            shift(),
+            withSizeLimit ? size({
+                apply ({ availableHeight , availableWidth , elements  }) {
+                    Object.assign(elements.floating.style, {
+                        maxWidth: `${availableWidth}px`,
+                        maxHeight: `${availableHeight - 4}px`
+                    });
+                }
+            }) : undefined
+        ].filter(Boolean),
         placement: nested ? "right-start" : placement,
         nodeId,
         whileElementsMounted: autoUpdate,

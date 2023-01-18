@@ -23,10 +23,11 @@ import { useMergeRefs } from "use-callback-ref";
 
 import { useLockedBody } from "src/hooks/useLockedBody";
 import { useFloatingContext } from "src/FloatingProvider";
-import { GenericPopover, PopoverProps } from ".";
+
+import { PopoverProps } from ".";
+import { GenericPopover } from "./GenericPopover";
 
 type Options = {
-  body: ReactNode;
   onOpen?: () => unknown;
   onClose?: () => unknown;
   popoverComponent?: ComponentType<ComponentProps<typeof GenericPopover>>;
@@ -42,7 +43,6 @@ type Options = {
 >;
 
 export function usePopover({
-  body,
   onClose,
   onOpen,
   popoverComponent = GenericPopover,
@@ -89,7 +89,7 @@ export function usePopover({
   const rootCtx = useFloatingContext();
   portalRoot ??= rootCtx?.rootRef?.current || undefined;
 
-  const render = () => {
+  const render = (body: ReactNode) => {
     return (
       <Transition
         in={show}

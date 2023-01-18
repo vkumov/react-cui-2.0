@@ -16,7 +16,6 @@ export default {
 
 export const Popover: Story<PopoverProps> = ({ element, ...args }) => {
   const { refs, open, render } = usePopover({
-    body: "hey!",
     offset: 8,
   });
 
@@ -41,7 +40,7 @@ export const Popover: Story<PopoverProps> = ({ element, ...args }) => {
             >
               Right click on me!
             </Button>
-            {render()}
+            {render(<>Hey!</>)}
           </div>
         </div>
       </div>

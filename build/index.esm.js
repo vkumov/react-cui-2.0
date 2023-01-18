@@ -1,5 +1,5 @@
 import React, { useContext, createContext, forwardRef, isValidElement, useState, useRef, Children, useEffect, cloneElement, useMemo, useCallback, createElement, useLayoutEffect } from 'react';
-import { useFloatingTree, useFloatingNodeId, useFloatingParentNodeId, useFloating, offset, flip, shift, autoUpdate, useInteractions, useHover, safePolygon, useClick, useRole, useDismiss, useListNavigation, useTypeahead, FloatingNode, FloatingPortal, FloatingFocusManager, FloatingTree, FloatingOverlay, arrow } from '@floating-ui/react';
+import { useFloatingTree, useFloatingNodeId, useFloatingParentNodeId, useFloating, offset, flip, shift, size, autoUpdate, useInteractions, useHover, safePolygon, useClick, useRole, useDismiss, useListNavigation, useTypeahead, FloatingNode, FloatingPortal, FloatingFocusManager, FloatingTree, FloatingOverlay, arrow } from '@floating-ui/react';
 import cx from 'classnames';
 import { useMergeRefs } from 'use-callback-ref';
 import { Transition } from 'react-transition-group';
@@ -134,7 +134,7 @@ const MenuElement = /*#__PURE__*/ forwardRef(({ selected , className , icon , ch
     }, children)) : children);
 });
 MenuElement.displayName = "MenuElement";
-const Menu = /*#__PURE__*/ forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , ...props }, ref)=>{
+const Menu = /*#__PURE__*/ forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , withSizeLimit , ...props }, ref)=>{
     var _a;
     const [open, setOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(null);
@@ -157,8 +157,16 @@ const Menu = /*#__PURE__*/ forwardRef(({ children , label , noChevron , placemen
                 alignmentAxis: nested ? -5 : 0
             }),
             flip(),
-            shift()
-        ],
+            shift(),
+            withSizeLimit ? size({
+                apply ({ availableHeight , availableWidth , elements  }) {
+                    Object.assign(elements.floating.style, {
+                        maxWidth: `${availableWidth}px`,
+                        maxHeight: `${availableHeight - 4}px`
+                    });
+                }
+            }) : undefined
+        ].filter(Boolean),
         placement: nested ? "right-start" : placement,
         nodeId,
         whileElementsMounted: autoUpdate,
@@ -2781,7 +2789,7 @@ function useLockedBody(initialLocked = false, rootId = "___gatsby" // Default to
     ];
 }
 
-var styles = {"wrapper":"Popover-module_wrapper__m7aDv","body":"Popover-module_body__ytz0O","popover_appear":"Popover-module_popover_appear__dJaAP","disappear":"Popover-module_disappear__w-dyh","overlay":"Popover-module_overlay__u9dvj","overlay_appear":"Popover-module_overlay_appear__b1qOJ"};
+var styles = {"wrapper":"Popover-module_wrapper__m7aDv","body":"Popover-module_body__ytz0O","popover_appear":"Popover-module_popover_appear__dJaAP","disappear":"Popover-module_disappear__w-dyh","popover_disappear":"Popover-module_popover_disappear__taph3","overlay":"Popover-module_overlay__u9dvj","overlay_appear":"Popover-module_overlay_appear__b1qOJ","overlay_disappear":"Popover-module_overlay_disappear__tQSBY"};
 
 const PopoverContext = /*#__PURE__*/ createContext(null);
 const PopoverProvider = ({ children , ...props })=>/*#__PURE__*/ React.createElement(PopoverContext.Provider, {
@@ -2789,24 +2797,6 @@ const PopoverProvider = ({ children , ...props })=>/*#__PURE__*/ React.createEle
     }, children);
 const usePopoverContext = ()=>useContext(PopoverContext);
 
-const Overlay = ({ show , children , background ="var(--cui-background-color)" , className  })=>{
-    const ref = useRef(null);
-    return /*#__PURE__*/ React.createElement(Transition, {
-        in: show,
-        mountOnEnter: true,
-        unmountOnExit: true,
-        timeout: 250,
-        nodeRef: ref
-    }, (state)=>/*#__PURE__*/ React.createElement("div", {
-            style: {
-                background
-            },
-            className: cx(styles.overlay, className, {
-                [styles.disappear]: state === "exiting" || state === "exited"
-            }),
-            ref: ref
-        }, children));
-};
 const GenericPopover = /*#__PURE__*/ forwardRef(function GenericPopoverRefed({ className , children , wrapperClassName , state , offset: offsetOptions , ...props }, ref) {
     const ownRef = useRef(null);
     const merged = useMergeRefs([
@@ -2833,6 +2823,25 @@ const GenericPopover = /*#__PURE__*/ forwardRef(function GenericPopoverRefed({ c
         className: cx("panel panel--bordered panel--raised", styles.body, className)
     }, children));
 });
+
+const Overlay = ({ show , children , background ="var(--cui-background-color)" , className  })=>{
+    const ref = useRef(null);
+    return /*#__PURE__*/ React.createElement(Transition, {
+        in: show,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: 250,
+        nodeRef: ref
+    }, (state)=>/*#__PURE__*/ React.createElement("div", {
+            style: {
+                background
+            },
+            className: cx(styles.overlay, className, {
+                [styles.disappear]: state === "exiting" || state === "exited"
+            }),
+            ref: ref
+        }, children));
+};
 const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef , initialFocus , guardsFocus , modalFocus , closeOnFocusOut  })=>{
     var _a;
     const [show, setShow] = useLockedBody(false, "root");
@@ -2928,7 +2937,7 @@ const PopoverTitle = /*#__PURE__*/ forwardRef(({ className , noLine , ...props }
 });
 PopoverTitle.displayName = "PopoverTitle";
 
-function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
+function usePopover({ onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
     var _a;
     const [show, setShow] = useLockedBody(false, "root");
     const { x , y , reference , floating , strategy , context , refs  } = useFloating({
@@ -2970,7 +2979,7 @@ function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover
     ]);
     const rootCtx = useFloatingContext();
     portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = ((_a = rootCtx === null || rootCtx === void 0 ? void 0 : rootCtx.rootRef) === null || _a === void 0 ? void 0 : _a.current) || undefined;
-    const render = ()=>{
+    const render = (body)=>{
         return /*#__PURE__*/ React.createElement(Transition, {
             in: show,
             mountOnEnter: true,

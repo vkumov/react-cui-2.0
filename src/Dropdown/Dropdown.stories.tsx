@@ -85,6 +85,33 @@ export const Dropdown: Story = () => (
             </MenuElement>
           </LibDropdown>
         </div>
+
+        <div className="col">
+          <div className="subheader">
+            Very long one with size limits & scrolling
+          </div>
+          <LibDropdown
+            label={<Button.Primary>Dropdown</Button.Primary>}
+            withSizeLimit
+          >
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+            <ThreeItems />
+          </LibDropdown>
+        </div>
       </div>
     </div>
     <div className="section base-margin-top dbl-margin-bottom">

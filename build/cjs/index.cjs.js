@@ -149,7 +149,7 @@ const MenuElement = /*#__PURE__*/ React.forwardRef(({ selected , className , ico
     }, children)) : children);
 });
 MenuElement.displayName = "MenuElement";
-const Menu = /*#__PURE__*/ React.forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , ...props }, ref)=>{
+const Menu = /*#__PURE__*/ React.forwardRef(({ children , label , noChevron , placement , strategy: providedStrategy , portalRoot , alwaysClose , onOpen , nested , withSizeLimit , ...props }, ref)=>{
     var _a;
     const [open, setOpen] = React.useState(false);
     const [activeIndex, setActiveIndex] = React.useState(null);
@@ -172,8 +172,16 @@ const Menu = /*#__PURE__*/ React.forwardRef(({ children , label , noChevron , pl
                 alignmentAxis: nested ? -5 : 0
             }),
             react.flip(),
-            react.shift()
-        ],
+            react.shift(),
+            withSizeLimit ? react.size({
+                apply ({ availableHeight , availableWidth , elements  }) {
+                    Object.assign(elements.floating.style, {
+                        maxWidth: `${availableWidth}px`,
+                        maxHeight: `${availableHeight - 4}px`
+                    });
+                }
+            }) : undefined
+        ].filter(Boolean),
         placement: nested ? "right-start" : placement,
         nodeId,
         whileElementsMounted: react.autoUpdate,
@@ -2796,7 +2804,7 @@ function useLockedBody(initialLocked = false, rootId = "___gatsby" // Default to
     ];
 }
 
-var styles = {"wrapper":"Popover-module_wrapper__m7aDv","body":"Popover-module_body__ytz0O","popover_appear":"Popover-module_popover_appear__dJaAP","disappear":"Popover-module_disappear__w-dyh","overlay":"Popover-module_overlay__u9dvj","overlay_appear":"Popover-module_overlay_appear__b1qOJ"};
+var styles = {"wrapper":"Popover-module_wrapper__m7aDv","body":"Popover-module_body__ytz0O","popover_appear":"Popover-module_popover_appear__dJaAP","disappear":"Popover-module_disappear__w-dyh","popover_disappear":"Popover-module_popover_disappear__taph3","overlay":"Popover-module_overlay__u9dvj","overlay_appear":"Popover-module_overlay_appear__b1qOJ","overlay_disappear":"Popover-module_overlay_disappear__tQSBY"};
 
 const PopoverContext = /*#__PURE__*/ React.createContext(null);
 const PopoverProvider = ({ children , ...props })=>/*#__PURE__*/ React__default["default"].createElement(PopoverContext.Provider, {
@@ -2804,24 +2812,6 @@ const PopoverProvider = ({ children , ...props })=>/*#__PURE__*/ React__default[
     }, children);
 const usePopoverContext = ()=>React.useContext(PopoverContext);
 
-const Overlay = ({ show , children , background ="var(--cui-background-color)" , className  })=>{
-    const ref = React.useRef(null);
-    return /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
-        in: show,
-        mountOnEnter: true,
-        unmountOnExit: true,
-        timeout: 250,
-        nodeRef: ref
-    }, (state)=>/*#__PURE__*/ React__default["default"].createElement("div", {
-            style: {
-                background
-            },
-            className: cx__default["default"](styles.overlay, className, {
-                [styles.disappear]: state === "exiting" || state === "exited"
-            }),
-            ref: ref
-        }, children));
-};
 const GenericPopover = /*#__PURE__*/ React.forwardRef(function GenericPopoverRefed({ className , children , wrapperClassName , state , offset: offsetOptions , ...props }, ref) {
     const ownRef = React.useRef(null);
     const merged = useCallbackRef.useMergeRefs([
@@ -2848,6 +2838,25 @@ const GenericPopover = /*#__PURE__*/ React.forwardRef(function GenericPopoverRef
         className: cx__default["default"]("panel panel--bordered panel--raised", styles.body, className)
     }, children));
 });
+
+const Overlay = ({ show , children , background ="var(--cui-background-color)" , className  })=>{
+    const ref = React.useRef(null);
+    return /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
+        in: show,
+        mountOnEnter: true,
+        unmountOnExit: true,
+        timeout: 250,
+        nodeRef: ref
+    }, (state)=>/*#__PURE__*/ React__default["default"].createElement("div", {
+            style: {
+                background
+            },
+            className: cx__default["default"](styles.overlay, className, {
+                [styles.disappear]: state === "exiting" || state === "exited"
+            }),
+            ref: ref
+        }, children));
+};
 const Popover = ({ children , element , onClose , onOpen , showClassName , overlay: overlayProvided , showOverlay: overlayShowProvided , placement , portalRoot , offset: offsetOptions = 4 , closeRef , initialFocus , guardsFocus , modalFocus , closeOnFocusOut  })=>{
     var _a;
     const [show, setShow] = useLockedBody(false, "root");
@@ -2943,7 +2952,7 @@ const PopoverTitle = /*#__PURE__*/ React.forwardRef(({ className , noLine , ...p
 });
 PopoverTitle.displayName = "PopoverTitle";
 
-function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
+function usePopover({ onClose , onOpen , popoverComponent =GenericPopover , placement , initialFocus , guardsFocus , modalFocus , closeOnFocusOut , offset: offsetOptions = 4 , portalRoot  }) {
     var _a;
     const [show, setShow] = useLockedBody(false, "root");
     const { x , y , reference , floating , strategy , context , refs  } = react.useFloating({
@@ -2985,7 +2994,7 @@ function usePopover({ body , onClose , onOpen , popoverComponent =GenericPopover
     ]);
     const rootCtx = useFloatingContext();
     portalRoot !== null && portalRoot !== void 0 ? portalRoot : portalRoot = ((_a = rootCtx === null || rootCtx === void 0 ? void 0 : rootCtx.rootRef) === null || _a === void 0 ? void 0 : _a.current) || undefined;
-    const render = ()=>{
+    const render = (body)=>{
         return /*#__PURE__*/ React__default["default"].createElement(reactTransitionGroup.Transition, {
             in: show,
             mountOnEnter: true,
