@@ -171,19 +171,19 @@ export type WithTooltipProps = {
   placement?: Placement;
 };
 
-export const WithTooltip: FC<WithTooltipProps> = ({
-  children,
-  tooltip,
-  placement = "top",
-}) => {
-  const { getReferenceProps, reference, ...tt } = useTooltip(placement);
+export const WithTooltip: FC<WithTooltipProps> = forwardRef(
+  ({ children, tooltip, placement = "top" }, forwardedRef) => {
+    const { getReferenceProps, reference, ...tt } = useTooltip(placement);
 
-  const ref = useMergeRefs([reference, (children as any).ref]);
+    const ref = useMergeRefs([reference, forwardedRef, (children as any).ref]);
 
-  return (
-    <>
-      {cloneElement(children, getReferenceProps({ ref, ...children.props }))}
-      <TooltipWrapper {...tt}>{tooltip}</TooltipWrapper>
-    </>
-  );
-};
+    return (
+      <>
+        {cloneElement(children, getReferenceProps({ ref, ...children.props }))}
+        <TooltipWrapper {...tt}>{tooltip}</TooltipWrapper>
+      </>
+    );
+  }
+);
+
+WithTooltip.displayName = "WithTooltip";

@@ -2658,10 +2658,11 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
             }
         }))));
 };
-const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
+const WithTooltip = /*#__PURE__*/ React.forwardRef(({ children , tooltip , placement ="top"  }, forwardedRef)=>{
     const { getReferenceProps , reference , ...tt } = useTooltip(placement);
     const ref = useCallbackRef.useMergeRefs([
         reference,
+        forwardedRef,
         children.ref
     ]);
     return /*#__PURE__*/ React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/ React.cloneElement(children, getReferenceProps({
@@ -2670,7 +2671,8 @@ const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
     })), /*#__PURE__*/ React__default["default"].createElement(TooltipWrapper, {
         ...tt
     }, tooltip));
-};
+});
+WithTooltip.displayName = "WithTooltip";
 
 var styles$1 = {"form_group":"Segmented-module_form_group__EAPlN","small":"Segmented-module_small__e1Knx","form_group--full":"Segmented-module_form_group--full__Rp9uq","segmented_root--full":"Segmented-module_segmented_root--full__qb6mE","segmented_root":"Segmented-module_segmented_root__36qE5","segmented_active":"Segmented-module_segmented_active__HNGxt","segmented_option_control":"Segmented-module_segmented_option_control__Ahn2w","segmented_option_control_active":"Segmented-module_segmented_option_control_active__aH7H1","segmented_option_control_label":"Segmented-module_segmented_option_control_label__YVjtX","segmented_option_control_input":"Segmented-module_segmented_option_control_input__g42pS"};
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.1
+
+- `WithTooltip` forward ref
+
 ## 5.2.0
 
 - added `withSizeLimits` property for Dropdown

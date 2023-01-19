@@ -1,4 +1,4 @@
-import React, { useState, useRef, cloneElement, forwardRef } from 'react';
+import React, { useState, useRef, forwardRef, cloneElement } from 'react';
 import { Transition } from 'react-transition-group';
 import { useMergeRefs } from 'use-callback-ref';
 import { useFloating, offset, flip, shift, arrow, useRole, useHover, useInteractions, FloatingPortal } from '@floating-ui/react';
@@ -115,17 +115,19 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
             }
         }))));
 };
-const WithTooltip = ({ children , tooltip , placement ="top"  })=>{
+const WithTooltip = /*#__PURE__*/ forwardRef(({ children , tooltip , placement ="top"  }, forwardedRef)=>{
     const { getReferenceProps , reference , ...tt } = useTooltip(placement);
     const ref = useMergeRefs([
         reference,
+        forwardedRef,
         children.ref
     ]);
     return /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ cloneElement(children, getReferenceProps({
         ref,
         ...children.props
     })), /*#__PURE__*/ React.createElement(TooltipWrapper, _extends({}, tt), tooltip));
-};
+});
+WithTooltip.displayName = "WithTooltip";
 
 export { TooltipWrapper as Tooltip, WithTooltip, useTooltip };
 //# sourceMappingURL=index.js.map
