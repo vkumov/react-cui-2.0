@@ -172,14 +172,17 @@ export type WithTooltipProps = {
 };
 
 export const WithTooltip: FC<WithTooltipProps> = forwardRef(
-  ({ children, tooltip, placement = "top" }, forwardedRef) => {
+  ({ children, tooltip, placement = "top", ...props }, forwardedRef) => {
     const { getReferenceProps, reference, ...tt } = useTooltip(placement);
 
     const ref = useMergeRefs([reference, forwardedRef, (children as any).ref]);
 
     return (
       <>
-        {cloneElement(children, getReferenceProps({ ref, ...children.props }))}
+        {cloneElement(
+          children,
+          getReferenceProps({ ref, ...children.props, ...props })
+        )}
         <TooltipWrapper {...tt}>{tooltip}</TooltipWrapper>
       </>
     );

@@ -115,7 +115,7 @@ const TooltipWrapper = ({ children , x , y , floating , show , strategy , getFlo
             }
         }))));
 };
-const WithTooltip = /*#__PURE__*/ forwardRef(({ children , tooltip , placement ="top"  }, forwardedRef)=>{
+const WithTooltip = /*#__PURE__*/ forwardRef(({ children , tooltip , placement ="top" , ...props }, forwardedRef)=>{
     const { getReferenceProps , reference , ...tt } = useTooltip(placement);
     const ref = useMergeRefs([
         reference,
@@ -124,7 +124,8 @@ const WithTooltip = /*#__PURE__*/ forwardRef(({ children , tooltip , placement =
     ]);
     return /*#__PURE__*/ React.createElement(React.Fragment, null, /*#__PURE__*/ cloneElement(children, getReferenceProps({
         ref,
-        ...children.props
+        ...children.props,
+        ...props
     })), /*#__PURE__*/ React.createElement(TooltipWrapper, _extends({}, tt), tooltip));
 });
 WithTooltip.displayName = "WithTooltip";
