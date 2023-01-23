@@ -2420,9 +2420,14 @@ function GroupHeading({ className , children , ...props }) {
     }, children);
 }
 
+var sts = {"multi_select":"Select-module_multi_select__zqzhA"};
+
 function UnrefedSelect$1({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
+        className: cx__default["default"]("form-group", className, {
+            "form-group--error": error,
+            [sts.multi_select]: props.isMulti
+        })
     }, label && /*#__PURE__*/ React__default["default"].createElement("label", null, label), /*#__PURE__*/ React__default["default"].createElement(Select__default["default"], {
         className: "react-select-container qtr-margin-top",
         classNamePrefix: "react-select",
@@ -2443,7 +2448,10 @@ const ReactSelect = /*#__PURE__*/ React.forwardRef(UnrefedSelect$1);
 
 function UnrefedSelect({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React__default["default"].createElement("div", {
-        className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
+        className: cx__default["default"]("form-group", className, {
+            "form-group--error": error,
+            [sts.multi_select]: props.isMulti
+        })
     }, label && /*#__PURE__*/ React__default["default"].createElement("label", null, label), /*#__PURE__*/ React__default["default"].createElement(CreatableSelect__default["default"], {
         className: "react-select-container qtr-margin-top",
         classNamePrefix: "react-select",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.4
+
+- Fix styles for ReactSelect with `isMulti` set to `true`
+
 ## 5.2.3
 
 - Fix popover overlay css

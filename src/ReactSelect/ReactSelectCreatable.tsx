@@ -3,8 +3,8 @@ import type { GroupBase } from "react-select/dist/declarations/src/types";
 import type SelectGeneric from "react-select/dist/declarations/src/Select";
 import CreatableSelect from "react-select/creatable";
 import type { CreatableProps } from "react-select/creatable";
+import cx from "classnames";
 
-import { appendClass } from "src/utils";
 import { InputHelpBlock } from "src/InputHelp";
 import type { LabelColor } from "src/Label";
 
@@ -16,6 +16,7 @@ import {
   Group as GroupComponent,
   GroupHeading,
 } from "./components";
+import sts from "./Select.module.scss";
 
 type CUISelectProps = {
   label?: ReactNode;
@@ -44,10 +45,10 @@ function UnrefedSelect<
 ): JSX.Element {
   return (
     <div
-      className={`form-group${appendClass(className)}${appendClass(
-        error,
-        "form-group--error"
-      )}`}
+      className={cx("form-group", className, {
+        "form-group--error": error,
+        [sts.multi_select]: props.isMulti,
+      })}
     >
       {label && <label>{label}</label>}
       <CreatableSelect

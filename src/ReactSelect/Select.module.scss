@@ -1,0 +1,19 @@
+.multi_select {
+  & :global(.label + .label) {
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  & :global(.react-select-container .react-select__control) {
+    max-height: unset !important;
+    height: max-content;
+  }
+
+  & :global(.react-select-container .react-select__value-container) {
+    gap: 2px;
+
+    & :global(.react-select__input-container) {
+      cursor: text;
+    }
+  }
+}

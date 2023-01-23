@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import Select from 'react-select';
+import cx from 'classnames';
 import { InputHelpBlock } from '../InputHelp/index.js';
 import { appendClass } from '../utils/index.js';
 
@@ -45,6 +46,8 @@ function GroupHeading({ className , children , ...props }) {
     }, children);
 }
 
+var sts = {"multi_select":"Select-module_multi_select__zqzhA"};
+
 function _extends() {
     _extends = Object.assign || function(target) {
         for(var i = 1; i < arguments.length; i++){
@@ -61,7 +64,10 @@ function _extends() {
 }
 function UnrefedSelect({ label =null , className , error , ...props }, ref) {
     return /*#__PURE__*/ React.createElement("div", {
-        className: `form-group${appendClass(className)}${appendClass(error, "form-group--error")}`
+        className: cx("form-group", className, {
+            "form-group--error": error,
+            [sts.multi_select]: props.isMulti
+        })
     }, label && /*#__PURE__*/ React.createElement("label", null, label), /*#__PURE__*/ React.createElement(Select, _extends({
         className: "react-select-container qtr-margin-top",
         classNamePrefix: "react-select",
