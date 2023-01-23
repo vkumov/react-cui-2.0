@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.3
+
+- Fix popover overlay css
+
 ## 5.2.1
 
 - `WithTooltip` forward ref
