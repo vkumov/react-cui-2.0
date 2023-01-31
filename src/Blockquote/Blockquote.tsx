@@ -1,4 +1,5 @@
-import React, { forwardRef, HTMLProps } from "react";
+import React, { HTMLProps, forwardRef } from "react";
+
 import { appendClass } from "src/utils";
 
 type BlockquoteProps = {

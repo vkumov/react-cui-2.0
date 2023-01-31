@@ -1,8 +1,8 @@
-import React, { type HTMLProps, forwardRef, useRef, useEffect } from "react";
-import { useMergeRefs } from "use-callback-ref";
-import { offset } from "@floating-ui/react";
+import React, { forwardRef, useEffect, useRef, type HTMLProps } from "react";
+import { offset, useMergeRefs } from "@floating-ui/react";
 import cx from "classnames";
 import { TransitionStatus } from "react-transition-group";
+
 import styles from "./Popover.module.scss";
 
 export const GenericPopover = forwardRef<

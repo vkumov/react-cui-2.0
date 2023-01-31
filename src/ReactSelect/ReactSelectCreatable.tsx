@@ -1,22 +1,21 @@
-import React, { forwardRef, type Ref, type ReactNode } from "react";
-import type { GroupBase } from "react-select/dist/declarations/src/types";
-import type SelectGeneric from "react-select/dist/declarations/src/Select";
-import CreatableSelect from "react-select/creatable";
-import type { CreatableProps } from "react-select/creatable";
+import React, { forwardRef, type ReactNode, type Ref } from "react";
 import cx from "classnames";
+import CreatableSelect, { type CreatableProps } from "react-select/creatable";
+import type SelectGeneric from "react-select/dist/declarations/src/Select";
+import type { GroupBase } from "react-select/dist/declarations/src/types";
 
 import { InputHelpBlock } from "src/InputHelp";
 import type { LabelColor } from "src/Label";
 
 import "../../css/react-select.css";
+import sts from "./Select.module.scss";
 import {
+  Group as GroupComponent,
+  GroupHeading,
   MultiValueContainer,
   MultiValueLabel,
   MultiValueRemove,
-  Group as GroupComponent,
-  GroupHeading,
 } from "./components";
-import sts from "./Select.module.scss";
 
 type CUISelectProps = {
   label?: ReactNode;

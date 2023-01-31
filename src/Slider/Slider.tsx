@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode } from "react";
+import React, { ReactNode, forwardRef } from "react";
 import RCSlider, { SliderProps as RCSliderProps } from "rc-slider";
 import type { SliderRef } from "rc-slider/lib/Slider";
 

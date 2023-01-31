@@ -1,14 +1,2 @@
-import React, { useContext, createContext } from 'react';
-
-const FloatingContext = /*#__PURE__*/ createContext(null);
-const useFloatingContext = ()=>useContext(FloatingContext);
-const FloatingProvider = ({ rootRef , children  })=>{
-    return /*#__PURE__*/ React.createElement(FloatingContext.Provider, {
-        value: {
-            rootRef
-        }
-    }, children);
-};
-
-export { FloatingProvider, useFloatingContext };
+import React,{useContext,createContext}from"react";var FloatingContext=createContext(null);var useFloatingContext=function(){return useContext(FloatingContext)};var FloatingProvider=function(param){var rootRef=param.rootRef,children=param.children;return React.createElement(FloatingContext.Provider,{value:{rootRef:rootRef}},children)};export{FloatingProvider,useFloatingContext};
 //# sourceMappingURL=index.js.map

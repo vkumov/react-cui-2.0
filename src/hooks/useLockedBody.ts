@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { useIsomorphicEffect } from "./useIsomorphicEffect";
 
 type UseLockedBodyOutput = [boolean, (locked: boolean) => void];

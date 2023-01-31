@@ -1,20 +1,17 @@
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
-import resolve from "@rollup/plugin-node-resolve";
+import fs from "node:fs";
+import path, { basename } from "node:path";
 import commonjs from "@rollup/plugin-commonjs";
-import typescript from "rollup-plugin-typescript2";
-import { terser } from "rollup-plugin-terser";
-import postcss from "rollup-plugin-postcss";
-import cleaner from "rollup-plugin-cleaner";
-import swc from "unplugin-swc";
-import tsPaths from "rollup-plugin-typescript-paths";
+import resolve from "@rollup/plugin-node-resolve";
 import glob from "fast-glob";
-import path from "path";
-
 import cssImport from "postcss-import";
-import fs from "fs";
+import cleaner from "rollup-plugin-cleaner";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import postcss from "rollup-plugin-postcss";
+import typescript from "rollup-plugin-typescript2";
+import tsPaths from "rollup-plugin-typescript-paths";
+import swc from "unplugin-swc";
 
 import packageJson from "./package.json";
-import { basename } from "path";
 
 const externals = [
   "react",
@@ -25,17 +22,13 @@ const externals = [
 
 const allExternals = [...externals];
 
-const minimize = false;
+const minimize = true;
 
 const plugins = [
   peerDepsExternal({ includeDependencies: true }),
   resolve({
     extensions: [".mjs", ".js", ".jsx", ".json", ".css"],
     preferBuiltins: true,
-    // resolveOnly: (m) => {
-    //   // console.log(m);
-    //   return !m.startsWith("src");
-    // },
   }),
   commonjs({
     include: "node_modules/**",
@@ -43,12 +36,11 @@ const plugins = [
   swc.rollup({
     tsconfigFile: "tsconfig.json",
     sourceMaps: true,
+    minify: minimize,
   }),
-  minimize && terser(),
 ].filter(Boolean);
 
 const tsDTS = typescript({
-  //   // tsconfig: "./tsconfig.json",
   useTsconfigDeclarationDir: true,
   tsconfigOverride: {
     emitDeclarationOnly: true,
@@ -94,7 +86,6 @@ const getFolders = (entry) => {
     });
     allExternals.push(...all.flat());
   });
-  // console.log(allExternals);
 })();
 
 //loop through your folders and generate a rollup obj per folder
@@ -127,6 +118,9 @@ const folderBuilds = getFolders("./src")
   })
   .flat();
 
+/**
+ * @type {import('rollup').RollupOptions}
+ **/
 const esmBundle = {
   input: ["src/index.ts"],
   output: [
@@ -137,6 +131,7 @@ const esmBundle = {
       exports: "named",
     },
   ],
+  strictDeprecations: true,
   treeshake: true,
   plugins: [
     postcss({
@@ -159,6 +154,9 @@ const esmBundle = {
   external: externals,
 };
 
+/**
+ * @type {import('rollup').RollupOptions}
+ **/
 const cjsBundle = {
   input: ["src/index.ts"],
   output: [
@@ -169,6 +167,7 @@ const cjsBundle = {
       exports: "named",
     },
   ],
+  strictDeprecations: true,
   treeshake: true,
   plugins: [
     cleaner({

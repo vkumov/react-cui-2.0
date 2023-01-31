@@ -1,12 +1,23 @@
+import React, {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useEffect,
+  useRef,
+  useState,
+  type HTMLProps,
+  type PropsWithChildren,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import {
-  type Strategy,
-  type Placement,
-  autoUpdate,
-  flip,
   FloatingFocusManager,
   FloatingNode,
   FloatingPortal,
   FloatingTree,
+  autoUpdate,
+  flip,
   offset,
   safePolygon,
   shift,
@@ -20,24 +31,13 @@ import {
   useHover,
   useInteractions,
   useListNavigation,
+  useMergeRefs,
   useRole,
   useTypeahead,
+  type Placement,
+  type Strategy,
 } from "@floating-ui/react";
-import React, {
-  type PropsWithChildren,
-  type ReactNode,
-  type ReactElement,
-  type HTMLProps,
-  Children,
-  cloneElement,
-  isValidElement,
-  useEffect,
-  useRef,
-  useState,
-  forwardRef,
-} from "react";
 import cx from "classnames";
-import { useMergeRefs } from "use-callback-ref";
 import { Transition } from "react-transition-group";
 
 import { useFloatingContext } from "src/FloatingProvider";
@@ -95,6 +95,8 @@ type DropdownProps = PropsWithChildren<{
   portalRoot?: HTMLElement | null | undefined;
   alwaysClose?: boolean;
   onOpen?: () => unknown;
+  onClose?: () => unknown;
+  isOpen?: boolean;
   withSizeLimit?: boolean;
 }>;
 
@@ -116,15 +118,21 @@ export const Menu = forwardRef<
       portalRoot,
       alwaysClose,
       onOpen,
+      onClose,
+      isOpen,
       nested,
       withSizeLimit,
       ...props
     },
     ref
   ) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(isOpen ?? false);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [allowHover, setAllowHover] = useState(false);
+
+    useEffect(() => {
+      if (typeof isOpen !== "undefined") setOpen(isOpen);
+    }, [isOpen]);
 
     const listItemsRef = useRef<Array<HTMLButtonElement | null>>([]);
     const listContentRef = useRef(
@@ -142,7 +150,8 @@ export const Menu = forwardRef<
       useFloating<HTMLButtonElement>({
         open,
         onOpenChange: (st) => {
-          if (typeof onOpen === "function") onOpen();
+          if (typeof onOpen === "function" && st) onOpen();
+          if (typeof onClose === "function" && !st) onClose();
           setOpen(st);
         },
         middleware: [
@@ -249,7 +258,7 @@ export const Menu = forwardRef<
               },
               ...(nested
                 ? {
-                    className: cx("menu_item", { open }),
+                    className: cx("menu_item", label.props.className, { open }),
                     role: "menuitem",
                     onKeyDown(event) {
                       if (

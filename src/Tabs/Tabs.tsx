@@ -1,8 +1,8 @@
 import React, { FC, HTMLProps, ReactNode } from "react";
 
 import { ConditionalWrapper, DisplayIf } from "src/Conditional";
-import { appendClass as ac } from "src/utils";
 import { usePrevious } from "src/hooks/usePrevious";
+import { appendClass as ac } from "src/utils";
 
 type TabId = number | string;
 

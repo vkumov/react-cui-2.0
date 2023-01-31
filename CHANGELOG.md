@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.3.1
+
+- Fix forwarding `className` for `MenuElement`
+- Cleanups, better `.prettierrc`
+
+## 5.3.0
+
+- New component - `ContextMenu`
+
+## 5.2.5
+
+- `onOpen` & `onClose` for Dropdown
+
 ## 5.2.4
 
 - Fix styles for ReactSelect with `isMulti` set to `true`

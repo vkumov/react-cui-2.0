@@ -44,3 +44,4 @@ export * from "./Tooltip";
 export * from "./FloatingProvider";
 export * from "./SegmentedControl";
 export * from "./Popover";
+export * from "./ContextMenu";

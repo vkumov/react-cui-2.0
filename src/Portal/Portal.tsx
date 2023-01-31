@@ -1,5 +1,6 @@
 import React, { ReactPortal } from "react";
 import { createPortal } from "react-dom";
+
 import { usePortal } from "src/hooks/usePortal";
 
 export interface PortalProps {

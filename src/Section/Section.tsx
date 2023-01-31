@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLProps, PropsWithChildren } from "react";
+import React, { HTMLProps, PropsWithChildren, forwardRef } from "react";
 
 import { appendClass } from "src/utils";
 

@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from "react";
-import { toast as _toast, ToastOptions, UpdateOptions } from "react-toastify";
-import { appendClass } from "src/utils";
+import { ToastOptions, UpdateOptions, toast as _toast } from "react-toastify";
 
+import { appendClass } from "src/utils";
 import { copyStringToClipboard } from "src/utils/clipboard";
 
 type ToastType = "success" | "error" | "warning" | "info" | "loading" | "none";

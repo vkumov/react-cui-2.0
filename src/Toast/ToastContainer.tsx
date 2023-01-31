@@ -1,9 +1,10 @@
 import React from "react";
 import {
-  ToastContainer as ToastifyContainer,
-  ToastContainerProps,
   Slide,
+  ToastContainerProps,
+  ToastContainer as ToastifyContainer,
 } from "react-toastify";
+
 import { appendClass } from "src/utils";
 
 type ExtraProps = {

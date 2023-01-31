@@ -1,12 +1,13 @@
 import React, {
-  ReactNode,
-  PropsWithChildren,
   ChangeEvent,
   KeyboardEvent,
+  PropsWithChildren,
+  ReactNode,
 } from "react";
-import { Input } from "src/Input";
-import { DisplayIf as If } from "src/Conditional";
+
 import { Button } from "src/Button";
+import { DisplayIf as If } from "src/Conditional";
+import { Input } from "src/Input";
 
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";

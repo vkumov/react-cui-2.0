@@ -1,13 +1,13 @@
 import React from "react";
 import type {
-  MultiValueGenericProps,
-  MultiValueRemoveProps,
   GroupHeadingProps,
   GroupProps,
+  MultiValueGenericProps,
+  MultiValueRemoveProps,
 } from "react-select";
 
-import { appendClass } from "src/utils";
 import type { LabelColor } from "src/Label";
+import { appendClass } from "src/utils";
 
 export const MultiValueContainer = (
   props: MultiValueGenericProps<any>

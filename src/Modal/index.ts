@@ -1,3 +1,5 @@
+import "../../css/modal.css";
+
 export * from "./Header";
 export * from "./Footer";
 export * from "./Body";
@@ -6,5 +8,3 @@ export * from "./ConfirmationModal";
 export * from "./PromptModal";
 export * from "./ConfirmationListener";
 export * from "./calls";
-
-import "../../css/modal.css";

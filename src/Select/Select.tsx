@@ -1,25 +1,26 @@
 import React, {
-  ChangeEvent,
-  PropsWithChildren,
-  ReactNode,
-  useEffect,
   forwardRef,
-  useCallback,
-  useState,
-  useRef,
-  useMemo,
   isValidElement,
-  ReactElement,
-  ReactHTMLElement,
-  MutableRefObject,
-  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FC,
+  type MutableRefObject,
+  type PropsWithChildren,
+  type ReactElement,
+  type ReactHTMLElement,
+  type ReactNode,
 } from "react";
 import { useMergeRefs } from "use-callback-ref";
 
 import { InputChips } from "src/InputChips";
-import type { FullInputChipsProps } from "../InputChips";
 import { InputHelpBlock } from "src/InputHelp";
 import { appendClass as ac } from "src/utils";
+
+import type { FullInputChipsProps } from "../InputChips";
 
 function isOption(
   element: ReactElement<unknown>

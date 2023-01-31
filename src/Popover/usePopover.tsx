@@ -1,28 +1,28 @@
 import React, {
   ComponentProps,
   ComponentType,
-  createElement,
   ReactNode,
+  createElement,
   useCallback,
   useRef,
 } from "react";
 import {
-  flip,
   FloatingFocusManager,
   FloatingPortal,
+  autoUpdate,
+  flip,
   offset,
   shift,
   useClick,
   useDismiss,
   useFloating,
   useInteractions,
-  autoUpdate,
+  useMergeRefs,
 } from "@floating-ui/react";
 import { Transition } from "react-transition-group";
-import { useMergeRefs } from "use-callback-ref";
 
-import { useLockedBody } from "src/hooks/useLockedBody";
 import { useFloatingContext } from "src/FloatingProvider";
+import { useLockedBody } from "src/hooks/useLockedBody";
 
 import { PopoverProps } from ".";
 import { GenericPopover } from "./GenericPopover";

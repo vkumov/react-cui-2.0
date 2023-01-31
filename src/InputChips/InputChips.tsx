@@ -1,15 +1,14 @@
 import React, {
   HTMLProps,
   ReactNode,
-  useState,
   useCallback,
   useEffect,
+  useState,
 } from "react";
 
 import { ConditionalWrapper } from "src/Conditional";
+import { InputHelpBaloon, InputHelpBlock } from "src/InputHelp";
 import { Label, LabelColor } from "src/Label";
-import { InputHelpBlock, InputHelpBaloon } from "src/InputHelp";
-
 import { appendClass as ac } from "src/utils";
 
 import "../../css/chips.css";

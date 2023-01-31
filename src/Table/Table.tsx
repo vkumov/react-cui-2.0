@@ -1,9 +1,9 @@
-import React, { FC, forwardRef, ReactNode } from "react";
-
-import { GenericTable, GenericTableProps } from "./GenericTable";
-import { DefaultTablePagination } from "./DefaultTablePagination";
+import React, { FC, ReactNode, forwardRef } from "react";
 
 import { appendClass } from "src/utils";
+
+import { DefaultTablePagination } from "./DefaultTablePagination";
+import { GenericTable, GenericTableProps } from "./GenericTable";
 
 const asArray = (v: unknown) => (Array.isArray(v) ? v : [v]);
 

@@ -2,10 +2,10 @@ import React, { ChangeEvent, FC, ReactNode } from "react";
 
 import { Button, ButtonColor } from "src/Button";
 
-import type { DontAskAgain } from "./calls";
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
 import { Modal } from "./Modal";
+import type { DontAskAgain } from "./calls";
 
 /**
  * Confirmation Modal

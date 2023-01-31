@@ -1,6 +1,6 @@
-import React, { ReactNode, HTMLProps, forwardRef, ReactElement } from "react";
+import React, { HTMLProps, ReactElement, ReactNode, forwardRef } from "react";
 
-import { DisplayIf as If, ConditionalWrapper } from "src/Conditional";
+import { ConditionalWrapper, DisplayIf as If } from "src/Conditional";
 import { InputHelpBlock } from "src/InputHelp";
 import { appendClass as ac } from "src/utils";
 

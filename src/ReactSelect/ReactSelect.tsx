@@ -1,23 +1,23 @@
-import React, { forwardRef, type Ref, type ReactNode } from "react";
+import React, { forwardRef, type ReactNode, type Ref } from "react";
+import cx from "classnames";
 import Select, {
-  type Props as SelectProps,
   type GroupBase,
+  type Props as SelectProps,
 } from "react-select";
 import type SelectGeneric from "react-select/dist/declarations/src/Select";
-import cx from "classnames";
 
 import { InputHelpBlock } from "src/InputHelp";
 import type { LabelColor } from "src/Label";
 
 import "../../css/react-select.css";
+import sts from "./Select.module.scss";
 import {
+  Group as GroupComponent,
+  GroupHeading,
   MultiValueContainer,
   MultiValueLabel,
   MultiValueRemove,
-  Group as GroupComponent,
-  GroupHeading,
 } from "./components";
-import sts from "./Select.module.scss";
 
 type CUISelectProps = {
   label?: ReactNode;

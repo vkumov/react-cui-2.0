@@ -2,13 +2,12 @@ import React, { cloneElement } from "react";
 import { nanoid } from "nanoid";
 
 import { Button } from "src/Button";
-
 import { eventManager } from "src/utils/eventManager";
 
 import { ModalBody } from "./Body";
+import { ConfirmationModal } from "./ConfirmationModal";
 import { ModalFooter } from "./Footer";
 import { Modal } from "./Modal";
-import { ConfirmationModal } from "./ConfirmationModal";
 import { PromptModal } from "./PromptModal";
 
 export const ConfirmationListener = (): JSX.Element => {

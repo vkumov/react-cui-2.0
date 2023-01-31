@@ -1,10 +1,10 @@
 import React, {
-  ChangeEvent,
-  FC,
   forwardRef,
-  HTMLProps,
-  ReactNode,
   useCallback,
+  type ChangeEvent,
+  type FC,
+  type HTMLProps,
+  type ReactNode,
 } from "react";
 
 import { appendClass as ac } from "src/utils";

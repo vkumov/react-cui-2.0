@@ -1,15 +1,15 @@
 import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useState,
   type FC,
   type HTMLProps,
+  type MutableRefObject,
   type PropsWithChildren,
   type ReactNode,
   type Ref,
-  useEffect,
-  useState,
-  forwardRef,
-  RefCallback,
-  useCallback,
-  MutableRefObject,
+  type RefCallback,
 } from "react";
 import cx from "classnames";
 

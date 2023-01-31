@@ -1,6 +1,7 @@
-import React, { FC, forwardRef, HTMLProps } from "react";
+import React, { FC, HTMLProps, forwardRef } from "react";
 
 import { appendClass } from "src/utils";
+
 import "../../css/v-separator.css";
 
 type VSeparatorProps = {

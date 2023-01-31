@@ -44,6 +44,7 @@ export * from "./Tooltip";
 export * from "./FloatingProvider";
 export * from "./SegmentedControl";
 export * from "./Popover";
+export * from "./ContextMenu";
 
 declare module "@vkumov/react-cui-2.0/Accordion" {
   import { Accordion, AccordionElement } from "@vkumov/react-cui-2.0";
@@ -78,6 +79,11 @@ declare module "@vkumov/react-cui-2.0/Checkbox" {
 declare module "@vkumov/react-cui-2.0/Conditional" {
   import { ConditionalWrapper, DisplayIf } from "@vkumov/react-cui-2.0";
   export { ConditionalWrapper, DisplayIf };
+}
+
+declare module "@vkumov/react-cui-2.0/ContextMenu" {
+  import { ContextMenu } from "@vkumov/react-cui-2.0";
+  export { ContextMenu };
 }
 
 declare module "@vkumov/react-cui-2.0/Dropdown" {

@@ -1,30 +1,29 @@
 import React, {
-  type FC,
-  type PropsWithChildren,
-  type HTMLProps,
+  cloneElement,
   forwardRef,
   useRef,
   useState,
-  MutableRefObject,
-  ReactNode,
-  cloneElement,
+  type FC,
+  type HTMLProps,
+  type MutableRefObject,
+  type PropsWithChildren,
+  type ReactNode,
 } from "react";
-import { Transition } from "react-transition-group";
-import { useMergeRefs } from "use-callback-ref";
-
 import {
+  FloatingPortal,
   arrow,
   flip,
-  FloatingPortal,
   offset,
   shift,
   useFloating,
   useHover,
   useInteractions,
-  type Side,
-  type Placement,
+  useMergeRefs,
   useRole,
+  type Placement,
+  type Side,
 } from "@floating-ui/react";
+import { Transition } from "react-transition-group";
 
 import { useFloatingContext } from "src/FloatingProvider";
 

@@ -1,25 +1,2 @@
-import React, { forwardRef } from 'react';
-import { appendClass } from '../utils/index.js';
-
-function _extends() {
-    _extends = Object.assign || function(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source){
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
-    return _extends.apply(this, arguments);
-}
-const Blockquote = /*#__PURE__*/ forwardRef(({ className , cite , color , align , children , padding , ...props }, ref)=>/*#__PURE__*/ React.createElement("blockquote", _extends({
-        className: `${appendClass(color, `blockquote--${color}`)}${appendClass(align, `blockquote--${align}`)}${appendClass(padding && padding !== "default", `blockquote--${padding}`)}${appendClass(className)}`
-    }, props, {
-        ref: ref
-    }), /*#__PURE__*/ React.createElement("p", null, children), cite ? /*#__PURE__*/ React.createElement("cite", null, cite) : null));
-
-export { Blockquote };
+function _objectWithoutProperties(source,excluded){if(source==null)return{};var target=_objectWithoutPropertiesLoose(source,excluded);var key,i;if(Object.getOwnPropertySymbols){var sourceSymbolKeys=Object.getOwnPropertySymbols(source);for(i=0;i<sourceSymbolKeys.length;i++){key=sourceSymbolKeys[i];if(excluded.indexOf(key)>=0)continue;if(!Object.prototype.propertyIsEnumerable.call(source,key))continue;target[key]=source[key]}}return target}function _objectWithoutPropertiesLoose(source,excluded){if(source==null)return{};var target={};var sourceKeys=Object.keys(source);var key,i;for(i=0;i<sourceKeys.length;i++){key=sourceKeys[i];if(excluded.indexOf(key)>=0)continue;target[key]=source[key]}return target}import React,{forwardRef}from"react";import{appendClass}from"../utils/index.js";function _extends(){_extends=Object.assign||function(target){for(var i=1;i<arguments.length;i++){var source=arguments[i];for(var key in source){if(Object.prototype.hasOwnProperty.call(source,key)){target[key]=source[key]}}}return target};return _extends.apply(this,arguments)}var Blockquote=forwardRef(function(_param,ref){var className=_param.className,cite=_param.cite,color=_param.color,align=_param.align,children=_param.children,padding=_param.padding,props=_objectWithoutProperties(_param,["className","cite","color","align","children","padding"]);return React.createElement("blockquote",_extends({className:"".concat(appendClass(color,"blockquote--".concat(color))).concat(appendClass(align,"blockquote--".concat(align))).concat(appendClass(padding&&padding!=="default","blockquote--".concat(padding))).concat(appendClass(className))},props,{ref:ref}),React.createElement("p",null,children),cite?React.createElement("cite",null,cite):null)});export{Blockquote};
 //# sourceMappingURL=index.js.map

@@ -1,6 +1,6 @@
-import dts from "rollup-plugin-dts";
+import { basename } from "node:path";
 import glob from "fast-glob";
-import { basename } from "path";
+import dts from "rollup-plugin-dts";
 
 const folderBuilds = glob
   .sync(`./build/**/*.d.ts`, { globstar: true })

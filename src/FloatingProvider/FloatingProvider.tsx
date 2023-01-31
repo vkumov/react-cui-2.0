@@ -1,9 +1,9 @@
 import React, {
   createContext,
+  useContext,
+  type FC,
   type PropsWithChildren,
   type RefObject,
-  type FC,
-  useContext,
 } from "react";
 
 type FloatingContextProps = {

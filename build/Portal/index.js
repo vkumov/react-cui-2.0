@@ -1,28 +1,2 @@
-import React from 'react';
-import { createPortal } from 'react-dom';
-import { usePortal } from '../hooks/usePortal.js';
-
-const defaultProps = {
-    zIndex: 1,
-    position: "relative"
-};
-function Portal(props) {
-    const { children , zIndex , target , className , position  } = {
-        ...defaultProps,
-        ...props
-    };
-    const portal = usePortal(target);
-    if (!portal) {
-        return null;
-    }
-    return /*#__PURE__*/ createPortal(/*#__PURE__*/ React.createElement("div", {
-        className: className,
-        style: {
-            position: position,
-            zIndex
-        }
-    }, children), portal);
-}
-
-export { Portal };
+function _defineProperty(obj,key,value){if(key in obj){Object.defineProperty(obj,key,{value:value,enumerable:true,configurable:true,writable:true})}else{obj[key]=value}return obj}function _objectSpread(target){for(var i=1;i<arguments.length;i++){var source=arguments[i]!=null?arguments[i]:{};var ownKeys=Object.keys(source);if(typeof Object.getOwnPropertySymbols==="function"){ownKeys=ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym){return Object.getOwnPropertyDescriptor(source,sym).enumerable}))}ownKeys.forEach(function(key){_defineProperty(target,key,source[key])})}return target}import React from"react";import{createPortal}from"react-dom";import{usePortal}from"../hooks/usePortal.js";var defaultProps={zIndex:1,position:"relative"};function Portal(props){var ref=_objectSpread({},defaultProps,props),children=ref.children,zIndex=ref.zIndex,target=ref.target,className=ref.className,position=ref.position;var portal=usePortal(target);if(!portal){return null}return createPortal(React.createElement("div",{className:className,style:{position:position,zIndex:zIndex}},children),portal)}export{Portal};
 //# sourceMappingURL=index.js.map

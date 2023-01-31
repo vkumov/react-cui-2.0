@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from "react";
 
-import { Pagination } from "src/Pagination";
 import { Dropdown, MenuElement } from "src/Dropdown";
+import { Pagination } from "src/Pagination";
 
 type DefaultTablePaginationProps = {
   total: number;

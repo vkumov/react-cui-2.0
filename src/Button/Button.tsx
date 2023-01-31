@@ -1,8 +1,8 @@
 import React, {
   createElement,
   forwardRef,
-  ForwardRefExoticComponent,
-  HTMLProps,
+  type ForwardRefExoticComponent,
+  type HTMLProps,
 } from "react";
 
 import { appendClass as ac } from "src/utils";

@@ -1,7 +1,7 @@
-import React, { ReactNode, FC, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 
-import { Dropdown } from "src/Dropdown";
 import { ConditionalWrapper } from "src/Conditional";
+import { Dropdown } from "src/Dropdown";
 import { appendClass as ac } from "src/utils";
 
 export type Variant = {

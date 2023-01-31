@@ -1,38 +1,38 @@
 import React, {
-  type FC,
-  type ReactNode,
-  type PropsWithChildren,
-  type ComponentProps,
-  type MutableRefObject,
-  type ReactElement,
   cloneElement,
-  useState,
   useCallback,
   useRef,
+  useState,
+  type ComponentProps,
+  type FC,
+  type MutableRefObject,
+  type PropsWithChildren,
+  type ReactElement,
+  type ReactNode,
 } from "react";
-import { useMergeRefs } from "use-callback-ref";
 import {
-  type Placement,
-  flip,
   FloatingFocusManager,
   FloatingPortal,
+  autoUpdate,
+  flip,
   offset,
   shift,
   useClick,
   useDismiss,
   useFloating,
   useInteractions,
-  autoUpdate,
+  useMergeRefs,
+  type Placement,
 } from "@floating-ui/react";
 import cx from "classnames";
 import { Transition } from "react-transition-group";
 
-import { useLockedBody } from "src/hooks/useLockedBody";
 import { useFloatingContext } from "src/FloatingProvider";
+import { useLockedBody } from "src/hooks/useLockedBody";
 
+import { GenericPopover } from "./GenericPopover";
 import styles from "./Popover.module.scss";
 import { PopoverProvider, usePopoverContext } from "./context";
-import { GenericPopover } from "./GenericPopover";
 
 export { usePopoverContext };
 

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+
 import { useIsomorphicEffect } from "./useIsomorphicEffect";
 
 export function usePortal(target?: HTMLElement | string): HTMLElement | null {

@@ -33,7 +33,7 @@ async function createPackageFile() {
     resolve(packagePath, "./package.json"),
     "utf8"
   );
-  const { scripts, devDependencies, ...packageOthers } =
+  const { scripts, devDependencies, overrides, ...packageOthers } =
     JSON.parse(packageData);
 
   const main_file = `./cjs/${basename(packageOthers.main)}`;
@@ -50,11 +50,13 @@ async function createPackageFile() {
     if (m) {
       if (m[2] === "index") {
         comb[`./${m[1]}`] = {
-          import: { types: `./${m[1]}/${m[2]}.d.ts`, default: curr },
+          types: `./${m[1]}/${m[2]}.d.ts`,
+          import: curr,
         };
       } else {
         comb[`./${m[1]}/${m[2]}`] = {
-          import: { types: `./${m[1]}/${m[2]}.d.ts`, default: curr },
+          types: `./${m[1]}/${m[2]}.d.ts`,
+          import: curr,
         };
       }
     }
@@ -71,6 +73,7 @@ async function createPackageFile() {
     type: "module",
     exports: {
       ".": {
+        types: "./index.d.ts",
         import: module_file,
         require: main_file,
       },

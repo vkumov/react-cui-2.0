@@ -1,29 +1,28 @@
-import React, { type FC, type ReactNode, type PropsWithChildren } from "react";
-import { Transition } from "react-transition-group";
-
+import React, { type FC, type PropsWithChildren, type ReactNode } from "react";
 import {
   FloatingFocusManager,
-  FloatingPortal,
+  FloatingNode,
   FloatingOverlay,
-  useFloating,
+  FloatingPortal,
+  FloatingTree,
   useClick,
   useDismiss,
-  useRole,
-  useInteractions,
-  type ReferenceType,
+  useFloating,
   useFloatingNodeId,
-  FloatingNode,
   useFloatingParentNodeId,
-  FloatingTree,
+  useInteractions,
+  useRole,
+  type ReferenceType,
 } from "@floating-ui/react";
+import { Transition } from "react-transition-group";
 
 import { ConditionalWrapper, DisplayIf as If } from "src/Conditional";
-import { appendClass as ac } from "src/utils";
 import { useFloatingContext } from "src/FloatingProvider";
+import { appendClass as ac } from "src/utils";
 
-import { ModalHeader } from "./Header";
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
+import { ModalHeader } from "./Header";
 
 /**
  * Modal

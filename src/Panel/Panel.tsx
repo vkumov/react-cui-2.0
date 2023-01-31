@@ -1,6 +1,7 @@
 import React, { FC, HTMLProps } from "react";
 
 import { appendClass as ac } from "src/utils";
+
 import "../../css/panel.css";
 
 type Borders = "top" | "right" | "left" | "bottom";

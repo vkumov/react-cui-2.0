@@ -1,10 +1,11 @@
 import React, { FC, ReactNode, useCallback, useMemo } from "react";
+import bytes from "bytes";
 import ReactDropzone, {
   DropzoneProps as ReactDropzoneProps,
 } from "react-dropzone";
-import bytes from "bytes";
 
 import { appendClass as ac } from "src/utils";
+
 import "../../css/dropzone.css";
 
 type FileCardProps = {
