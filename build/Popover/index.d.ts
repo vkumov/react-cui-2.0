@@ -26,6 +26,7 @@ type PopoverProps = PropsWithChildren<{
     guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
     modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
     closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
 }>;
 declare const Popover: FC<PopoverProps>;
 
@@ -45,8 +46,8 @@ type Options = {
     onOpen?: () => unknown;
     onClose?: () => unknown;
     popoverComponent?: ComponentType<ComponentProps<typeof GenericPopover>>;
-} & Pick<PopoverProps, "initialFocus" | "guardsFocus" | "modalFocus" | "closeOnFocusOut" | "offset" | "portalRoot" | "placement">;
-declare function usePopover({ onClose, onOpen, popoverComponent, placement, initialFocus, guardsFocus, modalFocus, closeOnFocusOut, offset: offsetOptions, portalRoot, }: Options): {
+} & Pick<PopoverProps, "initialFocus" | "guardsFocus" | "modalFocus" | "closeOnFocusOut" | "offset" | "portalRoot" | "placement" | "portalId">;
+declare function usePopover({ onClose, onOpen, popoverComponent, placement, initialFocus, guardsFocus, modalFocus, closeOnFocusOut, offset: offsetOptions, portalRoot, portalId, }: Options): {
     getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>;
     reference: (node: _floating_ui_react.ReferenceType) => void;
     render: (body: ReactNode) => JSX.Element;

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode, ComponentProps } from 'react';
 import { ReferenceType, FloatingPortal, FloatingOverlay, useDismiss } from '@floating-ui/react';
 
 type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
@@ -25,8 +25,9 @@ type ModalProps = PropsWithChildren<{
     contentProps?: React.ComponentProps<"div">;
     maximize?: boolean;
     refElement?: ReferenceType;
-    root?: Parameters<typeof FloatingPortal>[0]["root"];
-    lockScroll?: Parameters<typeof FloatingOverlay>[0]["lockScroll"];
+    root?: ComponentProps<typeof FloatingPortal>["root"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
+    lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
 }>;
 

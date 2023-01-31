@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import React, { FC, PropsWithChildren, HTMLProps, ReactNode } from 'react';
+import React, { FC, PropsWithChildren, HTMLProps, ReactNode, ComponentProps } from 'react';
 import { ReferenceType, FloatingPortal, FloatingOverlay, useDismiss } from '@floating-ui/react';
 
 /**
@@ -48,8 +48,9 @@ type ModalProps$1 = PropsWithChildren<{
     contentProps?: React.ComponentProps<"div">;
     maximize?: boolean;
     refElement?: ReferenceType;
-    root?: Parameters<typeof FloatingPortal>[0]["root"];
-    lockScroll?: Parameters<typeof FloatingOverlay>[0]["lockScroll"];
+    root?: ComponentProps<typeof FloatingPortal>["root"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
+    lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
 }>;
 type ModalSizes = {
@@ -91,8 +92,9 @@ type ModalProps = PropsWithChildren<{
     contentProps?: React.ComponentProps<"div">;
     maximize?: boolean;
     refElement?: ReferenceType;
-    root?: Parameters<typeof FloatingPortal>[0]["root"];
-    lockScroll?: Parameters<typeof FloatingOverlay>[0]["lockScroll"];
+    root?: ComponentProps<typeof FloatingPortal>["root"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
+    lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
 }>;
 
