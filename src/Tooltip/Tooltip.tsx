@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   useRef,
   useState,
+  type ComponentProps,
   type FC,
   type HTMLProps,
   type MutableRefObject,
@@ -86,7 +87,8 @@ const TooltipWrapper: FC<
   PropsWithChildren<
     Omit<ReturnType<typeof useTooltip>, "getReferenceProps" | "reference">
   > & {
-    root?: Parameters<typeof FloatingPortal>[0]["root"];
+    root?: ComponentProps<typeof FloatingPortal>["root"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
   }
 > = ({
   children,
@@ -100,6 +102,7 @@ const TooltipWrapper: FC<
   arrowRef,
   placement,
   root: rootProvided,
+  portalId = "--cui-tooltip-portal",
 }) => {
   const { x: arrowX, y: arrowY } = middlewareData.arrow || { x: 0, y: 0 };
   const floatingRef = useRef<any>(null);
@@ -116,15 +119,15 @@ const TooltipWrapper: FC<
     rootProvided ?? modalContext ? modalContext.rootRef.current : undefined;
 
   return (
-    <Transition
-      in={show}
-      mountOnEnter
-      unmountOnExit
-      timeout={200}
-      nodeRef={floatingRef}
-    >
-      {(state) => (
-        <FloatingPortal root={root}>
+    <FloatingPortal root={root} id={portalId}>
+      <Transition
+        in={show}
+        mountOnEnter
+        unmountOnExit
+        timeout={200}
+        nodeRef={floatingRef}
+      >
+        {(state) => (
           <Tooltip
             ref={(r) => {
               floating(r);
@@ -156,9 +159,9 @@ const TooltipWrapper: FC<
               }}
             />
           </Tooltip>
-        </FloatingPortal>
-      )}
-    </Transition>
+        )}
+      </Transition>
+    </FloatingPortal>
   );
 };
 

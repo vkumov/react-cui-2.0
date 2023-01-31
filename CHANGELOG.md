@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.3.5
+
+- `postalId` prop for floating UI elements & predefined portal IDs
+
+## 5.3.4
+
+- Don’t conditionally render the FloatingPortal
+
 ## 5.3.1
 
 - Fix forwarding `className` for `MenuElement`

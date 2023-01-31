@@ -89,6 +89,7 @@ export type PopoverProps = PropsWithChildren<{
   closeOnFocusOut?: ComponentProps<
     typeof FloatingFocusManager
   >["closeOnFocusOut"];
+  portalId?: ComponentProps<typeof FloatingPortal>["id"];
 }>;
 
 export const Popover: FC<PopoverProps> = ({
@@ -107,6 +108,7 @@ export const Popover: FC<PopoverProps> = ({
   guardsFocus,
   modalFocus,
   closeOnFocusOut,
+  portalId = "--cui-popover-portal",
 }) => {
   const [show, setShow] = useLockedBody(false, "root");
 
@@ -161,18 +163,18 @@ export const Popover: FC<PopoverProps> = ({
           ),
         })
       )}
-      <Transition
-        in={show}
-        mountOnEnter
-        unmountOnExit
-        timeout={250}
-        nodeRef={transitionRef}
-      >
-        {(state) => (
-          <FloatingPortal root={portalRoot}>
+      <FloatingPortal root={portalRoot} id={portalId}>
+        <Transition
+          in={show}
+          mountOnEnter
+          unmountOnExit
+          timeout={250}
+          nodeRef={transitionRef}
+        >
+          {(state) => (
             <FloatingFocusManager
               context={context}
-              initialFocus={initialFocus}
+              initialFocus={initialFocus ?? (floatingRef as any)}
               guards={guardsFocus}
               modal={modalFocus}
               closeOnFocusOut={closeOnFocusOut}
@@ -197,9 +199,9 @@ export const Popover: FC<PopoverProps> = ({
                 </PopoverProvider>
               </GenericPopover>
             </FloatingFocusManager>
-          </FloatingPortal>
-        )}
-      </Transition>
+          )}
+        </Transition>
+      </FloatingPortal>
     </>
   );
 };

@@ -1,4 +1,9 @@
-import React, { type FC, type PropsWithChildren, type ReactNode } from "react";
+import React, {
+  ComponentProps,
+  type FC,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import {
   FloatingFocusManager,
   FloatingNode,
@@ -46,8 +51,9 @@ export type ModalProps = PropsWithChildren<{
   contentProps?: React.ComponentProps<"div">;
   maximize?: boolean;
   refElement?: ReferenceType;
-  root?: Parameters<typeof FloatingPortal>[0]["root"];
-  lockScroll?: Parameters<typeof FloatingOverlay>[0]["lockScroll"];
+  root?: ComponentProps<typeof FloatingPortal>["root"];
+  portalId?: ComponentProps<typeof FloatingPortal>["id"];
+  lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
   ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
 }>;
 // & ReactModalProps;
@@ -83,6 +89,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
   root: rootProvided,
   lockScroll,
   ancestorScroll,
+  portalId,
 }) => {
   const [maximized, setMaximized] = React.useState(false);
 
@@ -125,17 +132,17 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
   const nodeRef = React.useRef(null);
 
   const t = (
-    <Transition
-      in={isOpen}
-      mountOnEnter
-      unmountOnExit
-      timeout={animationDuration}
-      nodeRef={nodeRef}
-      {...transitionEvents}
-    >
-      {(state) => (
-        <FloatingNode id={nodeId}>
-          <FloatingPortal root={root}>
+    <FloatingPortal root={root} id={portalId}>
+      <Transition
+        in={isOpen}
+        mountOnEnter
+        unmountOnExit
+        timeout={animationDuration}
+        nodeRef={nodeRef}
+        {...transitionEvents}
+      >
+        {(state) => (
+          <FloatingNode id={nodeId}>
             <FloatingOverlay
               className={`modal-backdrop${ac(
                 state === "exiting",
@@ -205,10 +212,10 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
                 </div>
               </FloatingFocusManager>
             </FloatingOverlay>
-          </FloatingPortal>
-        </FloatingNode>
-      )}
-    </Transition>
+          </FloatingNode>
+        )}
+      </Transition>
+    </FloatingPortal>
   );
 
   if (parentId === null) {

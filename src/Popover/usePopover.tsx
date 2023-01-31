@@ -40,6 +40,7 @@ type Options = {
   | "offset"
   | "portalRoot"
   | "placement"
+  | "portalId"
 >;
 
 export function usePopover({
@@ -53,6 +54,7 @@ export function usePopover({
   closeOnFocusOut,
   offset: offsetOptions = 4,
   portalRoot,
+  portalId = "--cui-popover-portal",
 }: Options) {
   const [show, setShow] = useLockedBody(false, "root");
 
@@ -91,18 +93,18 @@ export function usePopover({
 
   const render = (body: ReactNode) => {
     return (
-      <Transition
-        in={show}
-        mountOnEnter
-        unmountOnExit
-        timeout={250}
-        nodeRef={transitionRef}
-      >
-        {(state) => (
-          <FloatingPortal root={portalRoot}>
+      <FloatingPortal root={portalRoot} id={portalId}>
+        <Transition
+          in={show}
+          mountOnEnter
+          unmountOnExit
+          timeout={250}
+          nodeRef={transitionRef}
+        >
+          {(state) => (
             <FloatingFocusManager
               context={context}
-              initialFocus={initialFocus}
+              initialFocus={initialFocus ?? (floating as any)}
               guards={guardsFocus}
               modal={modalFocus}
               closeOnFocusOut={closeOnFocusOut}
@@ -120,9 +122,9 @@ export function usePopover({
                 body
               )}
             </FloatingFocusManager>
-          </FloatingPortal>
-        )}
-      </Transition>
+          )}
+        </Transition>
+      </FloatingPortal>
     );
   };
 

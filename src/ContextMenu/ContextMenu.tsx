@@ -1,5 +1,6 @@
 import React, {
   Children,
+  ComponentProps,
   FC,
   MutableRefObject,
   ReactNode,
@@ -42,6 +43,7 @@ interface ContextMenuProps {
   contextMenuRef: MutableRefObject<HTMLElement | null>;
   onContextMenu?: (e: globalThis.MouseEvent) => boolean | Promise<boolean>;
   children: ReactNode;
+  portalId?: ComponentProps<typeof FloatingPortal>["id"];
 }
 
 const ContextMenuInner: FC<ContextMenuProps> = ({
@@ -219,10 +221,11 @@ export const ContextMenu: FC<ContextMenuProps> = ({
   children,
   contextMenuRef,
   onContextMenu,
+  portalId = "--cui-context-menu-portal",
 }) => {
   const rootCtx = useFloatingContext();
   return (
-    <FloatingPortal root={rootCtx?.rootRef?.current || undefined}>
+    <FloatingPortal root={rootCtx?.rootRef?.current || undefined} id={portalId}>
       <FloatingTree>
         <ContextMenuInner
           contextMenuRef={contextMenuRef}

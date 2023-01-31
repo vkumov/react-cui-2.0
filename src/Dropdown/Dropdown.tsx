@@ -1,5 +1,6 @@
 import React, {
   Children,
+  ComponentProps,
   cloneElement,
   forwardRef,
   isValidElement,
@@ -98,6 +99,7 @@ type DropdownProps = PropsWithChildren<{
   onClose?: () => unknown;
   isOpen?: boolean;
   withSizeLimit?: boolean;
+  portalId?: ComponentProps<typeof FloatingPortal>["id"];
 }>;
 
 type MenuComponentProps = {
@@ -122,6 +124,7 @@ export const Menu = forwardRef<
       isOpen,
       nested,
       withSizeLimit,
+      portalId,
       ...props
     },
     ref
@@ -311,7 +314,7 @@ export const Menu = forwardRef<
             {label}
           </MenuElement>
         )}
-        <FloatingPortal root={portalRoot}>
+        <FloatingPortal root={portalRoot} id={portalId}>
           <Transition
             in={open}
             mountOnEnter
