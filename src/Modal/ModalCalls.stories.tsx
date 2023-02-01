@@ -1,15 +1,16 @@
 import React, { ReactText, useEffect, useState } from "react";
+import { Meta, Story } from "@storybook/react/types-6-0";
+
+import { Button } from "../Button";
 import {
   ModalBody,
   ModalFooter,
-  notification,
-  confirmation,
-  prompt,
-  dynamicModal,
   PropsWithCloseModal,
+  confirmation,
+  dynamicModal,
+  notification,
+  prompt,
 } from "./index";
-import { Button } from "../Button";
-import { Story, Meta } from "@storybook/react/types-6-0";
 
 export default {
   title: "Components/Modal/Dynamic Calls",

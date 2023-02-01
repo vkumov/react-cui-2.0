@@ -124,7 +124,7 @@ export const Menu = forwardRef<
       isOpen,
       nested,
       withSizeLimit,
-      portalId,
+      portalId = "--cui-context-menu-portal",
       ...props
     },
     ref
@@ -370,7 +370,7 @@ export const Menu = forwardRef<
                           getItemProps({
                             tabIndex: -1,
                             role: "menuitem",
-                            className: "menu_item",
+                            className: cx("menu_item", child.props.className),
                             ref(node: HTMLButtonElement) {
                               listItemsRef.current[index] = node;
                             },

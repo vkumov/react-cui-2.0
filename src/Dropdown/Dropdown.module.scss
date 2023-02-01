@@ -103,4 +103,8 @@
 :global(.cui .dropdown .dropdown__menu .dropdown__group) {
   display: inline-flex;
   flex-direction: column;
+
+  &:focus-visible, &:focus {
+    outline: none;
+  }
 }

@@ -1,4 +1,8 @@
 import React, { useCallback, useState } from "react";
+import { Meta, Story } from "@storybook/react/types-6-0";
+
+import { Button } from "../Button";
+import { Checkbox } from "../Checkbox";
 import {
   Modal,
   ModalBody,
@@ -6,9 +10,6 @@ import {
   ModalSize,
   confirmation,
 } from "./index";
-import { Button } from "../Button";
-import { Checkbox } from "../Checkbox";
-import { Story, Meta } from "@storybook/react/types-6-0";
 
 export default {
   title: "Components/Modal",

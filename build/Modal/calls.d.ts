@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode, ComponentProps } from 'react';
+import React, { ReactNode, ComponentProps } from 'react';
 import { ReferenceType, FloatingPortal, FloatingOverlay, useDismiss } from '@floating-ui/react';
 
 type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
@@ -7,10 +7,11 @@ type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "lin
  * Modal
  */
 type ModalSize = "small" | "default" | "large" | "full" | "fluid";
-type ModalProps = PropsWithChildren<{
+interface ModalProps {
     size?: ModalSize;
     closeIcon?: boolean;
     closeHandle?: () => void;
+    children?: ReactNode;
     title?: ReactNode;
     isOpen: boolean;
     autoClose?: boolean;
@@ -29,7 +30,7 @@ type ModalProps = PropsWithChildren<{
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
     lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
-}>;
+}
 
 /**
  * Prompt Modal

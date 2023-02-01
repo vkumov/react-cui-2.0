@@ -1,9 +1,4 @@
-import React, {
-  ComponentProps,
-  type FC,
-  type PropsWithChildren,
-  type ReactNode,
-} from "react";
+import React, { ComponentProps, type FC, type ReactNode } from "react";
 import {
   FloatingFocusManager,
   FloatingNode,
@@ -22,12 +17,12 @@ import {
 import { Transition } from "react-transition-group";
 
 import { ConditionalWrapper, DisplayIf as If } from "src/Conditional";
-import { useFloatingContext } from "src/FloatingProvider";
 import { appendClass as ac } from "src/utils";
 
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
 import { ModalHeader } from "./Header";
+import { ModalPortal } from "./ModalPortal";
 
 /**
  * Modal
@@ -35,10 +30,11 @@ import { ModalHeader } from "./Header";
 
 export type ModalSize = "small" | "default" | "large" | "full" | "fluid";
 
-export type ModalProps = PropsWithChildren<{
+export interface ModalProps {
   size?: ModalSize;
   closeIcon?: boolean;
   closeHandle?: () => void;
+  children?: ReactNode;
   title?: ReactNode;
   isOpen: boolean;
   autoClose?: boolean;
@@ -55,8 +51,7 @@ export type ModalProps = PropsWithChildren<{
   portalId?: ComponentProps<typeof FloatingPortal>["id"];
   lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
   ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
-}>;
-// & ReactModalProps;
+}
 
 type ModalSizes = {
   Small: FC<ModalProps>;
@@ -86,7 +81,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
   children,
   isOpen,
   refElement,
-  root: rootProvided,
+  root,
   lockScroll,
   ancestorScroll,
   portalId,
@@ -98,10 +93,6 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
     () => (maximized ? "full" : size),
     [maximized, size]
   );
-
-  const modalContext = useFloatingContext();
-  const root: HTMLElement | null | undefined =
-    rootProvided ?? modalContext ? modalContext.rootRef.current : undefined;
 
   const nodeId = useFloatingNodeId();
   const parentId = useFloatingParentNodeId();
@@ -132,7 +123,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
   const nodeRef = React.useRef(null);
 
   const t = (
-    <FloatingPortal root={root} id={portalId}>
+    <ModalPortal id={portalId} root={root}>
       <Transition
         in={isOpen}
         mountOnEnter
@@ -151,7 +142,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
               lockScroll={lockScroll}
               ref={nodeRef}
             >
-              <FloatingFocusManager context={context}>
+              <FloatingFocusManager context={context} modal>
                 <div
                   ref={floating}
                   {...getFloatingProps({
@@ -215,7 +206,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
           </FloatingNode>
         )}
       </Transition>
-    </FloatingPortal>
+    </ModalPortal>
   );
 
   if (parentId === null) {

@@ -1,4 +1,4 @@
-import React, { cloneElement } from "react";
+import React, { FC, cloneElement } from "react";
 import { nanoid } from "nanoid";
 
 import { Button } from "src/Button";
@@ -8,9 +8,15 @@ import { ModalBody } from "./Body";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { ModalFooter } from "./Footer";
 import { Modal } from "./Modal";
+import { ModalPortal, ModalPortalProps } from "./ModalPortal";
 import { PromptModal } from "./PromptModal";
 
-export const ConfirmationListener = (): JSX.Element => {
+export type DynamicModalProps = Pick<
+  ModalPortalProps,
+  "root" | "id" | "preserveTabOrder"
+>;
+
+export const DynamicModal: FC<DynamicModalProps> = (props) => {
   const [modals, setModals] = React.useState([]);
 
   const addModal = React.useCallback(
@@ -54,7 +60,7 @@ export const ConfirmationListener = (): JSX.Element => {
   if (!modals.length) return null;
 
   return (
-    <>
+    <ModalPortal {...props}>
       {modals.map((modal) => {
         if (modal.modalType === "dynamic")
           return (
@@ -180,8 +186,8 @@ export const ConfirmationListener = (): JSX.Element => {
 
         return null;
       })}
-    </>
+    </ModalPortal>
   );
 };
 
-export { ConfirmationListener as DynamicModal };
+export { DynamicModal as ConfirmationListener };

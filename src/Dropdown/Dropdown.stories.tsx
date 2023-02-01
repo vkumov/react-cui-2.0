@@ -1,4 +1,7 @@
 import React from "react";
+import { Meta, Story } from "@storybook/react/types-6-0";
+
+import { Button } from "../Button";
 import {
   Dropdown as LibDropdown,
   Menu,
@@ -6,8 +9,6 @@ import {
   MenuElement,
   MenuGroup,
 } from "./index";
-import { Button } from "../Button";
-import { Story, Meta } from "@storybook/react/types-6-0";
 
 export default {
   title: "Components/Dropdown",
@@ -94,22 +95,11 @@ export const Dropdown: Story = () => (
             label={<Button.Primary>Dropdown</Button.Primary>}
             withSizeLimit
           >
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
-            <ThreeItems />
+            {Array(50)
+              .fill(true)
+              .map((_v, idx) => (
+                <MenuElement>Item #{idx + 1}</MenuElement>
+              ))}
           </LibDropdown>
         </div>
       </div>

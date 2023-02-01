@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.3.8
+
+- All modals render in same portal by default
+- Predefined portal IDs for dropdowns & modals
+
 ## 5.3.5
 
 - `postalId` prop for floating UI elements & predefined portal IDs

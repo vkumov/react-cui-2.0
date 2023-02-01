@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import React, { FC, PropsWithChildren, HTMLProps, ReactNode, ComponentProps } from 'react';
 import { ReferenceType, FloatingPortal, FloatingOverlay, useDismiss } from '@floating-ui/react';
 
@@ -30,10 +29,11 @@ declare const ModalBody: FC<ModalBodyProps>;
  * Modal
  */
 type ModalSize$1 = "small" | "default" | "large" | "full" | "fluid";
-type ModalProps$1 = PropsWithChildren<{
+interface ModalProps$1 {
     size?: ModalSize$1;
     closeIcon?: boolean;
     closeHandle?: () => void;
+    children?: ReactNode;
     title?: ReactNode;
     isOpen: boolean;
     autoClose?: boolean;
@@ -52,7 +52,7 @@ type ModalProps$1 = PropsWithChildren<{
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
     lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
-}>;
+}
 type ModalSizes = {
     Small: FC<ModalProps$1>;
     Large: FC<ModalProps$1>;
@@ -74,10 +74,11 @@ type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "lin
  * Modal
  */
 type ModalSize = "small" | "default" | "large" | "full" | "fluid";
-type ModalProps = PropsWithChildren<{
+interface ModalProps {
     size?: ModalSize;
     closeIcon?: boolean;
     closeHandle?: () => void;
+    children?: ReactNode;
     title?: ReactNode;
     isOpen: boolean;
     autoClose?: boolean;
@@ -96,7 +97,7 @@ type ModalProps = PropsWithChildren<{
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
     lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
-}>;
+}
 
 /**
  * Prompt Modal
@@ -177,6 +178,11 @@ interface PromptModalProps<T extends React.ReactText> {
 }
 declare function PromptModal<T extends React.ReactText>({ title, question, onSave: cb, onClose, initial, type, isOpen, hint, validate, }: PropsWithChildren<PromptModalProps<T>>): JSX.Element;
 
-declare const ConfirmationListener: () => JSX.Element;
+type ModalPortalProps = {
+    children?: ReactNode;
+} & ComponentProps<typeof FloatingPortal>;
 
-export { ConfirmationListener, ConfirmationModal, DontAskAgain, ConfirmationListener as DynamicModal, Modal, ModalBody, ModalFooter, ModalHeader, ModalProps$1 as ModalProps, ModalSize$1 as ModalSize, PromptModal, PromptModalProps, PropsWithCloseModal, confirmation, dynamicModal, notificationModal as notification, notificationModal, prompt };
+type DynamicModalProps = Pick<ModalPortalProps, "root" | "id" | "preserveTabOrder">;
+declare const DynamicModal: FC<DynamicModalProps>;
+
+export { DynamicModal as ConfirmationListener, ConfirmationModal, DontAskAgain, DynamicModal, DynamicModalProps, Modal, ModalBody, ModalFooter, ModalHeader, ModalProps$1 as ModalProps, ModalSize$1 as ModalSize, PromptModal, PromptModalProps, PropsWithCloseModal, confirmation, dynamicModal, notificationModal as notification, notificationModal, prompt };

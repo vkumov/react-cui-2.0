@@ -6,5 +6,5 @@ export * from "./Body";
 export * from "./Modal";
 export * from "./ConfirmationModal";
 export * from "./PromptModal";
-export * from "./ConfirmationListener";
+export * from "./DynamicModal";
 export * from "./calls";
