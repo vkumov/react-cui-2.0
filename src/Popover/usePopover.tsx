@@ -54,7 +54,7 @@ export function usePopover({
   closeOnFocusOut,
   offset: offsetOptions = 4,
   portalRoot,
-  portalId = "--cui-popover-portal",
+  portalId,
 }: Options) {
   const [show, setShow] = useLockedBody(false, "root");
 
@@ -90,6 +90,7 @@ export function usePopover({
 
   const rootCtx = useFloatingContext();
   portalRoot ??= rootCtx?.rootRef?.current || undefined;
+  portalId ??= portalRoot ? undefined : "--cui-popover-portal";
 
   const render = (body: ReactNode) => {
     return (

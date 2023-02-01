@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3.9
+
+- Fix portal ID logic
+
 ## 5.3.8
 
 - All modals render in same portal by default

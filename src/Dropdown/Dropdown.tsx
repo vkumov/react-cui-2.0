@@ -124,7 +124,7 @@ export const Menu = forwardRef<
       isOpen,
       nested,
       withSizeLimit,
-      portalId = "--cui-context-menu-portal",
+      portalId,
       ...props
     },
     ref
@@ -247,6 +247,7 @@ export const Menu = forwardRef<
 
     const rootCtx = useFloatingContext();
     portalRoot ??= rootCtx?.rootRef?.current || undefined;
+    portalId ??= portalRoot ? undefined : "--cui-dropdown-portal";
 
     return (
       <FloatingNode id={nodeId}>

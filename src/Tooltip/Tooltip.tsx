@@ -102,7 +102,7 @@ const TooltipWrapper: FC<
   arrowRef,
   placement,
   root: rootProvided,
-  portalId = "--cui-tooltip-portal",
+  portalId,
 }) => {
   const { x: arrowX, y: arrowY } = middlewareData.arrow || { x: 0, y: 0 };
   const floatingRef = useRef<any>(null);
@@ -117,6 +117,7 @@ const TooltipWrapper: FC<
   const modalContext = useFloatingContext();
   const root: HTMLElement | null | undefined =
     rootProvided ?? modalContext ? modalContext.rootRef.current : undefined;
+  portalId ??= root ? undefined : "--cui-tooltip-portal";
 
   return (
     <FloatingPortal root={root} id={portalId}>

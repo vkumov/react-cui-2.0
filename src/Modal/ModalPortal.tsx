@@ -9,13 +9,15 @@ export type ModalPortalProps = {
 
 export const ModalPortal: FC<ModalPortalProps> = ({
   root: rootProvided,
-  id = "--cui-modal-portal",
+  id,
   children,
   ...props
 }) => {
   const modalContext = useFloatingContext();
   const root: HTMLElement | null | undefined =
     rootProvided ?? modalContext ? modalContext.rootRef.current : undefined;
+
+  id ??= root ? undefined : "--cui-modal-portal";
 
   return (
     <FloatingPortal root={root} id={id} {...props}>

@@ -108,7 +108,7 @@ export const Popover: FC<PopoverProps> = ({
   guardsFocus,
   modalFocus,
   closeOnFocusOut,
-  portalId = "--cui-popover-portal",
+  portalId,
 }) => {
   const [show, setShow] = useLockedBody(false, "root");
 
@@ -146,6 +146,7 @@ export const Popover: FC<PopoverProps> = ({
 
   const rootCtx = useFloatingContext();
   portalRoot ??= rootCtx?.rootRef?.current || undefined;
+  portalId ??= portalRoot ? undefined : "--cui-popover-portal";
 
   const closeCb = useCallback(() => setShow(false), [setShow]);
   if (closeRef) closeRef.current = closeCb;
