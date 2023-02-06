@@ -58,6 +58,7 @@ export const GenericPopover = forwardRef<
           styles.body,
           className
         )}
+        tabIndex={-1}
       >
         {children}
       </div>

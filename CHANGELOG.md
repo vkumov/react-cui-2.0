@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.3.14
+
+- Dropdown appear animation
+
+## 5.3.11
+
+- Use negative tabIndex for GenericPopover body
+
 ## 5.3.9
 
 - Fix portal ID logic

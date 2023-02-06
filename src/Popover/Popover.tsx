@@ -144,9 +144,11 @@ export const Popover: FC<PopoverProps> = ({
   const transitionRef = useRef<HTMLDivElement>(null);
   const floatingRef = useMergeRefs<HTMLDivElement>([transitionRef, floating]);
 
-  const rootCtx = useFloatingContext();
-  portalRoot ??= rootCtx?.rootRef?.current || undefined;
-  portalId ??= portalRoot ? undefined : "--cui-popover-portal";
+  const { root, id } = useFloatingContext({
+    root: portalRoot,
+    portalId,
+    fallbackPortalId: "--cui-popover-portal",
+  });
 
   const closeCb = useCallback(() => setShow(false), [setShow]);
   if (closeRef) closeRef.current = closeCb;
@@ -164,7 +166,7 @@ export const Popover: FC<PopoverProps> = ({
           ),
         })
       )}
-      <FloatingPortal root={portalRoot} id={portalId}>
+      <FloatingPortal root={root} id={id}>
         <Transition
           in={show}
           mountOnEnter

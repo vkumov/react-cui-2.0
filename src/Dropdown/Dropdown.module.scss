@@ -11,15 +11,17 @@
 }
 
 @keyframes dropdown_appear {
-  from {
+  0% {
     opacity: 0;
-    transform: scale(0.8);
-    scale: 0.9;
+    transform: rotateX(-70deg);
   }
-  to {
+  70% {
+    opacity: 0.7;
+    transform: rotateX(0deg);
+  }
+  100% {
     opacity: 1;
-    transform: scale(1);
-    scale: 1;
+    transform: rotateX(0deg);
   }
 }
 
@@ -47,9 +49,11 @@
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
 
-    --animate-speed: 0.1s;
+    --animate-speed: var(--cui-animate-speed);
     animation-name: dropdown_appear;
+    transform-origin: top center;
     animation-duration: var(--animate-speed);
+    animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
 
     & a {
@@ -58,10 +62,9 @@
   }
 
   &.disappear :global(.dropdown__menu) {
-    --animate-speed: 0.25s;
+    --animate-speed: 0.15s;
 
     animation-name: dropdown_disappear;
-    animation-duration: var(--animate-speed);
     animation-fill-mode: forwards;
   }
 }
@@ -104,7 +107,8 @@
   display: inline-flex;
   flex-direction: column;
 
-  &:focus-visible, &:focus {
+  &:focus-visible,
+  &:focus {
     outline: none;
   }
 }

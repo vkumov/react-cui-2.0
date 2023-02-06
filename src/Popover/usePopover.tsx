@@ -88,13 +88,15 @@ export function usePopover({
   const transitionRef = useRef<HTMLDivElement>(null);
   const floatingRef = useMergeRefs<HTMLDivElement>([transitionRef, floating]);
 
-  const rootCtx = useFloatingContext();
-  portalRoot ??= rootCtx?.rootRef?.current || undefined;
-  portalId ??= portalRoot ? undefined : "--cui-popover-portal";
+  const { root, id } = useFloatingContext({
+    root: portalRoot,
+    portalId,
+    fallbackPortalId: "--cui-popover-portal",
+  });
 
   const render = (body: ReactNode) => {
     return (
-      <FloatingPortal root={portalRoot} id={portalId}>
+      <FloatingPortal root={root} id={id}>
         <Transition
           in={show}
           mountOnEnter

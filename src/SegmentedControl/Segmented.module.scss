@@ -1,6 +1,7 @@
 @import "consts";
 
 .form_group {
+  isolation: isolate;
   position: relative;
   display: flex;
   flex-direction: column;

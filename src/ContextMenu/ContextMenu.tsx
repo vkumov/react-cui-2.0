@@ -223,13 +223,13 @@ export const ContextMenu: FC<ContextMenuProps> = ({
   onContextMenu,
   portalId,
 }) => {
-  const rootCtx = useFloatingContext();
-
-  const portalRoot = rootCtx?.rootRef?.current || undefined;
-  portalId ??= portalRoot ? undefined : "--cui-context-menu-portal";
+  const { root, id } = useFloatingContext({
+    portalId,
+    fallbackPortalId: "--cui-context-menu-portal",
+  });
 
   return (
-    <FloatingPortal root={rootCtx?.rootRef?.current || undefined} id={portalId}>
+    <FloatingPortal root={root} id={id}>
       <FloatingTree>
         <ContextMenuInner
           contextMenuRef={contextMenuRef}

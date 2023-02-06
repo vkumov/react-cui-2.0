@@ -110,6 +110,8 @@
   border-top: var(--cui-accent-thickness) solid var(--cui-accent-color);
   border-radius: 2px;
   margin-top: var(--cui-spacing-qtr);
+  z-index: var(--cui-dropdown-zindex);
+  box-shadow: var(--cui-shadow-outset);
 }
 
 .cui .react-select-container .react-select__menu-list {

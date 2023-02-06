@@ -1,6 +1,7 @@
 import React, {
   createContext,
   useContext,
+  useMemo,
   type FC,
   type PropsWithChildren,
   type RefObject,
@@ -12,7 +13,24 @@ type FloatingContextProps = {
 
 const FloatingContext = createContext<FloatingContextProps>(null);
 
-export const useFloatingContext = () => useContext(FloatingContext);
+type Options = {
+  root?: HTMLElement;
+  portalId?: any;
+  fallbackPortalId?: any;
+};
+
+export const useFloatingContext = ({
+  root,
+  portalId,
+  fallbackPortalId,
+}: Options = {}) => {
+  const ctx = useContext(FloatingContext);
+
+  root ??= ctx?.rootRef?.current || undefined;
+  portalId ??= typeof root === "undefined" ? fallbackPortalId : undefined;
+
+  return useMemo(() => ({ root, id: portalId }), [root, portalId]);
+};
 
 export const FloatingProvider: FC<PropsWithChildren<FloatingContextProps>> = ({
   rootRef,

@@ -114,13 +114,14 @@ const TooltipWrapper: FC<
     left: "right",
   }[placement.split("-")[0]] as Side;
 
-  const modalContext = useFloatingContext();
-  const root: HTMLElement | null | undefined =
-    rootProvided ?? modalContext ? modalContext.rootRef.current : undefined;
-  portalId ??= root ? undefined : "--cui-tooltip-portal";
+  const { root, id } = useFloatingContext({
+    root: rootProvided,
+    portalId,
+    fallbackPortalId: "--cui-tooltip-portal",
+  });
 
   return (
-    <FloatingPortal root={root} id={portalId}>
+    <FloatingPortal root={root} id={id}>
       <Transition
         in={show}
         mountOnEnter

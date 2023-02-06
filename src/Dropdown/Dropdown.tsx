@@ -245,9 +245,11 @@ export const Menu = forwardRef<
     const floatingNodeRef = useRef<HTMLElement>(null);
     const mergedReferenceRef = useMergeRefs([ref, reference]);
 
-    const rootCtx = useFloatingContext();
-    portalRoot ??= rootCtx?.rootRef?.current || undefined;
-    portalId ??= portalRoot ? undefined : "--cui-dropdown-portal";
+    const { root, id } = useFloatingContext({
+      root: portalRoot,
+      portalId,
+      fallbackPortalId: "--cui-dropdown-portal",
+    });
 
     return (
       <FloatingNode id={nodeId}>
@@ -315,7 +317,7 @@ export const Menu = forwardRef<
             {label}
           </MenuElement>
         )}
-        <FloatingPortal root={portalRoot} id={portalId}>
+        <FloatingPortal root={root} id={id}>
           <Transition
             in={open}
             mountOnEnter
