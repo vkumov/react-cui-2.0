@@ -187,8 +187,8 @@ declare module "@vkumov/react-cui-2.0/ReactSelect/creatable" {
 }
 
 declare module "@vkumov/react-cui-2.0/ReactSelect/helpers" {
-  import { findOption, isGrouped } from "@vkumov/react-cui-2.0";
-  export { findOption, isGrouped };
+  import { findOption, findOptions, isGrouped } from "@vkumov/react-cui-2.0";
+  export { findOption, findOptions, isGrouped };
 }
 
 declare module "@vkumov/react-cui-2.0/ReactSelect" {

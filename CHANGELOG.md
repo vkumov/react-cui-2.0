@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3.15
+
+- `findOptions` helper for multi-select ReactSelect
+
 ## 5.3.14
 
 - Dropdown appear animation

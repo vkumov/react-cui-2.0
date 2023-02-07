@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { OptionsOrGroups, GroupBase } from 'react-select';
 
 type Option<V = string> = {
     label?: ReactNode;
@@ -14,5 +15,8 @@ declare function isGrouped<O extends {
 declare function findOption<V, O extends {
     value: V;
 } = Option<V>>(value: V, options: readonly (O | OptionGroup<O>)[]): O;
+declare function findOptions<V, O extends {
+    value: V;
+} = Option<V>>(values: V[], options: OptionsOrGroups<O, GroupBase<O>>): O[];
 
-export { Option, OptionGroup, findOption, isGrouped };
+export { Option, OptionGroup, findOption, findOptions, isGrouped };
