@@ -2,7 +2,10 @@ import React, { FC, cloneElement } from "react";
 import { nanoid } from "nanoid";
 
 import { Button } from "src/Button";
-import { eventManager } from "src/utils/eventManager";
+import {
+  eventManager,
+  type EventModalProps as EMP,
+} from "src/utils/eventManager";
 
 import { ModalBody } from "./Body";
 import { ConfirmationModal } from "./ConfirmationModal";
@@ -16,22 +19,24 @@ export type DynamicModalProps = Pick<
   "root" | "id" | "preserveTabOrder"
 >;
 
+type EventModalProps = EMP & { id: string; shown: boolean };
+
 export const DynamicModal: FC<DynamicModalProps> = (props) => {
-  const [modals, setModals] = React.useState([]);
+  const [modals, setModals] = React.useState<EventModalProps[]>([]);
 
   const addModal = React.useCallback(
-    (modal) =>
+    (modal: EventModalProps) =>
       setModals((curr) => [...curr, { id: nanoid(), shown: true, ...modal }]),
     []
   );
 
-  const hideModal = React.useCallback((id) => {
+  const hideModal = React.useCallback((id: string) => {
     setModals((curr) =>
       curr.map((m) => (m.id === id ? { ...m, shown: false } : m))
     );
   }, []);
 
-  const deleteModal = React.useCallback((id) => {
+  const deleteModal = React.useCallback((id: string) => {
     setModals((curr) =>
       curr.filter((m) => {
         if (m.id === id && typeof m.onClosed === "function") m.onClosed();
@@ -41,7 +46,7 @@ export const DynamicModal: FC<DynamicModalProps> = (props) => {
   }, []);
 
   const closeModal = React.useCallback(
-    (id, cb?: () => unknown) => {
+    (id: string, cb?: () => unknown) => {
       hideModal(id);
       setTimeout(() => deleteModal(id), 500);
       if (cb) cb();
@@ -50,7 +55,7 @@ export const DynamicModal: FC<DynamicModalProps> = (props) => {
   );
 
   React.useEffect(() => {
-    const cb = (m) => addModal(m);
+    const cb = (m: EventModalProps) => addModal(m);
     eventManager.on("showModal", cb);
     return () => {
       eventManager.off("showModal", cb);

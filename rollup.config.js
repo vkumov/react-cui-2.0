@@ -24,8 +24,7 @@ const allExternals = [...externals];
 
 const minimize = true;
 
-const plugins = [
-  peerDepsExternal({ includeDependencies: true }),
+const commonPlugins = [
   resolve({
     extensions: [".mjs", ".js", ".jsx", ".json", ".css"],
     preferBuiltins: true,
@@ -39,6 +38,10 @@ const plugins = [
     minify: minimize,
   }),
 ].filter(Boolean);
+
+const plugins = [peerDepsExternal({ includeDependencies: true })]
+  .concat(...commonPlugins)
+  .filter(Boolean);
 
 const tsDTS = typescript({
   useTsconfigDeclarationDir: true,
@@ -175,9 +178,14 @@ const cjsBundle = {
     }),
     tsDTS,
     ignoreCssPlugin,
-    ...plugins,
+    ...commonPlugins,
   ],
-  external: externals,
+  external: [
+    "react",
+    "react-dom",
+    // "react-transition-group",
+    // "react-dropzone",
+  ],
 };
 
 /**

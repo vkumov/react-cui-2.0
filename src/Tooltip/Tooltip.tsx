@@ -1,6 +1,7 @@
 import React, {
   cloneElement,
   forwardRef,
+  useMemo,
   useRef,
   useState,
   type ComponentProps,
@@ -28,7 +29,7 @@ import { Transition } from "react-transition-group";
 
 import { useFloatingContext } from "src/FloatingProvider";
 
-const Tooltip = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
+const TooltipContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   function TooltipRefed({ className, children, ...props }, ref) {
     return (
       <div ref={ref} className="tooltip__wrapper" {...props}>
@@ -38,14 +39,14 @@ const Tooltip = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   }
 );
 
-export type UseTooltipReturn = ReturnType<typeof useFloating> & {
+type UseTooltipReturn = ReturnType<typeof useFloating> & {
   getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
   show: boolean;
   getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"];
   arrowRef: MutableRefObject<any>;
 };
 
-export function useTooltip(placement?: Placement): UseTooltipReturn {
+function useTooltip(placement?: Placement): UseTooltipReturn {
   const [show, setShow] = useState(false);
   const arrowRef = useRef(null);
   const fl = useFloating({
@@ -74,13 +75,16 @@ export function useTooltip(placement?: Placement): UseTooltipReturn {
     hover,
   ]);
 
-  return {
-    ...fl,
-    getFloatingProps,
-    show,
-    getReferenceProps,
-    arrowRef,
-  };
+  return useMemo(
+    () => ({
+      ...fl,
+      getFloatingProps,
+      show,
+      getReferenceProps,
+      arrowRef,
+    }),
+    [getFloatingProps, show, getReferenceProps, arrowRef, fl]
+  );
 }
 
 const TooltipWrapper: FC<
@@ -94,7 +98,6 @@ const TooltipWrapper: FC<
   children,
   x,
   y,
-  floating,
   show,
   strategy,
   getFloatingProps,
@@ -103,6 +106,7 @@ const TooltipWrapper: FC<
   placement,
   root: rootProvided,
   portalId,
+  refs,
 }) => {
   const { x: arrowX, y: arrowY } = middlewareData.arrow || { x: 0, y: 0 };
   const floatingRef = useRef<any>(null);
@@ -119,6 +123,7 @@ const TooltipWrapper: FC<
     portalId,
     fallbackPortalId: "--cui-tooltip-portal",
   });
+  const ref = useMergeRefs([refs.setFloating, floatingRef]);
 
   return (
     <FloatingPortal root={root} id={id}>
@@ -130,11 +135,8 @@ const TooltipWrapper: FC<
         nodeRef={floatingRef}
       >
         {(state) => (
-          <Tooltip
-            ref={(r) => {
-              floating(r);
-              floatingRef.current = r;
-            }}
+          <TooltipContent
+            ref={ref}
             style={{
               position: strategy,
               top: y ?? 0,
@@ -160,14 +162,14 @@ const TooltipWrapper: FC<
                 [staticSide]: "-4px",
               }}
             />
-          </Tooltip>
+          </TooltipContent>
         )}
       </Transition>
     </FloatingPortal>
   );
 };
 
-export { TooltipWrapper as Tooltip };
+// export { TooltipWrapper as Tooltip };
 
 export type WithTooltipProps = {
   children: JSX.Element;
@@ -177,9 +179,13 @@ export type WithTooltipProps = {
 
 export const WithTooltip: FC<WithTooltipProps> = forwardRef(
   ({ children, tooltip, placement = "top", ...props }, forwardedRef) => {
-    const { getReferenceProps, reference, ...tt } = useTooltip(placement);
+    const { getReferenceProps, refs, ...tt } = useTooltip(placement);
 
-    const ref = useMergeRefs([reference, forwardedRef, (children as any).ref]);
+    const ref = useMergeRefs([
+      refs.setReference,
+      forwardedRef,
+      (children as any).ref,
+    ]);
 
     return (
       <>
@@ -187,7 +193,9 @@ export const WithTooltip: FC<WithTooltipProps> = forwardRef(
           children,
           getReferenceProps({ ref, ...children.props, ...props })
         )}
-        <TooltipWrapper {...tt}>{tooltip}</TooltipWrapper>
+        <TooltipWrapper refs={refs} {...tt}>
+          {tooltip}
+        </TooltipWrapper>
       </>
     );
   }

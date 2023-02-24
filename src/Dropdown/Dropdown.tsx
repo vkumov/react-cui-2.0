@@ -74,7 +74,7 @@ export const MenuElement = forwardRef<any, MenuElementProps>(
             </>
           ) : (
             <>
-              <span className={icon} />
+              <span className={icon as string} />
               <span className="qtr-margin-left">{children}</span>
             </>
           )

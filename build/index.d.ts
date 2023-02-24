@@ -252,8 +252,8 @@ declare module "@vkumov/react-cui-2.0/Toast" {
 }
 
 declare module "@vkumov/react-cui-2.0/Tooltip" {
-  import { Tooltip, WithTooltip, useTooltip } from "@vkumov/react-cui-2.0";
-  export { Tooltip, WithTooltip, useTooltip };
+  import { WithTooltip } from "@vkumov/react-cui-2.0";
+  export { WithTooltip };
 }
 
 declare module "@vkumov/react-cui-2.0/Typo" {

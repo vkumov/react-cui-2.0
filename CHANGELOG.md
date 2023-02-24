@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3.16
+
+- Fixing CJS build (🤞)
+
 ## 5.3.15
 
 - `findOptions` helper for multi-select ReactSelect
