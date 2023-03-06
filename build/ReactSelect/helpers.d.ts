@@ -1,14 +1,11 @@
 import { ReactNode } from 'react';
-import { OptionsOrGroups, GroupBase } from 'react-select';
+import { GroupBase, OptionsOrGroups } from 'react-select';
 
 type Option<V = string> = {
     label?: ReactNode;
     value: V;
 };
-type OptionGroup<O> = {
-    label?: ReactNode;
-    options: readonly O[];
-};
+type OptionGroup<O> = GroupBase<O>;
 declare function isGrouped<O extends {
     value: any;
 }>(v: O | OptionGroup<O>): v is OptionGroup<O>;

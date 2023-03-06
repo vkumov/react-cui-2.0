@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.3.17
+
+- Fix `GroupOption` type
+
 ## 5.3.16
 
 - Fixing CJS build (🤞)

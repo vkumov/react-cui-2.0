@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { GroupBase, OptionsOrGroups } from "react-select";
 
 export type Option<V = string> = { label?: ReactNode; value: V };
-export type OptionGroup<O> = { label?: ReactNode; options: readonly O[] };
+export type OptionGroup<O> = GroupBase<O>;
 
 export function isGrouped<O extends { value: any }>(
   v: O | OptionGroup<O>
