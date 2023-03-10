@@ -29,10 +29,13 @@ function globJsFiles(bn) {
 }
 
 async function createPackageFile() {
+  console.log(chalk.blue(`Creating package.json`));
   const packageData = await readFile(
     resolve(packagePath, "./package.json"),
     "utf8"
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { scripts, devDependencies, overrides, ...packageOthers } =
     JSON.parse(packageData);
 
@@ -98,6 +101,7 @@ async function includeFileInBuild(file) {
 }
 
 async function generateDeclarations() {
+  console.log(chalk.blue(`Generating declarations in ./build/index.d.ts`));
   const packageData = await readFile(
     resolve(packagePath, "./package.json"),
     "utf8"
@@ -144,6 +148,30 @@ async function removeTypeModule() {
 }
 
 async function replaceAndRemove() {
+  console.log(chalk.blue(`Cleaning *.js & *.d.ts files`));
+
+  const p = join(packagePath, "src");
+
+  console.log(chalk.blue(`Folder: ${p}`));
+
+  replace({
+    regex: `"${p}/`,
+    replacement: `"../`,
+    paths: ["./build/"],
+    include: "*.d.ts,*.js",
+    recursive: true,
+    silent: false,
+  });
+
+  replace({
+    regex: `'${p}/`,
+    replacement: `'../`,
+    paths: ["./build/"],
+    include: "*.d.ts,*.js",
+    recursive: true,
+    silent: false,
+  });
+
   replace({
     regex: `"src/`,
     replacement: `"../`,
@@ -153,6 +181,16 @@ async function replaceAndRemove() {
     silent: false,
   });
 
+  replace({
+    regex: `'src/`,
+    replacement: `'../`,
+    paths: ["./build/"],
+    include: "*.d.ts,*.ts",
+    recursive: true,
+    silent: false,
+  });
+
+  console.log(chalk.blue(`Cleaning *.d.ts files`));
   replace({
     regex: /import ".*\.css";/g,
     replacement: "",
@@ -166,6 +204,8 @@ async function replaceAndRemove() {
 }
 
 async function generateDts() {
+  console.log(chalk.blue(`Merging per-folder declarations`));
+
   await new Promise((resolve, reject) => {
     const ls = spawn("npm", ["run", "build:dts"], { shell: true });
 
@@ -187,6 +227,8 @@ async function generateDts() {
 }
 
 async function cleanup() {
+  console.log(chalk.blue(`Cleaning`));
+
   const files = await glob("./build/**/[A-Z]*.d.ts", {
     caseSensitiveMatch: true,
     globstar: true,

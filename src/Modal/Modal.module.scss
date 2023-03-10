@@ -1,0 +1,13 @@
+:global(.cui .modal.modal_transitions .modal__dialog) {
+  -webkit-animation: none !important;
+  animation: none !important;
+}
+
+:global(.cui .modal.modal_transitions .modal__dialog).modal__dialog__appear {
+  :global {
+    -webkit-animation: blowup 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards,
+      fade-in 0.25s 1 linear !important;
+    animation: blowup 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards,
+      fade-in 0.25s 1 linear !important;
+  }
+}

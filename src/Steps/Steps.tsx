@@ -1,6 +1,5 @@
-import React, { ReactNode, forwardRef, isValidElement } from "react";
-
-import { appendClass as ac } from "src/utils";
+import React, { forwardRef, isValidElement, type ReactNode } from "react";
+import cx from "classnames";
 
 type StepsProps = {
   size?: "dot" | "small" | "default" | "large";
@@ -22,10 +21,11 @@ export const Steps = forwardRef<HTMLDivElement, StepsProps>(
     ref
   ) => (
     <div
-      className={`steps${ac(
-        size !== "default",
-        `steps--${size}`
-      )} steps--${color}${ac(vertical, "steps--vertical")}${ac(className)}`}
+      className={cx("steps", `steps--${color}`, {
+        [`steps--${size}`]: size !== "default",
+        "steps--vertical": vertical,
+        [className]: className,
+      })}
       ref={ref}
     >
       {React.Children.toArray(children)

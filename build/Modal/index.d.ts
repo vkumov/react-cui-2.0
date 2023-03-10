@@ -1,5 +1,83 @@
 import React, { FC, PropsWithChildren, HTMLProps, ReactNode, ComponentProps } from 'react';
 import { ReferenceType, FloatingPortal, FloatingOverlay, useDismiss } from '@floating-ui/react';
+import { Transition } from 'react-transition-group';
+
+/**
+ * Modal Header
+ */
+type ModalHeaderProps$1 = PropsWithChildren<{
+    className?: string;
+}> & HTMLProps<HTMLDivElement>;
+declare const ModalHeader$1: FC<ModalHeaderProps$1>;
+
+/**
+ * Modal Footer
+ */
+type ModalFooterProps$1 = PropsWithChildren<{
+    className?: string;
+}> & HTMLProps<HTMLDivElement>;
+declare const ModalFooter$1: FC<ModalFooterProps$1>;
+
+/**
+ * Modal Body
+ */
+type ModalBodyProps$1 = PropsWithChildren<{
+    className?: string;
+}> & HTMLProps<HTMLDivElement>;
+declare const ModalBody$1: FC<ModalBodyProps$1>;
+
+/**
+ * Modal
+ */
+type ModalSize$1 = "small" | "default" | "large" | "full" | "fluid";
+interface ModalProps$1 {
+    size?: ModalSize$1;
+    closeIcon?: boolean;
+    closeHandle?: () => void;
+    children?: ReactNode;
+    title?: ReactNode;
+    isOpen: boolean;
+    autoClose?: boolean;
+    left?: boolean;
+    animationDuration?: ComponentProps<typeof Transition>["timeout"];
+    dialogProps?: React.ComponentProps<"div">;
+    contentProps?: React.ComponentProps<"div">;
+    maximize?: boolean;
+    refElement?: ReferenceType;
+    root?: ComponentProps<typeof FloatingPortal>["root"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
+    lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
+    ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
+}
+type ModalSizes$1 = {
+    Small: FC<ModalProps$1>;
+    Large: FC<ModalProps$1>;
+    Full: FC<ModalProps$1>;
+    Fluid: FC<ModalProps$1>;
+};
+type ModalComponents$1 = {
+    Header: typeof ModalHeader$1;
+    Body: typeof ModalBody$1;
+    Footer: typeof ModalFooter$1;
+};
+declare const Modal$1: ModalSizes$1 & ModalComponents$1 & FC<ModalProps$1>;
+
+type ButtonColor$1 = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
+
+type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
+type ButtonProps = {
+    size?: "small" | "default" | "large";
+    color?: ButtonColor;
+    wide?: boolean;
+    justified?: boolean;
+    circle?: boolean;
+    asLink?: boolean;
+    selected?: boolean;
+    style?: React.CSSProperties;
+    className?: string;
+    icon?: boolean;
+    type?: "submit" | "reset" | "button";
+} & Omit<HTMLProps<HTMLButtonElement>, "size">;
 
 /**
  * Modal Header
@@ -28,51 +106,6 @@ declare const ModalBody: FC<ModalBodyProps>;
 /**
  * Modal
  */
-type ModalSize$1 = "small" | "default" | "large" | "full" | "fluid";
-interface ModalProps$1 {
-    size?: ModalSize$1;
-    closeIcon?: boolean;
-    closeHandle?: () => void;
-    children?: ReactNode;
-    title?: ReactNode;
-    isOpen: boolean;
-    autoClose?: boolean;
-    left?: boolean;
-    animationDuration?: number | {
-        appear?: number;
-        enter?: number;
-        exit?: number;
-    };
-    transitionEvents?: Record<string, unknown>;
-    dialogProps?: React.ComponentProps<"div">;
-    contentProps?: React.ComponentProps<"div">;
-    maximize?: boolean;
-    refElement?: ReferenceType;
-    root?: ComponentProps<typeof FloatingPortal>["root"];
-    portalId?: ComponentProps<typeof FloatingPortal>["id"];
-    lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
-    ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
-}
-type ModalSizes = {
-    Small: FC<ModalProps$1>;
-    Large: FC<ModalProps$1>;
-    Full: FC<ModalProps$1>;
-    Fluid: FC<ModalProps$1>;
-};
-type ModalComponents = {
-    Header: typeof ModalHeader;
-    Body: typeof ModalBody;
-    Footer: typeof ModalFooter;
-};
-declare const Modal: ModalSizes & ModalComponents & FC<ModalProps$1>;
-
-type ButtonColor$1 = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
-
-type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
-
-/**
- * Modal
- */
 type ModalSize = "small" | "default" | "large" | "full" | "fluid";
 interface ModalProps {
     size?: ModalSize;
@@ -83,12 +116,7 @@ interface ModalProps {
     isOpen: boolean;
     autoClose?: boolean;
     left?: boolean;
-    animationDuration?: number | {
-        appear?: number;
-        enter?: number;
-        exit?: number;
-    };
-    transitionEvents?: Record<string, unknown>;
+    animationDuration?: ComponentProps<typeof Transition>["timeout"];
     dialogProps?: React.ComponentProps<"div">;
     contentProps?: React.ComponentProps<"div">;
     maximize?: boolean;
@@ -98,11 +126,37 @@ interface ModalProps {
     lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
     ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
 }
+type ModalSizes = {
+    Small: FC<ModalProps>;
+    Large: FC<ModalProps>;
+    Full: FC<ModalProps>;
+    Fluid: FC<ModalProps>;
+};
+type ModalComponents = {
+    Header: typeof ModalHeader;
+    Body: typeof ModalBody;
+    Footer: typeof ModalFooter;
+};
+declare const Modal: ModalSizes & ModalComponents & FC<ModalProps>;
+
+/**
+ * Confirmation Modal
+ */
+type ConfirmationModalProps$1 = {
+    isOpen?: boolean;
+    confirmHandle: (dontAskAgain?: boolean) => boolean | Promise<boolean>;
+    closeHandle: () => void;
+    prompt: ReactNode;
+    confirmType?: ButtonColor;
+    confirmText?: string;
+    autoClose?: boolean;
+    dontAskAgain?: DontAskAgain;
+};
 
 /**
  * Prompt Modal
  */
-interface PromptModalProps$1<T extends React.ReactText> {
+interface PromptModalProps$1<T extends string | number> {
     title: ReactNode;
     question: ReactNode;
     onSave: (value: T) => void | Promise<void>;
@@ -112,7 +166,53 @@ interface PromptModalProps$1<T extends React.ReactText> {
     isOpen: boolean;
     hint?: ReactNode;
     validate?: ((value: T) => Promise<boolean>) | ((value: T) => boolean);
+    autoClose?: ComponentProps<typeof Modal>["autoClose"];
 }
+
+type Callback = () => void;
+type FullBodyProps = {
+    close: Callback;
+};
+type FullBodyRenderer = (props: FullBodyProps) => React.ReactElement;
+type CommonModalProps = {
+    onModalClose?: () => unknown;
+    title?: React.ReactNode;
+    onClosed?: Callback;
+};
+type PromptOptions<T extends string | number = any> = {
+    initial: PromptModalProps$1<T>["initial"];
+    type: PromptModalProps$1<T>["type"];
+    hint: PromptModalProps$1<T>["hint"];
+    validate: PromptModalProps$1<T>["validate"];
+};
+type EventModalProps = ({
+    modalType: "confirmation";
+    prompt: ConfirmationModalProps$1["prompt"];
+    onConfirm: ConfirmationModalProps$1["confirmHandle"];
+    confirmText?: ConfirmationModalProps$1["confirmText"];
+    confirmType?: ConfirmationModalProps$1["confirmType"];
+    dontAskAgain?: ConfirmationModalProps$1["dontAskAgain"];
+} | {
+    modalType: "notification";
+    body: React.ReactNode;
+    buttonColor?: ButtonProps["color"];
+    button: React.ReactNode;
+} | ({
+    modalType: "prompt";
+    options?: Partial<PromptOptions>;
+    question: React.ReactNode;
+    cb: PromptModalProps$1<any>["onSave"];
+} & Omit<Partial<PromptOptions>, "validate">) | {
+    modalType: "dynamic";
+    fullBody: React.ReactElement<FullBodyProps & Record<string, any>> | FullBodyRenderer;
+    modalProps?: Partial<ModalProps>;
+    body?: React.ReactNode;
+    buttons?: {
+        text?: React.ReactNode;
+        color?: ButtonProps["color"];
+        onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, close: Callback) => void;
+    }[];
+}) & CommonModalProps;
 
 type DontAskAgain = {
     show: boolean;
@@ -134,12 +234,11 @@ interface ModalButton {
 type PropsWithCloseModal<P = {}> = P & {
     close: () => void;
 };
-type FullBodyRender = (props: {
-    close: () => void;
-}) => ReactNode;
 interface DynamicModalOptions {
     title: ReactNode;
-    fullBody?: ReactNode | FullBodyRender;
+    fullBody?: Extract<EventModalProps, {
+        modalType: "dynamic";
+    }>["fullBody"];
     body?: ReactNode;
     buttons?: ModalButton[];
     modalProps?: Partial<ModalProps>;
@@ -165,7 +264,7 @@ declare const ConfirmationModal: FC<ConfirmationModalProps>;
 /**
  * Prompt Modal
  */
-interface PromptModalProps<T extends React.ReactText> {
+interface PromptModalProps<T extends string | number> {
     title: ReactNode;
     question: ReactNode;
     onSave: (value: T) => void | Promise<void>;
@@ -175,14 +274,15 @@ interface PromptModalProps<T extends React.ReactText> {
     isOpen: boolean;
     hint?: ReactNode;
     validate?: ((value: T) => Promise<boolean>) | ((value: T) => boolean);
+    autoClose?: ComponentProps<typeof Modal$1>["autoClose"];
 }
-declare function PromptModal<T extends React.ReactText>({ title, question, onSave: cb, onClose, initial, type, isOpen, hint, validate, }: PropsWithChildren<PromptModalProps<T>>): JSX.Element;
+declare function PromptModal<T extends string | number>({ title, question, onSave: cb, onClose, initial, type, isOpen, hint, validate, autoClose, }: PropsWithChildren<PromptModalProps<T>>): JSX.Element;
 
-type ModalPortalProps = {
-    children?: ReactNode;
-} & ComponentProps<typeof FloatingPortal>;
-
-type DynamicModalProps = Pick<ModalPortalProps, "root" | "id" | "preserveTabOrder">;
+type DynamicModalProps = {
+    root?: ComponentProps<typeof FloatingPortal>["root"];
+    id?: ComponentProps<typeof FloatingPortal>["id"];
+    closeTimeout?: number;
+};
 declare const DynamicModal: FC<DynamicModalProps>;
 
-export { DynamicModal as ConfirmationListener, ConfirmationModal, DontAskAgain, DynamicModal, DynamicModalProps, Modal, ModalBody, ModalFooter, ModalHeader, ModalProps$1 as ModalProps, ModalSize$1 as ModalSize, PromptModal, PromptModalProps, PropsWithCloseModal, confirmation, dynamicModal, notificationModal as notification, notificationModal, prompt };
+export { DynamicModal as ConfirmationListener, ConfirmationModal, ConfirmationModalProps, DontAskAgain, DynamicModal, DynamicModalProps, Modal$1 as Modal, ModalBody$1 as ModalBody, ModalFooter$1 as ModalFooter, ModalHeader$1 as ModalHeader, ModalProps$1 as ModalProps, ModalSize$1 as ModalSize, PromptModal, PromptModalProps, PropsWithCloseModal, confirmation, dynamicModal, notificationModal as notification, notificationModal, prompt };

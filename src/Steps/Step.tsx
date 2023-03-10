@@ -1,6 +1,5 @@
-import React, { ReactNode, forwardRef } from "react";
-
-import { appendClass as ac } from "src/utils";
+import React, { forwardRef, type ReactNode } from "react";
+import cx from "classnames";
 
 type StepProps = {
   icon?: ReactNode;
@@ -24,9 +23,11 @@ export const Step = forwardRef<HTMLDivElement, StepProps>(
     ref
   ) => (
     <div
-      className={`step${ac(visited, "visited")}${ac(active, "active")}${ac(
-        className
-      )}`}
+      className={cx("step", {
+        visited,
+        active,
+        [className]: className,
+      })}
       ref={ref}
     >
       <div className="step__icon">{icon ?? consequativeIdx}</div>

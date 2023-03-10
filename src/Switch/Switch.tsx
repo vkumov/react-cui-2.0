@@ -1,7 +1,12 @@
-import React, { FC, HTMLProps, ReactNode, forwardRef } from "react";
+import React, {
+  forwardRef,
+  type FC,
+  type HTMLProps,
+  type ReactNode,
+} from "react";
+import cx from "classnames";
 
 import { ConditionalWrapper } from "src/Conditional";
-import { appendClass as ac } from "src/utils";
 
 interface SwitchProps {
   left?: ReactNode;
@@ -35,9 +40,11 @@ export const Switch: FC<SwitchProps & HTMLProps<HTMLInputElement>> = forwardRef(
       condition={asFormGroup}
       wrapper={
         <div
-          className={`form-group${ac(inline, "form-group--inline")}${ac(
-            className
-          )}${ac(spacing, ` form-group--${spacing}`)}`}
+          className={cx("form-group", {
+            "form-group--inline": inline,
+            [`form-group--${spacing}`]: spacing,
+            [className]: className,
+          })}
           style={style}
         />
       }

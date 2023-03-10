@@ -12,7 +12,8 @@ import React, {
 } from "react";
 import {
   FloatingFocusManager,
-  FloatingPortal,
+  FloatingNode,
+  FloatingOverlay,
   autoUpdate,
   flip,
   offset,
@@ -20,6 +21,8 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useFloatingNodeId,
+  useFloatingTree,
   useInteractions,
   useMergeRefs,
   type Placement,
@@ -27,7 +30,8 @@ import {
 import cx from "classnames";
 import { Transition } from "react-transition-group";
 
-import { useFloatingContext } from "src/FloatingProvider";
+import { FloatingTreeWrapper, useFloatingContext } from "src/FloatingProvider";
+import { useCustomDismiss } from "src/hooks/useCustomDismiss";
 import { useLockedBody } from "src/hooks/useLockedBody";
 
 import { GenericPopover } from "./GenericPopover";
@@ -77,7 +81,6 @@ export type PopoverProps = PropsWithChildren<{
   overlay?: ReactNode;
   showOverlay?: boolean;
   placement?: Placement;
-  portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
   offset?: Parameters<typeof offset>[0];
   lockBody?: boolean;
   lockRootId?: string;
@@ -89,7 +92,8 @@ export type PopoverProps = PropsWithChildren<{
   closeOnFocusOut?: ComponentProps<
     typeof FloatingFocusManager
   >["closeOnFocusOut"];
-  portalId?: ComponentProps<typeof FloatingPortal>["id"];
+  portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
+  portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
 }>;
 
 export const Popover: FC<PopoverProps> = ({
@@ -112,6 +116,10 @@ export const Popover: FC<PopoverProps> = ({
 }) => {
   const [show, setShow] = useLockedBody(false, "root");
 
+  const tree = useFloatingTree();
+  const nodeId = useFloatingNodeId();
+  // const parentId = useFloatingParentNodeId();
+
   const { x, y, reference, floating, strategy, context } = useFloating({
     placement,
     middleware: [
@@ -126,14 +134,13 @@ export const Popover: FC<PopoverProps> = ({
       setShow(newOpen);
     },
     whileElementsMounted: autoUpdate,
+    nodeId,
   });
 
-  const dismiss = useDismiss(context);
-  const click = useClick(context);
-
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
+    useClick(context),
+    useDismiss(context, { escapeKey: false, bubbles: false }),
+    useCustomDismiss(context),
   ]);
 
   const [overlayShow, setOverlayShow] = useState(overlayShowProvided);
@@ -166,45 +173,49 @@ export const Popover: FC<PopoverProps> = ({
           ),
         })
       )}
-      <FloatingPortal root={root} id={id}>
-        <Transition
-          in={show}
-          mountOnEnter
-          unmountOnExit
-          timeout={250}
-          nodeRef={transitionRef}
-        >
-          {(state) => (
-            <FloatingFocusManager
-              context={context}
-              initialFocus={initialFocus ?? (floatingRef as any)}
-              guards={guardsFocus}
-              modal={modalFocus}
-              closeOnFocusOut={closeOnFocusOut}
-            >
-              <GenericPopover
-                ref={floatingRef}
-                style={{
-                  position: strategy,
-                  top: y ?? 0,
-                  left: x ?? 0,
-                }}
-                state={state}
-                offset={offsetOptions}
-                {...getFloatingProps()}
-              >
-                <PopoverProvider
-                  setOverlayState={setOverlayShow}
-                  setOverlay={setOverlay}
+      <FloatingTreeWrapper withPortal={!tree} portalId={id} portalRoot={root}>
+        <FloatingNode id={nodeId}>
+          <Transition
+            in={show}
+            mountOnEnter
+            unmountOnExit
+            timeout={250}
+            nodeRef={transitionRef}
+          >
+            {(state) => (
+              <FloatingOverlay style={{ zIndex: 50 }} id={nodeId}>
+                <FloatingFocusManager
+                  context={context}
+                  initialFocus={initialFocus ?? (floatingRef as any)}
+                  guards={guardsFocus}
+                  modal={modalFocus}
+                  closeOnFocusOut={closeOnFocusOut}
                 >
-                  <Overlay show={overlayShow || false}>{overlay}</Overlay>
-                  {children}
-                </PopoverProvider>
-              </GenericPopover>
-            </FloatingFocusManager>
-          )}
-        </Transition>
-      </FloatingPortal>
+                  <GenericPopover
+                    ref={floatingRef}
+                    style={{
+                      position: strategy,
+                      top: y ?? 0,
+                      left: x ?? 0,
+                    }}
+                    state={state}
+                    offset={offsetOptions}
+                    {...getFloatingProps()}
+                  >
+                    <PopoverProvider
+                      setOverlayState={setOverlayShow}
+                      setOverlay={setOverlay}
+                    >
+                      <Overlay show={overlayShow || false}>{overlay}</Overlay>
+                      {children}
+                    </PopoverProvider>
+                  </GenericPopover>
+                </FloatingFocusManager>
+              </FloatingOverlay>
+            )}
+          </Transition>
+        </FloatingNode>
+      </FloatingTreeWrapper>
     </>
   );
 };

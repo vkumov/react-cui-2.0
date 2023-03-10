@@ -1,10 +1,5 @@
-import React, {
-  HTMLProps,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { HTMLProps, ReactNode, useEffect, useState } from "react";
+import useEvent from "react-use-event-hook";
 
 import { ConditionalWrapper } from "src/Conditional";
 import { InputHelpBaloon, InputHelpBlock } from "src/InputHelp";
@@ -78,67 +73,55 @@ export const InputChips = React.forwardRef<HTMLDivElement, FullInputChipsProps>(
       setValue((curr) => initialValue || curr || emptyList);
     }, [initialValue]);
 
-    const addValue = useCallback(
-      (v) => {
-        if (typeof valueValidator === "function") {
-          if (!valueValidator(v)) return;
-        }
-        setValue((curr) => {
-          if (allowRepeat || !(curr || []).includes(v)) {
-            const n = (curr || []).concat(v);
-            if (typeof onChange === "function") onChange(n);
-            return n;
-          } else return curr;
-        });
-      },
-      [allowRepeat, valueValidator, onChange]
-    );
+    const addValue = useEvent((v) => {
+      if (typeof valueValidator === "function") {
+        if (!valueValidator(v)) return;
+      }
+      setValue((curr) => {
+        if (allowRepeat || !(curr || []).includes(v)) {
+          const n = (curr || []).concat(v);
+          if (typeof onChange === "function") onChange(n);
+          return n;
+        } else return curr;
+      });
+    });
 
-    const handleKeyDown = useCallback(
-      (event) => {
-        let d = delimiters;
-        if (typeof d === "string") {
-          const { map } = Array.prototype;
-          d = map.call(d, (ch) => ch.charCodeAt(0));
-        }
+    const handleKeyDown = useEvent((event) => {
+      let d = delimiters;
+      if (typeof d === "string") {
+        const { map } = Array.prototype;
+        d = map.call(d, (ch) => ch.charCodeAt(0));
+      }
 
-        if (Array.isArray(d) && d.includes(event.keyCode)) {
-          addValue(event.target.value);
-          event.target.value = "";
-          event.stopPropagation();
-          event.preventDefault();
-        }
-      },
-      [delimiters, addValue]
-    );
-
-    const handleBlur = useCallback(
-      (event) => {
-        if (addOnBlur && event.target?.value) {
-          const { value } = event.target;
-          if (allowRegex && RegExp(allowRegex).test(value)) {
-            addValue(value);
-          } else if (!allowRegex) {
-            addValue(value);
-          }
-        }
+      if (Array.isArray(d) && d.includes(event.keyCode)) {
+        addValue(event.target.value);
         event.target.value = "";
-        if (typeof onBlur === "function") onBlur(event);
-      },
-      [addOnBlur, allowRegex, addValue, onBlur]
-    );
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    });
 
-    const handleDelete = useCallback(
-      (idx) => {
-        setValue((curr) => {
-          curr.splice(idx, 1);
-          if (typeof onChange === "function") onChange(curr.slice());
-          return curr.slice();
-        });
-        if (typeof onChipRemove === "function") onChipRemove(idx);
-      },
-      [onChange, onChipRemove]
-    );
+    const handleBlur = useEvent((event) => {
+      if (addOnBlur && event.target?.value) {
+        const { value } = event.target;
+        if (allowRegex && RegExp(allowRegex).test(value)) {
+          addValue(value);
+        } else if (!allowRegex) {
+          addValue(value);
+        }
+      }
+      event.target.value = "";
+      if (typeof onBlur === "function") onBlur(event);
+    });
+
+    const handleDelete = useEvent((idx) => {
+      setValue((curr) => {
+        curr.splice(idx, 1);
+        if (typeof onChange === "function") onChange(curr.slice());
+        return curr.slice();
+      });
+      if (typeof onChipRemove === "function") onChipRemove(idx);
+    });
 
     const showInput =
       (!maxChips ||

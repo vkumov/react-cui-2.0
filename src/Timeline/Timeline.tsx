@@ -1,7 +1,12 @@
-import React, { FC, ReactNode, cloneElement, isValidElement } from "react";
+import React, {
+  cloneElement,
+  isValidElement,
+  type FC,
+  type ReactNode,
+} from "react";
+import cx from "classnames";
 
 import { Icon } from "src/Icon";
-import { appendClass as ac } from "src/utils";
 
 import "../../css/timeline.css";
 
@@ -24,10 +29,10 @@ export const TimelineItem: FC<TimelineItemProps> = ({
   header = null,
   children,
 }) => (
-  <div className={`timeline__item${ac(className)}`}>
+  <div className={cx("timeline__item", className)}>
     <div className="timeline__icon">{icon}</div>
     {time && !simplified ? <div className="timeline__time">{time}</div> : null}
-    <div className={`timeline__content${ac(contentClassName)}`}>
+    <div className={cx("timeline__content", contentClassName)}>
       {header ? (
         isValidElement(header) ? (
           header
@@ -57,10 +62,12 @@ export const Timeline: FC<TimelineProps> = ({
   children,
 }) => (
   <div
-    className={`timeline${ac(center, "timeline--centered")}${ac(
-      right,
-      "timeline--right"
-    )}${ac(simplified, "simplified")}${ac(className)}`}
+    className={cx("timeline", {
+      "timeline--centered": center,
+      "timeline--right": right,
+      simplified,
+      [className]: className,
+    })}
   >
     {React.Children.map(children, (child) =>
       isValidElement(child) ? cloneElement<any>(child, { simplified }) : child

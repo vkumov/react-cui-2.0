@@ -1,7 +1,7 @@
-import React, { FC, HTMLProps, ReactNode } from "react";
+import React, { type FC, type HTMLProps, type ReactNode } from "react";
+import cx from "classnames";
 
 import { InputHelpBlock } from "src/InputHelp";
-import { appendClass as ac } from "src/utils";
 
 interface TextareaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
   label?: ReactNode;
@@ -26,11 +26,13 @@ export const Textarea: FC<TextareaProps & HTMLProps<HTMLTextAreaElement>> = ({
 }) => {
   return (
     <div
-      className={`form-group${ac(inline, "form-group--inline")}${ac(
-        className
-      )}${ac(error, "form-group--error")}`}
+      className={cx("form-group", {
+        "form-group--inline": inline,
+        "form-group--error": error,
+        [className]: className,
+      })}
     >
-      <div className={`form-group__text${ac(innerDivClass)}`}>
+      <div className={cx("form-group__text", innerDivClass)}>
         <textarea className={textareaClass} ref={inputRef} {...textarea}>
           {textarea.value}
         </textarea>

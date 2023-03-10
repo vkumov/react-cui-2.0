@@ -1,9 +1,11 @@
 import React, {
-  ChangeEvent,
-  KeyboardEvent,
-  PropsWithChildren,
-  ReactNode,
+  type ChangeEvent,
+  type ComponentProps,
+  type KeyboardEvent,
+  type PropsWithChildren,
+  type ReactNode,
 } from "react";
+import useEvent from "react-use-event-hook";
 
 import { Button } from "src/Button";
 import { DisplayIf as If } from "src/Conditional";
@@ -17,7 +19,7 @@ import { Modal } from "./Modal";
  * Prompt Modal
  */
 
-export interface PromptModalProps<T extends React.ReactText> {
+export interface PromptModalProps<T extends string | number> {
   title: ReactNode;
   question: ReactNode;
   onSave: (value: T) => void | Promise<void>;
@@ -27,9 +29,10 @@ export interface PromptModalProps<T extends React.ReactText> {
   isOpen: boolean;
   hint?: ReactNode;
   validate?: ((value: T) => Promise<boolean>) | ((value: T) => boolean);
+  autoClose?: ComponentProps<typeof Modal>["autoClose"];
 }
 
-export function PromptModal<T extends React.ReactText>({
+export function PromptModal<T extends string | number>({
   title,
   question,
   onSave: cb,
@@ -39,17 +42,18 @@ export function PromptModal<T extends React.ReactText>({
   isOpen,
   hint,
   validate,
+  autoClose,
 }: PropsWithChildren<PromptModalProps<T>>): JSX.Element {
   const [val, setVal] = React.useState<T>(initial);
   const [doing, setDoing] = React.useState(false);
-  const onSave = React.useCallback(async () => {
+  const onSave = useEvent(async () => {
     if (typeof validate === "function" && !(await validate(val))) return;
 
     setDoing(true);
     await cb(val);
     setDoing(false);
     onClose();
-  }, [onClose, cb, val, validate]);
+  });
 
   React.useEffect(() => setVal(initial), [initial]);
 
@@ -60,7 +64,13 @@ export function PromptModal<T extends React.ReactText>({
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} closeIcon closeHandle={onClose} title={title}>
+    <Modal
+      isOpen={isOpen}
+      closeIcon
+      closeHandle={onClose}
+      title={title}
+      autoClose={autoClose}
+    >
       <ModalBody>
         <Input
           type={type}

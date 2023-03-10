@@ -1,28 +1,33 @@
-import React, { ComponentProps, type FC, type ReactNode } from "react";
+import React, { type ComponentProps, type FC, type ReactNode } from "react";
 import {
   FloatingFocusManager,
   FloatingNode,
   FloatingOverlay,
   FloatingPortal,
-  FloatingTree,
   useClick,
   useDismiss,
   useFloating,
   useFloatingNodeId,
-  useFloatingParentNodeId,
+  useFloatingTree,
   useInteractions,
   useRole,
   type ReferenceType,
 } from "@floating-ui/react";
+import cx from "classnames";
 import { Transition } from "react-transition-group";
 
-import { ConditionalWrapper, DisplayIf as If } from "src/Conditional";
-import { appendClass as ac } from "src/utils";
+import { ConditionalWrapper } from "src/Conditional";
+import {
+  FloatingProvider,
+  FloatingTreeWrapper,
+  useFloatingContext,
+} from "src/FloatingProvider";
+import { useCustomDismiss } from "src/hooks/useCustomDismiss";
 
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
 import { ModalHeader } from "./Header";
-import { ModalPortal } from "./ModalPortal";
+import sts from "./Modal.module.scss";
 
 /**
  * Modal
@@ -39,10 +44,7 @@ export interface ModalProps {
   isOpen: boolean;
   autoClose?: boolean;
   left?: boolean;
-  animationDuration?:
-    | number
-    | { appear?: number; enter?: number; exit?: number };
-  transitionEvents?: Record<string, unknown>;
+  animationDuration?: ComponentProps<typeof Transition>["timeout"];
   dialogProps?: React.ComponentProps<"div">;
   contentProps?: React.ComponentProps<"div">;
   maximize?: boolean;
@@ -74,14 +76,13 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
   title = null,
   closeHandle = null,
   left = false,
-  transitionEvents = null,
   dialogProps = null,
   contentProps = null,
   maximize = false,
   children,
   isOpen,
   refElement,
-  root,
+  root: rootProvided,
   lockScroll,
   ancestorScroll,
   portalId,
@@ -95,125 +96,137 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
   );
 
   const nodeId = useFloatingNodeId();
-  const parentId = useFloatingParentNodeId();
+  // const parentId = useFloatingParentNodeId();
   const { reference, floating, context } = useFloating({
     open: isOpen,
     onOpenChange: (state) => (!state ? void closeHandle() : void 0),
     nodeId,
   });
+  const floatingTree = useFloatingTree();
 
   React.useEffect(() => {
     if (refElement) reference(refElement);
   }, [refElement]);
 
-  const click = useClick(context);
-  const role = useRole(context, { role: "dialog" });
-  const dismiss = useDismiss(context, {
-    enabled: autoClose,
-    ancestorScroll,
-    bubbles: false,
-    outsidePress() {
-      if (!parentId) return false;
-      return true;
-    },
+  const { getFloatingProps } = useInteractions([
+    useClick(context),
+    useRole(context, { role: "dialog" }),
+    useDismiss(context, {
+      enabled: autoClose,
+      escapeKey: false,
+      ancestorScroll,
+      bubbles: false,
+      outsidePress: true,
+    }),
+    useCustomDismiss(context, { enabled: autoClose }),
+  ]);
+
+  const overlayRef = React.useRef(null);
+  const contentRef = React.useRef(null);
+
+  const { id, root } = useFloatingContext({
+    root: rootProvided,
+    portalId,
+    fallbackPortalId: "--cui-modal-portal",
   });
 
-  const { getFloatingProps } = useInteractions([click, role, dismiss]);
-
-  const nodeRef = React.useRef(null);
-
-  const t = (
-    <ModalPortal id={portalId} root={root}>
-      <Transition
-        in={isOpen}
-        mountOnEnter
-        unmountOnExit
-        timeout={animationDuration}
-        nodeRef={nodeRef}
-        {...transitionEvents}
-      >
-        {(state) => (
-          <FloatingNode id={nodeId}>
+  return (
+    <FloatingTreeWrapper
+      withPortal={!floatingTree}
+      portalId={id}
+      portalRoot={root}
+    >
+      <FloatingNode id={nodeId}>
+        <Transition
+          in={isOpen}
+          mountOnEnter
+          unmountOnExit
+          appear
+          timeout={animationDuration}
+          nodeRef={overlayRef}
+        >
+          {(state) => (
             <FloatingOverlay
-              className={`modal-backdrop${ac(
-                state === "exiting",
-                "modal-backdrop--before-close"
-              )}`}
+              className={cx("modal-backdrop", {
+                "modal-backdrop--before-close": state === "exiting",
+              })}
               lockScroll={lockScroll}
-              ref={nodeRef}
+              ref={overlayRef}
+              id={nodeId}
             >
               <FloatingFocusManager context={context} modal>
                 <div
-                  ref={floating}
-                  {...getFloatingProps({
-                    className: `modal${ac(realSize, `modal--${realSize}`)}${ac(
-                      left,
-                      "modal--left"
-                    )}`,
-                    onClick: () => (autoClose ? closeHandle() : void 0),
+                  className={cx("modal", "modal_transitions", {
+                    [`modal--${realSize}`]: Boolean(realSize),
+                    "modal--left": Boolean(left),
                   })}
                 >
                   <div
-                    className="modal__dialog"
-                    {...dialogProps}
-                    onClick={(e) => e.stopPropagation()}
+                    ref={floating}
+                    {...getFloatingProps({
+                      ...dialogProps,
+                      className: cx("modal__dialog", {
+                        [sts.modal__dialog__appear]: state === "entering",
+                        [sts.modal__dialog__open]: state === "entered",
+                        [dialogProps?.className]: dialogProps?.className,
+                      }),
+                    })}
                   >
-                    <div className="modal__content" {...contentProps}>
-                      <If condition={!!(closeIcon && closeHandle) || maximize}>
-                        <ConditionalWrapper
-                          condition={!!(closeIcon && closeHandle) && maximize}
-                          wrapper={<div className="modal__close" />}
-                        >
-                          {Boolean(maximize) && (
-                            <a
-                              className={`${ac(
-                                !(closeIcon && closeHandle),
-                                "modal__close"
-                              )}${ac(
-                                closeIcon && closeHandle,
-                                "qtr-margin-right"
-                              )}`}
-                              onClick={() => setMaximized((curr) => !curr)}
-                            >
-                              <span
-                                className={
-                                  maximized ? "icon-minimize" : "icon-maximize"
-                                }
-                              />
-                            </a>
-                          )}
-                          {Boolean(closeIcon && closeHandle) && (
-                            <a
-                              className={!maximize ? "modal__close" : ""}
-                              onClick={closeHandle}
-                            >
-                              <span className="icon-close" />
-                            </a>
-                          )}
-                        </ConditionalWrapper>
-                      </If>
-                      {Boolean(title) && (
-                        <ModalHeader>
-                          <h1 className="modal__title">{title}</h1>
-                        </ModalHeader>
-                      )}
-                      {children}
-                    </div>
+                    <FloatingProvider rootRef={contentRef}>
+                      <div
+                        className="modal__content"
+                        ref={contentRef}
+                        {...contentProps}
+                      >
+                        {!!(closeIcon && closeHandle) || maximize ? (
+                          <ConditionalWrapper
+                            condition={!!(closeIcon && closeHandle) && maximize}
+                            wrapper={<div className="modal__close" />}
+                          >
+                            {Boolean(maximize) && (
+                              <a
+                                className={cx({
+                                  modal__close: !(closeIcon && closeHandle),
+                                  "qtr-margin-right": closeIcon && closeHandle,
+                                })}
+                                onClick={() => setMaximized((curr) => !curr)}
+                              >
+                                <span
+                                  className={
+                                    maximized
+                                      ? "icon-minimize"
+                                      : "icon-maximize"
+                                  }
+                                />
+                              </a>
+                            )}
+                            {Boolean(closeIcon && closeHandle) && (
+                              <a
+                                className={!maximize ? "modal__close" : ""}
+                                onClick={closeHandle}
+                              >
+                                <span className="icon-close" />
+                              </a>
+                            )}
+                          </ConditionalWrapper>
+                        ) : null}
+                        {Boolean(title) && (
+                          <ModalHeader>
+                            <h1 className="modal__title">{title}</h1>
+                          </ModalHeader>
+                        )}
+                        {children}
+                      </div>
+                    </FloatingProvider>
                   </div>
                 </div>
               </FloatingFocusManager>
             </FloatingOverlay>
-          </FloatingNode>
-        )}
-      </Transition>
-    </ModalPortal>
+          )}
+        </Transition>
+      </FloatingNode>
+    </FloatingTreeWrapper>
   );
-
-  if (parentId === null) {
-    return <FloatingTree>{t}</FloatingTree>;
-  }
-
-  return t;
 };
 
 Modal.Small = (props) => <Modal {...props} size="small" />;

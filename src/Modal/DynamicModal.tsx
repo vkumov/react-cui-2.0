@@ -1,27 +1,197 @@
-import React, { FC, cloneElement } from "react";
+import React, { cloneElement, type ComponentProps, type FC } from "react";
+import type { FloatingPortal } from "@floating-ui/react";
 import { nanoid } from "nanoid";
+import useEvent from "react-use-event-hook";
 
 import { Button } from "src/Button";
+import { FloatingTreeWrapper } from "src/FloatingProvider";
 import {
   eventManager,
   type EventModalProps as EMP,
+  type FullBodyProps,
 } from "src/utils/eventManager";
 
 import { ModalBody } from "./Body";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { ModalFooter } from "./Footer";
 import { Modal } from "./Modal";
-import { ModalPortal, ModalPortalProps } from "./ModalPortal";
 import { PromptModal } from "./PromptModal";
 
-export type DynamicModalProps = Pick<
-  ModalPortalProps,
-  "root" | "id" | "preserveTabOrder"
->;
+export type DynamicModalProps = {
+  root?: ComponentProps<typeof FloatingPortal>["root"];
+  id?: ComponentProps<typeof FloatingPortal>["id"];
+  closeTimeout?: number;
+};
 
 type EventModalProps = EMP & { id: string; shown: boolean };
 
-export const DynamicModal: FC<DynamicModalProps> = (props) => {
+type IsLastProps = { isLast: boolean };
+
+function assertUnreachable(x: never): null {
+  throw new Error(`Unexpected value ${x}`);
+}
+
+const CustomWrapper: FC<
+  Extract<EventModalProps, { modalType: "dynamic" }> &
+    FullBodyProps &
+    IsLastProps
+> = ({
+  fullBody,
+  body,
+  buttons,
+  modalProps,
+  id,
+  shown,
+  title,
+  close,
+  isLast,
+}) => {
+  return (
+    <Modal
+      {...modalProps}
+      key={id}
+      isOpen={shown}
+      closeHandle={close}
+      title={title}
+      autoClose={isLast ? modalProps?.autoClose : false}
+    >
+      {fullBody ? (
+        typeof fullBody === "function" ? (
+          fullBody({ close })
+        ) : (
+          cloneElement(fullBody, { close })
+        )
+      ) : (
+        <>
+          <ModalBody>{body}</ModalBody>
+          <ModalFooter>
+            {buttons.map((button, idx) => (
+              <Button
+                key={idx}
+                color={button.color || "light"}
+                onClick={(e) => {
+                  if (typeof button.onClick === "function")
+                    button.onClick(e, close);
+                  else close();
+                }}
+              >
+                {button.text}
+              </Button>
+            ))}
+          </ModalFooter>
+        </>
+      )}
+    </Modal>
+  );
+};
+
+const NotificationWrapper: FC<
+  Extract<EventModalProps, { modalType: "notification" }> &
+    FullBodyProps &
+    IsLastProps
+> = ({ id, body, button, close, isLast, shown, buttonColor, title }) => {
+  return (
+    <Modal
+      key={id}
+      isOpen={shown}
+      closeIcon
+      closeHandle={close}
+      title={title}
+      autoClose={isLast ? undefined : false} // override default behavior only if it's not last rendered modal
+    >
+      <ModalBody>{body}</ModalBody>
+      <ModalFooter>
+        <Button color={buttonColor || "light"} onClick={close}>
+          {button}
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+};
+
+const PromptWrapper: FC<
+  Extract<EventModalProps, { modalType: "prompt" }> &
+    FullBodyProps &
+    IsLastProps
+> = ({
+  cb,
+  close,
+  id,
+  isLast,
+  question,
+  shown,
+  hint,
+  initial,
+  options,
+  title,
+  type,
+}) => {
+  let validate: (typeof options)["validate"];
+
+  if (typeof options !== "undefined") {
+    ({
+      initial = "",
+      type = "text",
+      hint = undefined,
+      validate = undefined,
+    } = options);
+  }
+
+  return (
+    <PromptModal
+      key={id}
+      isOpen={shown}
+      onClose={close}
+      onSave={cb}
+      title={title}
+      question={question}
+      initial={initial}
+      type={type}
+      hint={hint}
+      validate={validate}
+      autoClose={isLast ? undefined : false} // override default behavior only if it's not last rendered modal
+    />
+  );
+};
+
+const ConfirmationWrapper: FC<
+  Extract<EventModalProps, { modalType: "confirmation" }> &
+    FullBodyProps &
+    IsLastProps
+> = ({
+  close,
+  id,
+  isLast,
+  onConfirm,
+  prompt,
+  shown,
+  confirmText,
+  confirmType,
+  dontAskAgain,
+}) => {
+  return (
+    <ConfirmationModal
+      key={id}
+      isOpen={shown}
+      prompt={prompt}
+      confirmHandle={async (dontAskAgain) => {
+        const r = await onConfirm(dontAskAgain);
+        if (r) close();
+        return true;
+      }}
+      closeHandle={close}
+      confirmText={confirmText}
+      confirmType={confirmType}
+      dontAskAgain={dontAskAgain}
+      autoClose={isLast ? undefined : false} // override default behavior only if it's not last rendered modal
+    />
+  );
+};
+
+export const DynamicModal: FC<DynamicModalProps> = ({
+  closeTimeout = 300,
+  ...props
+}) => {
   const [modals, setModals] = React.useState<EventModalProps[]>([]);
 
   const addModal = React.useCallback(
@@ -36,23 +206,20 @@ export const DynamicModal: FC<DynamicModalProps> = (props) => {
     );
   }, []);
 
-  const deleteModal = React.useCallback((id: string) => {
+  const deleteModal = useEvent((id: string) => {
     setModals((curr) =>
       curr.filter((m) => {
         if (m.id === id && typeof m.onClosed === "function") m.onClosed();
         return m.id !== id;
       })
     );
-  }, []);
+  });
 
-  const closeModal = React.useCallback(
-    (id: string, cb?: () => unknown) => {
-      hideModal(id);
-      setTimeout(() => deleteModal(id), 500);
-      if (cb) cb();
-    },
-    [hideModal, deleteModal]
-  );
+  const closeModal = useEvent((id: string, cb?: () => unknown) => {
+    hideModal(id);
+    setTimeout(() => deleteModal(id), closeTimeout);
+    if (cb) cb();
+  });
 
   React.useEffect(() => {
     const cb = (m: EventModalProps) => addModal(m);
@@ -63,135 +230,60 @@ export const DynamicModal: FC<DynamicModalProps> = (props) => {
   }, [addModal]);
 
   return (
-    <ModalPortal {...props}>
+    <FloatingTreeWrapper
+      withPortal={true}
+      portalId={props.id}
+      portalRoot={props.root}
+    >
       {modals.length > 0
-        ? modals.map((modal) => {
-            if (modal.modalType === "dynamic")
-              return (
-                <Modal
-                  {...modal.modalProps}
-                  key={modal.id}
-                  isOpen={modal.shown}
-                  closeHandle={() => closeModal(modal.id, modal.onModalClose)}
-                  title={modal.title}
-                >
-                  {modal.fullBody ? (
-                    typeof modal.fullBody === "function" ? (
-                      modal.fullBody({
-                        close: () => closeModal(modal.id, modal.onModalClose),
-                      })
-                    ) : (
-                      cloneElement(modal.fullBody, {
-                        close: () => closeModal(modal.id, modal.onModalClose),
-                      })
-                    )
-                  ) : (
-                    <>
-                      <ModalBody>{modal.body}</ModalBody>
-                      <ModalFooter>
-                        {modal.buttons.map((button, idx) => (
-                          <Button
-                            key={idx}
-                            color={button.color || "light"}
-                            onClick={(e) => {
-                              if (typeof button.onClick === "function")
-                                button.onClick(e, () =>
-                                  closeModal(modal.id, modal.onModalClose)
-                                );
-                              else closeModal(modal.id, modal.onModalClose);
-                            }}
-                          >
-                            {button.text}
-                          </Button>
-                        ))}
-                      </ModalFooter>
-                    </>
-                  )}
-                </Modal>
-              );
-
-            if (modal.modalType === "notification")
-              return (
-                <Modal
-                  key={modal.id}
-                  isOpen={modal.shown}
-                  closeIcon
-                  closeHandle={() => closeModal(modal.id, modal.onModalClose)}
-                  title={modal.title}
-                >
-                  <ModalBody>{modal.body}</ModalBody>
-                  <ModalFooter>
-                    <Button
-                      color={modal.buttonColor || "light"}
-                      onClick={() => closeModal(modal.id, modal.onModalClose)}
-                    >
-                      {modal.button}
-                    </Button>
-                  </ModalFooter>
-                </Modal>
-              );
-
-            if (modal.modalType === "prompt") {
-              if (typeof modal.options !== "undefined") {
-                const {
-                  initial = "",
-                  type = "text",
-                  hint = undefined,
-                  validate = undefined,
-                } = modal.options;
+        ? modals.map((modal, idx) => {
+            switch (modal.modalType) {
+              case "dynamic":
                 return (
-                  <PromptModal
+                  <CustomWrapper
+                    {...modal}
                     key={modal.id}
-                    isOpen={modal.shown}
-                    onClose={() => closeModal(modal.id, modal.onModalClose)}
-                    onSave={modal.cb}
-                    title={modal.title}
-                    question={modal.question}
-                    initial={initial}
-                    type={type}
-                    hint={hint}
-                    validate={validate}
+                    close={() => closeModal(modal.id, modal.onModalClose)}
+                    isLast={idx === modals.length - 1}
                   />
                 );
-              }
 
-              return (
-                <PromptModal
-                  key={modal.id}
-                  isOpen={modal.shown}
-                  onClose={() => closeModal(modal.id, modal.onModalClose)}
-                  onSave={modal.cb}
-                  title={modal.title}
-                  question={modal.question}
-                  initial={modal.initial}
-                  type={modal.type}
-                  hint={modal.hint}
-                />
-              );
+              case "notification":
+                return (
+                  <NotificationWrapper
+                    {...modal}
+                    key={modal.id}
+                    close={() => closeModal(modal.id, modal.onModalClose)}
+                    isLast={idx === modals.length - 1}
+                  />
+                );
+
+              case "prompt":
+                return (
+                  <PromptWrapper
+                    {...modal}
+                    key={modal.id}
+                    close={() => closeModal(modal.id, modal.onModalClose)}
+                    isLast={idx === modals.length - 1}
+                  />
+                );
+
+              case "confirmation":
+                return (
+                  <ConfirmationWrapper
+                    {...modal}
+                    key={modal.id}
+                    close={() => closeModal(modal.id, modal.onModalClose)}
+                    isLast={idx === modals.length - 1}
+                  />
+                );
+
+              default:
+                return assertUnreachable(modal);
             }
-
-            if (modal.modalType === "confirmation")
-              return (
-                <ConfirmationModal
-                  key={modal.id}
-                  isOpen={modal.shown}
-                  prompt={modal.prompt}
-                  confirmHandle={async (dontAskAgain) => {
-                    const r = await modal.onConfirm(dontAskAgain);
-                    if (r) closeModal(modal.id, modal.onModalClose);
-                    return true;
-                  }}
-                  closeHandle={() => closeModal(modal.id, modal.onModalClose)}
-                  confirmText={modal.confirmText}
-                  confirmType={modal.confirmType}
-                  dontAskAgain={modal.dontAskAgain}
-                />
-              );
-
-            return null;
           })
         : null}
-    </ModalPortal>
+    </FloatingTreeWrapper>
   );
 };
 

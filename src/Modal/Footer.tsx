@@ -1,4 +1,9 @@
-import React, { FC, HTMLProps, PropsWithChildren, forwardRef } from "react";
+import React, {
+  forwardRef,
+  type FC,
+  type HTMLProps,
+  type PropsWithChildren,
+} from "react";
 
 import { appendClass as ac } from "src/utils";
 

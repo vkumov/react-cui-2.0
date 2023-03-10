@@ -1,7 +1,9 @@
-import React, { ReactText, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Meta, Story } from "@storybook/react/types-6-0";
 
 import { Button } from "../Button";
+import { Dropdown, MenuElement } from "../Dropdown";
+import { Popover, PopoverTitle } from "../Popover";
 import {
   ModalBody,
   ModalFooter,
@@ -20,7 +22,37 @@ const CustomDynamic = ({ close }: PropsWithCloseModal): JSX.Element => {
   return (
     <>
       <ModalBody>
-        Any content goes here! Function can be awaited - check console
+        <div className="base-margin-bottom">
+          Any content goes here! Function can be awaited - check console
+        </div>
+        <div className="base-margin-top base-margin-bottom">
+          <Dropdown label={<a>Dropdown inside!</a>} alwaysClose>
+            {Array(50)
+              .fill(true)
+              .map((_, idx) => (
+                <MenuElement key={idx}>{idx}</MenuElement>
+              ))}
+          </Dropdown>
+        </div>
+        <div className="base-margin-top base-margin-bottom">
+          <Popover element={<Button>And even popovers</Button>}>
+            <PopoverTitle>Popover title!</PopoverTitle>
+            <div>Popover body here</div>
+          </Popover>
+        </div>
+        <Button.Primary
+          onClick={async () => {
+            console.log("Opening dynamic modal");
+            await dynamicModal({
+              title: "Custom body",
+              modalProps: { closeIcon: true },
+              fullBody: (props) => <CustomDynamic {...props} />,
+            });
+            console.log("Dynamic modal closed, awaited");
+          }}
+        >
+          And nested modals
+        </Button.Primary>
       </ModalBody>
       <ModalFooter>
         <Button.Light onClick={close}>OK</Button.Light>
@@ -99,7 +131,9 @@ export const Confirmation: Story = () => {
 };
 
 export const Prompt: Story = () => {
-  const [promptResult, setPromptResult] = useState<ReactText | null>(null);
+  const [promptResult, setPromptResult] = useState<string | number | null>(
+    null
+  );
 
   return (
     <>
@@ -142,6 +176,7 @@ export const CustomBody: Story = () => {
                 modalProps: {
                   closeIcon: true,
                   dialogProps: { ref: setRef as any },
+                  // root: document.querySelector("body"),
                 },
                 fullBody: (props) => <CustomDynamic {...props} />,
               });

@@ -1,26 +1,23 @@
 import React, {
   Children,
-  ComponentProps,
-  FC,
-  MutableRefObject,
-  ReactNode,
   cloneElement,
   isValidElement,
-  useCallback,
   useEffect,
   useRef,
   useState,
+  type ComponentProps,
+  type FC,
+  type MutableRefObject,
+  type ReactNode,
 } from "react";
 import {
   FloatingFocusManager,
   FloatingNode,
   FloatingPortal,
-  FloatingTree,
   autoUpdate,
   flip,
   offset,
   shift,
-  useClick,
   useDismiss,
   useFloating,
   useFloatingNodeId,
@@ -34,8 +31,9 @@ import {
 } from "@floating-ui/react";
 import cx from "classnames";
 import { Transition } from "react-transition-group";
+import useEvent from "react-use-event-hook";
 
-import { useFloatingContext } from "src/FloatingProvider";
+import { FloatingTreeWrapper, useFloatingContext } from "src/FloatingProvider";
 
 import styles from "../Dropdown/Dropdown.module.scss";
 
@@ -82,10 +80,7 @@ const ContextMenuInner: FC<ContextMenuProps> = ({
 
   const { getFloatingProps, getItemProps } = useInteractions([
     useRole(context, { role: "menu" }),
-    useDismiss(context),
-    useClick(context, {
-      event: "mousedown",
-    }),
+    useDismiss(context, { bubbles: false }),
     useListNavigation(context, {
       listRef: listItemsRef,
       activeIndex,
@@ -99,39 +94,36 @@ const ContextMenuInner: FC<ContextMenuProps> = ({
     }),
   ]);
 
-  const onRightClick = useCallback(
-    (e: globalThis.MouseEvent) => {
-      e.preventDefault();
-      const pos = {
-        x: e.clientX,
-        y: e.clientY,
-        width: 0,
-        height: 0,
-        top: e.clientY,
-        right: e.clientX,
-        bottom: e.clientY,
-        left: e.clientX,
+  const onRightClick = useEvent((e: globalThis.MouseEvent) => {
+    e.preventDefault();
+    const pos = {
+      x: e.clientX,
+      y: e.clientY,
+      width: 0,
+      height: 0,
+      top: e.clientY,
+      right: e.clientX,
+      bottom: e.clientY,
+      left: e.clientX,
+    };
+    const makePop = () => {
+      refs.setPositionReference({
+        getBoundingClientRect() {
+          return pos;
+        },
+      });
+
+      setOpen(true);
+    };
+
+    if (onContextMenu) {
+      const awaitResult = async () => {
+        if (await onContextMenu(e)) makePop();
       };
-      const makePop = () => {
-        refs.setPositionReference({
-          getBoundingClientRect() {
-            return pos;
-          },
-        });
 
-        setOpen(true);
-      };
-
-      if (onContextMenu) {
-        const awaitResult = async () => {
-          if (await onContextMenu(e)) makePop();
-        };
-
-        awaitResult();
-      } else makePop();
-    },
-    [refs, onContextMenu]
-  );
+      awaitResult();
+    } else makePop();
+  });
 
   useEffect(() => {
     function onTreeClick() {
@@ -163,6 +155,7 @@ const ContextMenuInner: FC<ContextMenuProps> = ({
       in={open}
       mountOnEnter
       unmountOnExit
+      appear
       timeout={{ enter: 100, exit: 250 }}
       nodeRef={floatingNodeRef}
     >
@@ -171,8 +164,10 @@ const ContextMenuInner: FC<ContextMenuProps> = ({
           <FloatingNode id={nodeId}>
             <div
               {...getFloatingProps({
-                className: cx("dropdown", styles.active, styles.dropdown, {
+                className: cx("dropdown", styles.dropdown, {
                   [styles.disappear]: state === "exiting" || state === "exited",
+                  [styles.appear]: state === "entering",
+                  [styles.active]: state === "entered",
                 }),
                 ref: mergedFloatingRef,
                 style: {
@@ -228,16 +223,16 @@ export const ContextMenu: FC<ContextMenuProps> = ({
     fallbackPortalId: "--cui-context-menu-portal",
   });
 
+  const tree = useFloatingTree();
+
   return (
-    <FloatingPortal root={root} id={id}>
-      <FloatingTree>
-        <ContextMenuInner
-          contextMenuRef={contextMenuRef}
-          onContextMenu={onContextMenu}
-        >
-          {children}
-        </ContextMenuInner>
-      </FloatingTree>
-    </FloatingPortal>
+    <FloatingTreeWrapper withPortal={!tree} portalRoot={root} portalId={id}>
+      <ContextMenuInner
+        contextMenuRef={contextMenuRef}
+        onContextMenu={onContextMenu}
+      >
+        {children}
+      </ContextMenuInner>
+    </FloatingTreeWrapper>
   );
 };

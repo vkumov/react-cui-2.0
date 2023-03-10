@@ -1,10 +1,10 @@
-import React, { FC, ReactNode, useCallback, useMemo } from "react";
+import React, { useMemo, type FC, type ReactNode } from "react";
 import bytes from "bytes";
+import cx from "classnames";
 import ReactDropzone, {
-  DropzoneProps as ReactDropzoneProps,
+  type DropzoneProps as ReactDropzoneProps,
 } from "react-dropzone";
-
-import { appendClass as ac } from "src/utils";
+import useEvent from "react-use-event-hook";
 
 import "../../css/dropzone.css";
 
@@ -188,20 +188,15 @@ export const Dropzone: FC<DropzoneProps & ReactDropzoneProps> = ({
     return tmp;
   }, [loose, compressed, value, inline]);
 
-  const handleDrop = useCallback(
-    (filesToUpload: File[]) => {
-      if (maxFileSize)
-        filesToUpload = filesToUpload.filter(
-          (file) => file.size <= maxFileSize
-        );
+  const handleDrop = useEvent((filesToUpload: File[]) => {
+    if (maxFileSize)
+      filesToUpload = filesToUpload.filter((file) => file.size <= maxFileSize);
 
-      if (maxFiles && filesToUpload.length > maxFiles)
-        filesToUpload = filesToUpload.slice(0, maxFiles);
+    if (maxFiles && filesToUpload.length > maxFiles)
+      filesToUpload = filesToUpload.slice(0, maxFiles);
 
-      onChange(filesToUpload);
-    },
-    [maxFileSize, maxFiles, onChange]
-  );
+    onChange(filesToUpload);
+  });
 
   const removeFile = (toRemove: number) => {
     onChange(
@@ -210,7 +205,7 @@ export const Dropzone: FC<DropzoneProps & ReactDropzoneProps> = ({
   };
 
   return (
-    <div className={`form-group${ac(error, "form-group--error")}`}>
+    <div className={cx("form-group", { "form-group--error": error })}>
       <div className="form-group__text">
         {label ? <label htmlFor={name}>{label}</label> : null}
         <ReactDropzone {...props} onDrop={handleDrop} maxSize={maxFileSize}>
@@ -235,7 +230,7 @@ export const Dropzone: FC<DropzoneProps & ReactDropzoneProps> = ({
         </ReactDropzone>
       </div>
       {error ? (
-        <div className={`help-block text-danger`} role="alert">
+        <div className="help-block text-danger" role="alert">
           <span>{error}</span>
         </div>
       ) : null}

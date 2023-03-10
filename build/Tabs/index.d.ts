@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, HTMLProps } from 'react';
+import React, { FC, ReactNode, HTMLProps, MutableRefObject } from 'react';
 
 type TabId = number | string;
 interface TabProps {
@@ -25,7 +25,7 @@ interface TabsHeaderProps {
     onTabChange: (tab: TabId) => void;
     children: ReactNode;
 }
-declare const TabsHeader: FC<TabsHeaderProps>;
+declare const TabsHeader: React.ForwardRefExoticComponent<TabsHeaderProps & React.RefAttributes<HTMLUListElement>>;
 interface ColumnSizes {
     sm?: number;
     md?: number;
@@ -56,6 +56,8 @@ interface TabsProps {
     renderBody?: (body: JSX.Element) => JSX.Element;
     onTabChange?: (tab: TabId) => void;
     beforeTabChange?: (oldTab: TabId, newTab: TabId) => boolean | Promise<boolean>;
+    bodyRef?: MutableRefObject<HTMLDivElement>;
+    headerRef?: MutableRefObject<HTMLUListElement>;
 }
 declare const Tabs: FC<TabsProps>;
 

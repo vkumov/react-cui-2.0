@@ -6,6 +6,7 @@ import React, {
   type HTMLProps,
   type ReactNode,
 } from "react";
+import useEvent from "react-use-event-hook";
 
 import { appendClass as ac } from "src/utils";
 
@@ -60,16 +61,13 @@ interface RadiosProps {
 }
 
 export const Radios: FC<RadiosProps> = ({ values, value, onChange, name }) => {
-  const onRadioChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      e.persist();
+  const onRadioChange = useEvent((e: ChangeEvent<HTMLInputElement>) => {
+    e.persist();
 
-      if (e.target.checked) {
-        onChange(e.target.value);
-      }
-    },
-    [onChange]
-  );
+    if (e.target.checked) {
+      onChange(e.target.value);
+    }
+  });
 
   return (
     <>

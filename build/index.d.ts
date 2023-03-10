@@ -26,7 +26,6 @@ export * from "./Conditional";
 export * from "./Steps";
 export * from "./VerticalCenter";
 export * from "./Textarea";
-export * from "./VariantSelector";
 export * from "./Radio";
 export * from "./InputChips";
 export * from "./Select";
@@ -97,8 +96,8 @@ declare module "@vkumov/react-cui-2.0/Dropzone" {
 }
 
 declare module "@vkumov/react-cui-2.0/FloatingProvider" {
-  import { FloatingProvider, useFloatingContext } from "@vkumov/react-cui-2.0";
-  export { FloatingProvider, useFloatingContext };
+  import { FloatingProvider, FloatingTreeWrapper, useFloatingContext } from "@vkumov/react-cui-2.0";
+  export { FloatingProvider, FloatingTreeWrapper, useFloatingContext };
 }
 
 declare module "@vkumov/react-cui-2.0/Gauge" {
@@ -252,8 +251,8 @@ declare module "@vkumov/react-cui-2.0/Toast" {
 }
 
 declare module "@vkumov/react-cui-2.0/Tooltip" {
-  import { WithTooltip } from "@vkumov/react-cui-2.0";
-  export { WithTooltip };
+  import { TooltipWrapper, WithTooltip, useTooltip } from "@vkumov/react-cui-2.0";
+  export { TooltipWrapper, WithTooltip, useTooltip };
 }
 
 declare module "@vkumov/react-cui-2.0/Typo" {
@@ -264,11 +263,6 @@ declare module "@vkumov/react-cui-2.0/Typo" {
 declare module "@vkumov/react-cui-2.0/VSeparator" {
   import { VSeparator } from "@vkumov/react-cui-2.0";
   export { VSeparator };
-}
-
-declare module "@vkumov/react-cui-2.0/VariantSelector" {
-  import { VariantSelector } from "@vkumov/react-cui-2.0";
-  export { VariantSelector };
 }
 
 declare module "@vkumov/react-cui-2.0/VerticalCenter" {
@@ -286,6 +280,11 @@ declare module "@vkumov/react-cui-2.0/hooks/useClickOutside" {
   export { useClickOutside };
 }
 
+declare module "@vkumov/react-cui-2.0/hooks/useCustomDismiss" {
+  import { useCustomDismiss } from "@vkumov/react-cui-2.0";
+  export { useCustomDismiss };
+}
+
 declare module "@vkumov/react-cui-2.0/hooks/useDisclosure" {
   import { useDisclosure } from "@vkumov/react-cui-2.0";
   export { useDisclosure };
@@ -294,6 +293,11 @@ declare module "@vkumov/react-cui-2.0/hooks/useDisclosure" {
 declare module "@vkumov/react-cui-2.0/hooks/useIsomorphicEffect" {
   import { useIsomorphicEffect } from "@vkumov/react-cui-2.0";
   export { useIsomorphicEffect };
+}
+
+declare module "@vkumov/react-cui-2.0/hooks/useKeyPress" {
+  import { useKeyPress } from "@vkumov/react-cui-2.0";
+  export { useKeyPress };
 }
 
 declare module "@vkumov/react-cui-2.0/hooks/useLockedBody" {

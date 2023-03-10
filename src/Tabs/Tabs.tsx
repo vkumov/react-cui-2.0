@@ -1,4 +1,10 @@
-import React, { FC, HTMLProps, ReactNode } from "react";
+import React, {
+  MutableRefObject,
+  forwardRef,
+  type FC,
+  type HTMLProps,
+  type ReactNode,
+} from "react";
 
 import { ConditionalWrapper, DisplayIf } from "src/Conditional";
 import { usePrevious } from "src/hooks/usePrevious";
@@ -57,47 +63,58 @@ interface TabsHeaderProps {
   children: ReactNode;
 }
 
-export const TabsHeader: FC<TabsHeaderProps> = ({
-  tabsClassName = null,
-  center = false,
-  right = false,
-  justified = false,
-  embossed = false,
-  bordered = false,
-  vertical = false,
-  inline = false,
-  openTab = null,
-  sticky = false,
-  onTabChange,
-  children,
-}) => (
-  <ul
-    className={`tabs${ac(tabsClassName)}${ac(center, "tabs--centered")}${ac(
-      right,
-      "tabs--right"
-    )}${ac(justified, "tabs--justified")}${ac(embossed, "tabs--embossed")}${ac(
-      bordered,
-      "tabs--bordered"
-    )}${ac(vertical, "tabs--vertical")}${ac(inline, "tabs--inline")}`}
-    style={sticky ? { position: "sticky", top: "0" } : {}}
-  >
-    {React.Children.map(children, (child, idx) => {
-      if (!React.isValidElement<TabProps>(child)) return child;
+export const TabsHeader = forwardRef<HTMLUListElement, TabsHeaderProps>(
+  (
+    {
+      tabsClassName = null,
+      center = false,
+      right = false,
+      justified = false,
+      embossed = false,
+      bordered = false,
+      vertical = false,
+      inline = false,
+      openTab = null,
+      sticky = false,
+      onTabChange,
+      children,
+    },
+    ref
+  ) => (
+    <ul
+      ref={ref}
+      className={`tabs${ac(tabsClassName)}${ac(center, "tabs--centered")}${ac(
+        right,
+        "tabs--right"
+      )}${ac(justified, "tabs--justified")}${ac(
+        embossed,
+        "tabs--embossed"
+      )}${ac(bordered, "tabs--bordered")}${ac(vertical, "tabs--vertical")}${ac(
+        inline,
+        "tabs--inline"
+      )}`}
+      style={sticky ? { position: "sticky", top: "0" } : {}}
+    >
+      {React.Children.map(children, (child, idx) => {
+        if (!React.isValidElement<TabProps>(child)) return child;
 
-      const {
-        props: { id, title },
-      } = child;
-      return (
-        <li
-          className={`tab${ac(isActive(openTab, id, idx), "active")}`}
-          key={firstDefined(id, idx)}
-        >
-          <a onClick={() => onTabChange(firstDefined(id, idx))}>{title}</a>
-        </li>
-      );
-    })}
-  </ul>
+        const {
+          props: { id, title },
+        } = child;
+        return (
+          <li
+            className={`tab${ac(isActive(openTab, id, idx), "active")}`}
+            key={firstDefined(id, idx)}
+          >
+            <a onClick={() => onTabChange(firstDefined(id, idx))}>{title}</a>
+          </li>
+        );
+      })}
+    </ul>
+  )
 );
+
+TabsHeader.displayName = "TabsHeader";
 
 interface ColumnSizes {
   sm?: number;
@@ -135,6 +152,8 @@ interface TabsProps {
     oldTab: TabId,
     newTab: TabId
   ) => boolean | Promise<boolean>;
+  bodyRef?: MutableRefObject<HTMLDivElement>;
+  headerRef?: MutableRefObject<HTMLUListElement>;
 }
 
 const composeColumnSize = (columnWidth: ColumnSize): string => {
@@ -173,6 +192,8 @@ export const Tabs: FC<TabsProps> = ({
   rowProps: { className: rowClassName, ...rowProps } = {},
   beforeTabChange = null,
   children,
+  bodyRef,
+  headerRef,
 }) => {
   const [openTab, setOpenTab] = React.useState(defaultTab || null);
   const prevTab = usePrevious(openTab);
@@ -211,6 +232,7 @@ export const Tabs: FC<TabsProps> = ({
           inline={inline}
           openTab={openTab}
           onTabChange={setOpenTab}
+          ref={headerRef}
         >
           {children}
         </TabsHeader>
@@ -228,6 +250,7 @@ export const Tabs: FC<TabsProps> = ({
           className={`tab-content${
             contentClassName ? ` ${contentClassName}` : ""
           }`}
+          ref={bodyRef}
         >
           {React.Children.map(children, (child, idx) =>
             React.isValidElement(child)

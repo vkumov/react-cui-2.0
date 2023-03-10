@@ -1,2 +1,2 @@
-var appendClass=function(c){var what=arguments.length>1&&arguments[1]!==void 0?arguments[1]:undefined;if(c){if(typeof what==="function")return" ".concat(what());return" ".concat(what||c)}return""};export{appendClass};
+const t=(p,o=void 0)=>p?typeof o=="function"?` ${o()}`:` ${o||p}`:"";export{t as appendClass};
 //# sourceMappingURL=index.js.map

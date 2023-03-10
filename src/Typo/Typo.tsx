@@ -1,6 +1,5 @@
-import React, { FC, PropsWithChildren } from "react";
-
-import { appendClass } from "src/utils";
+import React, { type FC, type PropsWithChildren } from "react";
+import cx from "classnames";
 
 interface DisplayNoSizeProps {
   as?: React.FunctionComponent<any> | React.ComponentClass<any> | string;
@@ -16,7 +15,7 @@ export const Display: FC<
 > = ({ as = "h1", className = null, size, ...props }) =>
   React.createElement(as, {
     ...props,
-    className: `display-${size}${appendClass(className)}`,
+    className: cx(`display-${size}`, className),
   });
 
 export const Display0: FC<PropsWithChildren<DisplayNoSizeProps>> = (props) => (

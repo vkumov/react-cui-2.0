@@ -1,11 +1,10 @@
 import React from "react";
+import cx from "classnames";
 import {
   Slide,
-  ToastContainerProps,
   ToastContainer as ToastifyContainer,
+  type ToastContainerProps,
 } from "react-toastify";
-
-import { appendClass } from "src/utils";
 
 type ExtraProps = {
   bordered?: boolean;
@@ -34,14 +33,19 @@ export const ToastContainer = ({
     containerId={containerId}
     {...props}
     closeButton={false}
-    bodyClassName={`${bodyClassName || ""}${appendClass(
-      bordered,
-      "toast--bordered"
-    )}`}
-    toastClassName={`${toastClassName || ""}${appendClass(
-      shadow === "md",
-      "toast--shadow-md"
-    )}${appendClass(shadow === "sm", "toast--shadow-sm")}`}
+    bodyClassName={
+      typeof bodyClassName === "function"
+        ? bodyClassName
+        : cx({ [bodyClassName]: bodyClassName, "toast--bordered": bordered })
+    }
+    toastClassName={
+      typeof toastClassName === "function"
+        ? toastClassName
+        : cx({
+            [toastClassName]: toastClassName,
+            [`toast--shadow-${shadow}`]: shadow !== "lg",
+          })
+    }
     style={{
       width: "unset",
     }}

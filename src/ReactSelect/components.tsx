@@ -1,4 +1,5 @@
 import React from "react";
+import cx from "classnames";
 import type {
   GroupHeadingProps,
   GroupProps,
@@ -7,7 +8,6 @@ import type {
 } from "react-select";
 
 import type { LabelColor } from "src/Label";
-import { appendClass } from "src/utils";
 
 export const MultiValueContainer = (
   props: MultiValueGenericProps<any>
@@ -16,9 +16,10 @@ export const MultiValueContainer = (
     (props.selectProps as any).multiValueColor || "primary";
   return (
     <div
-      className={`label label--${color} label--small${appendClass(
+      className={cx(
+        `label label--${color} label--small`,
         props.innerProps?.className
-      )}`}
+      )}
     >
       {props.children}
     </div>
@@ -30,9 +31,9 @@ export const MultiValueLabel = (props: MultiValueGenericProps): JSX.Element => {
 };
 
 export const MultiValueRemove = ({
-  innerProps: { className, ...props },
+  innerProps: props,
 }: MultiValueRemoveProps): JSX.Element => {
-  return <span className="icon-close" {...props} />;
+  return <span {...props} className="icon-close" />;
 };
 
 export function Group<Option = unknown, IsMulti extends boolean = boolean>({
@@ -44,7 +45,7 @@ export function Group<Option = unknown, IsMulti extends boolean = boolean>({
   ...props
 }: GroupProps<Option, IsMulti>) {
   return (
-    <div className={`dropdown__group${appendClass(className)}`} {...innerProps}>
+    <div className={cx("dropdown__group", className)} {...innerProps}>
       <Heading {...props} id={headingProps.id}>
         {headingProps.data.label}
       </Heading>
@@ -56,10 +57,8 @@ export function Group<Option = unknown, IsMulti extends boolean = boolean>({
 export function GroupHeading<
   Option = unknown,
   IsMulti extends boolean = boolean
->({ className, children, ...props }: GroupHeadingProps<Option, IsMulti>) {
+>({ className, children }: GroupHeadingProps<Option, IsMulti>) {
   return (
-    <div className={`dropdown__group-header${appendClass(className)}`}>
-      {children}
-    </div>
+    <div className={cx("dropdown__group-header", className)}>{children}</div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useRef, type HTMLProps } from "react";
-import { offset, useMergeRefs } from "@floating-ui/react";
+import { useMergeRefs, type offset } from "@floating-ui/react";
 import cx from "classnames";
-import { TransitionStatus } from "react-transition-group";
+import type { TransitionStatus } from "react-transition-group";
 
 import styles from "./Popover.module.scss";
 

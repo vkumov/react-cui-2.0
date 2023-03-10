@@ -1,6 +1,5 @@
 import React, { forwardRef } from "react";
-
-import { appendClass as ac } from "src/utils";
+import cx from "classnames";
 
 export type ButtonGroupProps = {
   square?: boolean;
@@ -17,10 +16,14 @@ export const ButtonGroup = forwardRef<
     ref
   ) => (
     <div
-      className={`btn-group${ac(square, "btn-group--square")}${ac(
-        withDivider,
-        " btn-group--divider"
-      )}${ac(className)}`}
+      className={cx(
+        "btn-group",
+        {
+          "btn-group--square": square,
+          "btn-group--divider": withDivider,
+        },
+        className
+      )}
       {...props}
       ref={ref}
     />

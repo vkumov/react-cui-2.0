@@ -1,7 +1,11 @@
-import React, { FC, ReactNode } from "react";
-import { ToastOptions, UpdateOptions, toast as _toast } from "react-toastify";
+import React, { type FC, type ReactNode } from "react";
+import cx from "classnames";
+import {
+  toast as _toast,
+  type ToastOptions,
+  type UpdateOptions,
+} from "react-toastify";
 
-import { appendClass } from "src/utils";
 import { copyStringToClipboard } from "src/utils/clipboard";
 
 type ToastType = "success" | "error" | "warning" | "info" | "loading" | "none";
@@ -48,7 +52,7 @@ export const Toast: FC<ToastProps> = ({
   copyError = false,
   bordered = false,
 }) => (
-  <div className={`toast${appendClass(bordered, "toast--bordered")}`}>
+  <div className={cx("toast", { "toast--bordered": bordered })}>
     <ToastIcon type={type} />
     <div className="toast__body">
       {title ? <div className="toast__title">{title}</div> : null}

@@ -1,2 +1,2 @@
-import EventEmitter from"eventemitter3";var eventManager=new EventEmitter;export{eventManager};
+import e from"eventemitter3";const o=new e;export{o as eventManager};
 //# sourceMappingURL=eventManager.js.map

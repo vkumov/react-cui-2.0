@@ -46,7 +46,7 @@ type UseTooltipReturn = ReturnType<typeof useFloating> & {
   arrowRef: MutableRefObject<any>;
 };
 
-function useTooltip(placement?: Placement): UseTooltipReturn {
+export function useTooltip(placement?: Placement): UseTooltipReturn {
   const [show, setShow] = useState(false);
   const arrowRef = useRef(null);
   const fl = useFloating({
@@ -87,7 +87,7 @@ function useTooltip(placement?: Placement): UseTooltipReturn {
   );
 }
 
-const TooltipWrapper: FC<
+export const TooltipWrapper: FC<
   PropsWithChildren<
     Omit<ReturnType<typeof useTooltip>, "getReferenceProps" | "reference">
   > & {

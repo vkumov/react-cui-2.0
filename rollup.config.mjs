@@ -1,17 +1,21 @@
 import fs from "node:fs";
 import path, { basename } from "node:path";
+import { fileURLToPath } from "node:url";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import glob from "fast-glob";
 import cssImport from "postcss-import";
 import cleaner from "rollup-plugin-cleaner";
+import esbuild from "rollup-plugin-esbuild";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import typescript from "rollup-plugin-typescript2";
-import tsPaths from "rollup-plugin-typescript-paths";
-import swc from "unplugin-swc";
+import { typescriptPaths } from "rollup-plugin-typescript-paths";
 
-import packageJson from "./package.json";
+import packageJson from "./package.json" assert { type: "json" };
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const externals = [
   "react",
@@ -22,7 +26,7 @@ const externals = [
 
 const allExternals = [...externals];
 
-const minimize = true;
+const minify = true;
 
 const commonPlugins = [
   resolve({
@@ -32,10 +36,10 @@ const commonPlugins = [
   commonjs({
     include: "node_modules/**",
   }),
-  swc.rollup({
-    tsconfigFile: "tsconfig.json",
-    sourceMaps: true,
-    minify: minimize,
+  esbuild({
+    tsconfig: "./tsconfig.json",
+    sourceMap: true,
+    minify,
   }),
 ].filter(Boolean);
 
@@ -52,7 +56,7 @@ const tsDTS = typescript({
 
 const ignoreCssPlugin = postcss({
   plugins: [cssImport()],
-  minimize,
+  minify,
   extract: false,
   inject: false,
   use: {
@@ -72,8 +76,6 @@ const getFolders = (entry) => {
   // do not include folders not meant for export and do not process index.ts
   const dirsWithoutIndex = dirs
     .filter((name) => name !== "index.ts")
-    // .filter((name) => name !== "utils")
-    // .filter((name) => name !== "hooks")
     .filter((name) => !name.startsWith("."));
   // ['Accordion', 'Button'...]
   return dirsWithoutIndex;
@@ -108,12 +110,9 @@ const folderBuilds = getFolders("./src")
         },
         treeshake: true,
         // plugins,
-        plugins: [
-          // tsPaths({ preserveExtensions: false }),
-          tsPaths(),
-          ...plugins,
-          ignoreCssPlugin,
-        ].filter(Boolean),
+        plugins: [typescriptPaths(), ...plugins, ignoreCssPlugin].filter(
+          Boolean
+        ),
         // external: externals,
         external: allExternals.filter((f) => !f.includes(`src/${folder}/`)),
       };
@@ -139,7 +138,7 @@ const esmBundle = {
   plugins: [
     postcss({
       plugins: [cssImport()],
-      minimize: true,
+      minify: true,
       extract: "css/styles.css",
       use: {
         sass: {

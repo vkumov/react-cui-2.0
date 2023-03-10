@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.0.0
+
+- **BREAKING:** `VariantSelector` removed (can be easily recreated using `Dropdown`)
+- Improvements in floating components (Modal, Dropdown, ContextMenu, Popover): correct handling of dismiss & FloatingTree
+
+## 5.4.0
+
+- `bubbles: false` for all floating components
+
+## 5.3.18
+
+- Tabs forwardRef
+
 ## 5.3.17
 
 - Fix `GroupOption` type

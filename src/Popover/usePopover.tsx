@@ -1,10 +1,10 @@
 import React, {
-  ComponentProps,
-  ComponentType,
-  ReactNode,
   createElement,
   useCallback,
   useRef,
+  type ComponentProps,
+  type ComponentType,
+  type ReactNode,
 } from "react";
 import {
   FloatingFocusManager,
@@ -22,6 +22,7 @@ import {
 import { Transition } from "react-transition-group";
 
 import { useFloatingContext } from "src/FloatingProvider";
+import { useCustomDismiss } from "src/hooks/useCustomDismiss";
 import { useLockedBody } from "src/hooks/useLockedBody";
 
 import { PopoverProps } from ".";
@@ -74,12 +75,10 @@ export function usePopover({
     whileElementsMounted: autoUpdate,
   });
 
-  const dismiss = useDismiss(context);
-  const click = useClick(context);
-
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
+    useClick(context),
+    useDismiss(context, { bubbles: false, escapeKey: false }),
+    useCustomDismiss(context),
   ]);
 
   const closeCb = useCallback(() => setShow(false), [setShow]);

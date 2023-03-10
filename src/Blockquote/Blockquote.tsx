@@ -1,6 +1,5 @@
-import React, { HTMLProps, forwardRef } from "react";
-
-import { appendClass } from "src/utils";
+import React, { forwardRef, type HTMLProps } from "react";
+import cx from "classnames";
 
 type BlockquoteProps = {
   cite?: string;
@@ -22,13 +21,14 @@ type BlockquoteProps = {
 export const Blockquote = forwardRef<HTMLQuoteElement, BlockquoteProps>(
   ({ className, cite, color, align, children, padding, ...props }, ref) => (
     <blockquote
-      className={`${appendClass(color, `blockquote--${color}`)}${appendClass(
-        align,
-        `blockquote--${align}`
-      )}${appendClass(
-        padding && padding !== "default",
-        `blockquote--${padding}`
-      )}${appendClass(className)}`}
+      className={cx(
+        {
+          [`blockquote--${color}`]: color,
+          [`blockquote--${align}`]: align,
+          [`blockquote--${padding}`]: padding && padding !== "default",
+        },
+        className
+      )}
       {...props}
       ref={ref}
     >

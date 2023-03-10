@@ -26,7 +26,6 @@ export * from "./Conditional";
 export * from "./Steps";
 export * from "./VerticalCenter";
 export * from "./Textarea";
-export * from "./VariantSelector";
 export * from "./Radio";
 export * from "./InputChips";
 export * from "./Select";

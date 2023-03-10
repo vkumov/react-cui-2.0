@@ -1,7 +1,6 @@
 import React, {
   forwardRef,
   isValidElement,
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -14,6 +13,7 @@ import React, {
   type ReactHTMLElement,
   type ReactNode,
 } from "react";
+import useEvent from "react-use-event-hook";
 import { useMergeRefs } from "use-callback-ref";
 
 import { InputChips } from "src/InputChips";
@@ -155,13 +155,10 @@ export const EditableSelect: FC<FullEditableSelectProps> = forwardRef<
 
     const display = useMemo(() => collectDisplays(children), [children]);
 
-    const handleClick = useCallback(
-      (newState = true) => {
-        if (disabled) return;
-        setOpen(newState);
-      },
-      [disabled]
-    );
+    const handleClick = useEvent((newState = true) => {
+      if (disabled) return;
+      setOpen(newState);
+    });
 
     useEffect(() => {
       if (isOpen) {
@@ -181,25 +178,22 @@ export const EditableSelect: FC<FullEditableSelectProps> = forwardRef<
       }
     }, [isOpen, handleClick]);
 
-    const handleOptionClick = useCallback(
-      (_e, newValue) => {
-        if (multi) {
-          let added = true;
-          setValue((curr) => {
-            if (curr?.includes(newValue)) {
-              added = false;
-              return curr.filter((v) => v !== newValue);
-            } else return (curr || []).concat(newValue);
-          });
-          const r = (added ? onSelect : onDeselect)?.call(undefined, newValue);
-          if (typeof r === "function") r();
-        } else {
-          setValue(newValue);
-        }
-        if (!multi) handleClick(false);
-      },
-      [handleClick, multi, onSelect, onDeselect]
-    );
+    const handleOptionClick = useEvent((_e, newValue) => {
+      if (multi) {
+        let added = true;
+        setValue((curr) => {
+          if (curr?.includes(newValue)) {
+            added = false;
+            return curr.filter((v) => v !== newValue);
+          } else return (curr || []).concat(newValue);
+        });
+        const r = (added ? onSelect : onDeselect)?.call(undefined, newValue);
+        if (typeof r === "function") r();
+      } else {
+        setValue(newValue);
+      }
+      if (!multi) handleClick(false);
+    });
 
     const isSelected = (checkValue) =>
       multi ? value?.includes(checkValue) : value === checkValue;

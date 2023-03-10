@@ -4,8 +4,7 @@ import React, {
   type ForwardRefExoticComponent,
   type HTMLProps,
 } from "react";
-
-import { appendClass as ac } from "src/utils";
+import cx from "classnames";
 
 import "../../css/buttons.css";
 
@@ -70,16 +69,20 @@ let Button: ButtonType;
     ref
   ) =>
     createElement(asLink ? "a" : "button", {
-      className: `btn${ac(
-        size !== "default",
-        `btn--${size}`
-      )} btn--${color}${ac(wide, "btn--wide")}${ac(
-        justified,
-        "btn--justified"
-      )}${ac(icon, "btn--icon")}${ac(circle, "btn--circle")}${ac(
-        selected,
-        "selected"
-      )}${ac(className)}${ac(asLink, "flex-middle flex-center")}`,
+      className: cx(
+        "btn",
+        `btn--${color}`,
+        {
+          [`btn--${size}`]: size !== "default",
+          "btn--wide": wide,
+          "btn--justified": justified,
+          "btn--icon": icon,
+          "btn--circle": circle,
+          selected,
+          "flex-middle flex-center": asLink,
+        },
+        className
+      ),
       style: { ...(style || {}), ...(asLink ? { display: "flex" } : {}) },
       ...(asLink ? {} : { type: type || "button" }),
       ...props,
@@ -101,7 +104,7 @@ Button.Dark = forwardRef((props, ref) => (
 ));
 Button.Ghost = forwardRef(({ fullGhost = false, className, ...props }, ref) => (
   <Button
-    className={`${ac(fullGhost, "btn--full-ghost")}${ac(className)}`}
+    className={cx({ "btn--full-ghost": fullGhost, [className]: className })}
     {...props}
     color="ghost"
     ref={ref}

@@ -1,6 +1,5 @@
-import React, { FC, HTMLProps, forwardRef } from "react";
-
-import { appendClass } from "src/utils";
+import React, { forwardRef, type FC, type HTMLProps } from "react";
+import cx from "classnames";
 
 import "../../css/v-separator.css";
 
@@ -12,12 +11,11 @@ type VSeparatorProps = {
 export const VSeparator: FC<VSeparatorProps> = forwardRef(
   ({ size = "default", compressed = false, className = "", ...props }, ref) => (
     <div
-      className={`v-separator${appendClass(
-        size !== "default",
-        `v-separator--${size}`
-      )}${appendClass(compressed, "v-separator--compressed")}${appendClass(
-        className
-      )}`}
+      className={cx("v-separator", {
+        [`v-separator--${size}`]: size !== "default",
+        ["v-separator--compressed"]: compressed,
+        [className]: className,
+      })}
       {...props}
       ref={ref}
     />

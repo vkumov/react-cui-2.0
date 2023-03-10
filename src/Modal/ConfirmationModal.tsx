@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FC, ReactNode } from "react";
+import React, { type ChangeEvent, type FC, type ReactNode } from "react";
 
-import { Button, ButtonColor } from "src/Button";
+import { Button, type ButtonColor } from "src/Button";
 
 import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
@@ -11,7 +11,7 @@ import type { DontAskAgain } from "./calls";
  * Confirmation Modal
  */
 
-type ConfirmationModalProps = {
+export type ConfirmationModalProps = {
   isOpen?: boolean;
   confirmHandle: (dontAskAgain?: boolean) => boolean | Promise<boolean>;
   closeHandle: () => void;

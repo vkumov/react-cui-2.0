@@ -27,6 +27,7 @@ module.exports = {
         extendDefaults: true,
       },
     ],
+    "@typescript-eslint/no-unused-vars": "error",
   },
   plugins: ["@typescript-eslint", "react-hooks"],
   overrides: [

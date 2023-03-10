@@ -1,7 +1,7 @@
 import React, { type ReactNode } from "react";
 
 import type { ButtonColor } from "src/Button";
-import { eventManager } from "src/utils/eventManager";
+import { EventModalProps, eventManager } from "src/utils/eventManager";
 
 import type { ModalProps } from "./Modal";
 import type { PromptModalProps } from "./PromptModal";
@@ -133,14 +133,11 @@ interface ModalButton {
   ) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type PropsWithCloseModal<P = {}> = P & { close: () => void };
-
-type FullBodyRender = (props: { close: () => void }) => ReactNode;
 
 interface DynamicModalOptions {
   title: ReactNode;
-  fullBody?: ReactNode | FullBodyRender;
+  fullBody?: Extract<EventModalProps, { modalType: "dynamic" }>["fullBody"];
   body?: ReactNode;
   buttons?: ModalButton[];
   modalProps?: Partial<ModalProps>;

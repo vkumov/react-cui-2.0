@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { useDarkMode } from "storybook-dark-mode";
-import { DynamicModal } from "../src/Modal";
+
 import { FloatingProvider } from "../src/FloatingProvider";
+import { DynamicModal } from "../src/Modal";
 
 function ThemeWrapper(props) {
   const dark = useDarkMode();
@@ -26,12 +27,10 @@ export const decorators = [
           style={{ overflow: "visible" }}
           data-theme={dark ? "dark" : "default"}
         >
-          <FloatingProvider rootRef={bodyRef}>
-            <div className="base-margin">
-              <Story />
-              <DynamicModal />
-            </div>
-          </FloatingProvider>
+          <div className="base-margin">
+            <Story />
+            <DynamicModal />
+          </div>
         </div>
       </ThemeWrapper>
     );

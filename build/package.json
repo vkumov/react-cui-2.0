@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "5.3.17",
+  "version": "6.0.0",
   "description": "React library for CUI 2.0",
   "module": "./index.esm.js",
   "main": "./cjs/index.cjs.js",
@@ -13,7 +13,7 @@
     "react-dom": "^17.0.2 || ^18.0.0"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.19.1",
+    "@floating-ui/react": "^0.20.1",
     "bytes": "^3.1.2",
     "classnames": "^2.3.2",
     "eventemitter3": "^5.0.0",
@@ -23,6 +23,7 @@
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",
     "react-transition-group": "^4.4.5",
+    "react-use-event-hook": "^0.9.5",
     "use-callback-ref": "^1.3.0"
   },
   "private": false,
@@ -210,10 +211,6 @@
       "types": "./VSeparator/index.d.ts",
       "import": "./VSeparator/index.js"
     },
-    "./VariantSelector": {
-      "types": "./VariantSelector/index.d.ts",
-      "import": "./VariantSelector/index.js"
-    },
     "./VerticalCenter": {
       "types": "./VerticalCenter/index.d.ts",
       "import": "./VerticalCenter/index.js"
@@ -230,6 +227,10 @@
       "types": "./hooks/useClickOutside.d.ts",
       "import": "./hooks/useClickOutside.js"
     },
+    "./hooks/useCustomDismiss": {
+      "types": "./hooks/useCustomDismiss.d.ts",
+      "import": "./hooks/useCustomDismiss.js"
+    },
     "./hooks/useDisclosure": {
       "types": "./hooks/useDisclosure.d.ts",
       "import": "./hooks/useDisclosure.js"
@@ -237,6 +238,10 @@
     "./hooks/useIsomorphicEffect": {
       "types": "./hooks/useIsomorphicEffect.d.ts",
       "import": "./hooks/useIsomorphicEffect.js"
+    },
+    "./hooks/useKeyPress": {
+      "types": "./hooks/useKeyPress.d.ts",
+      "import": "./hooks/useKeyPress.js"
     },
     "./hooks/useLockedBody": {
       "types": "./hooks/useLockedBody.d.ts",

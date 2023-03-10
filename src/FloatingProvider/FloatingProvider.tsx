@@ -27,7 +27,7 @@ export const useFloatingContext = ({
   const ctx = useContext(FloatingContext);
 
   root ??= ctx?.rootRef?.current || undefined;
-  portalId ??= typeof root === "undefined" ? fallbackPortalId : undefined;
+  portalId ??= fallbackPortalId ?? null;
 
   return useMemo(() => ({ root, id: portalId }), [root, portalId]);
 };
