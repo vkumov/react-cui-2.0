@@ -146,8 +146,8 @@ declare module "@vkumov/react-cui-2.0/Loader" {
 }
 
 declare module "@vkumov/react-cui-2.0/Modal" {
-  import { ConfirmationListener, ConfirmationModal, DynamicModal, Modal, ModalBody, ModalFooter, ModalHeader, PromptModal, confirmation, dynamicModal, notification, notificationModal, prompt } from "@vkumov/react-cui-2.0";
-  export { ConfirmationListener, ConfirmationModal, DynamicModal, Modal, ModalBody, ModalFooter, ModalHeader, PromptModal, confirmation, dynamicModal, notification, notificationModal, prompt };
+  import { ConfirmationListener, ConfirmationModal, DynamicModal, Modal, ModalBody, ModalFooter, ModalHeader, ModalProvider, PromptModal, confirmation, dynamicModal, notification, notificationModal, prompt, useModalProvider } from "@vkumov/react-cui-2.0";
+  export { ConfirmationListener, ConfirmationModal, DynamicModal, Modal, ModalBody, ModalFooter, ModalHeader, ModalProvider, PromptModal, confirmation, dynamicModal, notification, notificationModal, prompt, useModalProvider };
 }
 
 declare module "@vkumov/react-cui-2.0/Pagination" {

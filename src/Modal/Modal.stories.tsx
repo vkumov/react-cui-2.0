@@ -9,11 +9,35 @@ import {
   ModalFooter,
   ModalSize,
   confirmation,
+  dynamicModal,
 } from "./index";
 
 export default {
   title: "Components/Modal",
 } as Meta;
+
+const InnerModal: React.FC = () => {
+  const onOpen = () => {
+    dynamicModal({
+      title: "I'm nested",
+      fullBody: ({ close }) => (
+        <>
+          <ModalBody>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio
+            rerum saepe magnam, iusto, ab totam recusandae ipsum obcaecati
+            officiis impedit accusantium hic unde deserunt ratione dolores,
+            consequuntur et quo! Culpa?
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={close}>OK</Button>
+          </ModalFooter>
+        </>
+      ),
+    });
+  };
+
+  return <Button.Light onClick={onOpen}>Open small nested modal</Button.Light>;
+};
 
 export const Modals: Story = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,6 +125,9 @@ export const Modals: Story = () => {
       >
         <ModalBody>
           <div>Modal body goes here</div>
+          <div className="base-margin-top base-margin-bottom">
+            <InnerModal />
+          </div>
           <Checkbox checked={conf} onChange={() => setConf((c) => !c)}>
             Confirm on close
           </Checkbox>

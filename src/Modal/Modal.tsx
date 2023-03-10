@@ -15,6 +15,7 @@ import {
 } from "@floating-ui/react";
 import cx from "classnames";
 import { Transition } from "react-transition-group";
+import useEvent from "react-use-event-hook";
 
 import { ConditionalWrapper } from "src/Conditional";
 import {
@@ -28,6 +29,7 @@ import { ModalBody } from "./Body";
 import { ModalFooter } from "./Footer";
 import { ModalHeader } from "./Header";
 import sts from "./Modal.module.scss";
+import { useModalProvider } from "./ModalProvider";
 
 /**
  * Modal
@@ -89,14 +91,24 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
 }) => {
   const [maximized, setMaximized] = React.useState(false);
 
-  React.useEffect(() => setMaximized(false), [isOpen]);
+  const nodeId = useFloatingNodeId();
+  const modalCtx = useModalProvider();
+  const notifyCtx = useEvent((o: boolean) => {
+    if (!modalCtx) return;
+    if (o) modalCtx.addRendered(nodeId);
+    else modalCtx.removeRendered(nodeId);
+  });
+
+  React.useEffect(() => {
+    setMaximized(false);
+    notifyCtx(isOpen);
+    return () => notifyCtx(false);
+  }, [isOpen, notifyCtx]);
   const realSize = React.useMemo(
     () => (maximized ? "full" : size),
     [maximized, size]
   );
 
-  const nodeId = useFloatingNodeId();
-  // const parentId = useFloatingParentNodeId();
   const { reference, floating, context } = useFloating({
     open: isOpen,
     onOpenChange: (state) => (!state ? void closeHandle() : void 0),
@@ -108,6 +120,12 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
     if (refElement) reference(refElement);
   }, [refElement]);
 
+  const outsidePress = useEvent((): boolean => {
+    if (!modalCtx) return true;
+    if (modalCtx.lastRendered() === nodeId) return true;
+    return false;
+  });
+
   const { getFloatingProps } = useInteractions([
     useClick(context),
     useRole(context, { role: "dialog" }),
@@ -116,9 +134,9 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
       escapeKey: false,
       ancestorScroll,
       bubbles: false,
-      outsidePress: true,
+      outsidePress: outsidePress,
     }),
-    useCustomDismiss(context, { enabled: autoClose }),
+    useCustomDismiss(context, { enabled: autoClose, modal: true }),
   ]);
 
   const overlayRef = React.useRef(null);

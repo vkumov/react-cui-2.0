@@ -333,7 +333,11 @@ export const Menu = forwardRef<
             nodeRef={floatingNodeRef}
           >
             {(state) => (
-              <FloatingOverlay style={{ zIndex: 50 }}>
+              <FloatingOverlay
+                style={{
+                  zIndex: nested ? 50 : "calc(var(--cui-max-zindex, 1000) + 2)",
+                }}
+              >
                 <FloatingFocusManager
                   context={context}
                   modal={!nested}

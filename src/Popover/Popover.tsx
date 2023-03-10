@@ -183,7 +183,10 @@ export const Popover: FC<PopoverProps> = ({
             nodeRef={transitionRef}
           >
             {(state) => (
-              <FloatingOverlay style={{ zIndex: 50 }} id={nodeId}>
+              <FloatingOverlay
+                style={{ zIndex: "calc(var(--cui-max-zindex, 1000) + 2)" }}
+                id={nodeId}
+              >
                 <FloatingFocusManager
                   context={context}
                   initialFocus={initialFocus ?? (floatingRef as any)}

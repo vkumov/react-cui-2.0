@@ -8,6 +8,8 @@ import {
 } from "@floating-ui/react";
 import useEvent from "react-use-event-hook";
 
+import { useModalProvider } from "src/Modal";
+
 function getDocument(node: Element | null) {
   return node?.ownerDocument || document;
 }
@@ -36,6 +38,7 @@ function getChildren<RT extends ReferenceType = ReferenceType>(
 
 type Options = {
   enabled?: boolean;
+  modal?: boolean;
 };
 
 export function useCustomDismiss<RT extends ReferenceType = ReferenceType>(
@@ -46,9 +49,10 @@ export function useCustomDismiss<RT extends ReferenceType = ReferenceType>(
     nodeId,
     elements: { floating },
   }: FloatingContext<RT>,
-  { enabled = true }: Options = {}
+  { enabled = true, modal = false }: Options = {}
 ): ElementProps {
   const tree = useFloatingTree();
+  const modalCtx = useModalProvider();
 
   const closeOnEscapeKeyDown = useEvent(
     (event: React.KeyboardEvent<Element> | KeyboardEvent) => {
@@ -61,6 +65,7 @@ export function useCustomDismiss<RT extends ReferenceType = ReferenceType>(
       event.stopPropagation();
 
       if (children.length > 0) return;
+      if (modal && modalCtx && modalCtx.lastRendered() !== nodeId) return;
 
       events.emit("dismiss", {
         type: "escapeKey",

@@ -1,2 +1,2 @@
-import e from"react";const t=({children:l})=>e.createElement("div",{className:"content-fluid",style:{display:"flex",minHeight:"100vh",flexDirection:"column"}},e.createElement("main",{style:{display:"flex",flexDirection:"column",flex:1}},l));export{t as VerticalCenter};
+import{jsx as e}from"react/jsx-runtime";const i=({children:l})=>e("div",{className:"content-fluid",style:{display:"flex",minHeight:"100vh",flexDirection:"column"},children:e("main",{style:{display:"flex",flexDirection:"column",flex:1},children:l})});export{i as VerticalCenter};
 //# sourceMappingURL=index.js.map

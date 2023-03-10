@@ -18,8 +18,8 @@ import { Modal } from "./Modal";
 import { PromptModal } from "./PromptModal";
 
 export type DynamicModalProps = {
-  root?: ComponentProps<typeof FloatingPortal>["root"];
-  id?: ComponentProps<typeof FloatingPortal>["id"];
+  portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
+  portalId?: ComponentProps<typeof FloatingPortal>["id"];
   closeTimeout?: number;
 };
 
@@ -232,8 +232,8 @@ export const DynamicModal: FC<DynamicModalProps> = ({
   return (
     <FloatingTreeWrapper
       withPortal={true}
-      portalId={props.id}
-      portalRoot={props.root}
+      portalId={props.portalId ?? "--cui-modal-portal"}
+      portalRoot={props.portalRoot}
     >
       {modals.length > 0
         ? modals.map((modal, idx) => {

@@ -8,15 +8,18 @@ Import `cui-standard.min.css` in your code directly (for NextJS).
 Bootstrap code:
 ```jsx
 import React from "react";
-import { Portal, ToastContainer, DynamicModal, } from "@vkumov/react-cui-2.0";
+import { Portal, ToastContainer, ModalProvider } from "@vkumov/react-cui-2.0";
 
 import "../public/css/cui-standard.min.css";
 // importing additional styles
+// is is required to import both cui-standard.min.css and styles from this package
 import "@vkumov/react-cui-2.0/css/styles.css";
 
 const App = () => {
   return <>
-    {/* Your code */}
+    <ModalProvider>
+      {/* Your code */}
+    </ModalProvider>
     <Portal id="toast-portal">
       <ToastContainer
         pauseOnFocusLoss={false}
@@ -24,8 +27,6 @@ const App = () => {
         autoClose={2000}
       />
     </Portal>
-    {/* for dynamic modals to work */}
-    <DynamicModal />
   </>
 } 
 ```

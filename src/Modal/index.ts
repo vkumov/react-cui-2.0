@@ -8,3 +8,4 @@ export * from "./ConfirmationModal";
 export * from "./PromptModal";
 export * from "./DynamicModal";
 export * from "./calls";
+export * from "./ModalProvider";

@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, HTMLProps, ReactNode, ComponentProps } from 'react';
+import React, { FC, PropsWithChildren, HTMLProps, ReactNode, ComponentProps, MutableRefObject } from 'react';
 import { ReferenceType, FloatingPortal, FloatingOverlay, useDismiss } from '@floating-ui/react';
 import { Transition } from 'react-transition-group';
 
@@ -279,10 +279,25 @@ interface PromptModalProps<T extends string | number> {
 declare function PromptModal<T extends string | number>({ title, question, onSave: cb, onClose, initial, type, isOpen, hint, validate, autoClose, }: PropsWithChildren<PromptModalProps<T>>): JSX.Element;
 
 type DynamicModalProps = {
-    root?: ComponentProps<typeof FloatingPortal>["root"];
-    id?: ComponentProps<typeof FloatingPortal>["id"];
+    portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
     closeTimeout?: number;
 };
 declare const DynamicModal: FC<DynamicModalProps>;
 
-export { DynamicModal as ConfirmationListener, ConfirmationModal, ConfirmationModalProps, DontAskAgain, DynamicModal, DynamicModalProps, Modal$1 as Modal, ModalBody$1 as ModalBody, ModalFooter$1 as ModalFooter, ModalHeader$1 as ModalHeader, ModalProps$1 as ModalProps, ModalSize$1 as ModalSize, PromptModal, PromptModalProps, PropsWithCloseModal, confirmation, dynamicModal, notificationModal as notification, notificationModal, prompt };
+type ModalContextProps = {
+    addRendered: (id: string) => void;
+    removeRendered: (id: string) => void;
+    lastRendered: () => string | null;
+    rendered: MutableRefObject<string[]>;
+};
+type ModalProviderProps = {
+    portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
+    portalId?: ComponentProps<typeof FloatingPortal>["id"];
+    closeTimeout?: number;
+    children: ReactNode;
+};
+declare const useModalProvider: () => ModalContextProps;
+declare const ModalProvider: FC<ModalProviderProps>;
+
+export { DynamicModal as ConfirmationListener, ConfirmationModal, ConfirmationModalProps, DontAskAgain, DynamicModal, DynamicModalProps, Modal$1 as Modal, ModalBody$1 as ModalBody, ModalFooter$1 as ModalFooter, ModalHeader$1 as ModalHeader, ModalProps$1 as ModalProps, ModalProvider, ModalProviderProps, ModalSize$1 as ModalSize, PromptModal, PromptModalProps, PropsWithCloseModal, confirmation, dynamicModal, notificationModal as notification, notificationModal, prompt, useModalProvider };

@@ -1,2 +1,2 @@
-import m,{forwardRef as o}from"react";import{appendClass as p}from"../utils/index.js";const t=o(({children:e,className:r,...a},s)=>m.createElement("span",{className:`kbd${p(r)}`,ref:s,...a},e));export{t as Kbd};
+import{jsx as e}from"react/jsx-runtime";import{forwardRef as m}from"react";import{appendClass as p}from"../utils/index.js";const d=m(({children:r,className:o,...s},a)=>e("span",{className:`kbd${p(o)}`,ref:a,...s,children:r}));export{d as Kbd};
 //# sourceMappingURL=index.js.map

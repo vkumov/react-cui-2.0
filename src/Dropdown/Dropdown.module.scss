@@ -34,7 +34,7 @@
   }
 }
 
-.dropdown {
+:global(.cui) .dropdown {
   & > :global(.dropdown__menu) {
     position: unset !important;
   }

@@ -1,2 +1,2 @@
-import s from"react";import{createPortal as l}from"react-dom";import{usePortal as m}from"../hooks/usePortal.js";const c={zIndex:1,position:"relative"};function p(e){const{children:o,zIndex:r,target:n,className:i,position:a}={...c,...e},t=m(n);return t?l(s.createElement("div",{className:i,style:{position:a,zIndex:r}},o),t):null}export{p as Portal};
+import{jsx as a}from"react/jsx-runtime";import{createPortal as l}from"react-dom";import{usePortal as c}from"../hooks/usePortal.js";const m={zIndex:1,position:"relative"};function p(t){const{children:e,zIndex:r,target:i,className:n,position:s}={...m,...t},o=c(i);return o?l(a("div",{className:n,style:{position:s,zIndex:r},children:e}),o):null}export{p as Portal};
 //# sourceMappingURL=index.js.map

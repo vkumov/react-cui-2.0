@@ -1,2 +1,2 @@
-import c from"react";import{appendClass as o}from"../utils/index.js";const l=({icon:s,size:e=null,className:a=null,...n})=>c.createElement("span",{className:`icon-${s}${o(a)}${o(e,`icon-size-${e}`)}`,...n});export{l as Icon};
+import{jsx as i}from"react/jsx-runtime";import{appendClass as o}from"../utils/index.js";const l=({icon:n,size:s=null,className:a=null,...c})=>i("span",{className:`icon-${n}${o(a)}${o(s,`icon-size-${s}`)}`,...c});export{l as Icon};
 //# sourceMappingURL=index.js.map

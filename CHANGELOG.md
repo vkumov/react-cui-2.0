@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.1.0
+
+- Add `ModalProvider`: instead of adding `<DynamicModal />` an app should be wrapped in `<ModalProvider>{ ... }</ModalProvider>`
+
+## 6.0.1
+
+- Fix z-index
+
 ## 6.0.0
 
 - **BREAKING:** `VariantSelector` removed (can be easily recreated using `Dropdown`)

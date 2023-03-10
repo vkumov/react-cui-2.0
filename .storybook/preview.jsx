@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDarkMode } from "storybook-dark-mode";
 
-import { FloatingProvider } from "../src/FloatingProvider";
-import { DynamicModal } from "../src/Modal";
+import { ModalProvider } from "../src/Modal";
 
 function ThemeWrapper(props) {
   const dark = useDarkMode();
@@ -28,8 +27,9 @@ export const decorators = [
           data-theme={dark ? "dark" : "default"}
         >
           <div className="base-margin">
-            <Story />
-            <DynamicModal />
+            <ModalProvider>
+              <Story />
+            </ModalProvider>
           </div>
         </div>
       </ThemeWrapper>
