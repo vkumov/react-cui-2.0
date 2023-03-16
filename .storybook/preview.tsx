@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { Preview } from "@storybook/react";
+import { themes } from "@storybook/theming";
 import { useDarkMode } from "storybook-dark-mode-v7";
 
 import { ModalProvider } from "../src/Modal";
+import { DocsContainer } from "./DocsContainer";
 
 function ThemeWrapper(props) {
   const dark = useDarkMode();
@@ -15,6 +17,20 @@ function ThemeWrapper(props) {
 }
 
 const preview: Preview = {
+  parameters: {
+    actions: { argTypesRegex: "^on[A-Z].*" },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
+    },
+    viewMode: "docs",
+    docs: {
+      // theme: themes.dark,
+      container: DocsContainer,
+    },
+  },
   decorators: [
     (render) => {
       const bodyRef = useRef(null);

@@ -23,12 +23,12 @@ const folderBuilds = glob
   .flat();
 
 const config = [
-  // {
-  //   input: "./build/index.d.ts",
-  //   output: [{ file: "build/index.d.ts", format: "es" }],
-  //   plugins: [dts()],
-  // },
   ...folderBuilds,
+  {
+    input: "./build/index.d.ts",
+    output: [{ file: "build/index-combined.d.ts", format: "es" }],
+    plugins: [dts()],
+  },
 ];
 
 export default config;

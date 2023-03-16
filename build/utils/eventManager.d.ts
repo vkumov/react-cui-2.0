@@ -1,6 +1,6 @@
 import React, { HTMLProps, ReactNode, ComponentProps, FC, PropsWithChildren } from 'react';
 import EventEmitter from 'eventemitter3';
-import { ReferenceType, FloatingPortal, FloatingOverlay, useDismiss } from '@floating-ui/react';
+import { ReferenceType, FloatingPortal, FloatingOverlay, UseDismissProps } from '@floating-ui/react';
 import { Transition } from 'react-transition-group';
 
 type ButtonColor = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
@@ -56,14 +56,14 @@ interface ModalProps$1 {
     autoClose?: boolean;
     left?: boolean;
     animationDuration?: ComponentProps<typeof Transition>["timeout"];
-    dialogProps?: React.ComponentProps<"div">;
-    contentProps?: React.ComponentProps<"div">;
+    dialogProps?: ComponentProps<"div">;
+    contentProps?: ComponentProps<"div">;
     maximize?: boolean;
     refElement?: ReferenceType;
     root?: ComponentProps<typeof FloatingPortal>["root"];
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
     lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
-    ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
+    ancestorScroll?: UseDismissProps["ancestorScroll"];
 }
 type ModalSizes$1 = {
     Small: FC<ModalProps$1>;

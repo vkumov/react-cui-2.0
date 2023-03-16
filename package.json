@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "description": "React library for CUI 2.0",
   "module": "build/index.esm.js",
   "main": "build/cjs/index.cjs.js",
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "rm -rf build && rollup -c",
     "build:dts": "rollup --config dts-rollup.config.mjs",
-    "postbuild": "node --experimental-specifier-resolution=node ./builder.js",
+    "postbuild": "node --experimental-specifier-resolution=node ./builder.mjs",
     "live": "npm publish ./build",
     "sb": "storybook dev -p 6006 -s ./public",
     "sb:https": "storybook dev -p 6006 --https --ssl-cert ./ssl/cert.pem --ssl-key ./ssl/private.key",
@@ -94,7 +94,6 @@
     "sass-loader": "^13.2.0",
     "storybook": "^7.0.0-rc.3",
     "storybook-addon-code-editor": "^1.0.1",
-    "storybook-dark-mode": "^1.1.2",
     "storybook-dark-mode-v7": "^3.0.0-alpha.0",
     "style-loader": "^3.3.2",
     "ts-dedent": "^2.2.0",

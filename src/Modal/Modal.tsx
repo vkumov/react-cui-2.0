@@ -12,6 +12,7 @@ import {
   useInteractions,
   useRole,
   type ReferenceType,
+  type UseDismissProps,
 } from "@floating-ui/react";
 import cx from "classnames";
 import { Transition } from "react-transition-group";
@@ -47,14 +48,14 @@ export interface ModalProps {
   autoClose?: boolean;
   left?: boolean;
   animationDuration?: ComponentProps<typeof Transition>["timeout"];
-  dialogProps?: React.ComponentProps<"div">;
-  contentProps?: React.ComponentProps<"div">;
+  dialogProps?: ComponentProps<"div">;
+  contentProps?: ComponentProps<"div">;
   maximize?: boolean;
   refElement?: ReferenceType;
   root?: ComponentProps<typeof FloatingPortal>["root"];
   portalId?: ComponentProps<typeof FloatingPortal>["id"];
   lockScroll?: ComponentProps<typeof FloatingOverlay>["lockScroll"];
-  ancestorScroll?: Parameters<typeof useDismiss>[1]["ancestorScroll"];
+  ancestorScroll?: UseDismissProps["ancestorScroll"];
 }
 
 type ModalSizes = {

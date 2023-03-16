@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.2
+
+- Types
+
 ## 6.1.1
 
 - Switch to Storybook v7 & improve docs

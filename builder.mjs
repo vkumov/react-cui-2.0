@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
-const { resolve, join, basename } = require("path");
-const {
-  readFile,
-  writeFile,
-  copy,
-  appendFileSync,
-  remove,
-} = require("fs-extra");
-const glob = require("fast-glob");
-var replace = require("replace");
-const { spawn } = require("node:child_process");
-const chalk = require("chalk");
+
+import { spawn } from "node:child_process";
+import { basename, join, resolve } from "path";
+import chalk from "chalk";
+import glob from "fast-glob";
+import fsExtra from "fs-extra";
+import replace from "replace";
+
+const { appendFileSync, copy, readFile, remove, writeFile, moveSync } = fsExtra;
 
 const packagePath = process.cwd();
 const distPath = join(packagePath, "./build");
+
+const packageData = JSON.parse(
+  await readFile(resolve(packagePath, "./package.json"), "utf8")
+);
 
 const writeJson = (targetPath, obj) =>
   writeFile(targetPath, JSON.stringify(obj, null, 2), "utf8");
@@ -30,23 +31,16 @@ function globJsFiles(bn) {
 
 async function createPackageFile() {
   console.log(chalk.blue(`Creating package.json`));
-  const packageData = await readFile(
-    resolve(packagePath, "./package.json"),
-    "utf8"
-  );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { scripts, devDependencies, overrides, ...packageOthers } =
-    JSON.parse(packageData);
+    structuredClone(packageData);
 
   const main_file = `./cjs/${basename(packageOthers.main)}`;
   const module_file = `./${basename(packageOthers.module)}`;
 
   const regx = new RegExp("\\./([^\\/]+)/(.*)\\.js");
   const all = globJsFiles(basename(packageOthers.module));
-
-  // console.log(regx);
-  // console.log(all);
 
   const exps = all.reduce((comb, curr) => {
     const m = curr.match(regx);
@@ -101,38 +95,45 @@ async function includeFileInBuild(file) {
 }
 
 async function generateDeclarations() {
-  console.log(chalk.blue(`Generating declarations in ./build/index.d.ts`));
-  const packageData = await readFile(
-    resolve(packagePath, "./package.json"),
-    "utf8"
+  console.log(
+    chalk.blue(`Generating declarations in ./build/index-combined.d.ts`)
   );
-  const { module: m, name: packageName } = JSON.parse(packageData);
+  const { module: m, name: packageName } = structuredClone(packageData);
   const all = globJsFiles(basename(m)).filter(
     (f) => !f.includes("/cjs/") && !f.includes("/typings/")
   );
 
-  const declarations = await Promise.all(
-    all.map(async (f) => {
-      const m = await import(join(resolve("./build/"), f));
-      const mName = f
-        .replace(/^\.\//, "")
-        .replace(/index\.js$/, "")
-        .replace(/\.js$/, "")
-        .replace(/\/$/, "");
-      // const bName = basename(f);
-      const keys = Object.keys(m);
-      const declaration = `
+  const mtotal = await import(join(resolve("./build/"), "index.esm.js"));
+  const allExports = new Set(Object.keys(mtotal));
+
+  const declarations = (
+    await Promise.all(
+      all.map(async (f) => {
+        const m = await import(join(resolve("./build/"), f));
+        const mName = f
+          .replace(/^\.\//, "")
+          .replace(/index\.js$/, "")
+          .replace(/\.js$/, "")
+          .replace(/\/$/, "");
+        // const bName = basename(f);
+        const keys = Object.keys(m).filter((k) => allExports.has(k));
+        if (!keys.length) return null;
+        const declaration = `
 declare module "${packageName}/${mName}" {
   import { ${keys.join(", ")} } from "${packageName}";
   export { ${keys.join(", ")} };
 }`;
-      return declaration;
-    })
-  );
+        return declaration;
+      })
+    )
+  ).filter(Boolean);
 
-  appendFileSync(resolve("./build/index.d.ts"), declarations.join("\n"));
+  appendFileSync(
+    resolve("./build/index-combined.d.ts"),
+    declarations.join("\n")
+  );
   console.log(
-    chalk.green.bold(`✓ Generated declarations in ./build/index.d.ts`)
+    chalk.green.bold(`✓ Generated declarations in ./build/index-combined.d.ts`)
   );
 }
 
@@ -226,6 +227,36 @@ async function generateDts() {
   console.log(chalk.green.bold(`✓ Merged per-folder declarations`));
 }
 
+async function wrapIndexDts() {
+  const { name: packageName } = structuredClone(packageData);
+
+  const file = "./build/index-combined.d.ts";
+  console.log(chalk.blue(`Cleaning and wrapping "${file}"`));
+
+  replace({
+    regex: new RegExp(`/// <reference types="react" />\n`),
+    replacement: "",
+    paths: ["./build/"],
+    include: "index-combined.d.ts",
+    recursive: true,
+    silent: false,
+  });
+
+  replace({
+    regex: /declare\s+/g,
+    replacement: "",
+    paths: ["./build/"],
+    include: "index-combined.d.ts",
+    recursive: true,
+    silent: false,
+  });
+
+  const content = await readFile(file, "utf-8");
+  await writeFile(file, `declare module "${packageName}" {\n${content}\n}\n`);
+
+  console.log(chalk.green.bold(`✓ Cleaned and wrapped`));
+}
+
 async function cleanup() {
   console.log(chalk.blue(`Cleaning`));
 
@@ -239,6 +270,12 @@ async function cleanup() {
   console.log(chalk.green.bold(`✓ Removed unused *.d.ts files`));
 }
 
+async function replaceIndex() {
+  moveSync("./build/index-combined.d.ts", "./build/index.d.ts", {
+    overwrite: true,
+  });
+}
+
 async function run() {
   try {
     await createPackageFile();
@@ -248,10 +285,13 @@ async function run() {
     await replaceAndRemove();
     await generateDts();
 
+    await wrapIndexDts();
+
     await generateDeclarations();
     await removeTypeModule();
 
     await cleanup();
+    await replaceIndex();
   } catch (err) {
     console.error(err);
     process.exit(1);
