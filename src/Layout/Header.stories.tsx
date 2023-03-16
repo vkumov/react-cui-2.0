@@ -1,30 +1,27 @@
 import React from "react";
-import { Header as LibHeader, HeaderPanel, HeaderTitle } from "./index";
-import { Story, Meta } from "@storybook/react/types-6-0";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Header, HeaderPanel, HeaderTitle } from "./index";
 
 export default {
   title: "Components/Layout/Header",
-  component: LibHeader,
+  component: Header,
   subcomponents: { HeaderPanel, HeaderTitle },
-} as Meta;
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
+} as Meta<typeof Header>;
 
-// const colors: DotsColor[] = [
-//   "primary",
-//   "secondary",
-//   "tertiary",
-//   "success",
-//   "info",
-//   "warning",
-//   "warning-alt",
-//   "danger",
-//   "dark",
-//   "light",
-// ];
+type Story = StoryObj<typeof Header>;
 
-export const Header: Story = () => (
-  <div className="section base-margin-top dbl-margin-bottom">
-    <h3 className="display-5 dbl-margin-top">Header</h3>
-    <LibHeader>
+export const Default: Story = {
+  render: (args) => (
+    <Header {...args}>
       <HeaderPanel>
         <HeaderTitle title="Some awesome app" />
       </HeaderPanel>
@@ -39,6 +36,6 @@ export const Header: Story = () => (
         </a>
         <a className="header-item">User Name</a>
       </HeaderPanel>
-    </LibHeader>
-  </div>
-);
+    </Header>
+  ),
+};

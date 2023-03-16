@@ -1,20 +1,28 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { InputChips as LibInputChips, InputChipsProps } from "./index";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { InputChips } from "./index";
 
 export default {
   title: "Components/Textfield/Input Chips",
-  component: LibInputChips,
+  component: InputChips,
 } as Meta;
 
-export const InputChips: Story<InputChipsProps> = (args) => (
-  <div className="section base-margin-top dbl-margin-bottom">
-    <h3 className="display-5">Chips</h3>
-    <LibInputChips {...args} />
-  </div>
-);
+type Story = StoryObj<typeof InputChips>;
 
-InputChips.args = {
-  label: "Enter value",
-  value: ["one", "two", "three"],
+export const Default: Story = {
+  render: (args) => <InputChips {...args} />,
+  args: {
+    label: "Enter value",
+    value: ["one", "two", "three"],
+    chipsColor: "info",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
 };

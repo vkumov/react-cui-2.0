@@ -1,6 +1,5 @@
 import React, { forwardRef } from "react";
-
-import { appendClass as ac } from "src/utils";
+import cx from "classnames";
 
 export type ProgressbarColor =
   | "primary"
@@ -27,19 +26,20 @@ export const Progressbar = forwardRef<HTMLDivElement, ProgressbarProps>(
     {
       size = "default",
       withLabel = false,
-      label = null,
-      color = null,
-      className = null,
+      label,
+      color,
+      className,
       percentage,
       ...props
     },
     ref
   ) => (
     <div
-      className={`progressbar${ac(
-        size !== "default",
-        `progressbar--${size}`
-      )}${ac(color, `progressbar--${color}`)}${ac(className)}`}
+      className={cx("progressbar", {
+        [`progressbar--${size}`]: size !== "default",
+        [`progressbar--${color}`]: color,
+        [className]: className,
+      })}
       data-percentage={percentage}
       {...props}
       ref={ref}

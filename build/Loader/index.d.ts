@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 type DotsColor = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning" | "warning-alt" | "danger" | "dark" | "light";
 type DotsProps = {
@@ -10,6 +10,6 @@ type SpinnerProps = {
     size?: "small" | "default" | "large";
     text?: React.ReactNode;
 };
-declare const Spinner: React.ForwardRefExoticComponent<SpinnerProps & React.RefAttributes<HTMLDivElement>>;
+declare const Spinner: FC<SpinnerProps>;
 
 export { Dots, DotsColor, Spinner };

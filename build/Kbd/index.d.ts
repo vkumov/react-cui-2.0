@@ -1,5 +1,5 @@
-import React from 'react';
+import { FC, HTMLProps } from 'react';
 
-declare const Kbd: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLSpanElement>, "ref"> & React.RefAttributes<HTMLSpanElement>>;
+declare const Kbd: FC<HTMLProps<HTMLSpanElement>>;
 
 export { Kbd };

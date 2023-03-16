@@ -1,15 +1,24 @@
 import React, { ComponentProps, useCallback } from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
+import { Meta, StoryFn } from "@storybook/react";
+import dedent from "ts-dedent";
 
 import { Button } from "../Button";
-import { toast, Toast as T, ToastContainer, ToastProps } from "./index";
+import { Toast, ToastContainer, ToastProps, toast } from "./index";
 
 export default {
   title: "Components/Toast",
-  component: T,
-} as Meta;
+  component: Toast,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
+} as Meta<typeof Toast>;
 
-export const Toast: Story<
+export const Default: StoryFn<
   ToastProps &
     Pick<
       ComponentProps<typeof ToastContainer>,
@@ -55,42 +64,54 @@ export const Toast: Story<
   );
 };
 
-Toast.parameters = {
+Default.parameters = {
   docs: {
     source: {
-      code: `<Button.Primary onClick={() => toast(type, title, message, copyError)}>
-  Show toast
-</Button.Primary>
-
-// Loading toast
-const showLoadingToast = useCallback(() => {
-  const id = toast.loading(
-    "Loading",
-    "This is a loading toast, will change after 5 seconds"
-  );
-  setTimeout(() => {
-    toast.update(
-      id,
-      {
-        type: "success",
-        title: "Done",
-        message: "All loaded! Closing in 2 seconds",
-      },
-      { autoClose: 2000 }
-    );
-  }, 5000);
-}, []);
-
-<Button.Primary onClick={showLoadingToast}>
-  Show loading toast
-</Button.Primary>
-`,
+      code: dedent`const Component = ({ type, title, message, copyError }) => {
+        const showLoadingToast = useCallback(() => {
+          const id = toast.loading(
+            "Loading",
+            "This is a loading toast, will change after 5 seconds"
+          );
+          setTimeout(() => {
+            toast.update(
+              id,
+              {
+                type: "success",
+                title: "Done",
+                message: "All loaded! Closing in 2 seconds",
+              },
+              { autoClose: 2000 }
+            );
+          }, 5000);
+        }, []);
+      
+        return (
+          <>
+            <div className="section base-margin-top dbl-margin-bottom">
+              <h3 className="display-5">Toast</h3>
+              <Button.Primary onClick={() => toast(type, title, message, copyError)}>
+                Show toast
+              </Button.Primary>
+      
+              <p>Check source code to see how toasts called</p>
+            </div>
+            <div className="section base-margin-top dbl-margin-bottom">
+              <h3 className="display-5">Loding toast</h3>
+              <Button.Primary onClick={showLoadingToast}>
+                Show loading toast
+              </Button.Primary>
+            </div>
+            <ToastContainer />
+          </>
+        );
+      }`,
       language: "tsx",
     },
   },
 };
 
-Toast.args = {
+Default.args = {
   title: "Toast title",
   message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
   type: "info",
@@ -99,7 +120,7 @@ Toast.args = {
   shadow: "lg",
 };
 
-Toast.argTypes = {
+Default.argTypes = {
   position: {
     options: [
       "top-right",

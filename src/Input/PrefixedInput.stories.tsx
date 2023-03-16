@@ -1,24 +1,28 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
+import type { Meta, StoryObj } from "@storybook/react";
+
 import { Input } from "./index";
 
 export default {
   title: "Components/Textfield/Prefixed",
   component: Input,
-} as Meta;
+} as Meta<typeof Input>;
 
-export const Prefixed: Story = () => (
-  <div className="section base-margin-top dbl-margin-bottom">
-    <h3 className="display-5">Prefixed</h3>
-    <Input label="URL" prefix="http://" placeholder="mysite.com" />
-  </div>
-);
+type Story = StoryObj<typeof Input>;
 
-Prefixed.parameters = {
-  docs: {
-    source: {
-      code: `<Input label="URL" prefix="http://" placeholder="mysite.com" />`,
-      language: "tsx",
+export const Prefixed: Story = {
+  render: (args) => <Input {...args} />,
+  args: {
+    placeholder: "mysite.com",
+    prefix: "http://",
+    label: "URL",
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
     },
   },
 };

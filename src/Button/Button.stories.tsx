@@ -1,53 +1,183 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { Button as Btn, ButtonProps } from "./index";
+import type { ArgTypes, Meta, Parameters, StoryObj } from "@storybook/react";
+
+import { Button, ButtonProps } from "./index";
 
 export default {
   title: "Components/Button",
-  component: Btn,
-} as Meta;
+  component: Button,
+  subcomponents: { "Button.Danger": Button.Danger },
+} as Meta<ButtonProps>;
 
-export const Button: Story<ButtonProps> = (args) => {
-  const [ref, setRef] = React.useState(null);
+type Story = StoryObj<ButtonProps>;
 
-  React.useEffect(() => {
-    console.log("Got the refs");
-    console.log({ ref });
-  }, [ref]);
-
-  return (
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Button</h3>
-      <Btn {...args} ref={setRef}>
-        {args.icon ? <span className="icon-check" /> : "Button"}
-      </Btn>
-    </div>
-  );
-};
-
-Button.args = {
-  color: "primary",
-  size: "default",
-};
-
-Button.argTypes = {
-  color: {
-    options: [
-      "primary",
-      "secondary",
-      "success",
-      "dark",
-      "ghost",
-      "link",
-      "light",
-      "danger",
-    ],
-    type: { name: "string", required: false },
-    control: "select",
-  },
+const allArgs: Partial<ArgTypes<ButtonProps>> = {
   size: {
     options: ["small", "default", "large"],
-    type: { name: "string", required: false },
-    control: "radio",
+    control: { type: "radio" },
   },
+  wide: { type: "boolean" },
+  justified: { type: "boolean" },
+  circle: { type: "boolean" },
+  asLink: { type: "boolean" },
+  selected: { type: "boolean" },
+  className: { type: "string" },
+  icon: { type: "boolean" },
+};
+
+const argsDefaults: Partial<ButtonProps> = {
+  size: "default",
+  children: "Button, click me",
+};
+
+const parameters: Parameters = {
+  docs: {
+    source: {
+      language: "tsx",
+      excludeDecorators: true,
+    },
+  },
+};
+
+export const Default: Story = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button>
+    );
+  },
+  args: {
+    color: "primary",
+    ...argsDefaults,
+  },
+  argTypes: {
+    color: {
+      options: [
+        "primary",
+        "secondary",
+        "success",
+        "dark",
+        "ghost",
+        "link",
+        "light",
+        "danger",
+      ],
+      control: { type: "select" },
+    },
+    ...allArgs,
+  },
+  parameters,
+};
+
+export const BPrimary: StoryObj<typeof Button.Primary> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Primary {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Primary>
+    );
+  },
+  args: argsDefaults,
+  argTypes: allArgs,
+  parameters,
+  name: "Primary",
+};
+
+export const BSecondary: StoryObj<typeof Button.Secondary> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Secondary {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Secondary>
+    );
+  },
+  args: argsDefaults,
+  argTypes: allArgs,
+  parameters,
+  name: "Secondary",
+};
+
+export const BSuccess: StoryObj<typeof Button.Success> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Success {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Success>
+    );
+  },
+  args: argsDefaults,
+  argTypes: allArgs,
+  parameters,
+  name: "Success",
+};
+
+export const BDark: StoryObj<typeof Button.Dark> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Dark {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Dark>
+    );
+  },
+  args: argsDefaults,
+  argTypes: allArgs,
+  parameters,
+  name: "Dark",
+};
+
+export const BGhost: StoryObj<typeof Button.Ghost> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Ghost {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Ghost>
+    );
+  },
+  args: argsDefaults,
+  argTypes: { ...allArgs, fullGhost: { type: "boolean" } },
+  parameters,
+  name: "Ghost",
+};
+
+export const BLink: StoryObj<typeof Button.Link> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Link {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Link>
+    );
+  },
+  args: argsDefaults,
+  argTypes: allArgs,
+  parameters,
+  name: "Link",
+};
+
+export const BLight: StoryObj<typeof Button.Light> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Light {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Light>
+    );
+  },
+  args: argsDefaults,
+  argTypes: allArgs,
+  parameters,
+  name: "Light",
+};
+
+export const BDanger: StoryObj<typeof Button.Danger> = {
+  render: ({ children, ...args }) => {
+    return (
+      <Button.Danger {...args}>
+        {args.icon ? <span className="icon-check" /> : children}
+      </Button.Danger>
+    );
+  },
+  args: argsDefaults,
+  argTypes: allArgs,
+  parameters,
+  name: "Danger",
 };

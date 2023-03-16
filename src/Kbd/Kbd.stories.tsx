@@ -1,25 +1,34 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { Kbd as K } from "./index";
+import type { Meta, StoryObj } from "@storybook/react";
+import dedent from "ts-dedent";
+
+import { Kbd } from "./index";
 
 export default {
   title: "Components/Kbd",
-  component: K,
-} as Meta;
+  component: Kbd,
+} as Meta<typeof Kbd>;
 
-export const Kbd: Story = () => (
-  <div className="section base-margin-top dbl-margin-bottom">
-    <h3 className="display-5">Kbd</h3>
-    <p>Display keyboard button or keys combination</p>
-    <K>⌘</K> + <K>shift</K> + <K>M</K>
-  </div>
-);
+type Story = StoryObj<typeof Kbd>;
 
-Kbd.parameters = {
-  docs: {
-    source: {
-      code: `<Kbd>⌘</Kbd> + <Kbd>shift</Kbd> + <Kbd>M</Kbd>`,
-      language: "tsx",
+export const Default: Story = {
+  render: () => {
+    return (
+      <div>
+        <p>Display keyboard button or keys combination</p>
+        <Kbd>⌘</Kbd> + <Kbd>shift</Kbd> + <Kbd>M</Kbd>
+      </div>
+    );
+  },
+  args: {},
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        code: dedent`<div>
+        <Kbd>⌘</Kbd> + <Kbd>shift</Kbd> + <Kbd>M</Kbd>
+      </div>`,
+      },
     },
   },
 };

@@ -1,3 +1,5 @@
+import { Meta } from '@storybook/addon-docs';
+
 <Meta title="Introduction" />
 
 # React Cisco UI Kit library
@@ -16,17 +18,17 @@ import "../public/css/cui-standard.min.css";
 import "@vkumov/react-cui-2.0/css/styles.css";
 
 const App = () => {
-  return <>
+  return (
     <ModalProvider>
       {/* Your code */}
+      <Portal id="toast-portal">
+        <ToastContainer
+          pauseOnFocusLoss={false}
+          position="top-center"
+          autoClose={2000}
+        />
+      </Portal>
     </ModalProvider>
-    <Portal id="toast-portal">
-      <ToastContainer
-        pauseOnFocusLoss={false}
-        position="top-center"
-        autoClose={2000}
-      />
-    </Portal>
-  </>
-} 
+  );
+};
 ```

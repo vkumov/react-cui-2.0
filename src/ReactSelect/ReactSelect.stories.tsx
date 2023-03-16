@@ -1,12 +1,20 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { ReactSelect as Select, ReactSelectProps } from "./";
-import { CreatableReactSelect, CreatableReactSelectProps } from "./creatable";
+import { ReactSelect as Select } from "./";
+import { CreatableReactSelect } from "./creatable";
 
 export default {
   title: "Components/Select/React Select",
   component: Select,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
 } as Meta;
 
 const options = [
@@ -46,27 +54,8 @@ const groupedOptions = [
   },
 ];
 
-export const ReactSelect: Story<ReactSelectProps> = (args) => {
-  return (
-    <>
-      <div className="section base-margin-top dbl-margin-bottom">
-        <h3 className="display-5">CUI React Select</h3>
-        <div className="row">
-          <div className="col">
-            <Select {...args} />
-          </div>
-        </div>
-      </div>
-      <div className="section base-margin-top dbl-margin-bottom">
-        <h3 className="display-5">CUI React Select Grouped</h3>
-        <div className="row">
-          <div className="col">
-            <Select {...args} options={groupedOptions} />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+export const ReactSelect: StoryFn<typeof Select> = (args) => {
+  return <Select {...args} />;
 };
 
 ReactSelect.parameters = {};
@@ -93,21 +82,38 @@ ReactSelect.argTypes = {
   },
 };
 
-export const ReactSelectCreatable: Story<CreatableReactSelectProps> = (
+export const ReactSelectGrouped: StoryFn<typeof Select> = (args) => {
+  return <Select {...args} />;
+};
+
+ReactSelectGrouped.parameters = {};
+
+ReactSelectGrouped.args = {
+  options: groupedOptions,
+  label: "Select an option",
+  isMulti: false,
+  isLoading: false,
+  isClearable: false,
+  isDisabled: false,
+  isSearchable: false,
+  menuIsOpen: undefined,
+  closeMenuOnSelect: undefined,
+  multiValueColor: "info",
+  error: null,
+};
+
+ReactSelectGrouped.argTypes = {
+  menuIsOpen: { control: "inline-radio", options: [true, false, undefined] },
+  closeMenuOnSelect: {
+    control: "inline-radio",
+    options: [true, false, undefined],
+  },
+};
+
+export const ReactSelectCreatable: StoryFn<typeof CreatableReactSelect> = (
   args
 ) => {
-  return (
-    <>
-      <div className="section base-margin-top dbl-margin-bottom">
-        <h3 className="display-5">CUI React Select Creatable</h3>
-        <div className="row">
-          <div className="col">
-            <CreatableReactSelect {...args} />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+  return <CreatableReactSelect {...args} />;
 };
 
 ReactSelectCreatable.parameters = {};

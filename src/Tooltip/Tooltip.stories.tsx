@@ -1,27 +1,26 @@
 import React from "react";
-import { Meta, Story } from "@storybook/react/types-6-0";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { WithTooltip, WithTooltipProps } from "./";
 
 export default {
   title: "Components/Tooltip",
   component: WithTooltip,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
 } as Meta;
 
-export const Tooltip: Story<WithTooltipProps> = (args) => {
+export const Tooltip: StoryFn<WithTooltipProps> = (args) => {
   return (
-    <>
-      <div className="section base-margin-top dbl-margin-bottom">
-        <h3 className="display-5">Tooltip (Using FloatingUI)</h3>
-        <div className="row">
-          <div className="col text-center">
-            <WithTooltip {...args}>
-              <span>Hover over me!</span>
-            </WithTooltip>
-          </div>
-        </div>
-      </div>
-    </>
+    <WithTooltip {...args}>
+      <span>Hover over me!</span>
+    </WithTooltip>
   );
 };
 

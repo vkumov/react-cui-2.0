@@ -1,18 +1,12 @@
-import React from "react";
-import { Meta, Story } from "@storybook/react/types-6-0";
+import React, { ComponentProps } from "react";
+import type { ArgTypes, Meta, Parameters, StoryObj } from "@storybook/react";
 
 import { Button } from "../Button";
-import {
-  Dropdown as LibDropdown,
-  Menu,
-  MenuDivider,
-  MenuElement,
-  MenuGroup,
-} from "./index";
+import { Dropdown, Menu, MenuDivider, MenuElement, MenuGroup } from "./index";
 
 export default {
   title: "Components/Dropdown",
-  component: LibDropdown,
+  component: Dropdown,
   subcomponents: {
     Menu,
     MenuDivider,
@@ -21,160 +15,87 @@ export default {
   },
 } as Meta;
 
-const ThreeItems = () => (
-  <>
-    <MenuElement>Item one</MenuElement>
-    <MenuElement>Item two</MenuElement>
-    <MenuElement selected>Item three</MenuElement>
-  </>
-);
+type Story = StoryObj<typeof Dropdown>;
 
-export const Dropdown: Story = () => (
-  <>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Structure</h3>
-      <div className="row">
-        <div className="col">
-          <div className="subheader">Stays open when item clicked</div>
-          <LibDropdown
-            label={<Button.Primary>Dropdown</Button.Primary>}
-            alwaysClose={false}
-          >
-            <MenuElement>Item one</MenuElement>
-            <MenuElement>Item two</MenuElement>
-            <MenuElement selected>Item three</MenuElement>
-            <MenuDivider />
-            <MenuGroup header="Group">
-              <MenuElement>Item one</MenuElement>
-              <MenuElement>Item two</MenuElement>
-            </MenuGroup>
-            <MenuElement icon="icon-social-facebook">Facebook</MenuElement>
-            <MenuElement icon="icon-social-twitter">Twitter</MenuElement>
-            <MenuDivider />
-            <Menu label="And with sub menu">
-              <ThreeItems />
-            </Menu>
-          </LibDropdown>
-        </div>
-        <div className="col">
-          <div className="subheader">
-            Closes when item clicked (alwaysClose = true)
-          </div>
-          <LibDropdown
-            label={<Button.Primary>Dropdown</Button.Primary>}
-            alwaysClose
-          >
-            <MenuElement>Item one</MenuElement>
-            <MenuElement>Item two</MenuElement>
-            <MenuElement selected>Item three</MenuElement>
-            <MenuDivider />
-            <MenuGroup header="Group">
-              <MenuElement>Item one</MenuElement>
-              <MenuElement>Item two</MenuElement>
-            </MenuGroup>
-            <MenuElement
-              icon="icon-social-facebook"
-              onClick={() => console.log("facebook")}
-            >
-              Facebook
-            </MenuElement>
-            <MenuElement
-              icon="icon-social-twitter"
-              onClick={() => console.log("twitter")}
-            >
-              Twitter
-            </MenuElement>
-          </LibDropdown>
-        </div>
+const argTypes: Partial<ArgTypes<ComponentProps<typeof Dropdown>>> = {
+  placement: {
+    options: [
+      "top",
+      "right",
+      "bottom",
+      "left",
+      "top-start",
+      "top-end",
+      "right-start",
+      "right-end",
+      "bottom-start",
+      "bottom-end",
+      "left-start",
+      "left-end",
+    ],
+    control: { type: "select" },
+  },
+  noChevron: { type: "boolean" },
+  alwaysClose: { type: "boolean" },
+  isOpen: { type: "boolean" },
+  withSizeLimit: { type: "boolean" },
+};
 
-        <div className="col">
-          <div className="subheader">
-            Very long one with size limits & scrolling
-          </div>
-          <LibDropdown
-            label={<Button.Primary>Dropdown</Button.Primary>}
-            withSizeLimit
-          >
-            {Array(50)
-              .fill(true)
-              .map((_v, idx) => (
-                <MenuElement>Item #{idx + 1}</MenuElement>
-              ))}
-          </LibDropdown>
-        </div>
-      </div>
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Type</h3>
-      <div className="row">
-        <div className="col-3">
-          <LibDropdown label={<Button.Primary>Dropdown</Button.Primary>}>
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-        <div className="col-3">
-          <LibDropdown label={<div>Div</div>}>
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-        <div className="col-3">
-          <LibDropdown label={<a>Link</a>}>
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-        <div className="col-3">
-          <LibDropdown label={<span className="icon-add-outline" />} noChevron>
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-      </div>
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Alignment</h3>
-      <div className="row">
-        <div className="col-4">
-          <LibDropdown
-            placement="bottom-start"
-            label={<Button.Primary>To the right</Button.Primary>}
-          >
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-        <div className="col-4">
-          <LibDropdown
-            placement="bottom"
-            label={<Button.Primary>Centered</Button.Primary>}
-          >
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-        <div className="col-4">
-          <LibDropdown
-            placement="bottom-end"
-            label={<Button.Primary>To the left</Button.Primary>}
-          >
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-      </div>
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Direction</h3>
-      <div className="row">
-        <div className="col-4">
-          <LibDropdown label={<Button.Primary>Default</Button.Primary>}>
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-        <div className="col-4">
-          <LibDropdown
-            placement="top"
-            label={<Button.Primary>Up preferred</Button.Primary>}
-          >
-            <ThreeItems />
-          </LibDropdown>
-        </div>
-      </div>
-    </div>
-  </>
-);
+const parameters: Parameters = {
+  docs: {
+    source: {
+      language: "tsx",
+      excludeDecorators: true,
+    },
+  },
+};
+
+export const Default: Story = {
+  render: (args) => (
+    <Dropdown {...args} label={<Button.Primary>Dropdown</Button.Primary>}>
+      <MenuElement>Item one</MenuElement>
+      <MenuElement>Item two</MenuElement>
+      <MenuElement selected>Item three</MenuElement>
+      <MenuDivider />
+      <MenuGroup header="Group">
+        <MenuElement>Item one</MenuElement>
+        <MenuElement>Item two</MenuElement>
+      </MenuGroup>
+      <MenuElement icon="icon-social-facebook">Facebook</MenuElement>
+      <MenuElement icon="icon-social-twitter">Twitter</MenuElement>
+      <MenuDivider />
+      <Menu label="And with sub menu">
+        <MenuElement>Item one</MenuElement>
+        <MenuElement>Item two</MenuElement>
+        <MenuElement selected>Item three</MenuElement>
+      </Menu>
+    </Dropdown>
+  ),
+  parameters,
+  argTypes,
+};
+
+export const Link: Story = {
+  render: (args) => (
+    <Dropdown {...args} label={<a>Dropdown as a link</a>}>
+      <MenuElement>Item one</MenuElement>
+      <MenuElement>Item two</MenuElement>
+      <MenuElement selected>Item three</MenuElement>
+      <MenuDivider />
+      <MenuGroup header="Group">
+        <MenuElement>Item one</MenuElement>
+        <MenuElement>Item two</MenuElement>
+      </MenuGroup>
+      <MenuElement icon="icon-social-facebook">Facebook</MenuElement>
+      <MenuElement icon="icon-social-twitter">Twitter</MenuElement>
+      <MenuDivider />
+      <Menu label="And with sub menu">
+        <MenuElement>Item one</MenuElement>
+        <MenuElement>Item two</MenuElement>
+        <MenuElement selected>Item three</MenuElement>
+      </Menu>
+    </Dropdown>
+  ),
+  argTypes,
+  parameters,
+};

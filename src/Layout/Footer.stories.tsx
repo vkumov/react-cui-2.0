@@ -1,28 +1,21 @@
 import React from "react";
-import { Footer as LibFooter } from "./index";
-import { Story, Meta } from "@storybook/react/types-6-0";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Footer } from "./index";
 
 export default {
   title: "Components/Layout/Footer",
-  component: LibFooter,
-} as Meta;
+  component: Footer,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
+} as Meta<typeof Footer>;
 
-// const colors: DotsColor[] = [
-//   "primary",
-//   "secondary",
-//   "tertiary",
-//   "success",
-//   "info",
-//   "warning",
-//   "warning-alt",
-//   "danger",
-//   "dark",
-//   "light",
-// ];
+type Story = StoryObj<typeof Footer>;
 
-export const Footer: Story = () => (
-  <div className="section base-margin-top dbl-margin-bottom">
-    <h3 className="display-5">Footer</h3>
-    <LibFooter />
-  </div>
-);
+export const Default: Story = { render: () => <Footer /> };

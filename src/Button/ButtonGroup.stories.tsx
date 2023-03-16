@@ -1,31 +1,35 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { ButtonGroup as BG, ButtonGroupProps, Button } from "./index";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Button, ButtonGroup } from "./index";
 
 export default {
   title: "Components/Button/Button Group",
-  component: BG,
+  component: ButtonGroup,
 } as Meta;
 
-export const ButtonGroup: Story<ButtonGroupProps> = (args) => (
-  <>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Button Group</h3>
-      <BG {...args}>
-        <Button.Ghost className="text-nowrap">Button 1</Button.Ghost>
-        <Button.Ghost className="text-nowrap">Button 2</Button.Ghost>
-        <Button.Ghost disabled className="text-nowrap">
-          Button 3
-        </Button.Ghost>
-      </BG>
-    </div>
-  </>
-);
+type Story = StoryObj<typeof ButtonGroup>;
 
-ButtonGroup.parameters = {};
-
-ButtonGroup.args = {
-  square: false,
-  withDivider: false,
-  className: "",
+export const Default: Story = {
+  render: (args) => (
+    <ButtonGroup {...args}>
+      <Button.Primary className="text-nowrap">Button 1</Button.Primary>
+      <Button.Primary className="text-nowrap">Button 2</Button.Primary>
+      <Button.Primary disabled className="text-nowrap">
+        Button 3
+      </Button.Primary>
+    </ButtonGroup>
+  ),
+  args: {
+    square: false,
+    withDivider: false,
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
 };

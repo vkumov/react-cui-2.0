@@ -1,31 +1,42 @@
-import React, { ComponentProps, useState } from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { Radio as R, Radios } from "./index";
+import React, { useState } from "react";
+import { Meta, StoryFn } from "@storybook/react";
+
+import { Radio, Radios } from "./index";
 
 export default {
   title: "Components/Radio",
-  component: R,
+  component: Radios,
+  subcomponents: { Radio },
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
 } as Meta;
 
-export const Radio: Story<ComponentProps<typeof R>> = (args) => {
+export const Group: StoryFn<typeof Radios> = (args) => {
   const [inputType, setInputType] = useState("value1");
 
   return (
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Radio</h3>
-      <Radios
-        name="inputType"
-        value={inputType}
-        values={[
-          { value: "value1", label: "Value 1" },
-          { value: "value2", label: "Value 2" },
-          { value: "value3", label: "Value 3" },
-        ]}
-        onChange={(value) => {
-          console.log(value);
-          setInputType(value);
-        }}
-      ></Radios>
-    </div>
+    <Radios
+      {...args}
+      value={inputType}
+      onChange={(value) => {
+        console.log(value);
+        setInputType(value);
+      }}
+    ></Radios>
   );
+};
+
+Group.args = {
+  name: "inputType",
+  values: [
+    { value: "value1", label: "Value 1" },
+    { value: "value2", label: "Value 2" },
+    { value: "value3", label: "Value 3" },
+  ],
 };

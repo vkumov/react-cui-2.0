@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.1
+
+- Switch to Storybook v7 & improve docs
+
 ## 6.1.0
 
 - Add `ModalProvider`: instead of adding `<DynamicModal />` an app should be wrapped in `<ModalProvider>{ ... }</ModalProvider>`

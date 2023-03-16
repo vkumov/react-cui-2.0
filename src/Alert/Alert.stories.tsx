@@ -1,24 +1,29 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { Alert as LibAlert, AlertProps } from "./index";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Alert } from "./index";
 
 export default {
   title: "Components/Alert",
-  component: LibAlert,
-} as Meta;
+  component: Alert,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
+} as Meta<typeof Alert>;
 
-export const Alert: Story<AlertProps & { text?: string }> = ({
-  text,
-  ...args
-}) => {
-  return (
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Alert</h3>
-      <LibAlert {...args}>{text}</LibAlert>
-    </div>
-  );
-};
+type Story = StoryObj<typeof Alert>;
 
-Alert.args = {
-  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus gravida posuere tellus, eu congue nunc.",
+export const Default: Story = {
+  render: ({ children, ...args }) => {
+    return <Alert {...args}>{children}</Alert>;
+  },
+  args: {
+    children:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus gravida posuere tellus, eu congue nunc.",
+  },
 };

@@ -1,22 +1,29 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { Pagination as LibPagination, PaginationProps } from "./index";
+import { Meta, StoryObj } from "@storybook/react";
+
+import { Pagination } from "./index";
 
 export default {
   title: "Components/Pagination",
-  component: LibPagination,
-} as Meta;
+  component: Pagination,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
+} as Meta<typeof Pagination>;
 
-export const Pagination: Story<PaginationProps> = (args) => {
-  return (
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Pagination</h3>
-      <LibPagination {...args} />
-    </div>
-  );
-};
+type Story = StoryObj<typeof Pagination>;
 
-Pagination.args = {
-  total: 50,
-  position: 6,
+export const Default: Story = {
+  render: (args) => {
+    return <Pagination {...args} />;
+  },
+  args: {
+    total: 50,
+    position: 6,
+  },
 };

@@ -1,7 +1,8 @@
 import React, {
   createElement,
   forwardRef,
-  type ForwardRefExoticComponent,
+  type ComponentType,
+  type FunctionComponent,
   type HTMLProps,
 } from "react";
 import cx from "classnames";
@@ -32,17 +33,15 @@ export type ButtonProps = {
   type?: "submit" | "reset" | "button";
 } & Omit<HTMLProps<HTMLButtonElement>, "size">;
 
-type BFR = ForwardRefExoticComponent<ButtonProps>;
-
-interface ButtonType extends BFR {
-  Primary: BFR;
-  Secondary: BFR;
-  Success: BFR;
-  Dark: BFR;
-  Ghost: ForwardRefExoticComponent<ButtonProps & { fullGhost?: boolean }>;
-  Link: BFR;
-  Light: BFR;
-  Danger: BFR;
+interface ButtonType extends FunctionComponent<ButtonProps> {
+  Primary: ComponentType<ButtonProps>;
+  Secondary: ComponentType<ButtonProps>;
+  Success: ComponentType<ButtonProps>;
+  Dark: ComponentType<ButtonProps>;
+  Ghost: ComponentType<ButtonProps & { fullGhost?: boolean }>;
+  Link: ComponentType<ButtonProps>;
+  Light: ComponentType<ButtonProps>;
+  Danger: ComponentType<ButtonProps>;
 }
 
 let Button: ButtonType;
@@ -90,18 +89,28 @@ let Button: ButtonType;
     })
 );
 
+Button.displayName = "Button";
+
 Button.Primary = forwardRef((props, ref) => (
   <Button {...props} color="primary" ref={ref} />
 ));
+Button.Primary.displayName = "Button.Primary";
+
 Button.Secondary = forwardRef((props, ref) => (
   <Button {...props} color="secondary" ref={ref} />
 ));
+Button.Secondary.displayName = "Button.Secondary";
+
 Button.Success = forwardRef((props, ref) => (
   <Button {...props} color="success" ref={ref} />
 ));
+Button.Success.displayName = "Button.Success";
+
 Button.Dark = forwardRef((props, ref) => (
   <Button {...props} color="dark" ref={ref} />
 ));
+Button.Dark.displayName = "Button.Dark";
+
 Button.Ghost = forwardRef(({ fullGhost = false, className, ...props }, ref) => (
   <Button
     className={cx({ "btn--full-ghost": fullGhost, [className]: className })}
@@ -110,14 +119,21 @@ Button.Ghost = forwardRef(({ fullGhost = false, className, ...props }, ref) => (
     ref={ref}
   />
 ));
+Button.Ghost.displayName = "Button.Ghost";
+
 Button.Link = forwardRef((props, ref) => (
   <Button {...props} color="link" ref={ref} />
 ));
+Button.Link.displayName = "Button.Link";
+
 Button.Light = forwardRef((props, ref) => (
   <Button {...props} color="light" ref={ref} />
 ));
+Button.Light.displayName = "Button.Light";
+
 Button.Danger = forwardRef((props, ref) => (
   <Button {...props} color="danger" ref={ref} />
 ));
+Button.Danger.displayName = "Button.Danger";
 
 export { Button };

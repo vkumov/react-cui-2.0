@@ -1,10 +1,22 @@
 import React from "react";
-import { Label as LibLabel, LabelColor } from "./index";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Label, LabelColor } from "./index";
 
 export default {
   title: "Components/Label",
-  component: LibLabel,
-};
+  component: Label,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
+} as Meta<typeof Label>;
+
+type Story = StoryObj<typeof Label>;
 
 const colors: LabelColor[] = [
   "primary",
@@ -19,38 +31,47 @@ const colors: LabelColor[] = [
   "light",
 ];
 
-export const Label = () => (
-  <>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Size</h3>
-      <LibLabel size="tiny">tiny</LibLabel>&nbsp;
-      <LibLabel size="small">small</LibLabel>&nbsp;
-      <LibLabel>default</LibLabel>&nbsp;
-      <LibLabel size="large">large</LibLabel>
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Color</h3>
-      {colors.map((clr) => (
-        <LibLabel key={clr} color={clr} className="qtr-margin-right">
-          {clr}
-        </LibLabel>
-      ))}
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Bordered</h3>
-      {colors.map((clr) => (
-        <LibLabel key={clr} color={clr} className="qtr-margin-right" bordered>
-          {clr}
-        </LibLabel>
-      ))}
-    </div>
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Raised</h3>
-      {colors.map((clr) => (
-        <LibLabel key={clr} color={clr} className="qtr-margin-right" raised>
-          {clr}
-        </LibLabel>
-      ))}
-    </div>
-  </>
-);
+export const Default: Story = {
+  render: (args) => <Label {...args} />,
+  args: {
+    children: "Label body",
+  },
+};
+
+export const Examples = () => {
+  return (
+    <>
+      <div className="section base-margin-top dbl-margin-bottom">
+        <h3 className="display-5">Size</h3>
+        <Label size="tiny">tiny</Label>&nbsp;
+        <Label size="small">small</Label>&nbsp;
+        <Label>default</Label>&nbsp;
+        <Label size="large">large</Label>
+      </div>
+      <div className="section base-margin-top dbl-margin-bottom">
+        <h3 className="display-5">Color</h3>
+        {colors.map((clr) => (
+          <Label key={clr} color={clr} className="qtr-margin-right">
+            {clr}
+          </Label>
+        ))}
+      </div>
+      <div className="section base-margin-top dbl-margin-bottom">
+        <h3 className="display-5">Bordered</h3>
+        {colors.map((clr) => (
+          <Label key={clr} color={clr} className="qtr-margin-right" bordered>
+            {clr}
+          </Label>
+        ))}
+      </div>
+      <div className="section base-margin-top dbl-margin-bottom">
+        <h3 className="display-5">Raised</h3>
+        {colors.map((clr) => (
+          <Label key={clr} color={clr} className="qtr-margin-right" raised>
+            {clr}
+          </Label>
+        ))}
+      </div>
+    </>
+  );
+};

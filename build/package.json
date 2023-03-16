@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "React library for CUI 2.0",
   "module": "./index.esm.js",
   "main": "./cjs/index.cjs.js",
@@ -13,7 +13,7 @@
     "react-dom": "^17.0.2 || ^18.0.0"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.20.1",
+    "@floating-ui/react": "^0.21.1",
     "bytes": "^3.1.2",
     "classnames": "^2.3.2",
     "eventemitter3": "^5.0.0",

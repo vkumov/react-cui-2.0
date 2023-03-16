@@ -1,34 +1,23 @@
-import React, { type ComponentProps } from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
-import { Gauge as LibGauge } from "./index";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Gauge } from "./index";
 
 export default {
   title: "Components/Gauge",
-  component: LibGauge,
+  component: Gauge,
 } as Meta;
 
-export const Gauge: Story<ComponentProps<typeof LibGauge>> = (args) => {
-  return (
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Gauge</h3>
-      <LibGauge {...args} />
-    </div>
-  );
-};
+type Story = StoryObj<typeof Gauge>;
 
-Gauge.parameters = {};
-
-Gauge.args = {
-  percentage: 25,
-  label: "Gauge label",
-  color: "primary",
-  size: "default",
-};
-
-Gauge.argTypes = {
-  size: {
-    options: ["small", "default", "large"],
-    type: { name: "string", required: false },
-    control: "radio",
+export const Default: Story = {
+  render: (args) => {
+    return <Gauge {...args} />;
+  },
+  args: {
+    percentage: 25,
+    label: "Gauge label",
+    color: "primary",
+    size: "default",
   },
 };

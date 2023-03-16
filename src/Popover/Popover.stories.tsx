@@ -1,34 +1,38 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
+import { Meta, StoryObj } from "@storybook/react";
+import dedent from "ts-dedent";
 
 import { Button } from "../Button";
-import {
-  Popover as OGPopover,
-  PopoverProps,
-  PopoverTitle,
-  usePopover,
-} from "./";
+import { Popover, PopoverTitle, usePopover } from "./";
 
 export default {
   title: "Components/Popover",
-  component: OGPopover,
-} as Meta;
+  component: Popover,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
+} as Meta<typeof Popover>;
 
-export const Popover: Story<PopoverProps> = ({ element, ...args }) => {
-  const { refs, open, render } = usePopover({
-    offset: 8,
-  });
+export const Default: StoryObj<typeof Popover> = {
+  render: function Render(args) {
+    const { refs, open, render } = usePopover({
+      offset: 8,
+    });
 
-  return (
-    <>
+    return (
       <div className="section base-margin-top dbl-margin-bottom">
         <h3 className="display-5">Popover (Using FloatingUI)</h3>
         <div className="row">
           <div className="col text-center">
-            <OGPopover element={<Button>Click me!</Button>} {...args}>
+            <Popover {...args} element={<Button>Click me!</Button>}>
               <PopoverTitle>Popover title!</PopoverTitle>
               <div>And body here!</div>
-            </OGPopover>
+            </Popover>
           </div>
           <div className="col text-center">
             <Button
@@ -44,14 +48,46 @@ export const Popover: Story<PopoverProps> = ({ element, ...args }) => {
           </div>
         </div>
       </div>
-    </>
-  );
+    );
+  },
+  args: {
+    placement: "top",
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: dedent`function Render() {
+          const { refs, open, render } = usePopover({
+            offset: 8,
+          });
+      
+          return (
+            <div className="section base-margin-top dbl-margin-bottom">
+              <h3 className="display-5">Popover (Using FloatingUI)</h3>
+              <div className="row">
+                <div className="col text-center">
+                  <Popover element={<Button>Click me!</Button>}>
+                    <PopoverTitle>Popover title!</PopoverTitle>
+                    <div>And body here!</div>
+                  </Popover>
+                </div>
+                <div className="col text-center">
+                  <Button
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      refs.setReference(e.currentTarget);
+                      open();
+                    }}
+                  >
+                    Right click on me!
+                  </Button>
+                  {render(<>Hey!</>)}
+                </div>
+              </div>
+            </div>
+          );
+        }`,
+      },
+    },
+  },
 };
-
-Popover.parameters = {};
-
-Popover.args = {
-  placement: "top",
-};
-
-Popover.argTypes = {};

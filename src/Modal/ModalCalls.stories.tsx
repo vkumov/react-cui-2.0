@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Meta, Story } from "@storybook/react/types-6-0";
+import { Meta, StoryFn } from "@storybook/react";
+import dedent from "ts-dedent";
 
 import { Button } from "../Button";
 import { Dropdown, MenuElement } from "../Dropdown";
@@ -7,15 +8,22 @@ import { Popover, PopoverTitle } from "../Popover";
 import {
   ModalBody,
   ModalFooter,
-  PropsWithCloseModal,
   confirmation,
   dynamicModal,
   notification,
   prompt,
+  type PropsWithCloseModal,
 } from "./index";
 
 export default {
   title: "Components/Modal/Dynamic Calls",
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+      },
+    },
+  },
 } as Meta;
 
 const CustomDynamic = ({ close }: PropsWithCloseModal): JSX.Element => {
@@ -61,102 +69,87 @@ const CustomDynamic = ({ close }: PropsWithCloseModal): JSX.Element => {
   );
 };
 
-export const Notificaion: Story = () => {
+export const Notificaion = () => {
   return (
-    <>
-      <div className="section base-margin-top dbl-margin-bottom">
-        <h3 className="display-5">Notification dynamic modal</h3>
-        <Button
-          onClick={() => {
-            notification(
-              "Notificaion",
-              "Notification can be awaited!",
-              "danger"
-            );
-          }}
-        >
-          Show notification
-        </Button>
-      </div>
-    </>
+    <Button
+      onClick={() => {
+        notification("Notificaion", "Notification can be awaited!", "danger");
+      }}
+    >
+      Show notification
+    </Button>
   );
 };
 
-export const Confirmation: Story = () => {
+export const Confirmation = () => {
   const [confResult, setConfResult] = useState<boolean | null>(null);
 
   return (
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Confirmation dynamic modals</h3>
-      <div className="row">
-        <div className="col-3">
-          <Button
-            onClick={() => {
-              setConfResult(null);
-              confirmation("Please confirm", () => {
+    <div className="row">
+      <div className="col-3">
+        <Button
+          onClick={() => {
+            setConfResult(null);
+            confirmation("Please confirm", () => {
+              setConfResult(true);
+              return true;
+            });
+          }}
+        >
+          Confirmation
+        </Button>
+        {confResult ? <div>Confirmed</div> : null}
+      </div>
+      <div className="col-3">
+        <Button
+          onClick={() => {
+            setConfResult(null);
+            confirmation(
+              "Please confirm",
+              (dontAskAgain) => {
+                console.log("Don't ask again: ", dontAskAgain);
                 setConfResult(true);
                 return true;
-              });
-            }}
-          >
-            Confirmation
-          </Button>
-          {confResult ? <div>Confirmed</div> : null}
-        </div>
-        <div className="col-3">
-          <Button
-            onClick={() => {
-              setConfResult(null);
-              confirmation(
-                "Please confirm",
-                (dontAskAgain) => {
-                  console.log("Don't ask again: ", dontAskAgain);
-                  setConfResult(true);
-                  return true;
-                },
-                undefined,
-                undefined,
-                { show: true }
-              );
-            }}
-          >
-            Confirmation
-          </Button>
-          <div>with don't ask option</div>
-          {confResult ? <div>Confirmed</div> : null}
-        </div>
+              },
+              undefined,
+              undefined,
+              { show: true }
+            );
+          }}
+        >
+          Confirmation
+        </Button>
+        <div>with don't ask option</div>
+        {confResult ? <div>Confirmed</div> : null}
       </div>
     </div>
   );
 };
 
-export const Prompt: Story = () => {
+export const Prompt = () => {
   const [promptResult, setPromptResult] = useState<string | number | null>(
     null
   );
 
   return (
     <>
-      <div className="section base-margin-top dbl-margin-bottom">
-        <h3 className="display-5">Prompt dynamic modals</h3>
-        <Button
-          onClick={() => {
-            setPromptResult(null);
-            prompt("Prompt", "Enter value:", (v) => {
-              console.log(v);
-              setPromptResult(v);
-            });
-          }}
-        >
-          Prompt
-        </Button>
-        {promptResult ? <div>Got: {promptResult}</div> : null}
-      </div>
+      <Button
+        onClick={() => {
+          setPromptResult(null);
+          prompt("Prompt", "Enter value:", (v) => {
+            console.log(v);
+            setPromptResult(v);
+          });
+        }}
+      >
+        Prompt
+      </Button>
+      {promptResult ? <div>Got: {promptResult}</div> : null}
     </>
   );
 };
 
-export const CustomBody: Story = () => {
+export const CustomBody: StoryFn = () => {
   const [ref, setRef] = useState(null);
 
   useEffect(() => {
@@ -164,10 +157,79 @@ export const CustomBody: Story = () => {
   }, [ref]);
 
   return (
-    <div className="section base-margin-top dbl-margin-bottom">
-      <h3 className="display-5">Dynamic modal with custom body</h3>
-      <div className="row">
-        <div className="col-3">
+    <Button
+      onClick={async () => {
+        console.log("Opening dynamic modal");
+        await dynamicModal({
+          title: "Custom body",
+          modalProps: {
+            closeIcon: true,
+            dialogProps: { ref: setRef as any },
+          },
+          fullBody: (props) => <CustomDynamic {...props} />,
+        });
+        console.log("Dynamic modal closed, awaited");
+      }}
+    >
+      Show modal
+    </Button>
+  );
+};
+
+CustomBody.parameters = {
+  docs: {
+    source: {
+      code: dedent`const CustomDynamic = ({ close }: PropsWithCloseModal): JSX.Element => {
+        return (
+          <>
+            <ModalBody>
+              <div className="base-margin-bottom">
+                Any content goes here! Function can be awaited - check console
+              </div>
+              <div className="base-margin-top base-margin-bottom">
+                <Dropdown label={<a>Dropdown inside!</a>} alwaysClose>
+                  {Array(50)
+                    .fill(true)
+                    .map((_, idx) => (
+                      <MenuElement key={idx}>{idx}</MenuElement>
+                    ))}
+                </Dropdown>
+              </div>
+              <div className="base-margin-top base-margin-bottom">
+                <Popover element={<Button>And even popovers</Button>}>
+                  <PopoverTitle>Popover title!</PopoverTitle>
+                  <div>Popover body here</div>
+                </Popover>
+              </div>
+              <Button.Primary
+                onClick={async () => {
+                  console.log("Opening dynamic modal");
+                  await dynamicModal({
+                    title: "Custom body",
+                    modalProps: { closeIcon: true },
+                    fullBody: (props) => <CustomDynamic {...props} />,
+                  });
+                  console.log("Dynamic modal closed, awaited");
+                }}
+              >
+                And nested modals
+              </Button.Primary>
+            </ModalBody>
+            <ModalFooter>
+              <Button.Light onClick={close}>OK</Button.Light>
+            </ModalFooter>
+          </>
+        );
+      };
+      
+      const CustomBody: React.FC = () => {
+        const [ref, setRef] = useState(null);
+      
+        useEffect(() => {
+          console.log("Ref:", ref);
+        }, [ref]);
+      
+        return (
           <Button
             onClick={async () => {
               console.log("Opening dynamic modal");
@@ -176,7 +238,6 @@ export const CustomBody: Story = () => {
                 modalProps: {
                   closeIcon: true,
                   dialogProps: { ref: setRef as any },
-                  // root: document.querySelector("body"),
                 },
                 fullBody: (props) => <CustomDynamic {...props} />,
               });
@@ -185,8 +246,8 @@ export const CustomBody: Story = () => {
           >
             Show modal
           </Button>
-        </div>
-      </div>
-    </div>
-  );
+        );
+      };`,
+    },
+  },
 };

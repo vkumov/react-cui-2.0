@@ -5,7 +5,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:prettier/recommended",
-    "plugin:storybook/recommended",
+    // "plugin:storybook/recommended",
   ],
   parserOptions: {
     ecmaVersion: 2018,
