@@ -6,6 +6,14 @@ import { Gauge } from "./index";
 export default {
   title: "Components/Gauge",
   component: Gauge,
+  parameters: {
+    docs: {
+      source: {
+        language: "tsx",
+        excludeDecorators: true,
+      },
+    },
+  },
 } as Meta;
 
 type Story = StoryObj<typeof Gauge>;
