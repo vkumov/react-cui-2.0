@@ -230,13 +230,14 @@ export const DynamicModal: FC<DynamicModalProps> = ({
   }, [addModal]);
 
   return (
-    <FloatingTreeWrapper
-      withPortal={true}
-      portalId={props.portalId ?? "--cui-modal-portal"}
-      portalRoot={props.portalRoot}
-    >
-      {modals.length > 0
-        ? modals.map((modal, idx) => {
+    <>
+      {modals.length > 0 ? (
+        <FloatingTreeWrapper
+          withPortal={true}
+          portalId={props.portalId ?? "--cui-modal-portal"}
+          portalRoot={props.portalRoot}
+        >
+          {modals.map((modal, idx) => {
             switch (modal.modalType) {
               case "dynamic":
                 return (
@@ -281,9 +282,10 @@ export const DynamicModal: FC<DynamicModalProps> = ({
               default:
                 return assertUnreachable(modal);
             }
-          })
-        : null}
-    </FloatingTreeWrapper>
+          })}
+        </FloatingTreeWrapper>
+      ) : null}
+    </>
   );
 };
 

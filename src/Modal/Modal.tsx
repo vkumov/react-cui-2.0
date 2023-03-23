@@ -150,21 +150,21 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
   });
 
   return (
-    <FloatingTreeWrapper
-      withPortal={!floatingTree}
-      portalId={id}
-      portalRoot={root}
+    <Transition
+      in={isOpen}
+      mountOnEnter
+      unmountOnExit
+      appear
+      timeout={animationDuration}
+      nodeRef={overlayRef}
     >
-      <FloatingNode id={nodeId}>
-        <Transition
-          in={isOpen}
-          mountOnEnter
-          unmountOnExit
-          appear
-          timeout={animationDuration}
-          nodeRef={overlayRef}
+      {(state) => (
+        <FloatingTreeWrapper
+          withPortal={!floatingTree}
+          portalId={id}
+          portalRoot={root}
         >
-          {(state) => (
+          <FloatingNode id={nodeId}>
             <FloatingOverlay
               className={cx("modal-backdrop", {
                 "modal-backdrop--before-close": state === "exiting",
@@ -241,10 +241,10 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
                 </div>
               </FloatingFocusManager>
             </FloatingOverlay>
-          )}
-        </Transition>
-      </FloatingNode>
-    </FloatingTreeWrapper>
+          </FloatingNode>
+        </FloatingTreeWrapper>
+      )}
+    </Transition>
   );
 };
 

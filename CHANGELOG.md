@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.7
+
+- Render `FloatingPortal` only when it's needed
+
 ## 6.1.6
 
 - Add imperative handler to popovers
