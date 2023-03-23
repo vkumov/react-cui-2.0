@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.6
+
+- Add imperative handler to popovers
+
 ## 6.1.5
 
 - Fix type of `closeRef` of `Popover`

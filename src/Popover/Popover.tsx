@@ -1,6 +1,8 @@
 import React, {
   cloneElement,
+  forwardRef,
   useCallback,
+  useImperativeHandle,
   useRef,
   useState,
   type ComponentProps,
@@ -96,129 +98,148 @@ export type PopoverProps = PropsWithChildren<{
   portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
 }>;
 
-export const Popover: FC<PopoverProps> = ({
-  children,
-  element,
-  onClose,
-  onOpen,
-  showClassName,
-  overlay: overlayProvided,
-  showOverlay: overlayShowProvided,
-  placement,
-  portalRoot,
-  offset: offsetOptions = 4,
-  closeRef,
-  initialFocus,
-  guardsFocus,
-  modalFocus,
-  closeOnFocusOut,
-  portalId,
-}) => {
-  const [show, setShow] = useLockedBody(false, "root");
+export interface PopoverHandlers {
+  close: () => void;
+  open: () => void;
+}
 
-  const tree = useFloatingTree();
-  const nodeId = useFloatingNodeId();
-  // const parentId = useFloatingParentNodeId();
-
-  const { x, y, reference, floating, strategy, context } = useFloating({
-    placement,
-    middleware: [
-      offset(offsetOptions),
-      flip(),
-      shift({ padding: { left: 8, right: 8 } }),
-    ],
-    open: show,
-    onOpenChange: (newOpen) => {
-      if (newOpen && typeof onOpen === "function") onOpen();
-      if (!newOpen && typeof onClose === "function") onClose();
-      setShow(newOpen);
+export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
+  function (
+    {
+      children,
+      element,
+      onClose,
+      onOpen,
+      showClassName,
+      overlay: overlayProvided,
+      showOverlay: overlayShowProvided,
+      placement,
+      portalRoot,
+      offset: offsetOptions = 4,
+      closeRef,
+      initialFocus,
+      guardsFocus,
+      modalFocus,
+      closeOnFocusOut,
+      portalId,
     },
-    whileElementsMounted: autoUpdate,
-    nodeId,
-  });
+    impRef
+  ) {
+    const [show, setShow] = useLockedBody(false, "root");
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    useClick(context),
-    useDismiss(context, { escapeKey: false, bubbles: false }),
-    useCustomDismiss(context),
-  ]);
+    const tree = useFloatingTree();
+    const nodeId = useFloatingNodeId();
+    // const parentId = useFloatingParentNodeId();
 
-  const [overlayShow, setOverlayShow] = useState(overlayShowProvided);
-  const [overlay, setOverlay] = useState(overlayProvided);
+    const { x, y, reference, floating, strategy, context } = useFloating({
+      placement,
+      middleware: [
+        offset(offsetOptions),
+        flip(),
+        shift({ padding: { left: 8, right: 8 } }),
+      ],
+      open: show,
+      onOpenChange: (newOpen) => {
+        if (newOpen && typeof onOpen === "function") onOpen();
+        if (!newOpen && typeof onClose === "function") onClose();
+        setShow(newOpen);
+      },
+      whileElementsMounted: autoUpdate,
+      nodeId,
+    });
 
-  const ref = useMergeRefs([reference, (element as any).ref]);
+    const { getReferenceProps, getFloatingProps } = useInteractions([
+      useClick(context),
+      useDismiss(context, { escapeKey: false, bubbles: false }),
+      useCustomDismiss(context),
+    ]);
 
-  const transitionRef = useRef<HTMLDivElement>(null);
-  const floatingRef = useMergeRefs<HTMLDivElement>([transitionRef, floating]);
+    const [overlayShow, setOverlayShow] = useState(overlayShowProvided);
+    const [overlay, setOverlay] = useState(overlayProvided);
 
-  const { root, id } = useFloatingContext({
-    root: portalRoot,
-    portalId,
-    fallbackPortalId: "--cui-popover-portal",
-  });
+    const ref = useMergeRefs([reference, (element as any).ref]);
 
-  const closeCb = useCallback(() => setShow(false), [setShow]);
-  if (closeRef) closeRef.current = closeCb;
+    const transitionRef = useRef<HTMLDivElement>(null);
+    const floatingRef = useMergeRefs<HTMLDivElement>([transitionRef, floating]);
 
-  return (
-    <>
-      {cloneElement(
-        element,
-        getReferenceProps({
-          ref,
-          ...element.props,
-          className: cx(
-            element.props.className,
-            showClassName ? { [showClassName]: show } : undefined
-          ),
-        })
-      )}
-      <FloatingTreeWrapper withPortal={!tree} portalId={id} portalRoot={root}>
-        <FloatingNode id={nodeId}>
-          <Transition
-            in={show}
-            mountOnEnter
-            unmountOnExit
-            timeout={250}
-            nodeRef={transitionRef}
-          >
-            {(state) => (
-              <FloatingOverlay
-                style={{ zIndex: "calc(var(--cui-max-zindex, 1000) + 2)" }}
-                id={nodeId}
-              >
-                <FloatingFocusManager
-                  context={context}
-                  initialFocus={initialFocus ?? (floatingRef as any)}
-                  guards={guardsFocus}
-                  modal={modalFocus}
-                  closeOnFocusOut={closeOnFocusOut}
+    const { root, id } = useFloatingContext({
+      root: portalRoot,
+      portalId,
+      fallbackPortalId: "--cui-popover-portal",
+    });
+
+    const closeCb = useCallback(() => setShow(false), [setShow]);
+    if (closeRef) closeRef.current = closeCb;
+
+    useImperativeHandle(
+      impRef,
+      () => ({
+        close: () => setShow(false),
+        open: () => setShow(true),
+      }),
+      [setShow]
+    );
+
+    return (
+      <>
+        {cloneElement(
+          element,
+          getReferenceProps({
+            ref,
+            ...element.props,
+            className: cx(
+              element.props.className,
+              showClassName ? { [showClassName]: show } : undefined
+            ),
+          })
+        )}
+        <FloatingTreeWrapper withPortal={!tree} portalId={id} portalRoot={root}>
+          <FloatingNode id={nodeId}>
+            <Transition
+              in={show}
+              mountOnEnter
+              unmountOnExit
+              timeout={250}
+              nodeRef={transitionRef}
+            >
+              {(state) => (
+                <FloatingOverlay
+                  style={{ zIndex: "calc(var(--cui-max-zindex, 1000) + 2)" }}
+                  id={nodeId}
                 >
-                  <GenericPopover
-                    ref={floatingRef}
-                    style={{
-                      position: strategy,
-                      top: y ?? 0,
-                      left: x ?? 0,
-                    }}
-                    state={state}
-                    offset={offsetOptions}
-                    {...getFloatingProps()}
+                  <FloatingFocusManager
+                    context={context}
+                    initialFocus={initialFocus ?? (floatingRef as any)}
+                    guards={guardsFocus}
+                    modal={modalFocus}
+                    closeOnFocusOut={closeOnFocusOut}
                   >
-                    <PopoverProvider
-                      setOverlayState={setOverlayShow}
-                      setOverlay={setOverlay}
+                    <GenericPopover
+                      ref={floatingRef}
+                      style={{
+                        position: strategy,
+                        top: y ?? 0,
+                        left: x ?? 0,
+                      }}
+                      state={state}
+                      offset={offsetOptions}
+                      {...getFloatingProps()}
                     >
-                      <Overlay show={overlayShow || false}>{overlay}</Overlay>
-                      {children}
-                    </PopoverProvider>
-                  </GenericPopover>
-                </FloatingFocusManager>
-              </FloatingOverlay>
-            )}
-          </Transition>
-        </FloatingNode>
-      </FloatingTreeWrapper>
-    </>
-  );
-};
+                      <PopoverProvider
+                        setOverlayState={setOverlayShow}
+                        setOverlay={setOverlay}
+                      >
+                        <Overlay show={overlayShow || false}>{overlay}</Overlay>
+                        {children}
+                      </PopoverProvider>
+                    </GenericPopover>
+                  </FloatingFocusManager>
+                </FloatingOverlay>
+              )}
+            </Transition>
+          </FloatingNode>
+        </FloatingTreeWrapper>
+      </>
+    );
+  }
+);

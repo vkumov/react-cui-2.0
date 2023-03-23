@@ -36,7 +36,31 @@ type PopoverProps = PropsWithChildren<{
     portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
 }>;
-declare const Popover: FC<PopoverProps>;
+interface PopoverHandlers {
+    close: () => void;
+    open: () => void;
+}
+declare const Popover: React.ForwardRefExoticComponent<{
+    onOpen?: () => unknown;
+    onClose?: () => unknown;
+    showClassName?: string;
+    overlay?: ReactNode;
+    showOverlay?: boolean;
+    placement?: Placement;
+    offset?: Parameters<typeof offset>[0];
+    lockBody?: boolean;
+    lockRootId?: string;
+    element: ReactElement;
+    closeRef?: MutableRefObject<(() => unknown) | undefined | null>;
+    initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
+    guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
+    modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
+    closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
+    portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
+    portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
+} & {
+    children?: React.ReactNode;
+} & React.RefAttributes<PopoverHandlers>>;
 
 type PopoverTitleProps = {
     children: ReactNode;
@@ -65,4 +89,4 @@ declare function usePopover({ onClose, onOpen, popoverComponent, placement, init
     open: () => void;
 };
 
-export { GenericPopover, Popover, PopoverProps, PopoverTitle, usePopover, usePopoverContext };
+export { GenericPopover, Popover, PopoverHandlers, PopoverProps, PopoverTitle, usePopover, usePopoverContext };

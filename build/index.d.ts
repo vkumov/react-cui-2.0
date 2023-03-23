@@ -6,16 +6,12 @@ import { DropzoneProps as DropzoneProps$1 } from 'react-dropzone';
 import { ToastOptions, ToastContainerProps, UpdateOptions } from 'react-toastify';
 import { Transition, TransitionStatus } from 'react-transition-group';
 import * as react_select_dist_declarations_src_useStateManager from 'react-select/dist/declarations/src/useStateManager';
-import * as react_select_dist_declarations_src_filters from 'react-select/dist/declarations/src/filters';
-import * as react_select_dist_declarations_src_components from 'react-select/dist/declarations/src/components';
-import * as react_select from 'react-select';
-import { GroupBase, Props as Props$1, OptionsOrGroups } from 'react-select';
 import * as react_select_dist_declarations_src_Select from 'react-select/dist/declarations/src/Select';
 import react_select_dist_declarations_src_Select__default from 'react-select/dist/declarations/src/Select';
+import { GroupBase, Props as Props$1, OptionsOrGroups } from 'react-select';
 import * as react_select_dist_declarations_src_useCreatable from 'react-select/dist/declarations/src/useCreatable';
-import * as react_select_dist_declarations_src_types from 'react-select/dist/declarations/src/types';
-import { GroupBase as GroupBase$1 } from 'react-select/dist/declarations/src/types';
 import { CreatableProps } from 'react-select/creatable';
+import { GroupBase as GroupBase$1 } from 'react-select/dist/declarations/src/types';
 import { SliderProps as SliderProps$1 } from 'rc-slider';
 import { SliderRef } from 'rc-slider/lib/Slider';
 
@@ -953,99 +949,7 @@ type CUISelectProps$1 = {
 };
 type ReactSelectProps<Option, IsMulti extends boolean, Group extends GroupBase<Option>> = CUISelectProps$1 & Props$1<Option, IsMulti, Group>;
 function UnrefedSelect$1<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>({ label, className, error, ...props }: ReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
-const ReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>(props: CUISelectProps$1 & Omit<Pick<react_select_dist_declarations_src_Select.Props<Option, IsMulti, Group>, "aria-errormessage" | "aria-invalid" | "aria-label" | "aria-labelledby" | "ariaLiveMessages" | "autoFocus" | "className" | "classNamePrefix" | "delimiter" | "formatOptionLabel" | "hideSelectedOptions" | "id" | "inputValue" | "inputId" | "instanceId" | "isClearable" | "isOptionSelected" | "menuPortalTarget" | "name" | "onBlur" | "onChange" | "onFocus" | "onInputChange" | "onKeyDown" | "onMenuOpen" | "onMenuClose" | "onMenuScrollToTop" | "onMenuScrollToBottom" | "theme" | "value" | "form" | "required"> & {
-    'aria-live'?: "off" | "assertive" | "polite";
-    backspaceRemovesValue?: boolean;
-    blurInputOnSelect?: boolean;
-    captureMenuScroll?: boolean;
-    classNames?: react_select.ClassNamesConfig<Option, IsMulti, Group>;
-    closeMenuOnSelect?: boolean;
-    closeMenuOnScroll?: boolean | ((event: Event) => boolean);
-    components?: Partial<react_select_dist_declarations_src_components.SelectComponents<Option, IsMulti, Group>>;
-    controlShouldRenderValue?: boolean;
-    escapeClearsValue?: boolean;
-    filterOption?: (option: react_select_dist_declarations_src_filters.FilterOptionOption<Option>, inputValue: string) => boolean;
-    formatGroupLabel?: (group: Group) => React.ReactNode;
-    getOptionLabel?: react_select.GetOptionLabel<Option>;
-    getOptionValue?: react_select.GetOptionValue<Option>;
-    isDisabled?: boolean;
-    isLoading?: boolean;
-    isOptionDisabled?: (option: Option, selectValue: react_select.Options<Option>) => boolean;
-    isMulti?: IsMulti;
-    isRtl?: boolean;
-    isSearchable?: boolean;
-    loadingMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    minMenuHeight?: number;
-    maxMenuHeight?: number;
-    menuIsOpen?: boolean;
-    menuPlacement?: react_select.MenuPlacement;
-    menuPosition?: react_select.MenuPosition;
-    menuShouldBlockScroll?: boolean;
-    menuShouldScrollIntoView?: boolean;
-    noOptionsMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    openMenuOnFocus?: boolean;
-    openMenuOnClick?: boolean;
-    options?: react_select.OptionsOrGroups<Option, Group>;
-    pageSize?: number;
-    placeholder?: React.ReactNode;
-    screenReaderStatus?: (obj: {
-        count: number;
-    }) => string;
-    styles?: react_select.StylesConfig<Option, IsMulti, Group>;
-    tabIndex?: number;
-    tabSelectsValue?: boolean;
-    unstyled?: boolean;
-} & {}, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<Pick<react_select_dist_declarations_src_Select.Props<Option, IsMulti, Group>, "aria-errormessage" | "aria-invalid" | "aria-label" | "aria-labelledby" | "ariaLiveMessages" | "autoFocus" | "className" | "classNamePrefix" | "delimiter" | "formatOptionLabel" | "hideSelectedOptions" | "id" | "inputValue" | "inputId" | "instanceId" | "isClearable" | "isOptionSelected" | "menuPortalTarget" | "name" | "onBlur" | "onChange" | "onFocus" | "onInputChange" | "onKeyDown" | "onMenuOpen" | "onMenuClose" | "onMenuScrollToTop" | "onMenuScrollToBottom" | "theme" | "value" | "form" | "required"> & {
-    'aria-live'?: "off" | "assertive" | "polite";
-    backspaceRemovesValue?: boolean;
-    blurInputOnSelect?: boolean;
-    captureMenuScroll?: boolean;
-    classNames?: react_select.ClassNamesConfig<Option, IsMulti, Group>;
-    closeMenuOnSelect?: boolean;
-    closeMenuOnScroll?: boolean | ((event: Event) => boolean);
-    components?: Partial<react_select_dist_declarations_src_components.SelectComponents<Option, IsMulti, Group>>;
-    controlShouldRenderValue?: boolean;
-    escapeClearsValue?: boolean;
-    filterOption?: (option: react_select_dist_declarations_src_filters.FilterOptionOption<Option>, inputValue: string) => boolean;
-    formatGroupLabel?: (group: Group) => React.ReactNode;
-    getOptionLabel?: react_select.GetOptionLabel<Option>;
-    getOptionValue?: react_select.GetOptionValue<Option>;
-    isDisabled?: boolean;
-    isLoading?: boolean;
-    isOptionDisabled?: (option: Option, selectValue: react_select.Options<Option>) => boolean;
-    isMulti?: IsMulti;
-    isRtl?: boolean;
-    isSearchable?: boolean;
-    loadingMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    minMenuHeight?: number;
-    maxMenuHeight?: number;
-    menuIsOpen?: boolean;
-    menuPlacement?: react_select.MenuPlacement;
-    menuPosition?: react_select.MenuPosition;
-    menuShouldBlockScroll?: boolean;
-    menuShouldScrollIntoView?: boolean;
-    noOptionsMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    openMenuOnFocus?: boolean;
-    openMenuOnClick?: boolean;
-    options?: react_select.OptionsOrGroups<Option, Group>;
-    pageSize?: number;
-    placeholder?: React.ReactNode;
-    screenReaderStatus?: (obj: {
-        count: number;
-    }) => string;
-    styles?: react_select.StylesConfig<Option, IsMulti, Group>;
-    tabIndex?: number;
-    tabSelectsValue?: boolean;
-    unstyled?: boolean;
-} & {}> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & {
+const ReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>(props: CUISelectProps$1 & Omit<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & {
     ref?: React.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
 }) => ReturnType<typeof UnrefedSelect$1>;
 
@@ -1058,99 +962,7 @@ type CUISelectProps = {
 };
 type CreatableReactSelectProps<Option = unknown, IsMulti extends boolean = boolean, Group extends GroupBase$1<Option> = GroupBase$1<Option>> = CreatableProps<Option, IsMulti, Group> & CUISelectProps;
 function UnrefedSelect<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>({ label, className, error, ...props }: CreatableReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
-const CreatableReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>(props: Omit<Pick<react_select_dist_declarations_src_Select.Props<Option, IsMulti, Group>, "aria-errormessage" | "aria-invalid" | "aria-label" | "aria-labelledby" | "ariaLiveMessages" | "autoFocus" | "className" | "classNamePrefix" | "delimiter" | "formatOptionLabel" | "hideSelectedOptions" | "id" | "inputValue" | "inputId" | "instanceId" | "isClearable" | "isOptionSelected" | "menuPortalTarget" | "name" | "onBlur" | "onChange" | "onFocus" | "onInputChange" | "onKeyDown" | "onMenuOpen" | "onMenuClose" | "onMenuScrollToTop" | "onMenuScrollToBottom" | "theme" | "value" | "form" | "required"> & {
-    'aria-live'?: "off" | "assertive" | "polite";
-    backspaceRemovesValue?: boolean;
-    blurInputOnSelect?: boolean;
-    captureMenuScroll?: boolean;
-    classNames?: react_select.ClassNamesConfig<Option, IsMulti, Group>;
-    closeMenuOnSelect?: boolean;
-    closeMenuOnScroll?: boolean | ((event: Event) => boolean);
-    components?: Partial<react_select_dist_declarations_src_components.SelectComponents<Option, IsMulti, Group>>;
-    controlShouldRenderValue?: boolean;
-    escapeClearsValue?: boolean;
-    filterOption?: (option: react_select_dist_declarations_src_filters.FilterOptionOption<Option>, inputValue: string) => boolean;
-    formatGroupLabel?: (group: Group) => React.ReactNode;
-    getOptionLabel?: react_select_dist_declarations_src_types.GetOptionLabel<Option>;
-    getOptionValue?: react_select_dist_declarations_src_types.GetOptionValue<Option>;
-    isDisabled?: boolean;
-    isLoading?: boolean;
-    isOptionDisabled?: (option: Option, selectValue: react_select_dist_declarations_src_types.Options<Option>) => boolean;
-    isMulti?: IsMulti;
-    isRtl?: boolean;
-    isSearchable?: boolean;
-    loadingMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    minMenuHeight?: number;
-    maxMenuHeight?: number;
-    menuIsOpen?: boolean;
-    menuPlacement?: react_select_dist_declarations_src_types.MenuPlacement;
-    menuPosition?: react_select_dist_declarations_src_types.MenuPosition;
-    menuShouldBlockScroll?: boolean;
-    menuShouldScrollIntoView?: boolean;
-    noOptionsMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    openMenuOnFocus?: boolean;
-    openMenuOnClick?: boolean;
-    options?: react_select_dist_declarations_src_types.OptionsOrGroups<Option, Group>;
-    pageSize?: number;
-    placeholder?: React.ReactNode;
-    screenReaderStatus?: (obj: {
-        count: number;
-    }) => string;
-    styles?: react_select.StylesConfig<Option, IsMulti, Group>;
-    tabIndex?: number;
-    tabSelectsValue?: boolean;
-    unstyled?: boolean;
-} & {}, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<Pick<react_select_dist_declarations_src_Select.Props<Option, IsMulti, Group>, "aria-errormessage" | "aria-invalid" | "aria-label" | "aria-labelledby" | "ariaLiveMessages" | "autoFocus" | "className" | "classNamePrefix" | "delimiter" | "formatOptionLabel" | "hideSelectedOptions" | "id" | "inputValue" | "inputId" | "instanceId" | "isClearable" | "isOptionSelected" | "menuPortalTarget" | "name" | "onBlur" | "onChange" | "onFocus" | "onInputChange" | "onKeyDown" | "onMenuOpen" | "onMenuClose" | "onMenuScrollToTop" | "onMenuScrollToBottom" | "theme" | "value" | "form" | "required"> & {
-    'aria-live'?: "off" | "assertive" | "polite";
-    backspaceRemovesValue?: boolean;
-    blurInputOnSelect?: boolean;
-    captureMenuScroll?: boolean;
-    classNames?: react_select.ClassNamesConfig<Option, IsMulti, Group>;
-    closeMenuOnSelect?: boolean;
-    closeMenuOnScroll?: boolean | ((event: Event) => boolean);
-    components?: Partial<react_select_dist_declarations_src_components.SelectComponents<Option, IsMulti, Group>>;
-    controlShouldRenderValue?: boolean;
-    escapeClearsValue?: boolean;
-    filterOption?: (option: react_select_dist_declarations_src_filters.FilterOptionOption<Option>, inputValue: string) => boolean;
-    formatGroupLabel?: (group: Group) => React.ReactNode;
-    getOptionLabel?: react_select_dist_declarations_src_types.GetOptionLabel<Option>;
-    getOptionValue?: react_select_dist_declarations_src_types.GetOptionValue<Option>;
-    isDisabled?: boolean;
-    isLoading?: boolean;
-    isOptionDisabled?: (option: Option, selectValue: react_select_dist_declarations_src_types.Options<Option>) => boolean;
-    isMulti?: IsMulti;
-    isRtl?: boolean;
-    isSearchable?: boolean;
-    loadingMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    minMenuHeight?: number;
-    maxMenuHeight?: number;
-    menuIsOpen?: boolean;
-    menuPlacement?: react_select_dist_declarations_src_types.MenuPlacement;
-    menuPosition?: react_select_dist_declarations_src_types.MenuPosition;
-    menuShouldBlockScroll?: boolean;
-    menuShouldScrollIntoView?: boolean;
-    noOptionsMessage?: (obj: {
-        inputValue: string;
-    }) => React.ReactNode;
-    openMenuOnFocus?: boolean;
-    openMenuOnClick?: boolean;
-    options?: react_select_dist_declarations_src_types.OptionsOrGroups<Option, Group>;
-    pageSize?: number;
-    placeholder?: React.ReactNode;
-    screenReaderStatus?: (obj: {
-        count: number;
-    }) => string;
-    styles?: react_select.StylesConfig<Option, IsMulti, Group>;
-    tabIndex?: number;
-    tabSelectsValue?: boolean;
-    unstyled?: boolean;
-} & {}> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & react_select_dist_declarations_src_useCreatable.CreatableAdditionalProps<Option, Group> & CUISelectProps & {
+const CreatableReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>(props: Omit<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & react_select_dist_declarations_src_useCreatable.CreatableAdditionalProps<Option, Group> & CUISelectProps & {
     ref?: React.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
 }) => ReturnType<typeof UnrefedSelect>;
 
@@ -1325,7 +1137,31 @@ type PopoverProps = PropsWithChildren<{
     portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
 }>;
-const Popover: FC<PopoverProps>;
+interface PopoverHandlers {
+    close: () => void;
+    open: () => void;
+}
+const Popover: React.ForwardRefExoticComponent<{
+    onOpen?: () => unknown;
+    onClose?: () => unknown;
+    showClassName?: string;
+    overlay?: ReactNode;
+    showOverlay?: boolean;
+    placement?: Placement;
+    offset?: Parameters<typeof offset>[0];
+    lockBody?: boolean;
+    lockRootId?: string;
+    element: ReactElement;
+    closeRef?: MutableRefObject<(() => unknown) | undefined | null>;
+    initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
+    guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
+    modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
+    closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
+    portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
+    portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
+} & {
+    children?: React.ReactNode;
+} & React.RefAttributes<PopoverHandlers>>;
 
 type PopoverTitleProps = {
     children: ReactNode;
@@ -1362,7 +1198,7 @@ interface ContextMenuProps {
 }
 const ContextMenu: FC<ContextMenuProps>;
 
-export { Accordion, AccordionElement, AccordionElementProps, Alert, AlertProps, AlertType, Badge, BadgeColor, Blockquote, Button, ButtonColor$2 as ButtonColor, ButtonGroup, ButtonGroupProps, ButtonProps$1 as ButtonProps, Checkbox, ConditionalWrapper, DynamicModal as ConfirmationListener, ConfirmationModal, ConfirmationModalProps, ContextMenu, CreatableReactSelect, CreatableReactSelectProps, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, DontAskAgain, Dots, DotsColor, Dropdown, Dropzone, DropzoneProps, DynamicModal, DynamicModalProps, EditableSelect, FloatingProvider, FloatingTreeWrapper$1 as FloatingTreeWrapper, Footer, FullInputChipsProps$1 as FullInputChipsProps, Gauge, GaugeColor, GenericPopover, GenericTable, GenericTableProps, Header, HeaderPanel, HeaderTitle, IToast, Icon, IndeterminateCheckbox, Input, InputChips, InputChipsProps$1 as InputChipsProps, InputHelpBaloon, InputHelpBlock, InputProps, Kbd, Label, LabelColor$4 as LabelColor, Menu, MenuDivider, MenuElement, MenuGroup, Modal$1 as Modal, ModalBody$1 as ModalBody, ModalFooter$1 as ModalFooter, ModalHeader$1 as ModalHeader, ModalProps$1 as ModalProps, ModalProvider, ModalProviderProps, ModalSize$1 as ModalSize, Option, OptionGroup, Pagination, PaginationProps, Panel, PanelProps, Popover, PopoverProps, PopoverTitle, Portal, PortalProps, Progressbar, ProgressbarColor, PromptModal, PromptModalProps, PropsWithCloseModal, Radio, Radios, ReactSelect, ReactSelectProps, Section, SegmentedControl, SegmentedControlProps, SegmentedOption, Slider, SliderProps, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, TimelineItemProps, TimelineProps, Toast, ToastContainer, ToastProps, TooltipWrapper, VSeparator, VerticalCenter, WithBadge, WithTooltip, WithTooltipProps, base16Theme, confirmation, dynamicModal, findOption, findOptions, isGrouped, notificationModal as notification, notificationModal, prompt, toast, useFloatingContext, useModalProvider, usePopover, usePopoverContext, useTooltip };
+export { Accordion, AccordionElement, AccordionElementProps, Alert, AlertProps, AlertType, Badge, BadgeColor, Blockquote, Button, ButtonColor$2 as ButtonColor, ButtonGroup, ButtonGroupProps, ButtonProps$1 as ButtonProps, Checkbox, ConditionalWrapper, DynamicModal as ConfirmationListener, ConfirmationModal, ConfirmationModalProps, ContextMenu, CreatableReactSelect, CreatableReactSelectProps, DefaultTablePagination, Display, Display0, Display1, Display2, Display3, Display4, DisplayIf, DontAskAgain, Dots, DotsColor, Dropdown, Dropzone, DropzoneProps, DynamicModal, DynamicModalProps, EditableSelect, FloatingProvider, FloatingTreeWrapper$1 as FloatingTreeWrapper, Footer, FullInputChipsProps$1 as FullInputChipsProps, Gauge, GaugeColor, GenericPopover, GenericTable, GenericTableProps, Header, HeaderPanel, HeaderTitle, IToast, Icon, IndeterminateCheckbox, Input, InputChips, InputChipsProps$1 as InputChipsProps, InputHelpBaloon, InputHelpBlock, InputProps, Kbd, Label, LabelColor$4 as LabelColor, Menu, MenuDivider, MenuElement, MenuGroup, Modal$1 as Modal, ModalBody$1 as ModalBody, ModalFooter$1 as ModalFooter, ModalHeader$1 as ModalHeader, ModalProps$1 as ModalProps, ModalProvider, ModalProviderProps, ModalSize$1 as ModalSize, Option, OptionGroup, Pagination, PaginationProps, Panel, PanelProps, Popover, PopoverHandlers, PopoverProps, PopoverTitle, Portal, PortalProps, Progressbar, ProgressbarColor, PromptModal, PromptModalProps, PropsWithCloseModal, Radio, Radios, ReactSelect, ReactSelectProps, Section, SegmentedControl, SegmentedControlProps, SegmentedOption, Slider, SliderProps, Spinner, Step, Steps, Switch, Tab, Table, Tabs, TabsHeader, Textarea, Timeline, TimelineItem, TimelineItemProps, TimelineProps, Toast, ToastContainer, ToastProps, TooltipWrapper, VSeparator, VerticalCenter, WithBadge, WithTooltip, WithTooltipProps, base16Theme, confirmation, dynamicModal, findOption, findOptions, isGrouped, notificationModal as notification, notificationModal, prompt, toast, useFloatingContext, useModalProvider, usePopover, usePopoverContext, useTooltip };
 
 }
 
