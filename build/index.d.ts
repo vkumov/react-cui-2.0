@@ -1285,7 +1285,7 @@ type Props<V> = {
     inline?: boolean;
     fullWidth?: boolean;
     small?: boolean;
-} & HTMLProps<HTMLInputElement>;
+} & HTMLProps<HTMLInputElement> & Required<Pick<HTMLProps<HTMLInputElement>, "name">>;
 function UrefedSegmented<V extends string | number = string>({ options, value, label, inline, className, fullWidth, small, ...props }: Props<V>, ref: Ref<HTMLDivElement>): JSX.Element;
 type SegmentedControlProps<V> = Props<V> & {
     ref?: React.ForwardedRef<HTMLDivElement>;
@@ -1317,7 +1317,7 @@ type PopoverProps = PropsWithChildren<{
     lockBody?: boolean;
     lockRootId?: string;
     element: ReactElement;
-    closeRef?: MutableRefObject<() => unknown>;
+    closeRef?: MutableRefObject<(() => unknown) | undefined | null>;
     initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
     guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
     modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];

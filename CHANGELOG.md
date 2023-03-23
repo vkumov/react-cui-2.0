@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.1.5
+
+- Fix type of `closeRef` of `Popover`
+
+## 6.1.3
+
+- `name` property is required for `SegmentedControl`
+
 ## 6.1.2
 
 - Types

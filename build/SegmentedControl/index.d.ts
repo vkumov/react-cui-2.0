@@ -12,7 +12,7 @@ type Props<V> = {
     inline?: boolean;
     fullWidth?: boolean;
     small?: boolean;
-} & HTMLProps<HTMLInputElement>;
+} & HTMLProps<HTMLInputElement> & Required<Pick<HTMLProps<HTMLInputElement>, "name">>;
 declare function UrefedSegmented<V extends string | number = string>({ options, value, label, inline, className, fullWidth, small, ...props }: Props<V>, ref: Ref<HTMLDivElement>): JSX.Element;
 type SegmentedControlProps<V> = Props<V> & {
     ref?: React.ForwardedRef<HTMLDivElement>;

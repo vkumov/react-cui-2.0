@@ -113,7 +113,8 @@ type Props<V> = {
   inline?: boolean;
   fullWidth?: boolean;
   small?: boolean;
-} & HTMLProps<HTMLInputElement>;
+} & HTMLProps<HTMLInputElement> &
+  Required<Pick<HTMLProps<HTMLInputElement>, "name">>;
 
 function UrefedSegmented<V extends string | number = string>(
   {

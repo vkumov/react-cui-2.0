@@ -28,7 +28,7 @@ type PopoverProps = PropsWithChildren<{
     lockBody?: boolean;
     lockRootId?: string;
     element: ReactElement;
-    closeRef?: MutableRefObject<() => unknown>;
+    closeRef?: MutableRefObject<(() => unknown) | undefined | null>;
     initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
     guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
     modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
