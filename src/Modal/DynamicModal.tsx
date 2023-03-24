@@ -1,5 +1,5 @@
 import React, { cloneElement, type ComponentProps, type FC } from "react";
-import type { FloatingPortal } from "@floating-ui/react";
+import { FloatingPortal, useFloatingPortalNode } from "@floating-ui/react";
 import { nanoid } from "nanoid";
 import useEvent from "react-use-event-hook";
 
@@ -193,6 +193,10 @@ export const DynamicModal: FC<DynamicModalProps> = ({
   ...props
 }) => {
   const [modals, setModals] = React.useState<EventModalProps[]>([]);
+
+  useFloatingPortalNode({
+    id: props.portalId ?? "--cui-modal-portal",
+  });
 
   const addModal = React.useCallback(
     (modal: EventModalProps) =>

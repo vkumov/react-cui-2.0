@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.8
+
+- Keep empty portal created at all time
+
 ## 6.1.7
 
 - Render `FloatingPortal` only when it's needed
