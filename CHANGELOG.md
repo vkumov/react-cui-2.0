@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.9
+
+- Allow custom help blocks for Inputs
+
 ## 6.1.8
 
 - Keep empty portal created at all time

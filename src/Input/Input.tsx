@@ -1,6 +1,6 @@
 import React, { HTMLProps, ReactElement, ReactNode, forwardRef } from "react";
 
-import { ConditionalWrapper, DisplayIf as If } from "src/Conditional";
+import { ConditionalWrapper } from "src/Conditional";
 import { InputHelpBlock } from "src/InputHelp";
 import { appendClass as ac } from "src/utils";
 
@@ -10,7 +10,7 @@ export type InputProps = {
   label?: ReactNode;
   type?: string;
   inline?: "label" | "both" | "form";
-  helpBlock?: boolean;
+  helpBlock?: boolean | ReactNode;
   iconClick?: (e) => void;
   icon?: string | ReactElement<any>;
   className?: string;
@@ -88,9 +88,13 @@ export const Input = forwardRef<
           </button>
         ) : null}
       </div>
-      <If condition={!inline && helpBlock && !!error}>
-        <InputHelpBlock text={error} />
-      </If>
+      {!inline && helpBlock ? (
+        error ? (
+          <InputHelpBlock text={error} />
+        ) : typeof helpBlock !== "boolean" ? (
+          <InputHelpBlock text={helpBlock} />
+        ) : null
+      ) : null}
     </div>
   )
 );

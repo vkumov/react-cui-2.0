@@ -306,7 +306,7 @@ type InputProps = {
     label?: ReactNode;
     type?: string;
     inline?: "label" | "both" | "form";
-    helpBlock?: boolean;
+    helpBlock?: boolean | ReactNode;
     iconClick?: (e: any) => void;
     icon?: string | ReactElement<any>;
     className?: string;
