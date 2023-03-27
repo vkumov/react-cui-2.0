@@ -76,27 +76,32 @@ const Overlay: FC<
   );
 };
 
-export type PopoverProps = PropsWithChildren<{
-  onOpen?: () => unknown;
-  onClose?: () => unknown;
-  showClassName?: string;
-  overlay?: ReactNode;
-  showOverlay?: boolean;
-  placement?: Placement;
-  offset?: Parameters<typeof offset>[0];
-  lockBody?: boolean;
-  lockRootId?: string;
-  element: ReactElement;
-  closeRef?: MutableRefObject<(() => unknown) | undefined | null>;
-  initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
-  guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
-  modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
-  closeOnFocusOut?: ComponentProps<
-    typeof FloatingFocusManager
-  >["closeOnFocusOut"];
-  portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
-  portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
-}>;
+export type PopoverProps = PropsWithChildren<
+  {
+    onOpen?: () => unknown;
+    onClose?: () => unknown;
+    showClassName?: string;
+    overlay?: ReactNode;
+    showOverlay?: boolean;
+    placement?: Placement;
+    offset?: Parameters<typeof offset>[0];
+    lockBody?: boolean;
+    lockRootId?: string;
+    element: ReactElement;
+    closeRef?: MutableRefObject<(() => unknown) | undefined | null>;
+    initialFocus?: ComponentProps<typeof FloatingFocusManager>["initialFocus"];
+    guardsFocus?: ComponentProps<typeof FloatingFocusManager>["guards"];
+    modalFocus?: ComponentProps<typeof FloatingFocusManager>["modal"];
+    closeOnFocusOut?: ComponentProps<
+      typeof FloatingFocusManager
+    >["closeOnFocusOut"];
+    portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
+    portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
+  } & Pick<
+    ComponentProps<typeof GenericPopover>,
+    "wrapperClassName" | "className"
+  >
+>;
 
 export interface PopoverHandlers {
   close: () => void;
@@ -122,6 +127,8 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
       modalFocus,
       closeOnFocusOut,
       portalId,
+      wrapperClassName,
+      className,
     },
     impRef
   ) {
@@ -223,7 +230,8 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
                       }}
                       state={state}
                       offset={offsetOptions}
-                      {...getFloatingProps()}
+                      wrapperClassName={wrapperClassName}
+                      {...getFloatingProps({ className })}
                     >
                       <PopoverProvider
                         setOverlayState={setOverlayShow}

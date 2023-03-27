@@ -11,6 +11,12 @@ declare const FloatingTreeWrapper: FC<{
     force?: boolean;
 }>;
 
+declare const GenericPopover$1: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {
+    wrapperClassName?: string;
+    state: TransitionStatus;
+    offset?: Parameters<typeof offset>[0];
+}, "ref"> & React.RefAttributes<HTMLDivElement>>;
+
 type PopoverProps = PropsWithChildren<{
     onOpen?: () => unknown;
     onClose?: () => unknown;
@@ -29,7 +35,7 @@ type PopoverProps = PropsWithChildren<{
     closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
     portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
-}>;
+} & Pick<ComponentProps<typeof GenericPopover$1>, "wrapperClassName" | "className">>;
 
 declare const GenericPopover: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {
     wrapperClassName?: string;

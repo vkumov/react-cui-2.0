@@ -1,7 +1,8 @@
-import React, { FC, ReactNode, ComponentProps, PropsWithChildren, ReactElement, MutableRefObject, HTMLProps, ComponentType } from 'react';
 import * as _floating_ui_react from '@floating-ui/react';
-import { FloatingPortal, Placement, offset, FloatingFocusManager } from '@floating-ui/react';
+import { FloatingPortal, offset, Placement, FloatingFocusManager } from '@floating-ui/react';
+import * as react_transition_group from 'react-transition-group';
 import { TransitionStatus } from 'react-transition-group';
+import React, { FC, ReactNode, ComponentProps, PropsWithChildren, ReactElement, MutableRefObject, HTMLProps, ComponentType } from 'react';
 
 declare const FloatingTreeWrapper: FC<{
     children: ReactNode;
@@ -10,6 +11,12 @@ declare const FloatingTreeWrapper: FC<{
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
     force?: boolean;
 }>;
+
+declare const GenericPopover: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {
+    wrapperClassName?: string;
+    state: TransitionStatus;
+    offset?: Parameters<typeof offset>[0];
+}, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 type PopoverContextProps = {
     setOverlayState: (show: boolean) => void;
@@ -35,7 +42,7 @@ type PopoverProps = PropsWithChildren<{
     closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
     portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
-}>;
+} & Pick<ComponentProps<typeof GenericPopover>, "wrapperClassName" | "className">>;
 interface PopoverHandlers {
     close: () => void;
     open: () => void;
@@ -58,7 +65,11 @@ declare const Popover: React.ForwardRefExoticComponent<{
     closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
     portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
-} & {
+} & Pick<Omit<React.HTMLProps<HTMLDivElement> & {
+    wrapperClassName?: string;
+    state: react_transition_group.TransitionStatus;
+    offset?: _floating_ui_react.OffsetOptions;
+}, "ref"> & React.RefAttributes<HTMLDivElement>, "className" | "wrapperClassName"> & {
     children?: React.ReactNode;
 } & React.RefAttributes<PopoverHandlers>>;
 
@@ -67,12 +78,6 @@ type PopoverTitleProps = {
     noLine?: boolean;
 } & HTMLProps<HTMLHeadingElement>;
 declare const PopoverTitle: React.ForwardRefExoticComponent<Omit<PopoverTitleProps, "ref"> & React.RefAttributes<HTMLHeadingElement>>;
-
-declare const GenericPopover: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {
-    wrapperClassName?: string;
-    state: TransitionStatus;
-    offset?: Parameters<typeof offset>[0];
-}, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 type Options = {
     onOpen?: () => unknown;

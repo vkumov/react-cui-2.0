@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.10
+
+- Expose `className` & `wrapperClassName` of `GenericPopover`
+
 ## 6.1.9
 
 - Allow custom help blocks for Inputs
