@@ -1,5 +1,5 @@
 import * as _floating_ui_react from '@floating-ui/react';
-import { FloatingPortal, offset, Placement, FloatingFocusManager } from '@floating-ui/react';
+import { FloatingPortal, offset, Placement, FloatingFocusManager, FloatingOverlay } from '@floating-ui/react';
 import * as react_transition_group from 'react-transition-group';
 import { TransitionStatus } from 'react-transition-group';
 import * as React from 'react';
@@ -45,6 +45,7 @@ type PopoverProps = PropsWithChildren<{
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
     explicitPortal?: boolean;
     autoDismiss?: boolean;
+    overlayProps?: Omit<ComponentProps<typeof FloatingOverlay>, "id">;
 } & Pick<ComponentProps<typeof GenericPopover>, "wrapperClassName" | "className">>;
 interface PopoverHandlers {
     close: () => void;
@@ -72,6 +73,7 @@ declare const Popover: React.ForwardRefExoticComponent<{
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
     explicitPortal?: boolean;
     autoDismiss?: boolean;
+    overlayProps?: Omit<ComponentProps<typeof FloatingOverlay>, "id">;
 } & Pick<Omit<React.HTMLProps<HTMLDivElement> & {
     wrapperClassName?: string;
     state: react_transition_group.TransitionStatus;

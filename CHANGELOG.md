@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.2.3
+
+- fix `explicitPortal` behavior
+- `Popover` exposes `overlayProps` to control `FloatingOverlay`
+
 ## 6.2.0
 
 - added `usePopoverHandlers` hook which can be used inside popover (and element) to control popover behavior

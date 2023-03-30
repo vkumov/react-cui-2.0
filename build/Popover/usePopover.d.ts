@@ -1,5 +1,5 @@
 import * as _floating_ui_react from '@floating-ui/react';
-import { Placement, offset, FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
+import { Placement, offset, FloatingFocusManager, FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 import React, { PropsWithChildren, ReactNode, ReactElement, MutableRefObject, ComponentProps, FC, ComponentType } from 'react';
 import { TransitionStatus } from 'react-transition-group';
 
@@ -37,6 +37,7 @@ type PopoverProps = PropsWithChildren<{
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
     explicitPortal?: boolean;
     autoDismiss?: boolean;
+    overlayProps?: Omit<ComponentProps<typeof FloatingOverlay>, "id">;
 } & Pick<ComponentProps<typeof GenericPopover$1>, "wrapperClassName" | "className">>;
 
 declare const GenericPopover: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {

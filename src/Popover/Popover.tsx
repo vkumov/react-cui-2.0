@@ -101,6 +101,7 @@ export type PopoverProps = PropsWithChildren<
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
     explicitPortal?: boolean;
     autoDismiss?: boolean;
+    overlayProps?: Omit<ComponentProps<typeof FloatingOverlay>, "id">;
   } & Pick<
     ComponentProps<typeof GenericPopover>,
     "wrapperClassName" | "className"
@@ -146,6 +147,7 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
       className,
       explicitPortal,
       autoDismiss: providedAutoDismiss = true,
+      overlayProps,
     },
     impRef
   ) {
@@ -240,6 +242,7 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
               {(state) => (
                 <FloatingOverlay
                   style={{ zIndex: "calc(var(--cui-max-zindex, 1000) + 2)" }}
+                  {...overlayProps}
                   id={nodeId}
                 >
                   <FloatingFocusManager

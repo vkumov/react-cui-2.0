@@ -1146,6 +1146,7 @@ type PopoverProps = PropsWithChildren<{
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
     explicitPortal?: boolean;
     autoDismiss?: boolean;
+    overlayProps?: Omit<ComponentProps<typeof FloatingOverlay>, "id">;
 } & Pick<ComponentProps<typeof GenericPopover>, "wrapperClassName" | "className">>;
 interface PopoverHandlers {
     close: () => void;
@@ -1173,6 +1174,7 @@ const Popover: React.ForwardRefExoticComponent<{
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
     explicitPortal?: boolean;
     autoDismiss?: boolean;
+    overlayProps?: Omit<ComponentProps<typeof FloatingOverlay>, "id">;
 } & Pick<Omit<React.HTMLProps<HTMLDivElement> & {
     wrapperClassName?: string;
     state: react_transition_group.TransitionStatus;
