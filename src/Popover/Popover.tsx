@@ -1,7 +1,9 @@
-import React, {
+import {
   cloneElement,
+  createContext,
   forwardRef,
   useCallback,
+  useContext,
   useImperativeHandle,
   useRef,
   useState,
@@ -97,6 +99,8 @@ export type PopoverProps = PropsWithChildren<
     >["closeOnFocusOut"];
     portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
+    explicitPortal?: boolean;
+    autoDismiss?: boolean;
   } & Pick<
     ComponentProps<typeof GenericPopover>,
     "wrapperClassName" | "className"
@@ -106,7 +110,18 @@ export type PopoverProps = PropsWithChildren<
 export interface PopoverHandlers {
   close: () => void;
   open: () => void;
+  setAutoDismiss: (enabled: boolean) => void;
 }
+
+const popoverHandlersContext =
+  createContext<MutableRefObject<PopoverHandlers>>(null);
+
+export const usePopoverHandlers = () => {
+  const ref = useContext(popoverHandlersContext);
+  if (!ref) throw Error("usePopoverHandlers can be used only inside Popover");
+
+  return ref.current;
+};
 
 export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
   function (
@@ -129,14 +144,16 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
       portalId,
       wrapperClassName,
       className,
+      explicitPortal,
+      autoDismiss: providedAutoDismiss = true,
     },
     impRef
   ) {
     const [show, setShow] = useLockedBody(false, "root");
+    const [autoDismiss, setAutoDismiss] = useState(providedAutoDismiss);
 
     const tree = useFloatingTree();
     const nodeId = useFloatingNodeId();
-    // const parentId = useFloatingParentNodeId();
 
     const { x, y, reference, floating, strategy, context } = useFloating({
       placement,
@@ -157,8 +174,12 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
 
     const { getReferenceProps, getFloatingProps } = useInteractions([
       useClick(context),
-      useDismiss(context, { escapeKey: false, bubbles: false }),
-      useCustomDismiss(context),
+      useDismiss(context, {
+        escapeKey: false,
+        bubbles: false,
+        enabled: autoDismiss,
+      }),
+      useCustomDismiss(context, { enabled: autoDismiss }),
     ]);
 
     const [overlayShow, setOverlayShow] = useState(overlayShowProvided);
@@ -178,17 +199,19 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
     const closeCb = useCallback(() => setShow(false), [setShow]);
     if (closeRef) closeRef.current = closeCb;
 
+    const handlersRef = useRef<PopoverHandlers>(null);
     useImperativeHandle(
-      impRef,
+      useMergeRefs([impRef, handlersRef]),
       () => ({
         close: () => setShow(false),
         open: () => setShow(true),
+        setAutoDismiss,
       }),
       [setShow]
     );
 
     return (
-      <>
+      <popoverHandlersContext.Provider value={handlersRef}>
         {cloneElement(
           element,
           getReferenceProps({
@@ -200,7 +223,11 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
             ),
           })
         )}
-        <FloatingTreeWrapper withPortal={!tree} portalId={id} portalRoot={root}>
+        <FloatingTreeWrapper
+          withPortal={explicitPortal || !tree}
+          portalId={id}
+          portalRoot={root}
+        >
           <FloatingNode id={nodeId}>
             <Transition
               in={show}
@@ -247,7 +274,7 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
             </Transition>
           </FloatingNode>
         </FloatingTreeWrapper>
-      </>
+      </popoverHandlersContext.Provider>
     );
   }
 );

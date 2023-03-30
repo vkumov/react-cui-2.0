@@ -35,6 +35,8 @@ type PopoverProps = PropsWithChildren<{
     closeOnFocusOut?: ComponentProps<typeof FloatingFocusManager>["closeOnFocusOut"];
     portalRoot?: ComponentProps<typeof FloatingTreeWrapper>["portalRoot"];
     portalId?: ComponentProps<typeof FloatingTreeWrapper>["portalId"];
+    explicitPortal?: boolean;
+    autoDismiss?: boolean;
 } & Pick<ComponentProps<typeof GenericPopover$1>, "wrapperClassName" | "className">>;
 
 declare const GenericPopover: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {

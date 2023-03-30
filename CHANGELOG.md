@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.2.0
+
+- added `usePopoverHandlers` hook which can be used inside popover (and element) to control popover behavior
+
+## 6.1.11
+
+- `Popover` exposes `explicitPortal` (default: `false`) prop allowing to remove popover from floating tree
+- `Popover` exposes `autoDismiss` (default: `true`) prop allowing to prevent auto dismiss of popover
+
 ## 6.1.10
 
 - Expose `className` & `wrapperClassName` of `GenericPopover`
