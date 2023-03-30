@@ -51,7 +51,7 @@ interface PopoverHandlers {
     open: () => void;
     setAutoDismiss: (enabled: boolean) => void;
 }
-declare const usePopoverHandlers: () => PopoverHandlers;
+declare const usePopoverHandlers: () => PopoverHandlers | undefined;
 declare const Popover: React.ForwardRefExoticComponent<{
     onOpen?: () => unknown;
     onClose?: () => unknown;

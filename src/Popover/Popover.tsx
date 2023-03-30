@@ -116,9 +116,9 @@ export interface PopoverHandlers {
 const popoverHandlersContext =
   createContext<MutableRefObject<PopoverHandlers>>(null);
 
-export const usePopoverHandlers = () => {
+export const usePopoverHandlers = (): PopoverHandlers | undefined => {
   const ref = useContext(popoverHandlersContext);
-  if (!ref) throw Error("usePopoverHandlers can be used only inside Popover");
+  if (!ref) return undefined;
 
   return ref.current;
 };
@@ -227,6 +227,7 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
           withPortal={explicitPortal || !tree}
           portalId={id}
           portalRoot={root}
+          force={explicitPortal ? true : undefined}
         >
           <FloatingNode id={nodeId}>
             <Transition
