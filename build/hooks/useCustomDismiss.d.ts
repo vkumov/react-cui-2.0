@@ -1,9 +1,3 @@
-import { ReferenceType, FloatingContext, ElementProps } from '@floating-ui/react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type Options = {
-    enabled?: boolean;
-    modal?: boolean;
-};
-declare function useCustomDismiss<RT extends ReferenceType = ReferenceType>({ open, onOpenChange, events, nodeId, elements: { floating }, }: FloatingContext<RT>, { enabled, modal }?: Options): ElementProps;
-
-export { useCustomDismiss };
+export { useCustomDismiss } from "@vkumov/react-cui-2.0"

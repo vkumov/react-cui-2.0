@@ -1,4 +1,3 @@
-type UseLockedBodyOutput = [boolean, (locked: boolean) => void];
-declare function useLockedBody(initialLocked?: boolean, rootId?: string): UseLockedBodyOutput;
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-export { useLockedBody };
+export { useLockedBody } from "@vkumov/react-cui-2.0"

@@ -1,9 +1,3 @@
-import { FC, HTMLProps } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type VSeparatorProps = {
-    size?: "small" | "large" | "huge" | "default";
-    compressed?: boolean;
-} & Omit<HTMLProps<HTMLDivElement>, "size">;
-declare const VSeparator: FC<VSeparatorProps>;
-
-export { VSeparator };
+export { VSeparator } from "@vkumov/react-cui-2.0"

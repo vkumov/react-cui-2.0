@@ -1,5 +1,3 @@
-import { FC, PropsWithChildren } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-declare const VerticalCenter: FC<PropsWithChildren>;
-
-export { VerticalCenter };
+export { VerticalCenter } from "@vkumov/react-cui-2.0"

@@ -1,6 +1,3 @@
-/// <reference types="react" />
-type Key = (React.KeyboardEvent<Element> | KeyboardEvent)["key"];
-type Handler = (event: React.KeyboardEvent<Element> | KeyboardEvent) => void;
-declare function useKeyPress(keys: Key | Key[], handler: Handler, event?: "keydown" | "keypress" | "keyup"): void;
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-export { useKeyPress };
+export { useKeyPress } from "@vkumov/react-cui-2.0"

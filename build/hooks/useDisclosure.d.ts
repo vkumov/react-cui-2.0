@@ -1,10 +1,3 @@
-declare function useDisclosure(initialState: boolean, callbacks?: {
-    onOpen?(): void;
-    onClose?(): void;
-}): readonly [boolean, {
-    readonly open: () => void;
-    readonly close: () => void;
-    readonly toggle: () => void;
-}];
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-export { useDisclosure };
+export { useDisclosure } from "@vkumov/react-cui-2.0"

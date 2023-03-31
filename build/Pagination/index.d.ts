@@ -1,19 +1,3 @@
-import { ReactNode, FC } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type PaginationProps = {
-    size?: "small" | "default" | "large";
-    rounded?: boolean;
-    icons?: boolean;
-    next?: ReactNode;
-    prev?: ReactNode;
-    position: number;
-    perPage?: number;
-    total: number;
-    onPageChange: (e: any, position: number) => void;
-    firstAndLast?: boolean;
-    beginAt?: number;
-    className?: string;
-};
-declare const Pagination: FC<PaginationProps>;
-
-export { Pagination, PaginationProps };
+export { Pagination, PaginationProps } from "@vkumov/react-cui-2.0"

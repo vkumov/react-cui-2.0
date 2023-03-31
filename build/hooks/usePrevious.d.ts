@@ -1,9 +1,3 @@
-import { MutableRefObject } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-/**
- * a type-safe version of the `usePrevious` hook described here:
- * @see {@link https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state}
- */
-declare function usePrevious<T>(value: T): MutableRefObject<T | undefined>["current"];
-
-export { usePrevious };
+export { usePrevious } from "@vkumov/react-cui-2.0"

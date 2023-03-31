@@ -1,4 +1,3 @@
-type ClassFunction = () => string;
-declare const appendClass: (c: any, what?: string | ClassFunction | undefined) => string;
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-export { appendClass };
+export { appendClass } from "@vkumov/react-cui-2.0"

@@ -1,5 +1,3 @@
-import React from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-declare const Section: React.ForwardRefExoticComponent<Omit<React.PropsWithChildren<React.HTMLProps<HTMLDivElement>>, "ref"> & React.RefAttributes<HTMLDivElement>>;
-
-export { Section };
+export { Section } from "@vkumov/react-cui-2.0"

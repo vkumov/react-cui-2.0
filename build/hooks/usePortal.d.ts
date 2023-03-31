@@ -1,3 +1,3 @@
-declare function usePortal(target?: HTMLElement | string): HTMLElement | null;
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-export { usePortal };
+export { usePortal } from "@vkumov/react-cui-2.0"

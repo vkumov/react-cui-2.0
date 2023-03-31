@@ -1,14 +1,3 @@
-import React, { FC, HTMLProps, ReactNode } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-interface TextareaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
-    label?: ReactNode;
-    textareaClass?: string;
-    innerDivClass?: string;
-    inputRef?: React.Ref<HTMLTextAreaElement>;
-    className?: string;
-    inline?: boolean;
-    error?: ReactNode;
-}
-declare const Textarea: FC<TextareaProps & HTMLProps<HTMLTextAreaElement>>;
-
-export { Textarea };
+export { Textarea } from "@vkumov/react-cui-2.0"

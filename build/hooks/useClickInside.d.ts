@@ -1,6 +1,3 @@
-/// <reference types="react" />
-import * as react from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-declare function useClickInside<T extends HTMLElement = any>(handler: () => void, events?: string[] | null, nodes?: HTMLElement[]): react.MutableRefObject<T>;
-
-export { useClickInside };
+export { useClickInside } from "@vkumov/react-cui-2.0"

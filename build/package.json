@@ -28,7 +28,6 @@
   },
   "private": false,
   "typings": "./index.d.ts",
-  "type": "module",
   "exports": {
     ".": {
       "types": "./index.d.ts",

@@ -1,5 +1,3 @@
-import { useLayoutEffect } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-declare const useIsomorphicEffect: typeof useLayoutEffect;
-
-export { useIsomorphicEffect };
+export { useIsomorphicEffect } from "@vkumov/react-cui-2.0"

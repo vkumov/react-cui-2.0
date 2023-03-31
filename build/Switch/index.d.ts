@@ -1,16 +1,3 @@
-import React, { FC, HTMLProps, ReactNode } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-interface SwitchProps {
-    left?: ReactNode;
-    right?: ReactNode;
-    disabled?: boolean;
-    inline?: boolean;
-    spacing?: "compressed" | "loose";
-    asFormGroup?: boolean;
-    className?: string;
-    id?: string;
-    style?: React.CSSProperties;
-}
-declare const Switch: FC<SwitchProps & HTMLProps<HTMLInputElement>>;
-
-export { Switch };
+export { Switch } from "@vkumov/react-cui-2.0"
