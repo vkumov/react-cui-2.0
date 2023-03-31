@@ -1,13 +1,3 @@
-import React, { FC } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type InputHelpBaloonProps = {
-    baloon: string;
-};
-declare const InputHelpBaloon: FC<InputHelpBaloonProps>;
-
-type InputHelpBlockProps = {
-    text: React.ReactNode;
-};
-declare const InputHelpBlock: FC<InputHelpBlockProps>;
-
-export { InputHelpBaloon, InputHelpBlock };
+export { InputHelpBaloon, InputHelpBlock } from "@vkumov/react-cui-2.0"

@@ -1,6 +1,6 @@
 {
   "name": "@vkumov/react-cui-2.0",
-  "version": "6.2.3",
+  "version": "6.2.5",
   "description": "React library for CUI 2.0",
   "module": "./index.esm.js",
   "main": "./cjs/index.cjs.js",
@@ -28,6 +28,7 @@
   },
   "private": false,
   "typings": "./index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./index.d.ts",

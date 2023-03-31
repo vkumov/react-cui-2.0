@@ -1,11 +1,3 @@
-import React, { HTMLProps } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type BlockquoteProps = {
-    cite?: string;
-    color?: "primary" | "secondary" | "tertiary" | "success" | "info" | "warning" | "danger" | "dark" | "light" | "warning-alt";
-    align?: "left" | "center" | "right";
-    padding?: "compressed" | "default" | "loose";
-} & HTMLProps<HTMLQuoteElement>;
-declare const Blockquote: React.ForwardRefExoticComponent<Omit<BlockquoteProps, "ref"> & React.RefAttributes<HTMLQuoteElement>>;
-
-export { Blockquote };
+export { Blockquote } from "@vkumov/react-cui-2.0"

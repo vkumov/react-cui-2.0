@@ -1,13 +1,3 @@
-import React, { ReactNode } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type GaugeColor = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning" | "warning-alt" | "danger" | "dark" | "light";
-type GaugeProps = {
-    color?: GaugeColor;
-    size?: "small" | "default" | "large";
-    className?: string;
-    label?: ReactNode;
-    percentage: number;
-};
-declare const Gauge: React.ForwardRefExoticComponent<Omit<GaugeProps & Omit<React.HTMLProps<HTMLDivElement>, "size">, "ref"> & React.RefAttributes<HTMLDivElement>>;
-
-export { Gauge, GaugeColor };
+export { Gauge, GaugeColor } from "@vkumov/react-cui-2.0"

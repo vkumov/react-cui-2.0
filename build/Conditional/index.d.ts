@@ -1,15 +1,3 @@
-import React, { FC } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type ConditionalWrapperProps = {
-    condition: boolean;
-    wrapper: JSX.Element;
-    children: React.ReactNode;
-};
-declare const ConditionalWrapper: FC<ConditionalWrapperProps>;
-type IfProps = {
-    condition: boolean;
-    children: React.ReactNode;
-};
-declare const DisplayIf: FC<IfProps>;
-
-export { ConditionalWrapper, DisplayIf };
+export { ConditionalWrapper, DisplayIf } from "@vkumov/react-cui-2.0"

@@ -1,5 +1,3 @@
-import { FC, HTMLProps } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-declare const Kbd: FC<HTMLProps<HTMLSpanElement>>;
-
-export { Kbd };
+export { Kbd } from "@vkumov/react-cui-2.0"

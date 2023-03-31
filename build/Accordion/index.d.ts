@@ -1,18 +1,3 @@
-import { FC, ReactNode } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type AccordionProps = {
-    children: ReactNode;
-    toggles?: boolean;
-    bordered?: boolean;
-};
-declare const Accordion: FC<AccordionProps>;
-
-type AccordionElementProps = {
-    children: ReactNode;
-    defaultOpen?: boolean;
-    toggles?: boolean;
-    title: ReactNode;
-};
-declare const AccordionElement: FC<AccordionElementProps>;
-
-export { Accordion, AccordionElement, AccordionElementProps };
+export { Accordion, AccordionElement, AccordionElementProps } from "@vkumov/react-cui-2.0"

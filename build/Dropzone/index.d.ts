@@ -1,21 +1,3 @@
-import { ReactNode, FC } from 'react';
-import { DropzoneProps as DropzoneProps$1 } from 'react-dropzone';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type DropzoneProps = {
-    name: string;
-    value?: any[];
-    maxFiles?: number;
-    inline?: boolean;
-    showTotalSelected?: boolean;
-    accept?: string;
-    loose?: boolean;
-    compressed?: boolean;
-    label: string;
-    multiple: boolean;
-    error?: ReactNode;
-    maxFileSize?: string | number;
-    onChange?: (value: File[]) => void;
-};
-declare const Dropzone: FC<DropzoneProps & DropzoneProps$1>;
-
-export { Dropzone, DropzoneProps };
+export { Dropzone, DropzoneProps } from "@vkumov/react-cui-2.0"

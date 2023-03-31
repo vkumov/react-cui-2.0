@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.2.5
+
+- Fix exports - export types as well
+
+## 6.2.4
+
+- `Menu` exposes `icon` prop
+
 ## 6.2.3
 
 - fix `explicitPortal` behavior

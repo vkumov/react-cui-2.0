@@ -105,7 +105,8 @@ type DropdownProps = PropsWithChildren<{
 
 type MenuComponentProps = {
   nested?: boolean;
-} & DropdownProps;
+} & DropdownProps &
+  Pick<MenuElementProps, "icon">;
 
 export const Menu = forwardRef<
   any,
@@ -126,6 +127,7 @@ export const Menu = forwardRef<
       withSizeLimit,
       portalId,
       portalRoot,
+      icon,
       ...props
     },
     ref
@@ -292,6 +294,7 @@ export const Menu = forwardRef<
         ) : (
           <MenuElement
             submenu={nested}
+            icon={icon}
             {...getReferenceProps({
               ...props,
               ref: mergedReferenceRef,

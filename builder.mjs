@@ -2,11 +2,14 @@
 /* eslint-disable no-console */
 
 import { spawn } from "node:child_process";
+import { dirname } from "node:path";
 import { basename, join, resolve } from "path";
 import chalk from "chalk";
+import dedent from "dedent";
 import glob from "fast-glob";
 import fsExtra from "fs-extra";
 import replace from "replace";
+import { default as ts } from "typescript";
 
 const { appendFileSync, copy, readFile, remove, writeFile, moveSync } = fsExtra;
 
@@ -92,49 +95,6 @@ async function includeFileInBuild(file) {
   const targetPath = resolve(distPath, basename(file));
   await copy(sourcePath, targetPath);
   console.log(chalk.green.bold(`✓ Copied ${sourcePath} to ${targetPath}`));
-}
-
-async function generateDeclarations() {
-  console.log(
-    chalk.blue(`Generating declarations in ./build/index-combined.d.ts`)
-  );
-  const { module: m, name: packageName } = structuredClone(packageData);
-  const all = globJsFiles(basename(m)).filter(
-    (f) => !f.includes("/cjs/") && !f.includes("/typings/")
-  );
-
-  const mtotal = await import(join(resolve("./build/"), "index.esm.js"));
-  const allExports = new Set(Object.keys(mtotal));
-
-  const declarations = (
-    await Promise.all(
-      all.map(async (f) => {
-        const m = await import(join(resolve("./build/"), f));
-        const mName = f
-          .replace(/^\.\//, "")
-          .replace(/index\.js$/, "")
-          .replace(/\.js$/, "")
-          .replace(/\/$/, "");
-        // const bName = basename(f);
-        const keys = Object.keys(m).filter((k) => allExports.has(k));
-        if (!keys.length) return null;
-        const declaration = `
-declare module "${packageName}/${mName}" {
-  import { ${keys.join(", ")} } from "${packageName}";
-  export { ${keys.join(", ")} };
-}`;
-        return declaration;
-      })
-    )
-  ).filter(Boolean);
-
-  appendFileSync(
-    resolve("./build/index-combined.d.ts"),
-    declarations.join("\n")
-  );
-  console.log(
-    chalk.green.bold(`✓ Generated declarations in ./build/index-combined.d.ts`)
-  );
 }
 
 async function removeTypeModule() {
@@ -276,6 +236,59 @@ async function replaceIndex() {
   });
 }
 
+async function generateExports() {
+  const { name: packageName } = structuredClone(packageData);
+
+  const gl = join(distPath, "**/*.js");
+  const all = glob
+    .sync(gl)
+    // .map((l) => l.replace(distPath, "."))
+    .filter(
+      (f) =>
+        f !== join(distPath, "index.js") &&
+        f !== join(distPath, "index.esm.js") &&
+        basename(f) !== "index.cjs.js"
+    );
+
+  let declarations = [];
+  for (const f of all) {
+    const dir = dirname(f);
+    let mName = basename(dir);
+    const base = basename(f, ".js");
+    if (base !== "index") mName += `/${base}`;
+    const dtsFile = join(dir, `${base}.d.ts`);
+
+    console.log(chalk.yellow(`Processing ${dtsFile}`));
+
+    const pr = ts.createProgram([dtsFile], {});
+    const sourceFile = pr.getSourceFile(dtsFile);
+    const fileSymbol = pr.getTypeChecker()?.getSymbolAtLocation(sourceFile);
+    if (fileSymbol?.exports?.size) {
+      const keys = [...fileSymbol.exports.keys()];
+      await writeFile(
+        // join(dirname(f), "exports.d.ts"),
+        dtsFile,
+        dedent`// This file is generated automatically by \`builder.mjs\`. Please, don't change it.
+        
+        export { ${keys.join(", ")} } from "${packageData.name}"`
+      );
+      const declaration = dedent`
+      declare module "${packageName}/${mName}" {
+        import { ${keys.join(", ")} } from "${packageName}";
+        export { ${keys.join(", ")} };
+      }`;
+      declarations.push(declaration);
+    }
+  }
+
+  declarations = declarations.filter(Boolean);
+
+  appendFileSync(
+    resolve("./build/index-combined.d.ts"),
+    declarations.join("\n")
+  );
+}
+
 async function run() {
   try {
     await createPackageFile();
@@ -287,7 +300,8 @@ async function run() {
 
     await wrapIndexDts();
 
-    await generateDeclarations();
+    // await generateDeclarations();
+    await generateExports();
     await removeTypeModule();
 
     await cleanup();

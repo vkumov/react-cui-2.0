@@ -1,10 +1,3 @@
-import React, { FC } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type IconProps = {
-    icon: string;
-    size?: 10 | 12 | 14 | 16 | 18 | 20 | 24 | 28 | 32 | 36 | 48 | 64 | 96 | 128;
-    className?: string;
-} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
-declare const Icon: FC<IconProps>;
-
-export { Icon };
+export { Icon } from "@vkumov/react-cui-2.0"

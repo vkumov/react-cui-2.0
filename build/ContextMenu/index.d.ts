@@ -1,12 +1,3 @@
-import { FC, MutableRefObject, ReactNode, ComponentProps } from 'react';
-import { FloatingPortal } from '@floating-ui/react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-interface ContextMenuProps {
-    contextMenuRef: MutableRefObject<HTMLElement | null>;
-    onContextMenu?: (e: globalThis.MouseEvent) => boolean | Promise<boolean>;
-    children: ReactNode;
-    portalId?: ComponentProps<typeof FloatingPortal>["id"];
-}
-declare const ContextMenu: FC<ContextMenuProps>;
-
-export { ContextMenu };
+export { ContextMenu } from "@vkumov/react-cui-2.0"

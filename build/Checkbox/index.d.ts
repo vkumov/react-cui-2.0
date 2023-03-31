@@ -1,20 +1,3 @@
-import React, { ReactNode } from 'react';
+// This file is generated automatically by `builder.mjs`. Please, don't change it.
 
-type CheckboxProps = {
-    inline?: boolean;
-    asFormGroup?: boolean;
-    children?: ReactNode;
-    spacing?: "compressed" | "default" | "loose";
-};
-declare const Checkbox: React.ForwardRefExoticComponent<Omit<CheckboxProps & React.HTMLProps<HTMLInputElement>, "ref"> & React.RefAttributes<HTMLInputElement>>;
-
-declare const IndeterminateCheckbox: React.ForwardRefExoticComponent<Omit<{
-    indeterminate?: boolean;
-} & Omit<{
-    inline?: boolean;
-    asFormGroup?: boolean;
-    children?: React.ReactNode;
-    spacing?: "compressed" | "default" | "loose";
-} & React.HTMLProps<HTMLInputElement>, "ref"> & React.RefAttributes<HTMLInputElement>, "ref"> & React.RefAttributes<HTMLInputElement>>;
-
-export { Checkbox, IndeterminateCheckbox };
+export { Checkbox, IndeterminateCheckbox } from "@vkumov/react-cui-2.0"
