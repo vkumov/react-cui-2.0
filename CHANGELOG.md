@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.2.10
+
+- Global click listener for Dropdown
+
 ## 6.2.6
 
 - Fix `alwaysClose` on Dropdown

@@ -2,31 +2,42 @@
 
 import path from "path";
 import type { StorybookConfig } from "@storybook/react-webpack5";
+
 const config: StorybookConfig = {
-  stories: [{
-    directory: "../stories/",
-    files: "**/*.@(mdx|stories.@(js|ts|tsx))"
-  }, {
-    directory: "../src/",
-    files: "**/*.@(mdx|stories.@(js|ts|tsx))",
-    titlePrefix: "Components"
-  }],
+  stories: [
+    {
+      directory: "../stories/",
+      files: "**/*.@(mdx|stories.@(js|ts|tsx))",
+    },
+    {
+      directory: "../src/",
+      files: "**/*.@(mdx|stories.@(js|ts|tsx))",
+      titlePrefix: "Components",
+    },
+  ],
   staticDirs: ["../public"],
-  addons: [{
-    name: "@storybook/preset-scss",
-    options: {
-      rule: {
-        test: /\.(scss|sass)$/i
+  addons: [
+    {
+      name: "@storybook/preset-scss",
+      options: {
+        rule: {
+          test: /\.(scss|sass)$/i,
+        },
+        sassLoaderOptions: {
+          sassOptions: {
+            includePaths: [
+              path.resolve("node_modules"),
+              path.resolve("./src/styles"),
+            ],
+          },
+        },
       },
-      sassLoaderOptions: {
-        sassOptions: {
-          includePaths: [path.resolve("node_modules"), path.resolve("./src/styles")]
-        }
-      }
-    }
-  }, "@storybook/addon-essentials", "storybook-dark-mode-v7", "@storybook/addon-mdx-gfm"],
+    },
+    "@storybook/addon-essentials",
+    "storybook-dark-mode-v7",
+  ],
   core: {},
-  webpackFinal: async config => {
+  webpackFinal: async (config) => {
     if (config.module === undefined) return config;
     if (config.module.rules === undefined) config.module.rules = [];
     config.module.rules.push({
@@ -34,11 +45,17 @@ const config: StorybookConfig = {
       loader: require.resolve("babel-loader"),
       options: {
         plugins: ["babel-plugin-tsconfig-paths"],
-        presets: [["react-app", {
-          flow: false,
-          typescript: true
-        }]]
-      }
+        presets: [
+          [
+            "react-app",
+            {
+              flow: false,
+              typescript: true,
+              strictMode: true,
+            },
+          ],
+        ],
+      },
     });
     config.resolve?.extensions?.push(".ts", ".tsx");
     return config;
@@ -46,17 +63,17 @@ const config: StorybookConfig = {
   framework: {
     name: "@storybook/react-webpack5",
     options: {
-      strictMode: true
-    }
+      strictMode: true,
+    },
   },
   docs: {
-    autodocs: true
+    autodocs: true,
   },
   typescript: {
     // Overrides the default Typescript configuration to allow multi-package components to be documented via Autodocs.
     reactDocgen: "react-docgen-typescript",
     skipBabel: true,
-    check: false
-  }
+    check: false,
+  },
 };
 module.exports = config;

@@ -112,7 +112,8 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
 
   const { reference, floating, context } = useFloating({
     open: isOpen,
-    onOpenChange: (state) => (!state ? void closeHandle() : void 0),
+    onOpenChange: (state) =>
+      !state && closeHandle ? void closeHandle() : void 0,
     nodeId,
   });
   const floatingTree = useFloatingTree();

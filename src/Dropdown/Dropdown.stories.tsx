@@ -50,6 +50,8 @@ const parameters: Parameters = {
   },
 };
 
+const CustomElement = () => <MenuElement>Hey, I'm custom one!</MenuElement>;
+
 export const Default: Story = {
   render: (args) => (
     <Dropdown {...args} label={<Button.Primary>Dropdown</Button.Primary>}>
@@ -69,6 +71,8 @@ export const Default: Story = {
         <MenuElement>Item two</MenuElement>
         <MenuElement selected>Item three</MenuElement>
       </Menu>
+      <MenuDivider />
+      <CustomElement />
     </Dropdown>
   ),
   parameters,
@@ -78,7 +82,13 @@ export const Default: Story = {
 export const Link: Story = {
   render: (args) => (
     <Dropdown {...args} label={<a>Dropdown as a link</a>}>
-      <MenuElement>Item one</MenuElement>
+      <MenuElement
+        onClick={() => {
+          console.log("Clicked");
+        }}
+      >
+        Item one
+      </MenuElement>
       <MenuElement>Item two</MenuElement>
       <MenuElement selected>Item three</MenuElement>
       <MenuDivider />

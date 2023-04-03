@@ -268,10 +268,26 @@ export const Menu = forwardRef<
     }, [allowHover]);
 
     const floatingNodeRef = useRef<HTMLElement>(null);
+    const mergedFloatingRef = useMergeRefs([floatingNodeRef, floating]);
     const mergedReferenceRef = useMergeRefs([ref, reference]);
 
+    useEffect(() => {
+      const onClick = (e: MouseEvent) => {
+        if (!floatingNodeRef.current) return;
+        if (floatingNodeRef.current.contains(e.target as Node)) {
+          if (tree) tree.events.emit("click");
+          else onTreeClick();
+        }
+      };
+
+      document.addEventListener("click", onClick);
+      return () => {
+        document.removeEventListener("click", onClick);
+      };
+    }, [tree, onTreeClick]);
+
     return (
-      <FloatingNode id={nodeId}>
+      <>
         {isValidElement(label) ? (
           cloneElement(label, {
             ...getReferenceProps({
@@ -283,7 +299,9 @@ export const Menu = forwardRef<
               },
               ...(nested
                 ? {
-                    className: cx("menu_item", label.props.className, { open }),
+                    className: cx("menu_item", label.props.className, {
+                      open,
+                    }),
                     role: "menuitem",
                     onKeyDown(event) {
                       if (
@@ -337,103 +355,101 @@ export const Menu = forwardRef<
             {label}
           </MenuElement>
         )}
-        <FloatingTreeWrapper withPortal={!tree} portalId={id} portalRoot={root}>
-          <TreeClickHandleWrapper onClick={onTreeClick}>
-            <Transition
-              in={open}
-              mountOnEnter
-              unmountOnExit
-              appear
-              timeout={{ enter: 100, exit: 250 }}
-              nodeRef={floatingNodeRef}
+        <Transition
+          in={open}
+          mountOnEnter
+          unmountOnExit
+          appear
+          timeout={{ enter: 100, exit: 250 }}
+          nodeRef={floatingNodeRef}
+        >
+          {(state) => (
+            <FloatingTreeWrapper
+              withPortal={!tree}
+              portalId={id}
+              portalRoot={root}
             >
-              {(state) => (
-                <FloatingOverlay
-                  style={{
-                    zIndex: nested
-                      ? 50
-                      : "calc(var(--cui-max-zindex, 1000) + 2)",
-                  }}
-                >
-                  <FloatingFocusManager
-                    context={context}
-                    modal={!nested}
-                    returnFocus={!nested}
-                    order={["reference", "content"]}
+              <FloatingNode id={nodeId}>
+                <TreeClickHandleWrapper onClick={onTreeClick}>
+                  <FloatingOverlay
+                    style={{
+                      zIndex: nested
+                        ? 50
+                        : "calc(var(--cui-max-zindex, 1000) + 2)",
+                    }}
                   >
-                    <div
-                      {...getFloatingProps({
-                        className: cx("dropdown", styles.dropdown, {
-                          [styles.disappear]:
-                            state === "exiting" || state === "exited",
-                          [styles.appear]: state === "entering",
-                          [styles.active]: state === "entered",
-                        }),
-                        ref(r) {
-                          floatingNodeRef.current = r;
-                          floating(r);
-                        },
-                        style: {
-                          position: strategy,
-                          top: y ?? 0,
-                          left: x ?? 0,
-                        },
-                        onKeyDown(event) {
-                          if (event.key === "Tab") {
-                            setOpen(false);
-                          }
-                        },
-                      })}
+                    <FloatingFocusManager
+                      context={context}
+                      modal={!nested}
+                      returnFocus={!nested}
+                      order={["reference", "content"]}
                     >
                       <div
-                        className="dropdown__menu"
-                        onClick={
-                          alwaysClose
-                            ? () => {
-                                tree?.events.emit("click");
-                              }
-                            : undefined
-                        }
+                        {...getFloatingProps({
+                          className: cx("dropdown", styles.dropdown, {
+                            [styles.disappear]:
+                              state === "exiting" || state === "exited",
+                            [styles.appear]: state === "entering",
+                            [styles.active]: state === "entered",
+                          }),
+                          ref: mergedFloatingRef,
+                          style: {
+                            position: strategy,
+                            top: y ?? 0,
+                            left: x ?? 0,
+                          },
+                          onKeyDown(event) {
+                            if (event.key === "Tab") {
+                              setOpen(false);
+                            }
+                          },
+                        })}
                       >
-                        {Children.map(
-                          children,
-                          (child, index) =>
-                            isValidElement(child) &&
-                            cloneElement(
-                              child,
-                              getItemProps({
-                                tabIndex: -1,
-                                role: "menuitem",
-                                className: cx(
-                                  "menu_item",
-                                  child.props.className
-                                ),
-                                ref(node: HTMLButtonElement) {
-                                  listItemsRef.current[index] = node;
-                                },
-                                onClick(e) {
-                                  if (child.props.onClick)
-                                    child.props.onClick(e);
-                                  if (tree) tree?.events.emit("click");
-                                  else if (alwaysClose) setOpen(false);
-                                },
-                                onPointerEnter() {
-                                  if (allowHover) {
-                                    setActiveIndex(index);
-                                  }
-                                },
-                              })
-                            )
-                        )}
+                        <div
+                          className="dropdown__menu"
+                          onClick={
+                            alwaysClose
+                              ? () => {
+                                  tree?.events.emit("click");
+                                }
+                              : undefined
+                          }
+                        >
+                          {Children.map(
+                            children,
+                            (child, index) =>
+                              isValidElement(child) &&
+                              cloneElement(
+                                child,
+                                getItemProps({
+                                  ...child.props,
+                                  tabIndex: -1,
+                                  role: "menuitem",
+                                  className: cx(
+                                    "menu_item",
+                                    child.props.className
+                                  ),
+                                  ref(node: HTMLButtonElement) {
+                                    listItemsRef.current[index] = node;
+                                  },
+                                  onPointerEnter() {
+                                    if (allowHover) {
+                                      setActiveIndex(index);
+                                    }
+                                  },
+                                })
+                              )
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </FloatingFocusManager>
-                </FloatingOverlay>
-              )}
-            </Transition>
-          </TreeClickHandleWrapper>
-        </FloatingTreeWrapper>
-      </FloatingNode>
+                    </FloatingFocusManager>
+                  </FloatingOverlay>
+                </TreeClickHandleWrapper>
+              </FloatingNode>
+            </FloatingTreeWrapper>
+          )}
+        </Transition>
+      </>
     );
   }
 );

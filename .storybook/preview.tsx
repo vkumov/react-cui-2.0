@@ -37,19 +37,21 @@ const preview: Preview = {
       const dark = useDarkMode();
 
       return (
-        <ThemeWrapper>
-          <div
-            className="cui"
-            id="cui-root"
-            ref={bodyRef}
-            style={{ overflow: "visible" }}
-            data-theme={dark ? "dark" : "default"}
-          >
-            <div className="base-margin">
-              <ModalProvider>{render()}</ModalProvider>
+        <React.StrictMode>
+          <ThemeWrapper>
+            <div
+              className="cui"
+              id="cui-root"
+              ref={bodyRef}
+              style={{ overflow: "visible" }}
+              data-theme={dark ? "dark" : "default"}
+            >
+              <div className="base-margin">
+                <ModalProvider>{render()}</ModalProvider>
+              </div>
             </div>
-          </div>
-        </ThemeWrapper>
+          </ThemeWrapper>
+        </React.StrictMode>
       );
     },
   ],
