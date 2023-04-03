@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.2.6
+
+- Fix `alwaysClose` on Dropdown
+- Storybook 7
+
 ## 6.2.5
 
 - Fix exports - export types as well

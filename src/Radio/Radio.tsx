@@ -1,6 +1,5 @@
 import React, {
   forwardRef,
-  useCallback,
   type ChangeEvent,
   type FC,
   type HTMLProps,

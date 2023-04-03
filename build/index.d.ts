@@ -1,6 +1,5 @@
 declare module "@vkumov/react-cui-2.0" {
-import * as React from 'react';
-import React__default, { ReactNode, FC, ComponentProps, ReactElement, HTMLProps, FunctionComponent, ComponentType, PropsWithChildren, MutableRefObject, ReactPortal, Ref, RefObject } from 'react';
+import React, { ReactNode, FC, ComponentProps, ReactElement, HTMLProps, FunctionComponent, ComponentType, PropsWithChildren, MutableRefObject, ReactPortal, Ref, RefObject } from 'react';
 import * as _floating_ui_react from '@floating-ui/react';
 import { Placement, Strategy, FloatingPortal, ReferenceType, FloatingOverlay, UseDismissProps, useFloating, useInteractions, offset, FloatingFocusManager } from '@floating-ui/react';
 import { DropzoneProps as DropzoneProps$1 } from 'react-dropzone';
@@ -39,8 +38,8 @@ type MenuElementProps = {
     icon?: string | ReactElement;
     submenu?: boolean;
 } & HTMLProps<HTMLAnchorElement>;
-const MenuElement: React__default.ForwardRefExoticComponent<Omit<MenuElementProps, "ref"> & React__default.RefAttributes<any>>;
-const Menu: React__default.ForwardRefExoticComponent<Omit<{
+const MenuElement: React.ForwardRefExoticComponent<Omit<MenuElementProps, "ref"> & React.RefAttributes<any>>;
+const Menu: React.ForwardRefExoticComponent<Omit<{
     nested?: boolean;
 } & {
     label: ReactNode;
@@ -55,9 +54,9 @@ const Menu: React__default.ForwardRefExoticComponent<Omit<{
     portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
 } & {
-    children?: React__default.ReactNode;
-} & Pick<MenuElementProps, "icon"> & Omit<React__default.HTMLProps<HTMLButtonElement>, "label">, "ref"> & React__default.RefAttributes<any>>;
-const Dropdown: React__default.ForwardRefExoticComponent<{
+    children?: React.ReactNode;
+} & Pick<MenuElementProps, "icon"> & Omit<React.HTMLProps<HTMLButtonElement>, "label">, "ref"> & React.RefAttributes<any>>;
+const Dropdown: React.ForwardRefExoticComponent<{
     label: ReactNode;
     placement?: Placement;
     noChevron?: boolean;
@@ -70,12 +69,12 @@ const Dropdown: React__default.ForwardRefExoticComponent<{
     portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
 } & {
-    children?: React__default.ReactNode;
-} & React__default.RefAttributes<any>>;
-const MenuDivider: React__default.ForwardRefExoticComponent<Omit<React__default.HTMLProps<HTMLDivElement>, "ref"> & React__default.RefAttributes<HTMLDivElement>>;
-const MenuGroup: React__default.ForwardRefExoticComponent<Omit<React__default.HTMLProps<HTMLDivElement> & {
+    children?: React.ReactNode;
+} & React.RefAttributes<any>>;
+const MenuDivider: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
+const MenuGroup: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {
     header?: ReactNode;
-}, "ref"> & React__default.RefAttributes<HTMLDivElement>>;
+}, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 type DropzoneProps = {
     name: string;
@@ -98,11 +97,11 @@ type DotsColor = "primary" | "secondary" | "tertiary" | "success" | "info" | "wa
 type DotsProps = {
     color?: DotsColor;
 };
-const Dots: React__default.ForwardRefExoticComponent<DotsProps & React__default.RefAttributes<HTMLDivElement>>;
+const Dots: React.ForwardRefExoticComponent<DotsProps & React.RefAttributes<HTMLDivElement>>;
 
 type SpinnerProps = {
     size?: "small" | "default" | "large";
-    text?: React__default.ReactNode;
+    text?: React.ReactNode;
 };
 const Spinner: FC<SpinnerProps>;
 
@@ -110,12 +109,12 @@ type ProgressbarColor = "primary" | "secondary" | "tertiary" | "success" | "info
 interface ProgressbarProps {
     percentage: number;
     withLabel?: boolean;
-    label?: React__default.ReactNode;
+    label?: React.ReactNode;
     size?: "small" | "default" | "large";
     color?: ProgressbarColor;
     className?: string;
 }
-const Progressbar: React__default.ForwardRefExoticComponent<ProgressbarProps & React__default.RefAttributes<HTMLDivElement>>;
+const Progressbar: React.ForwardRefExoticComponent<ProgressbarProps & React.RefAttributes<HTMLDivElement>>;
 
 type ButtonColor$2 = "primary" | "secondary" | "success" | "dark" | "ghost" | "link" | "light" | "danger";
 type ButtonProps$1 = {
@@ -126,7 +125,7 @@ type ButtonProps$1 = {
     circle?: boolean;
     asLink?: boolean;
     selected?: boolean;
-    style?: React__default.CSSProperties;
+    style?: React.CSSProperties;
     className?: string;
     icon?: boolean;
     type?: "submit" | "reset" | "button";
@@ -150,10 +149,10 @@ type ButtonGroupProps = {
     withDivider?: boolean;
     className?: string;
 };
-const ButtonGroup: React__default.ForwardRefExoticComponent<Omit<ButtonGroupProps & React__default.HTMLProps<HTMLDivElement>, "ref"> & React__default.RefAttributes<HTMLDivElement>>;
+const ButtonGroup: React.ForwardRefExoticComponent<Omit<ButtonGroupProps & React.HTMLProps<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 type LabelColor$4 = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning-alt" | "warning" | "danger" | "dark" | "light";
-type LabelProps = React__default.PropsWithChildren<{
+type LabelProps = React.PropsWithChildren<{
     size?: "tiny" | "small" | "default" | "large";
     color?: LabelColor$4;
     bordered?: boolean;
@@ -161,7 +160,7 @@ type LabelProps = React__default.PropsWithChildren<{
     onRemove?: (e: any) => void;
     raised?: boolean;
     className?: string;
-}> & React__default.DetailedHTMLProps<React__default.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
+}> & React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
 type LabelTypes = "Primary" | "Secondary" | "Tertiary" | "Success" | "Info" | "WarningAlt" | "Warning" | "Danger" | "Dark" | "Light";
 type ILabel = {
     [x in LabelTypes]: FC<LabelProps>;
@@ -188,15 +187,15 @@ type ToastProps = {
     bordered?: boolean;
 };
 const Toast: FC<ToastProps>;
-type ToastFunction = (title: ReactNode, message: ReactNode, copyError?: boolean, containerId?: string, args?: Record<string, unknown>) => React__default.ReactText;
+type ToastFunction = (title: ReactNode, message: ReactNode, copyError?: boolean, containerId?: string, args?: Record<string, unknown>) => React.ReactText;
 interface IToast {
-    (type: ToastType, title: ReactNode, message: ReactNode, copyError?: boolean, containerId?: string, args?: Partial<ToastOptions>): React__default.ReactText;
+    (type: ToastType, title: ReactNode, message: ReactNode, copyError?: boolean, containerId?: string, args?: Partial<ToastOptions>): React.ReactText;
 }
 type Toasts = {
     [x in ToastType]: ToastFunction;
 };
 interface ToastMethods {
-    update: (toastId: React__default.ReactText, updates: ToastProps, options?: UpdateOptions) => void;
+    update: (toastId: React.ReactText, updates: ToastProps, options?: UpdateOptions) => void;
     dismiss: (id?: string | number | undefined) => false | void;
 }
 const toast: IToast & Toasts & ToastMethods;
@@ -209,15 +208,15 @@ const ToastContainer: ({ position, autoClose, draggable, hideProgressBar, contai
 
 const Footer: () => JSX.Element;
 
-type HeaderProps = React__default.PropsWithChildren<{
+type HeaderProps = React.PropsWithChildren<{
     fluid?: boolean;
-}> & React__default.DetailedHTMLProps<React__default.HTMLAttributes<HTMLElement>, HTMLElement>;
+}> & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
 const Header: FC<HeaderProps>;
-type HeaderPanelProps = React__default.PropsWithChildren<{
+type HeaderPanelProps = React.PropsWithChildren<{
     center?: boolean;
     right?: boolean;
     className?: string;
-}> & React__default.DetailedHTMLProps<React__default.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+}> & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 const HeaderPanel: FC<HeaderPanelProps>;
 type HeaderTitleProps = {
     icon?: boolean | string;
@@ -258,7 +257,7 @@ const DefaultTablePagination: FC<DefaultTablePaginationProps>;
 
 type PaginationLocation = "top-left" | "bottom-left" | "bottom-right" | "top-right";
 type TableProps = {
-    pagination?: FC<any> | React__default.ComponentClass<any> | string;
+    pagination?: FC<any> | React.ComponentClass<any> | string;
     paginationLocation?: PaginationLocation;
     paginationProps?: {
         size?: "small" | "default" | "large";
@@ -280,16 +279,16 @@ type CheckboxProps = {
     children?: ReactNode;
     spacing?: "compressed" | "default" | "loose";
 };
-const Checkbox: React__default.ForwardRefExoticComponent<Omit<CheckboxProps & React__default.HTMLProps<HTMLInputElement>, "ref"> & React__default.RefAttributes<HTMLInputElement>>;
+const Checkbox: React.ForwardRefExoticComponent<Omit<CheckboxProps & React.HTMLProps<HTMLInputElement>, "ref"> & React.RefAttributes<HTMLInputElement>>;
 
-const IndeterminateCheckbox: React__default.ForwardRefExoticComponent<Omit<{
+const IndeterminateCheckbox: React.ForwardRefExoticComponent<Omit<{
     indeterminate?: boolean;
 } & Omit<{
     inline?: boolean;
     asFormGroup?: boolean;
-    children?: React__default.ReactNode;
+    children?: React.ReactNode;
     spacing?: "compressed" | "default" | "loose";
-} & React__default.HTMLProps<HTMLInputElement>, "ref"> & React__default.RefAttributes<HTMLInputElement>, "ref"> & React__default.RefAttributes<HTMLInputElement>>;
+} & React.HTMLProps<HTMLInputElement>, "ref"> & React.RefAttributes<HTMLInputElement>, "ref"> & React.RefAttributes<HTMLInputElement>>;
 
 interface SwitchProps {
     left?: ReactNode;
@@ -300,7 +299,7 @@ interface SwitchProps {
     asFormGroup?: boolean;
     className?: string;
     id?: string;
-    style?: React__default.CSSProperties;
+    style?: React.CSSProperties;
 }
 const Switch: FC<SwitchProps & HTMLProps<HTMLInputElement>>;
 
@@ -318,7 +317,7 @@ type InputProps = {
     horizontalLabelClassName?: string;
     prefix?: string;
 };
-const Input: React__default.ForwardRefExoticComponent<Omit<InputProps & Omit<React__default.HTMLProps<HTMLInputElement>, "label">, "ref"> & React__default.RefAttributes<HTMLInputElement>>;
+const Input: React.ForwardRefExoticComponent<Omit<InputProps & Omit<React.HTMLProps<HTMLInputElement>, "label">, "ref"> & React.RefAttributes<HTMLInputElement>>;
 
 /**
  * Modal Header
@@ -391,7 +390,7 @@ type ButtonProps = {
     circle?: boolean;
     asLink?: boolean;
     selected?: boolean;
-    style?: React__default.CSSProperties;
+    style?: React.CSSProperties;
     className?: string;
     icon?: boolean;
     type?: "submit" | "reset" | "button";
@@ -491,10 +490,10 @@ type Callback = () => void;
 type FullBodyProps = {
     close: Callback;
 };
-type FullBodyRenderer = (props: FullBodyProps) => React__default.ReactElement;
+type FullBodyRenderer = (props: FullBodyProps) => React.ReactElement;
 type CommonModalProps = {
     onModalClose?: () => unknown;
-    title?: React__default.ReactNode;
+    title?: React.ReactNode;
     onClosed?: Callback;
 };
 type PromptOptions<T extends string | number = any> = {
@@ -512,23 +511,23 @@ type EventModalProps = ({
     dontAskAgain?: ConfirmationModalProps$1["dontAskAgain"];
 } | {
     modalType: "notification";
-    body: React__default.ReactNode;
+    body: React.ReactNode;
     buttonColor?: ButtonProps["color"];
-    button: React__default.ReactNode;
+    button: React.ReactNode;
 } | ({
     modalType: "prompt";
     options?: Partial<PromptOptions>;
-    question: React__default.ReactNode;
+    question: React.ReactNode;
     cb: PromptModalProps$1<any>["onSave"];
 } & Omit<Partial<PromptOptions>, "validate">) | {
     modalType: "dynamic";
-    fullBody: React__default.ReactElement<FullBodyProps & Record<string, any>> | FullBodyRenderer;
+    fullBody: React.ReactElement<FullBodyProps & Record<string, any>> | FullBodyRenderer;
     modalProps?: Partial<ModalProps>;
-    body?: React__default.ReactNode;
+    body?: React.ReactNode;
     buttons?: {
-        text?: React__default.ReactNode;
+        text?: React.ReactNode;
         color?: ButtonProps["color"];
-        onClick?: (event: React__default.MouseEvent<HTMLButtonElement, MouseEvent>, close: Callback) => void;
+        onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, close: Callback) => void;
     }[];
 }) & CommonModalProps;
 
@@ -547,7 +546,7 @@ type CloseHandler = () => void;
 interface ModalButton {
     color?: ButtonColor;
     text: ReactNode;
-    onClick?: (e: React__default.MouseEvent<HTMLButtonElement>, close: CloseHandler) => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>, close: CloseHandler) => void;
 }
 type PropsWithCloseModal<P = {}> = P & {
     close: () => void;
@@ -622,12 +621,12 @@ type IconProps = {
     icon: string;
     size?: 10 | 12 | 14 | 16 | 18 | 20 | 24 | 28 | 32 | 36 | 48 | 64 | 96 | 128;
     className?: string;
-} & React__default.DetailedHTMLProps<React__default.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>;
 const Icon: FC<IconProps>;
 
 interface PortalProps {
     /** Portal children, for example, modal or popover */
-    children: React__default.ReactNode;
+    children: React.ReactNode;
     /** Root element z-index property */
     zIndex?: number;
     /** Root element position property */
@@ -705,7 +704,7 @@ interface TabsHeaderProps {
     onTabChange: (tab: TabId) => void;
     children: ReactNode;
 }
-const TabsHeader: React__default.ForwardRefExoticComponent<TabsHeaderProps & React__default.RefAttributes<HTMLUListElement>>;
+const TabsHeader: React.ForwardRefExoticComponent<TabsHeaderProps & React.RefAttributes<HTMLUListElement>>;
 interface ColumnSizes {
     sm?: number;
     md?: number;
@@ -715,7 +714,7 @@ interface ColumnSizes {
 type ColumnSize = number | string | ColumnSizes;
 type Column = {
     columnWidth?: ColumnSize;
-} & React__default.HTMLProps<HTMLDivElement>;
+} & React.HTMLProps<HTMLDivElement>;
 interface TabsProps {
     children: ReactNode;
     defaultTab?: TabId;
@@ -741,10 +740,10 @@ interface TabsProps {
 }
 const Tabs: FC<TabsProps>;
 
-const Section: React__default.ForwardRefExoticComponent<Omit<React__default.PropsWithChildren<React__default.HTMLProps<HTMLDivElement>>, "ref"> & React__default.RefAttributes<HTMLDivElement>>;
+const Section: React.ForwardRefExoticComponent<Omit<React.PropsWithChildren<React.HTMLProps<HTMLDivElement>>, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 interface DisplayNoSizeProps {
-    as?: React__default.FunctionComponent<any> | React__default.ComponentClass<any> | string;
+    as?: React.FunctionComponent<any> | React.ComponentClass<any> | string;
     className?: string;
 }
 interface DisplaySizeProps {
@@ -795,12 +794,12 @@ const Pagination: FC<PaginationProps>;
 type ConditionalWrapperProps = {
     condition: boolean;
     wrapper: JSX.Element;
-    children: React__default.ReactNode;
+    children: React.ReactNode;
 };
 const ConditionalWrapper: FC<ConditionalWrapperProps>;
 type IfProps = {
     condition: boolean;
-    children: React__default.ReactNode;
+    children: React.ReactNode;
 };
 const DisplayIf: FC<IfProps>;
 
@@ -812,7 +811,7 @@ type StepProps = {
     className?: string;
     consequativeIdx?: number;
 };
-const Step: React__default.ForwardRefExoticComponent<StepProps & React__default.RefAttributes<HTMLDivElement>>;
+const Step: React.ForwardRefExoticComponent<StepProps & React.RefAttributes<HTMLDivElement>>;
 
 type StepsProps = {
     size?: "dot" | "small" | "default" | "large";
@@ -821,15 +820,15 @@ type StepsProps = {
     className?: string;
     children: ReactNode;
 };
-const Steps: React__default.ForwardRefExoticComponent<StepsProps & React__default.RefAttributes<HTMLDivElement>>;
+const Steps: React.ForwardRefExoticComponent<StepsProps & React.RefAttributes<HTMLDivElement>>;
 
 const VerticalCenter: FC<PropsWithChildren>;
 
-interface TextareaProps extends React__default.HTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
     label?: ReactNode;
     textareaClass?: string;
     innerDivClass?: string;
-    inputRef?: React__default.Ref<HTMLTextAreaElement>;
+    inputRef?: React.Ref<HTMLTextAreaElement>;
     className?: string;
     inline?: boolean;
     error?: ReactNode;
@@ -844,7 +843,7 @@ interface RadioProps extends Omit<HTMLProps<HTMLInputElement>, "label"> {
     id?: string;
     divProps?: HTMLProps<HTMLDivElement>;
 }
-const Radio: React__default.ForwardRefExoticComponent<Omit<RadioProps, "ref"> & React__default.RefAttributes<HTMLInputElement>>;
+const Radio: React.ForwardRefExoticComponent<Omit<RadioProps, "ref"> & React.RefAttributes<HTMLInputElement>>;
 interface RadioValue {
     value: string;
     label: ReactNode;
@@ -885,7 +884,7 @@ type InputChipsProps$1 = {
     }) => JSX.Element;
 };
 type FullInputChipsProps$1 = InputChipsProps$1 & Omit<HTMLProps<HTMLInputElement>, "id" | "value" | "onChange" | "label">;
-const InputChips: React__default.ForwardRefExoticComponent<Omit<FullInputChipsProps$1, "ref"> & React__default.RefAttributes<HTMLDivElement>>;
+const InputChips: React.ForwardRefExoticComponent<Omit<FullInputChipsProps$1, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 type LabelColor$2 = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning-alt" | "warning" | "danger" | "dark" | "light";
 
@@ -952,7 +951,7 @@ type CUISelectProps$1 = {
 type ReactSelectProps<Option, IsMulti extends boolean, Group extends GroupBase<Option>> = CUISelectProps$1 & Props$1<Option, IsMulti, Group>;
 function UnrefedSelect$1<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>({ label, className, error, ...props }: ReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
 const ReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>(props: CUISelectProps$1 & Omit<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & {
-    ref?: React__default.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
+    ref?: React.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
 }) => ReturnType<typeof UnrefedSelect$1>;
 
 type LabelColor = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning-alt" | "warning" | "danger" | "dark" | "light";
@@ -965,7 +964,7 @@ type CUISelectProps = {
 type CreatableReactSelectProps<Option = unknown, IsMulti extends boolean = boolean, Group extends GroupBase$1<Option> = GroupBase$1<Option>> = CreatableProps<Option, IsMulti, Group> & CUISelectProps;
 function UnrefedSelect<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>({ label, className, error, ...props }: CreatableReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
 const CreatableReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>(props: Omit<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & react_select_dist_declarations_src_useCreatable.CreatableAdditionalProps<Option, Group> & CUISelectProps & {
-    ref?: React__default.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
+    ref?: React.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
 }) => ReturnType<typeof UnrefedSelect>;
 
 type Option<V = string> = {
@@ -989,7 +988,7 @@ type InputHelpBaloonProps = {
 const InputHelpBaloon: FC<InputHelpBaloonProps>;
 
 type InputHelpBlockProps = {
-    text: React__default.ReactNode;
+    text: React.ReactNode;
 };
 const InputHelpBlock: FC<InputHelpBlockProps>;
 
@@ -1002,9 +1001,9 @@ const VSeparator: FC<VSeparatorProps>;
 type SliderProps = SliderProps$1 & {
     label?: ReactNode;
 };
-const Slider: React__default.ForwardRefExoticComponent<SliderProps$1<number | number[]> & {
+const Slider: React.ForwardRefExoticComponent<SliderProps$1<number | number[]> & {
     label?: ReactNode;
-} & React__default.RefAttributes<SliderRef>>;
+} & React.RefAttributes<SliderRef>>;
 
 const base16Theme: {
     scheme: string;
@@ -1035,7 +1034,7 @@ type BlockquoteProps = {
     align?: "left" | "center" | "right";
     padding?: "compressed" | "default" | "loose";
 } & HTMLProps<HTMLQuoteElement>;
-const Blockquote: React__default.ForwardRefExoticComponent<Omit<BlockquoteProps, "ref"> & React__default.RefAttributes<HTMLQuoteElement>>;
+const Blockquote: React.ForwardRefExoticComponent<Omit<BlockquoteProps, "ref"> & React.RefAttributes<HTMLQuoteElement>>;
 
 type GaugeColor = "primary" | "secondary" | "tertiary" | "success" | "info" | "warning" | "warning-alt" | "danger" | "dark" | "light";
 type GaugeProps = {
@@ -1045,7 +1044,7 @@ type GaugeProps = {
     label?: ReactNode;
     percentage: number;
 };
-const Gauge: React__default.ForwardRefExoticComponent<Omit<GaugeProps & Omit<React__default.HTMLProps<HTMLDivElement>, "size">, "ref"> & React__default.RefAttributes<HTMLDivElement>>;
+const Gauge: React.ForwardRefExoticComponent<Omit<GaugeProps & Omit<React.HTMLProps<HTMLDivElement>, "size">, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 type UseTooltipReturn = ReturnType<typeof useFloating> & {
     getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
@@ -1102,7 +1101,7 @@ type Props<V> = {
 } & HTMLProps<HTMLInputElement> & Required<Pick<HTMLProps<HTMLInputElement>, "name">>;
 function UrefedSegmented<V extends string | number = string>({ options, value, label, inline, className, fullWidth, small, ...props }: Props<V>, ref: Ref<HTMLDivElement>): JSX.Element;
 type SegmentedControlProps<V> = Props<V> & {
-    ref?: React__default.ForwardedRef<HTMLDivElement>;
+    ref?: React.ForwardedRef<HTMLDivElement>;
 };
 const SegmentedControl: <V extends string | number = string>({ options, value, ...props }: SegmentedControlProps<V>) => ReturnType<typeof UrefedSegmented>;
 
@@ -1114,11 +1113,11 @@ const FloatingTreeWrapper: FC<{
     force?: boolean;
 }>;
 
-const GenericPopover: React__default.ForwardRefExoticComponent<Omit<React__default.HTMLProps<HTMLDivElement> & {
+const GenericPopover: React.ForwardRefExoticComponent<Omit<React.HTMLProps<HTMLDivElement> & {
     wrapperClassName?: string;
     state: TransitionStatus;
     offset?: Parameters<typeof offset>[0];
-}, "ref"> & React__default.RefAttributes<HTMLDivElement>>;
+}, "ref"> & React.RefAttributes<HTMLDivElement>>;
 
 type PopoverContextProps = {
     setOverlayState: (show: boolean) => void;
@@ -1180,14 +1179,14 @@ const Popover: React.ForwardRefExoticComponent<{
     state: react_transition_group.TransitionStatus;
     offset?: _floating_ui_react.OffsetOptions;
 }, "ref"> & React.RefAttributes<HTMLDivElement>, "className" | "wrapperClassName"> & {
-    children?: ReactNode;
+    children?: React.ReactNode;
 } & React.RefAttributes<PopoverHandlers>>;
 
 type PopoverTitleProps = {
     children: ReactNode;
     noLine?: boolean;
 } & HTMLProps<HTMLHeadingElement>;
-const PopoverTitle: React__default.ForwardRefExoticComponent<Omit<PopoverTitleProps, "ref"> & React__default.RefAttributes<HTMLHeadingElement>>;
+const PopoverTitle: React.ForwardRefExoticComponent<Omit<PopoverTitleProps, "ref"> & React.RefAttributes<HTMLHeadingElement>>;
 
 type Options = {
     onOpen?: () => unknown;
@@ -1195,7 +1194,7 @@ type Options = {
     popoverComponent?: ComponentType<ComponentProps<typeof GenericPopover>>;
 } & Pick<PopoverProps, "initialFocus" | "guardsFocus" | "modalFocus" | "closeOnFocusOut" | "offset" | "portalRoot" | "placement" | "portalId">;
 function usePopover({ onClose, onOpen, popoverComponent, placement, initialFocus, guardsFocus, modalFocus, closeOnFocusOut, offset: offsetOptions, portalRoot, portalId, }: Options): {
-    getReferenceProps: (userProps?: React__default.HTMLProps<Element>) => Record<string, unknown>;
+    getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>;
     reference: (node: _floating_ui_react.ReferenceType) => void;
     render: (body: ReactNode) => JSX.Element;
     isShown: boolean;

@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
   type ComponentProps,
+  type FC,
   type HTMLProps,
   type PropsWithChildren,
   type ReactElement,
@@ -40,6 +41,7 @@ import {
 } from "@floating-ui/react";
 import cx from "classnames";
 import { Transition } from "react-transition-group";
+import useEvent from "react-use-event-hook";
 
 import { FloatingTreeWrapper, useFloatingContext } from "src/FloatingProvider";
 import { useCustomDismiss } from "src/hooks/useCustomDismiss";
@@ -107,6 +109,22 @@ type MenuComponentProps = {
   nested?: boolean;
 } & DropdownProps &
   Pick<MenuElementProps, "icon">;
+
+const TreeClickHandleWrapper: FC<
+  PropsWithChildren<{ onClick: () => void }>
+> = ({ onClick, children }) => {
+  const tree = useFloatingTree();
+
+  useEffect(() => {
+    const t = tree;
+    t?.events.on("click", onClick);
+    return () => {
+      t?.events.off("click", onClick);
+    };
+  }, [tree, onClick]);
+
+  return <>{children}</>;
+};
 
 export const Menu = forwardRef<
   any,
@@ -219,20 +237,13 @@ export const Menu = forwardRef<
         }),
       ]);
 
-    useEffect(() => {
-      function onTreeClick() {
-        if (alwaysClose) setOpen(false);
+    const onTreeClick = useEvent(() => {
+      if (alwaysClose) setOpen(false);
 
-        if (parentId === null) {
-          refs.domReference.current?.focus();
-        }
+      if (parentId === null) {
+        refs.domReference.current?.focus();
       }
-
-      tree?.events.on("click", onTreeClick);
-      return () => {
-        tree?.events.off("click", onTreeClick);
-      };
-    }, [parentId, tree, refs, alwaysClose]);
+    });
 
     useEffect(() => {
       function onPointerMove() {
@@ -327,91 +338,100 @@ export const Menu = forwardRef<
           </MenuElement>
         )}
         <FloatingTreeWrapper withPortal={!tree} portalId={id} portalRoot={root}>
-          <Transition
-            in={open}
-            mountOnEnter
-            unmountOnExit
-            appear
-            timeout={{ enter: 100, exit: 250 }}
-            nodeRef={floatingNodeRef}
-          >
-            {(state) => (
-              <FloatingOverlay
-                style={{
-                  zIndex: nested ? 50 : "calc(var(--cui-max-zindex, 1000) + 2)",
-                }}
-              >
-                <FloatingFocusManager
-                  context={context}
-                  modal={!nested}
-                  returnFocus={!nested}
-                  order={["reference", "content"]}
+          <TreeClickHandleWrapper onClick={onTreeClick}>
+            <Transition
+              in={open}
+              mountOnEnter
+              unmountOnExit
+              appear
+              timeout={{ enter: 100, exit: 250 }}
+              nodeRef={floatingNodeRef}
+            >
+              {(state) => (
+                <FloatingOverlay
+                  style={{
+                    zIndex: nested
+                      ? 50
+                      : "calc(var(--cui-max-zindex, 1000) + 2)",
+                  }}
                 >
-                  <div
-                    {...getFloatingProps({
-                      className: cx("dropdown", styles.dropdown, {
-                        [styles.disappear]:
-                          state === "exiting" || state === "exited",
-                        [styles.appear]: state === "entering",
-                        [styles.active]: state === "entered",
-                      }),
-                      ref(r) {
-                        floatingNodeRef.current = r;
-                        floating(r);
-                      },
-                      style: {
-                        position: strategy,
-                        top: y ?? 0,
-                        left: x ?? 0,
-                      },
-                      onKeyDown(event) {
-                        if (event.key === "Tab") {
-                          setOpen(false);
-                        }
-                      },
-                    })}
+                  <FloatingFocusManager
+                    context={context}
+                    modal={!nested}
+                    returnFocus={!nested}
+                    order={["reference", "content"]}
                   >
                     <div
-                      className="dropdown__menu"
-                      onClick={
-                        alwaysClose
-                          ? () => {
-                              tree?.events.emit("click");
-                            }
-                          : undefined
-                      }
+                      {...getFloatingProps({
+                        className: cx("dropdown", styles.dropdown, {
+                          [styles.disappear]:
+                            state === "exiting" || state === "exited",
+                          [styles.appear]: state === "entering",
+                          [styles.active]: state === "entered",
+                        }),
+                        ref(r) {
+                          floatingNodeRef.current = r;
+                          floating(r);
+                        },
+                        style: {
+                          position: strategy,
+                          top: y ?? 0,
+                          left: x ?? 0,
+                        },
+                        onKeyDown(event) {
+                          if (event.key === "Tab") {
+                            setOpen(false);
+                          }
+                        },
+                      })}
                     >
-                      {Children.map(
-                        children,
-                        (child, index) =>
-                          isValidElement(child) &&
-                          cloneElement(
-                            child,
-                            getItemProps({
-                              tabIndex: -1,
-                              role: "menuitem",
-                              className: cx("menu_item", child.props.className),
-                              ref(node: HTMLButtonElement) {
-                                listItemsRef.current[index] = node;
-                              },
-                              onClick(e) {
-                                if (child.props.onClick) child.props.onClick(e);
-                                else tree?.events.emit("click");
-                              },
-                              onPointerEnter() {
-                                if (allowHover) {
-                                  setActiveIndex(index);
-                                }
-                              },
-                            })
-                          )
-                      )}
+                      <div
+                        className="dropdown__menu"
+                        onClick={
+                          alwaysClose
+                            ? () => {
+                                tree?.events.emit("click");
+                              }
+                            : undefined
+                        }
+                      >
+                        {Children.map(
+                          children,
+                          (child, index) =>
+                            isValidElement(child) &&
+                            cloneElement(
+                              child,
+                              getItemProps({
+                                tabIndex: -1,
+                                role: "menuitem",
+                                className: cx(
+                                  "menu_item",
+                                  child.props.className
+                                ),
+                                ref(node: HTMLButtonElement) {
+                                  listItemsRef.current[index] = node;
+                                },
+                                onClick(e) {
+                                  if (child.props.onClick)
+                                    child.props.onClick(e);
+                                  if (tree) tree?.events.emit("click");
+                                  else if (alwaysClose) setOpen(false);
+                                },
+                                onPointerEnter() {
+                                  if (allowHover) {
+                                    setActiveIndex(index);
+                                  }
+                                },
+                              })
+                            )
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </FloatingFocusManager>
-              </FloatingOverlay>
-            )}
-          </Transition>
+                  </FloatingFocusManager>
+                </FloatingOverlay>
+              )}
+            </Transition>
+          </TreeClickHandleWrapper>
         </FloatingTreeWrapper>
       </FloatingNode>
     );
