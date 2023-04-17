@@ -208,7 +208,7 @@ export const Menu = forwardRef<
     const { getReferenceProps, getFloatingProps, getItemProps } =
       useInteractions([
         useHover(context, {
-          handleClose: safePolygon({ restMs: 25 }),
+          handleClose: safePolygon({ requireIntent: true }),
           enabled: nested && allowHover,
           delay: { open: 75 },
         }),

@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.2.12
+
+- bump deps
+
 ## 6.2.10
 
 - Global click listener for Dropdown
