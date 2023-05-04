@@ -1,0 +1,2 @@
+import{useLayoutEffect as r,useEffect as u,useState as c,useRef as d}from"react";const f=typeof document<"u"?r:u;function m(e){const[o,n]=c(!1),t=d();return f(()=>(n(!0),t.current=e?typeof e=="string"?document.querySelector(e):e:document.createElement("div"),e||document.body.appendChild(t.current),()=>{!e&&document.body.removeChild(t.current)}),[e]),o?t.current:null}export{m as usePortal};
+//# sourceMappingURL=usePortal.js.map

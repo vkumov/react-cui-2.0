@@ -1,0 +1,2 @@
+import{useRef as d,useEffect as f}from"react";const a=["mousedown","touchstart"];function l(n,s,r){const e=d();return f(()=>{const o=t=>{var i;if(Array.isArray(r)){const u=(i=t?.target)==null?void 0:i.hasAttribute("data-ignore-inside-clicks");r.every(c=>!!c&&c.contains(t.target))&&!u&&n()}else e.current&&!e.current.contains(t.target)&&n()};return(s||a).forEach(t=>document.addEventListener(t,o)),()=>{(s||a).forEach(t=>document.removeEventListener(t,o))}},[e,n,r]),e}export{l as useClickInside};
+//# sourceMappingURL=useClickInside.js.map

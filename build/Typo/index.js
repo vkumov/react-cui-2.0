@@ -1,0 +1,2 @@
+import{jsx as a}from"react/jsx-runtime";import m from"react";import r from"classnames";const i=({as:s="h1",className:e=null,size:l,...p})=>m.createElement(s,{...p,className:r(`display-${l}`,e)}),o=s=>a(i,{...s,size:0}),t=s=>a(i,{...s,size:1}),y=s=>a(i,{...s,size:2}),z=s=>a(i,{...s,size:3}),D=s=>a(i,{...s,size:4});export{i as Display,o as Display0,t as Display1,y as Display2,z as Display3,D as Display4};
+//# sourceMappingURL=index.js.map

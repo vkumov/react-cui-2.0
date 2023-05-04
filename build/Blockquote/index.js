@@ -1,0 +1,2 @@
+import{jsxs as d,jsx as r}from"react/jsx-runtime";import{forwardRef as m}from"react";import s from"classnames";const f=m(({className:t,cite:e,color:l,align:c,children:i,padding:o,...n},a)=>d("blockquote",{className:s({[`blockquote--${l}`]:l,[`blockquote--${c}`]:c,[`blockquote--${o}`]:o&&o!=="default"},t),...n,ref:a,children:[r("p",{children:i}),e?r("cite",{children:e}):null]}));export{f as Blockquote};
+//# sourceMappingURL=index.js.map

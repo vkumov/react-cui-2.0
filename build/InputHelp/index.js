@@ -1,0 +1,2 @@
+import{jsx as a}from"react/jsx-runtime";const o=({baloon:l})=>a("span",{"data-balloon":l,"data-balloon-length":"large","data-balloon-pos":"up",className:"qtr-margin-left",children:a("span",{className:"icon-question-circle",style:{cursor:"help"}})}),e=({text:l=null})=>l&&a("div",{className:"form-group__help",role:"alert",children:a("span",{children:l})});export{o as InputHelpBaloon,e as InputHelpBlock};
+//# sourceMappingURL=index.js.map

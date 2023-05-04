@@ -1,0 +1,2 @@
+import{jsx as f}from"react/jsx-runtime";import $ from"react";import{appendClass as e}from"../utils/index.js";const m=$.forwardRef(({color:a="plain",padding:l="default",bordered:r=!1,raised:p=!1,well:d=!1,className:n=null,...o},i)=>f("div",{className:`panel${e(a!=="plain",`panel--${a}`)}${e(l!=="default",`panel--${l}`)}${e(r,()=>typeof r=="string"?`panel--bordered-${r}`:Array.isArray(r)?r.map(s=>`panel--bordered-${s}`).join(" "):"panel--bordered")}${e(p,"panel--raised")}${e(d,"panel--well")}${e(n)}`,ref:i,...o}));export{m as Panel};
+//# sourceMappingURL=index.js.map
