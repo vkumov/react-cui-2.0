@@ -22,6 +22,7 @@ import {
   flip,
   offset,
   shift,
+  size,
   useClick,
   useDismiss,
   useFloating,
@@ -78,6 +79,27 @@ const Overlay: FC<
   );
 };
 
+type SizeLimiting = boolean | { height?: boolean; width?: boolean };
+
+const calcSizeStyles = (
+  l: SizeLimiting,
+  availableWidth: number,
+  availableHeight: number
+): Partial<{ maxWidth: string; maxHeight: string }> | undefined => {
+  if (!l) return undefined;
+
+  if (typeof l === "boolean")
+    return {
+      maxWidth: `${availableWidth}px`,
+      maxHeight: `${availableHeight - 4}px`,
+    };
+
+  const r: ReturnType<typeof calcSizeStyles> = {};
+  if (l.height) r.maxHeight = `${availableHeight - 4}px`;
+  if (l.width) r.maxWidth = `${availableWidth}px`;
+  return r;
+};
+
 export type PopoverProps = PropsWithChildren<
   {
     onOpen?: () => unknown;
@@ -102,6 +124,7 @@ export type PopoverProps = PropsWithChildren<
     explicitPortal?: boolean;
     autoDismiss?: boolean;
     overlayProps?: Omit<ComponentProps<typeof FloatingOverlay>, "id">;
+    limitSize?: SizeLimiting;
   } & Pick<
     ComponentProps<typeof GenericPopover>,
     "wrapperClassName" | "className"
@@ -148,6 +171,7 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
       explicitPortal,
       autoDismiss: providedAutoDismiss = true,
       overlayProps,
+      limitSize,
     },
     impRef
   ) {
@@ -163,7 +187,17 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
         offset(offsetOptions),
         flip(),
         shift({ padding: { left: 8, right: 8 } }),
-      ],
+        limitSize
+          ? size({
+              apply({ availableHeight, availableWidth, elements }) {
+                Object.assign(
+                  elements.floating.style,
+                  calcSizeStyles(limitSize, availableWidth, availableHeight)
+                );
+              },
+            })
+          : undefined,
+      ].filter(Boolean),
       open: show,
       onOpenChange: (newOpen) => {
         if (newOpen && typeof onOpen === "function") onOpen();

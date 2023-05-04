@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.3.0
+
+- Size limiting fo popovers
+
 ## 6.2.12
 
 - bump deps

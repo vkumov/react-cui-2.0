@@ -1,2 +1,0 @@
-import{jsxs as p,jsx as r}from"react/jsx-runtime";import{forwardRef as b}from"react";import m from"classnames";const t=b(({size:e="default",withLabel:i=!1,label:s,color:a,className:l,percentage:o,...c},d)=>p("div",{className:m("progressbar",{[`progressbar--${e}`]:e!=="default",[`progressbar--${a}`]:a,[l]:l}),"data-percentage":o,...c,ref:d,children:[r("div",{className:"progressbar__fill"}),i?s?r("div",{className:"progressbar__label",children:s}):r("div",{className:"progressbar__label",children:`${o}%`}):null]}));export{t as Progressbar};
-//# sourceMappingURL=index.js.map

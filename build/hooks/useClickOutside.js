@@ -1,2 +1,0 @@
-import{useRef as d,useEffect as f}from"react";const i=["mousedown","touchstart"];function l(r,o,n){const e=d();return f(()=>{const s=t=>{var u;if(Array.isArray(n)){const a=(u=t?.target)==null?void 0:u.hasAttribute("data-ignore-outside-clicks");n.every(c=>!!c&&!c.contains(t.target))&&!a&&r()}else e.current&&!e.current.contains(t.target)&&r()};return(o||i).forEach(t=>document.addEventListener(t,s)),()=>{(o||i).forEach(t=>document.removeEventListener(t,s))}},[e,r,n]),e}export{l as useClickOutside};
-//# sourceMappingURL=useClickOutside.js.map

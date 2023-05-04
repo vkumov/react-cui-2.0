@@ -1,2 +1,0 @@
-import{jsx as r,jsxs as l}from"react/jsx-runtime";import{forwardRef as m}from"react";import s from"classnames";import t from"rc-slider";const f=m(({dots:a=!0,label:o,className:d,...e},i)=>r("div",{className:s("form-group",d),children:l("div",{className:"form-group__text",children:[o&&r("label",{children:o}),r("div",{className:"half-padding-left half-padding-right base-padding-bottom",children:r(t,{dots:a,...e,ref:i})})]})}));export{f as Slider};
-//# sourceMappingURL=index.js.map

@@ -1,3 +1,0 @@
-// This file is generated automatically by `builder.mjs`. Please, don't change it.
-
-export { ConfirmationListener, ConfirmationModal, ConfirmationModalProps, DontAskAgain, DynamicModal, DynamicModalProps, Modal, ModalBody, ModalFooter, ModalHeader, ModalProps, ModalProvider, ModalProviderProps, ModalSize, PromptModal, PromptModalProps, PropsWithCloseModal, confirmation, dynamicModal, notification, notificationModal, prompt, useModalProvider } from "@vkumov/react-cui-2.0"
