@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.3.2
+
+- Provide tabId to `renderBody` of `Tabs`
+
 ## 6.3.0
 
 - Size limiting fo popovers

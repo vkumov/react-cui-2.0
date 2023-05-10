@@ -732,7 +732,7 @@ interface TabsProps {
     sticky?: boolean;
     inline?: boolean;
     renderHeader?: (header: JSX.Element) => JSX.Element;
-    renderBody?: (body: JSX.Element) => JSX.Element;
+    renderBody?: (body: JSX.Element, tab: TabId) => JSX.Element;
     onTabChange?: (tab: TabId) => void;
     beforeTabChange?: (oldTab: TabId, newTab: TabId) => boolean | Promise<boolean>;
     bodyRef?: MutableRefObject<HTMLDivElement>;

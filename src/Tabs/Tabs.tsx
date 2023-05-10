@@ -5,10 +5,10 @@ import React, {
   type MutableRefObject,
   type ReactNode,
 } from "react";
+import cx from "classnames";
 
 import { ConditionalWrapper, DisplayIf } from "src/Conditional";
 import { usePrevious } from "src/hooks/usePrevious";
-import { appendClass as ac } from "src/utils";
 
 type TabId = number | string;
 
@@ -35,10 +35,14 @@ export const Tab: FC<TabProps> = ({
   if (!active && unmountInactive) return null;
   return (
     <div
-      className={`tab-pane${ac(active, "active")}${ac(
-        active && activeClassName,
-        activeClassName
-      )}${ac(className)}`}
+      className={cx(
+        "tab-pane",
+        {
+          active,
+          [activeClassName]: activeClassName && active,
+        },
+        className
+      )}
     >
       {children}
     </div>
@@ -83,16 +87,15 @@ export const TabsHeader = forwardRef<HTMLUListElement, TabsHeaderProps>(
   ) => (
     <ul
       ref={ref}
-      className={`tabs${ac(tabsClassName)}${ac(center, "tabs--centered")}${ac(
-        right,
-        "tabs--right"
-      )}${ac(justified, "tabs--justified")}${ac(
-        embossed,
-        "tabs--embossed"
-      )}${ac(bordered, "tabs--bordered")}${ac(vertical, "tabs--vertical")}${ac(
-        inline,
-        "tabs--inline"
-      )}`}
+      className={cx("tabs", tabsClassName, {
+        "tabs--centered": center,
+        "tabs--right": right,
+        "tabs--embossed": embossed,
+        "tabs--justified": justified,
+        "tabs--bordered": bordered,
+        "tabs--vertical": vertical,
+        "tabs--inline": inline,
+      })}
       style={sticky ? { position: "sticky", top: "0" } : {}}
     >
       {React.Children.map(children, (child, idx) => {
@@ -103,7 +106,9 @@ export const TabsHeader = forwardRef<HTMLUListElement, TabsHeaderProps>(
         } = child;
         return (
           <li
-            className={`tab${ac(isActive(openTab, id, idx), "active")}`}
+            className={cx("tab", {
+              active: isActive(openTab, id, idx),
+            })}
             key={firstDefined(id, idx)}
           >
             <a onClick={() => onTabChange(firstDefined(id, idx))}>{title}</a>
@@ -146,7 +151,7 @@ interface TabsProps {
   sticky?: boolean;
   inline?: boolean;
   renderHeader?: (header: JSX.Element) => JSX.Element;
-  renderBody?: (body: JSX.Element) => JSX.Element;
+  renderBody?: (body: JSX.Element, tab: TabId) => JSX.Element;
   onTabChange?: (tab: TabId) => void;
   beforeTabChange?: (
     oldTab: TabId,
@@ -166,10 +171,7 @@ const composeColumnSize = (columnWidth: ColumnSize): string => {
 };
 
 const ColumnWrap: FC<Column> = ({ columnWidth, className, ...props }) => (
-  <div
-    className={`${composeColumnSize(columnWidth)}${ac(className)}`}
-    {...props}
-  />
+  <div className={cx(composeColumnSize(columnWidth), className)} {...props} />
 );
 
 export const Tabs: FC<TabsProps> = ({
@@ -259,7 +261,8 @@ export const Tabs: FC<TabsProps> = ({
                 })
               : child
           )}
-        </div>
+        </div>,
+        openTab
       )}
     </ConditionalWrapper>
   );
@@ -269,7 +272,7 @@ export const Tabs: FC<TabsProps> = ({
       condition={vertical}
       wrapper={
         <div
-          className={`row${ac(rowClassName)}`}
+          className={cx("row", rowClassName)}
           style={sticky ? { position: "relative" } : {}}
           {...rowProps}
         />
