@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.3.3
+
+- Add inline for `ReactSelect`
+
 ## 6.3.2
 
 - Provide tabId to `renderBody` of `Tabs`

@@ -23,6 +23,7 @@ type CUISelectProps = {
   label?: ReactNode;
   multiValueColor?: LabelColor;
   error?: ReactNode | boolean;
+  inline?: boolean;
 };
 
 export type ReactSelectProps<
@@ -40,6 +41,7 @@ function UnrefedSelect<
     label = null,
     className,
     error,
+    inline,
     ...props
   }: ReactSelectProps<Option, IsMulti, Group>,
   ref: Ref<SelectGeneric<Option, IsMulti, Group>>
@@ -48,23 +50,26 @@ function UnrefedSelect<
     <div
       className={cx("form-group", className, {
         "form-group--error": error,
+        "form-group--inline": inline,
         [sts.multi_select]: props.isMulti,
       })}
     >
-      {label && <label>{label}</label>}
-      <Select
-        className="react-select-container qtr-margin-top"
-        classNamePrefix="react-select"
-        components={{
-          MultiValueContainer,
-          MultiValueLabel,
-          MultiValueRemove,
-          Group: GroupComponent,
-          GroupHeading,
-        }}
-        {...props}
-        ref={ref}
-      />
+      <div className="form-group__text">
+        {label && <label>{label}</label>}
+        <Select
+          className="react-select-container"
+          classNamePrefix="react-select"
+          components={{
+            MultiValueContainer,
+            MultiValueLabel,
+            MultiValueRemove,
+            Group: GroupComponent,
+            GroupHeading,
+          }}
+          {...props}
+          ref={ref}
+        />
+      </div>
       {Boolean(error) && typeof error !== "boolean" ? (
         <InputHelpBlock text={error} />
       ) : null}

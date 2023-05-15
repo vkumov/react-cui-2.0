@@ -947,9 +947,10 @@ type CUISelectProps$1 = {
     label?: ReactNode;
     multiValueColor?: LabelColor$1;
     error?: ReactNode | boolean;
+    inline?: boolean;
 };
 type ReactSelectProps<Option, IsMulti extends boolean, Group extends GroupBase<Option>> = CUISelectProps$1 & Props$1<Option, IsMulti, Group>;
-function UnrefedSelect$1<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>({ label, className, error, ...props }: ReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
+function UnrefedSelect$1<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>({ label, className, error, inline, ...props }: ReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
 const ReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase<Option> = GroupBase<Option>>(props: CUISelectProps$1 & Omit<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & {
     ref?: React.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
 }) => ReturnType<typeof UnrefedSelect$1>;
@@ -960,9 +961,10 @@ type CUISelectProps = {
     label?: ReactNode;
     multiValueColor?: LabelColor;
     error?: ReactNode | boolean;
+    inline?: boolean;
 };
 type CreatableReactSelectProps<Option = unknown, IsMulti extends boolean = boolean, Group extends GroupBase$1<Option> = GroupBase$1<Option>> = CreatableProps<Option, IsMulti, Group> & CUISelectProps;
-function UnrefedSelect<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>({ label, className, error, ...props }: CreatableReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
+function UnrefedSelect<Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>({ label, className, error, inline, ...props }: CreatableReactSelectProps<Option, IsMulti, Group>, ref: Ref<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>): JSX.Element;
 const CreatableReactSelect: <Option = unknown, IsMulti extends boolean = false, Group extends GroupBase$1<Option> = GroupBase$1<Option>>(props: Omit<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>, "inputValue" | "menuIsOpen" | "onChange" | "onInputChange" | "onMenuOpen" | "onMenuClose" | "value"> & Partial<react_select_dist_declarations_src_Select.PublicBaseSelectProps<Option, IsMulti, Group>> & react_select_dist_declarations_src_useStateManager.StateManagerAdditionalProps<Option> & react_select_dist_declarations_src_useCreatable.CreatableAdditionalProps<Option, Group> & CUISelectProps & {
     ref?: React.ForwardedRef<react_select_dist_declarations_src_Select__default<Option, IsMulti, Group>>;
 }) => ReturnType<typeof UnrefedSelect>;

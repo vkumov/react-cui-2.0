@@ -55,7 +55,11 @@ const groupedOptions = [
 ];
 
 export const ReactSelect: StoryFn<typeof Select> = (args) => {
-  return <Select {...args} />;
+  return (
+    <>
+      <Select {...args} />
+    </>
+  );
 };
 
 ReactSelect.parameters = {};
