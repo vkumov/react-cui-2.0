@@ -55,7 +55,10 @@
   .react-select-container
   .react-select__control
   .react-select__value-container
-  .react-select__input-container input {
+  .react-select__input-container
+  input {
+  min-height: unset !important;
+  height: unset !important;
   color: var(--cui-font-color) !important;
 }
 

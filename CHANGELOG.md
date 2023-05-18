@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.3.4
+
+- Fix `ReactSelect` creatable mis-alignments
+
 ## 6.3.3
 
 - Add inline for `ReactSelect`
