@@ -2,7 +2,7 @@
 
 ## 6.3.4
 
-- Fix `ReactSelect` creatable mis-alignments
+- Fix `ReactSelect` creatable mis-alignments (#4)
 
 ## 6.3.3
 
