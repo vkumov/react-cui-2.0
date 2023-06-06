@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.3.6
+
+- `explicitPortal` for `Dropdown`
+
 ## 6.3.4
 
 - Fix `ReactSelect` creatable mis-alignments (#4)

@@ -53,6 +53,7 @@ const Menu: React.ForwardRefExoticComponent<Omit<{
     withSizeLimit?: boolean;
     portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
+    explicitPortal?: boolean;
 } & {
     children?: React.ReactNode;
 } & Pick<MenuElementProps, "icon"> & Omit<React.HTMLProps<HTMLButtonElement>, "label">, "ref"> & React.RefAttributes<any>>;
@@ -68,6 +69,7 @@ const Dropdown: React.ForwardRefExoticComponent<{
     withSizeLimit?: boolean;
     portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
     portalId?: ComponentProps<typeof FloatingPortal>["id"];
+    explicitPortal?: boolean;
 } & {
     children?: React.ReactNode;
 } & React.RefAttributes<any>>;

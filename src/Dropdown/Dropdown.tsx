@@ -103,6 +103,7 @@ type DropdownProps = PropsWithChildren<{
   withSizeLimit?: boolean;
   portalRoot?: ComponentProps<typeof FloatingPortal>["root"];
   portalId?: ComponentProps<typeof FloatingPortal>["id"];
+  explicitPortal?: boolean;
 }>;
 
 type MenuComponentProps = {
@@ -146,6 +147,7 @@ export const Menu = forwardRef<
       portalId,
       portalRoot,
       icon,
+      explicitPortal,
       ...props
     },
     ref
@@ -365,7 +367,8 @@ export const Menu = forwardRef<
         >
           {(state) => (
             <FloatingTreeWrapper
-              withPortal={!tree}
+              withPortal={explicitPortal || !tree}
+              force={explicitPortal ? true : undefined}
               portalId={id}
               portalRoot={root}
             >
