@@ -178,34 +178,33 @@ export const Menu = forwardRef<
       fallbackPortalId: "--cui-dropdown-portal",
     });
 
-    const { x, y, reference, floating, strategy, refs, context } =
-      useFloating<HTMLButtonElement>({
-        open,
-        onOpenChange: (st) => {
-          if (typeof onOpen === "function" && st) onOpen();
-          if (typeof onClose === "function" && !st) onClose();
-          setOpen(st);
-        },
-        middleware: [
-          offset({ mainAxis: nested ? 0 : 2, alignmentAxis: nested ? -5 : 0 }),
-          flip(),
-          shift(),
-          withSizeLimit
-            ? size({
-                apply({ availableHeight, availableWidth, elements }) {
-                  Object.assign(elements.floating.style, {
-                    maxWidth: `${availableWidth}px`,
-                    maxHeight: `${availableHeight - 4}px`,
-                  });
-                },
-              })
-            : undefined,
-        ].filter(Boolean),
-        placement: nested ? "right-start" : placement,
-        nodeId,
-        whileElementsMounted: autoUpdate,
-        strategy: providedStrategy,
-      });
+    const { x, y, strategy, refs, context } = useFloating<HTMLButtonElement>({
+      open,
+      onOpenChange: (st) => {
+        if (typeof onOpen === "function" && st) onOpen();
+        if (typeof onClose === "function" && !st) onClose();
+        setOpen(st);
+      },
+      middleware: [
+        offset({ mainAxis: nested ? 0 : 2, alignmentAxis: nested ? -5 : 0 }),
+        flip(),
+        shift(),
+        withSizeLimit
+          ? size({
+              apply({ availableHeight, availableWidth, elements }) {
+                Object.assign(elements.floating.style, {
+                  maxWidth: `${availableWidth}px`,
+                  maxHeight: `${availableHeight - 4}px`,
+                });
+              },
+            })
+          : undefined,
+      ].filter(Boolean),
+      placement: nested ? "right-start" : placement,
+      nodeId,
+      whileElementsMounted: autoUpdate,
+      strategy: providedStrategy,
+    });
 
     const { getReferenceProps, getFloatingProps, getItemProps } =
       useInteractions([
@@ -270,8 +269,8 @@ export const Menu = forwardRef<
     }, [allowHover]);
 
     const floatingNodeRef = useRef<HTMLElement>(null);
-    const mergedFloatingRef = useMergeRefs([floatingNodeRef, floating]);
-    const mergedReferenceRef = useMergeRefs([ref, reference]);
+    const mergedFloatingRef = useMergeRefs([floatingNodeRef, refs.setFloating]);
+    const mergedReferenceRef = useMergeRefs([ref, refs.setReference]);
 
     useEffect(() => {
       const onClick = (e: MouseEvent) => {
@@ -379,6 +378,7 @@ export const Menu = forwardRef<
                       zIndex: nested
                         ? 50
                         : "calc(var(--cui-max-zindex, 1000) + 2)",
+                      overflow: "visible",
                     }}
                   >
                     <FloatingFocusManager

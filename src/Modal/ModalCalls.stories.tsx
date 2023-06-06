@@ -46,6 +46,17 @@ const CustomDynamic = ({ close }: PropsWithCloseModal): JSX.Element => {
           <Popover element={<Button>And even popovers</Button>}>
             <PopoverTitle>Popover title!</PopoverTitle>
             <div>Popover body here</div>
+            <Dropdown
+              label={<a>Dropdown in popover!</a>}
+              alwaysClose
+              withSizeLimit
+            >
+              {Array(50)
+                .fill(true)
+                .map((_, idx) => (
+                  <MenuElement key={idx}>{idx}</MenuElement>
+                ))}
+            </Dropdown>
           </Popover>
         </div>
         <Button.Primary

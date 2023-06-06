@@ -1,5 +1,6 @@
 import * as _floating_ui_react from '@floating-ui/react';
 import { Placement, offset, FloatingFocusManager, FloatingOverlay, FloatingPortal } from '@floating-ui/react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 import React, { PropsWithChildren, ReactNode, ReactElement, MutableRefObject, ComponentProps, FC, ComponentType } from 'react';
 import { TransitionStatus } from 'react-transition-group';
 
@@ -58,8 +59,7 @@ type Options = {
 } & Pick<PopoverProps, "initialFocus" | "guardsFocus" | "modalFocus" | "closeOnFocusOut" | "offset" | "portalRoot" | "placement" | "portalId">;
 declare function usePopover({ onClose, onOpen, popoverComponent, placement, initialFocus, guardsFocus, modalFocus, closeOnFocusOut, offset: offsetOptions, portalRoot, portalId, }: Options): {
     getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>;
-    reference: (node: _floating_ui_react.ReferenceType) => void;
-    render: (body: ReactNode) => JSX.Element;
+    render: (body: ReactNode) => react_jsx_runtime.JSX.Element;
     isShown: boolean;
     refs: _floating_ui_react.ExtendedRefs<_floating_ui_react.ReferenceType>;
     close: () => void;

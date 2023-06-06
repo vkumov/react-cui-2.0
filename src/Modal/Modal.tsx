@@ -110,17 +110,19 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
     [maximized, size]
   );
 
-  const { reference, floating, context } = useFloating({
+  const {
+    refs: { setFloating },
+    context,
+  } = useFloating({
     open: isOpen,
     onOpenChange: (state) =>
       !state && closeHandle ? void closeHandle() : void 0,
     nodeId,
+    elements: {
+      reference: refElement,
+    },
   });
   const floatingTree = useFloatingTree();
-
-  React.useEffect(() => {
-    if (refElement) reference(refElement);
-  }, [refElement]);
 
   const outsidePress = useEvent((): boolean => {
     if (!modalCtx) return true;
@@ -182,7 +184,7 @@ export const Modal: ModalSizes & ModalComponents & FC<ModalProps> = ({
                   })}
                 >
                   <div
-                    ref={floating}
+                    ref={setFloating}
                     {...getFloatingProps({
                       ...dialogProps,
                       className: cx("modal__dialog", {

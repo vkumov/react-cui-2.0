@@ -181,7 +181,7 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
     const tree = useFloatingTree();
     const nodeId = useFloatingNodeId();
 
-    const { x, y, reference, floating, strategy, context } = useFloating({
+    const { x, y, strategy, context, refs } = useFloating({
       placement,
       middleware: [
         offset(offsetOptions),
@@ -221,10 +221,13 @@ export const Popover = forwardRef<PopoverHandlers | null, PopoverProps>(
     const [overlayShow, setOverlayShow] = useState(overlayShowProvided);
     const [overlay, setOverlay] = useState(overlayProvided);
 
-    const ref = useMergeRefs([reference, (element as any).ref]);
+    const ref = useMergeRefs([refs.setReference, (element as any).ref]);
 
     const transitionRef = useRef<HTMLDivElement>(null);
-    const floatingRef = useMergeRefs<HTMLDivElement>([transitionRef, floating]);
+    const floatingRef = useMergeRefs<HTMLDivElement>([
+      transitionRef,
+      refs.setFloating,
+    ]);
 
     const { root, id } = useFloatingContext({
       root: portalRoot,

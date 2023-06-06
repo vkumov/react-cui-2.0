@@ -59,7 +59,7 @@ export function usePopover({
 }: Options) {
   const [show, setShow] = useLockedBody(false, "root");
 
-  const { x, y, reference, floating, strategy, context, refs } = useFloating({
+  const { x, y, strategy, context, refs } = useFloating({
     placement,
     middleware: [
       offset(offsetOptions),
@@ -85,7 +85,10 @@ export function usePopover({
   const openCb = useCallback(() => setShow(true), [setShow]);
 
   const transitionRef = useRef<HTMLDivElement>(null);
-  const floatingRef = useMergeRefs<HTMLDivElement>([transitionRef, floating]);
+  const floatingRef = useMergeRefs<HTMLDivElement>([
+    transitionRef,
+    refs.setFloating,
+  ]);
 
   const { root, id } = useFloatingContext({
     root: portalRoot,
@@ -106,7 +109,7 @@ export function usePopover({
           {(state) => (
             <FloatingFocusManager
               context={context}
-              initialFocus={initialFocus ?? (floating as any)}
+              initialFocus={initialFocus ?? (refs.setFloating as any)}
               guards={guardsFocus}
               modal={modalFocus}
               closeOnFocusOut={closeOnFocusOut}
@@ -132,7 +135,6 @@ export function usePopover({
 
   return {
     getReferenceProps,
-    reference,
     render,
     isShown: show,
     refs,

@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.4.0
+
+- Bump deps
+- Fix `Dropdown` inside `Popover`
+
 ## 6.3.6
 
 - `explicitPortal` for `Dropdown`

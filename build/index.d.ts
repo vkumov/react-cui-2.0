@@ -15,6 +15,7 @@ import { CreatableProps } from 'react-select/creatable';
 import { GroupBase as GroupBase$1 } from 'react-select/dist/declarations/src/types';
 import { SliderProps as SliderProps$1 } from 'rc-slider';
 import { SliderRef } from 'rc-slider/lib/Slider';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 
 type AlertType = "warning" | "warning-alt" | "danger" | "error" | "success" | "dark" | "light" | "info";
 type AlertProps = {
@@ -1205,8 +1206,7 @@ type Options = {
 } & Pick<PopoverProps, "initialFocus" | "guardsFocus" | "modalFocus" | "closeOnFocusOut" | "offset" | "portalRoot" | "placement" | "portalId">;
 function usePopover({ onClose, onOpen, popoverComponent, placement, initialFocus, guardsFocus, modalFocus, closeOnFocusOut, offset: offsetOptions, portalRoot, portalId, }: Options): {
     getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>;
-    reference: (node: _floating_ui_react.ReferenceType) => void;
-    render: (body: ReactNode) => JSX.Element;
+    render: (body: ReactNode) => react_jsx_runtime.JSX.Element;
     isShown: boolean;
     refs: _floating_ui_react.ExtendedRefs<_floating_ui_react.ReferenceType>;
     close: () => void;
