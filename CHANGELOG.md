@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.4.1
+
+- Allow `children` in `Input` and `Textarea`
+
 ## 6.4.0
 
 - Bump deps

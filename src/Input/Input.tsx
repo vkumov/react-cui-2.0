@@ -39,6 +39,7 @@ export const Input = forwardRef<
       horizontalLabelClassName = "col-3",
       error = null,
       prefix = null,
+      children,
       ...input
     },
     ref
@@ -88,6 +89,7 @@ export const Input = forwardRef<
           </button>
         ) : null}
       </div>
+      {children ?? null}
       {!inline && helpBlock ? (
         error ? (
           <InputHelpBlock text={error} />

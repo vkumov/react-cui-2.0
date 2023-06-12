@@ -22,6 +22,7 @@ export const Textarea: FC<TextareaProps & HTMLProps<HTMLTextAreaElement>> = ({
   inputRef = null,
   inline = false,
   error = null,
+  children,
   ...textarea
 }) => {
   return (
@@ -39,6 +40,7 @@ export const Textarea: FC<TextareaProps & HTMLProps<HTMLTextAreaElement>> = ({
         {label ? <label htmlFor={id}>{label}</label> : null}
       </div>
       {error ? <InputHelpBlock text={error} /> : null}
+      {children ?? null}
     </div>
   );
 };
